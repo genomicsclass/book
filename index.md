@@ -14,9 +14,11 @@ The repository of the source files, R markdown documents, is here:
 
 <http://github.com/genomicsclass/labs>
 
-### Introduction
+### Introduction (week 1)
 
 [Introduction](pages/introduction.html)
+
+[Exploratory Data Analysis](pages/exploratory_data_analysis.html)
 
 ...
 
