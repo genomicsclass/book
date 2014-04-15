@@ -16,7 +16,12 @@ The repository of the source files, R markdown documents, is here:
 
 ### Introduction
 
-<pages/introduction.html>
+[Introduction](pages/introduction.html)
 
+...
+
+all the content
+
+...
 
 
