@@ -1,4 +1,4 @@
-# Website for Data Analysis for Genomics
+# Data Analysis for Genomics
 
 This is the repository for rendered HTMLs of the Data Analysis for
 Genomics class. These can be viewed here:
