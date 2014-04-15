@@ -3,6 +3,7 @@
 Biases, systematic errors and unexpected variability are common in genomics data. Failure to discover these problems often leads to flawed analyses and false discoveries. As an example, consider that experiments sometimes fail and not all data processing pipelines are designed to detect these. Yet, these pipelines still give you an answer and the from the final results it may be hard or impossible to notice an error was made. In later modules we will cover many other examples. 
 
 Graphing data is a powerful approach to detecting these problems. We refer to this as _exploratory data analyis_ (EDA). Many important methodological contributions to genomics data analysis were initiated as discovery made via EDA. We will show some useful exploratory plots for gene expression data measured with microarrays and NGS. We start with a general introduction to EDA using height data.
+
 ## Histograms
 
 We can think of any given dataset as a list of numbers. Suppose you have measured the heights of all men in a population. Imagine you have need to describe these numbers to someone that has no idea what these heights are, say an alien that has never visited earth. 
@@ -171,11 +172,6 @@ abline(0, cor(x, y))
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
-
-
-
-
-
 
 ## Spearman's correlation
 Just like the average and standard deviation are not good summaries when the data is not well approximated by the normal distribution, the correlation is not a good summary when pairs of lists are not approximated by the bivariate normal distribution. Examples include cases in which on variable is related to another by a parabolic function. Another, more common example are caused by outliers or extreme values.
