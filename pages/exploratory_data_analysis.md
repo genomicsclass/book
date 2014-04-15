@@ -1,3 +1,8 @@
+---
+layout: page
+title: Introduction
+---
+
 # Exploratory Data Analysis
 
 Biases, systematic errors and unexpected variability are common in genomics data. Failure to discover these problems often leads to flawed analyses and false discoveries. As an example, consider that experiments sometimes fail and not all data processing pipelines are designed to detect these. Yet, these pipelines still give you an answer and the from the final results it may be hard or impossible to notice an error was made. In later modules we will cover many other examples. 
