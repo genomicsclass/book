@@ -55,12 +55,12 @@ plot(xs, ecdf(x)(xs), type = "l", xlab = "x=Height", ylab = "F(x)")
 
 If instead of the total numbers we report the proportions, then the histogram is a probability distribution. The probability distribution we see above approximates one that is very common in a nature: the bell curve or normal distribution or Gaussian distribution. When the histogram of a list of numbers approximates the normal distribution we can use a convenient mathematical formula to approximate the proportion of individuals in any given interval
 
-$$
+\[
 \mbox{Pr}(a < x < b) = \int_a^b \frac{1}{\sqrt{2\pi\sigma^2}}
 \exp{\left( \frac{-(x-\mu)^2}{2 \sigma^2} \right)} \, dx 
-$$
+\]
 
-Here \[\mu\] and \[\sigma\] are refereed to as the mean and standard deviation. If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
+Here \(\mu\) and \(\sigma\) are referred to as the mean and standard deviation. If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
 
 ```r
 1 - pnorm(72, mean(x), sd(x))
@@ -163,9 +163,9 @@ Stratification followed by boxplots lets us see the distribution of each group. 
 
 This line is refereed to the regression line and it's slope related to the correlation. When two variables follow a bivariate normal distribution then for any given value of x we predict the value of y with
 
-$$
+\[
 \frac{Y - \mu_Y}{\sigma_Y} = r \frac{X-\mu_X}{\sigma_X}
-$$
+\]
 
 with the $\mu$ representing the averages, $\sigma$ the standard deviations, and $r$ the correlation. Let's compare the mean of each strata to the identity line and the regression line
 
