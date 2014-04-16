@@ -162,9 +162,11 @@ print(mean(y[round(x) == 72]))
 Stratification followed by boxplots lets us see the distribution of each group. The average height of sons with fathers that are 72 is 70.7. We also see that the means of the strata appear to follow a straight line. 
 
 This line is refereed to the regression line and it's slope related to the correlation. When two variables follow a bivariate normal distribution then for any given value of x we predict the value of y with
+
 $$
 \frac{Y - \mu_Y}{\sigma_Y} = r \frac{X-\mu_X}{\sigma_X}
 $$
+
 with the $\mu$ representing the averages, $\sigma$ the standard deviations, and $r$ the correlation. Let's compare the mean of each strata to the identity line and the regression line
 
 
