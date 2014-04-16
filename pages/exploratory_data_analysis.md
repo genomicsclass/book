@@ -60,7 +60,7 @@ $$
 \exp{\left( \frac{-(x-\mu)^2}{2 \sigma^2} \right)} \, dx 
 $$
 
-Here $\mu$ and $\sigma$ are refereed to as the mean and standard deviation. If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
+Here \[\mu\] and \[\sigma\] are refereed to as the mean and standard deviation. If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
 
 ```r
 1 - pnorm(72, mean(x), sd(x))
