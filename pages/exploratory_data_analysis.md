@@ -57,7 +57,7 @@ If instead of the total numbers we report the proportions, then the histogram is
 
 $$
 \mbox{Pr}(a < x < b) = \int_a^b \frac{1}{\sqrt{2\pi\sigma^2}}
-\exp{ \frac{-(x-\mu)^2}{2 \sigma^2} } \, dx
+e^{ \frac{-(x-\mu)^2}{2 \sigma^2} } \, dx
 $$
 
 Here $\mu$ and $\sigma$ are refereed to as the mean and standard deviation. If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
