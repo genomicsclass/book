@@ -19,7 +19,7 @@ production_url : http://genomicsclass.github.io/book
 markdown: redcarpet
 
 redcarpet: 
-  no_intra_emphasis: true
+  extensions: ["no_intra_emphasis"]
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
