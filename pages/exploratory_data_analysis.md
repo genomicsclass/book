@@ -71,7 +71,7 @@ Here \\( \mu \\) and \\( \sigma \\) are referred to as the mean and standard dev
 ```
 
 
-A very useful characteristic of this approximation is that one only needs to know $\mu$ and $\sigma$ to describe the entire distribution. All we really have to tell our alien friend is that heights follow a normal distribution with average height 68'' and a standard deviation of 3''. From this we can compute the proportion of individuals in any interval. 
+A very useful characteristic of this approximation is that one only needs to know \\( \mu \\) and \\( \sigma \\) to describe the entire distribution. All we really have to tell our alien friend is that heights follow a normal distribution with average height 68'' and a standard deviation of 3''. From this we can compute the proportion of individuals in any interval. 
 
 ## QQ-plot
 
@@ -98,8 +98,7 @@ qqline(x)
 
 
 ## Box-plot
-Data is not always normally distributed. Income 
-In these cases the average and standard deviation are not necessarily informative. The properties described above are specific to the normal. For example, the normal distribution does not seem to be a good approximation for the direct compensation for 199 United States CEOs in the year 2000
+Data is not always normally distributed. Income In these cases the average and standard deviation are not necessarily informative. The properties described above are specific to the normal. For example, the normal distribution does not seem to be a good approximation for the direct compensation for 199 United States CEOs in the year 2000
 
 ```r
 hist(exec.pay)
@@ -163,11 +162,11 @@ Stratification followed by boxplots lets us see the distribution of each group. 
 
 This line is refereed to the regression line and it's slope related to the correlation. When two variables follow a bivariate normal distribution then for any given value of x we predict the value of y with
 
-\[
+\\[
 \frac{Y - \mu_Y}{\sigma_Y} = r \frac{X-\mu_X}{\sigma_X}
-\]
+\\]
 
-with the $\mu$ representing the averages, $\sigma$ the standard deviations, and $r$ the correlation. Let's compare the mean of each strata to the identity line and the regression line
+with the \\( \mu \\) representing the averages, \\( \sigma \\) the standard deviations, and \\( r \\) the correlation. Let's compare the mean of each strata to the identity line and the regression line
 
 
 ```r
