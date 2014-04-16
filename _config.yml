@@ -18,6 +18,9 @@ production_url : http://genomicsclass.github.io/book
 # (see https://help.github.com/articles/migrating-your-pages-site-from-maruku)
 markdown: redcarpet
 
+redcarpet: 
+  no_intra_emphasis: true
+
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
 JB :
