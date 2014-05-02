@@ -31,6 +31,25 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 [EDA plots for next generation sequencing](pages/EDA_plots_for_NGS.html)
 
+### Statistical inference and linear modeling (week 3)
 
+[Inference](pages/inference_lecture.html)
 
+[Expressing design formula in R](pages/expressing_design_formula.html)
+
+[Linear models](pages/linear_models.html)
+
+[Basic inference for microarray](pages/basic_inference_microarray.html)
+
+[Rank tests](pages/ranktest.html)
+
+[Monte Carlo methods](pages/montecarlo.html)
+
+### Background, modeling and normalization
+
+[Background](pages/background.html)
+
+[Modeling](pages/modeling.html)
+
+[Normalization](pages/normalization.html)
 
