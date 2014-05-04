@@ -45,7 +45,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 [Monte Carlo methods](pages/montecarlo.html)
 
-### Background, modeling and normalization
+### Background, modeling and normalization (week 4)
 
 [Background](pages/background.html)
 
