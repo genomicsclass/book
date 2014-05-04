@@ -123,33 +123,20 @@ spms <- pm(SpikeIn95)
 
 ```r
 spd = pData(SpikeIn95)
-mypar(1, 2)
+library(rafalib)
 ```
 
 ```
-## Error: could not find function "mypar"
+## Loading required package: RColorBrewer
 ```
 
 ```r
+mypar(1, 2)
 shist(log2(spms[, 2]), unit = 0.1, type = "n", xlab = "log (base 2) intensity", 
     main = "Five techical replicates")
-```
-
-```
-## Error: could not find function "shist"
-```
-
-```r
 ## show the first 10
 for (i in 1:10) shist(log2(spms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2, 
     lty = i)
-```
-
-```
-## Error: could not find function "shist"
-```
-
-```r
 ## Pick 9 and 10 and make an MA plot
 i = 10
 j = 9  ##example with two samples
@@ -159,20 +146,11 @@ siNames = siNames[which(spd[i, ]/spd[j, ] == 2)]
 M = log2(spms[, i]) - log2(spms[, j])
 A = (log2(spms[, i]) + log2(spms[, j]))/2
 splot(A, M, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 spikeinIndex = which(probeNames(SpikeIn95) %in% siNames)
 points(A[spikeinIndex], M[spikeinIndex], ylim = c(-4, 4), bg = 1, pch = 21)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-4](figure/normalization-unnamed-chunk-4.png) 
 
 In this plot the green dots are genes spiked in to be different in the two samples. The rest of the points (black dots) should be at 0 because other than the spiked-in genes these are technical replicates. Notice that without normalization the black dots on the left side of the plot are as high as most of the green dots. If we were to order by fold change, we would obtain many false positives. In the next units we will introduce three normalization procedures that have proven to work well in practice.
 
@@ -228,59 +206,20 @@ fit <- loess(m ~ a)
 bias <- predict(fit, newdata = data.frame(a = A))
 nM <- M - bias
 mypar(1, 1)
-```
-
-```
-## Error: could not find function "mypar"
-```
-
-```r
 splot(A, M, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], ylim = c(-4, 4), bg = 1, pch = 21)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 lines(a, fit$fitted, col = 2, lwd = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-6](figure/normalization-unnamed-chunk-61.png) 
 
 ```r
 splot(A, nM, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], nM[spikeinIndex], ylim = c(-4, 4), bg = 1, pch = 21)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 abline(h = 0, col = 2, lwd = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-6](figure/normalization-unnamed-chunk-62.png) 
 
 
 Note that the bias is removed and now the highest fold changes are almost all spike-ins. Also note that the we can control the size of the intervals in which lines are fit. The smaller we make these intervals the more flexobility we get. This is controlled with span argument of the loess function. A span of 0.75 means that the closest points are considered untile 3/4 are used. Finally, we are fitting parabalas, but for some datasets these can result in over fitting. For example, a few points can force a parabola to "shoot up" very fast. For this reason using lines (the argument is degree=1) is safer.
@@ -291,59 +230,20 @@ fit <- loess(m ~ a, degree = 1, span = 1/2)
 bias <- predict(fit, newdata = data.frame(a = A))
 nM <- M - bias
 mypar(1, 1)
-```
-
-```
-## Error: could not find function "mypar"
-```
-
-```r
 splot(A, M, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], ylim = c(-4, 4), bg = 1, pch = 21)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 lines(a, fit$fitted, col = 2, lwd = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-7](figure/normalization-unnamed-chunk-71.png) 
 
 ```r
 splot(A, nM, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], nM[spikeinIndex], ylim = c(-4, 4), bg = 1, pch = 21)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 abline(h = 0, col = 2, lwd = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-7](figure/normalization-unnamed-chunk-72.png) 
 
 
 
@@ -373,57 +273,32 @@ nspms <- normalize.quantiles(spms)
 M = log2(spms[, i]) - log2(spms[, j])
 A = (log2(spms[, i]) + log2(spms[, j]))/2
 splot(A, M, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], bg = 1, pch = 21)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-8](figure/normalization-unnamed-chunk-81.png) 
 
 ```r
 
 M = log2(nspms[, i]) - log2(nspms[, j])
 A = (log2(nspms[, i]) + log2(nspms[, j]))/2
 splot(A, M, ylim = c(-1.5, 1.5))
-```
-
-```
-## Error: could not find function "splot"
-```
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], bg = 1, pch = 21)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-8](figure/normalization-unnamed-chunk-82.png) 
 
 
 Note that the densities are now identical as expected since we forced this to be the case.
 
 ```r
 mypar(1, 1)
-```
-
-```
-## Error: could not find function "mypar"
-```
-
-```r
 shist(log2(pms[, 2]), unit = 0.1, type = "n", xlab = "log (base 2) intensity", 
     main = "Five techical replicates")
 ```
 
 ```
-## Error: could not find function "shist"
+## Error: object 'pms' not found
 ```
 
 ```r
@@ -432,7 +307,7 @@ for (i in 1:5) shist(log2(pms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2,
 ```
 
 ```
-## Error: could not find function "shist"
+## Error: object 'pms' not found
 ```
 
 ```r
@@ -449,7 +324,7 @@ shist(log2(qpms[, 2]), unit = 0.1, type = "n", xlab = "log (base 2) intensity",
 ```
 
 ```
-## Error: could not find function "shist"
+## Error: object 'qpms' not found
 ```
 
 ```r
@@ -458,7 +333,7 @@ for (i in 1:5) shist(log2(qpms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2,
 ```
 
 ```
-## Error: could not find function "shist"
+## Error: object 'qpms' not found
 ```
 
 
@@ -475,13 +350,6 @@ The expression level we are interested in estimating is $\theta_j$ which we assu
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 N = 10000
 e = rexp(N, 1/1000)
 b1 = 24
@@ -537,7 +405,7 @@ $$
 In the case of the model above we can derive the following transformation 
 
 $$
-\mbox{arsinh}(y) = \log\left\{y + \sqrt{y^2+1} \right\}
+\mbox{arsinh}(y) = \log\left(y + \sqrt{y^2+1} \right)
 $$
 
 The vsn library implements this apprach. It estimates $\beta$ and $A$ by assuming that most genes don't change, i.e. the $\theta$ does not depend on $i$.
@@ -1021,12 +889,6 @@ Here is a dataset were the spike-ins appear to be performing well, at least in t
 library(mycAffyData)
 data(mycData)
 erccIndex <- grep("ERCC", probeNames(mycData))
-```
-
-```
-## 
-## The downloaded source packages are in
-## 	'/private/var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T/Rtmpe58D71/downloaded_packages'
 ```
 
 ```

@@ -58,8 +58,8 @@ prop.table(tab)
 
 ```
 ## winners
-##     0     1     2     3     4 
-## 0.639 0.284 0.061 0.015 0.001
+##     0     1     2     3     4     5 
+## 0.642 0.279 0.063 0.014 0.001 0.001
 ```
 
 
@@ -83,12 +83,18 @@ lambdas = 2^seq(1, 16, len = N)  ##these are the true abundances of genes
 y = rpois(N, lambdas)  ##note that the null hypothesis is true for all genes
 x = rpois(N, lambdas)
 ind = which(y > 0 & x > 0)  ##make sure no 0s due to ratio and log
-splot(log2(lambdas), log2(y/x), subset = ind)
+library(rafalib)
 ```
 
 ```
-## Error: could not find function "splot"
+## Loading required package: RColorBrewer
 ```
+
+```r
+splot(log2(lambdas), log2(y/x), subset = ind)
+```
+
+![plot of chunk unnamed-chunk-3](figure/modeling-unnamed-chunk-3.png) 
 
 Note that for lower values of lambda there is much more variability and that if we were to report anything with a fold change of 2 or more the number of false positives would be quite high for low.
 
@@ -103,15 +109,38 @@ library(parathyroidSE)
 ```
 
 ```
-## Error: there is no package called 'parathyroidSE'
+## Loading required package: GenomicRanges
+## Loading required package: methods
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: IRanges
+## Loading required package: GenomeInfoDb
 ```
 
 ```r
 data(parathyroidGenesSE)
-```
-
-```
-## Warning: data set 'parathyroidGenesSE' not found
 ```
 
 
@@ -122,38 +151,18 @@ This library contains SummarizedExperiment data, which will be discussed in a la
 se <- parathyroidGenesSE
 ```
 
-```
-## Error: object 'parathyroidGenesSE' not found
-```
-
 
 A similar plot of technical replicates reveals that the behaviour predicted by the model is present in real data
 
 
 ```r
 x <- assay(se)[, 23]
-```
-
-```
-## Error: could not find function "assay"
-```
-
-```r
 y <- assay(se)[, 24]
-```
-
-```
-## Error: could not find function "assay"
-```
-
-```r
 ind = which(y > 0 & x > 0)  ##make sure no 0s due to ratio and log
 splot((log2(x) + log2(y))/2, log(x/y), subset = ind)
 ```
 
-```
-## Error: could not find function "splot"
-```
+![plot of chunk unnamed-chunk-6](figure/modeling-unnamed-chunk-6.png) 
 
 
 When it comes to modeling, one limitation of the Poisson model is 
@@ -164,13 +173,6 @@ If we compute the standard deviations across four individuals it is quite a bit 
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 library(matrixStats)
 ```
 
@@ -180,35 +182,12 @@ library(matrixStats)
 
 ```r
 vars = rowVars(assay(se)[, c(2, 8, 16, 21)])  ##we now these four are 4
-```
-
-```
-## Error: could not find function "assay"
-```
-
-```r
 means = rowMeans(assay(se)[, c(2, 8, 16, 21)])  ##different individulsa
-```
-
-```
-## Error: could not find function "assay"
-```
-
-```r
 splot(means, vars, log = "xy", subset = which(means > 0 & vars > 0))  ##plot a subset of data
-```
-
-```
-## Error: object 'means' not found
-```
-
-```r
 abline(0, 1, col = 2, lwd = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-7](figure/modeling-unnamed-chunk-7.png) 
 
 
 Note that the variability plotted here includes biological variability which the motivation for the Poisson does not include. In a later module we learn about a the negative binomial distribution which combines the sampling variability of a Poisson and biological variability. The negative binomial permits has two parameters and permits more flexibility for count data. The Poisson is a special case of the negative bionomial distribution.
@@ -236,7 +215,7 @@ $$
 $$
 The MLE is the value of lambda that maximizes the _likeihlood_. 
 $$
-L(\lambda; X_1=k_1,\dots,X_n=k_1)=\exp\left\{\sum_{i=1}^n \log \Pr(X_i=k_i;\lambda)\right\}
+L(\lambda; X_1=k_1,\dots,X_n=k_1)=\exp\left(\sum_{i=1}^n \log \Pr(X_i=k_i;\lambda)\right)
 $$
 In practice it is more convinient to maximize the log-likeilhood
 
@@ -286,31 +265,6 @@ library(Biobase)
 ```
 
 ```
-## Loading required package: BiocGenerics
-## Loading required package: methods
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
 ## Welcome to Bioconductor
 ## 
 ##     Vignettes contain introductory material; view with

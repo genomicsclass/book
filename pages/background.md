@@ -23,57 +23,52 @@ library(SpikeInSubset)
 ```
 
 ```
-## Error: there is no package called 'SpikeInSubset'
+## Loading required package: Biobase
+## Loading required package: BiocGenerics
+## Loading required package: methods
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## 
+## Loading required package: affy
 ```
 
 ```r
 data(mas133)
-```
-
-```
-## Warning: data set 'mas133' not found
-```
-
-```r
 e = exprs(mas133)  ##get expression
-```
-
-```
-## Error: could not find function "exprs"
-```
-
-```r
 A = (log2(e[, 5]) + log(e[, 2]))/2
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 M = log2(e[, 4]/e[, 1])
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 mypar(1, 1)
 splot(A, M, ylim = c(-4, 4), cex = 0.5)
-```
-
-```
-## Error: object 'A' not found
-```
-
-```r
 abline(h = c(-1, 1), col = 1, lwd = 2, lty = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-1](figure/background-unnamed-chunk-1.png) 
 
 
 The data shown here happens to be from an experimetn were the same RNA was hybridized to several arrays and 16 genes spiked-in at different concentrations. This means that only 16 genes should have large fold-chages yet we see hundreds of genes with fold changes above 2. 
@@ -83,52 +78,15 @@ We now add the 16 genes that, in this particular comparison, are epxected to be 
 
 ```r
 siNames <- colnames(pData(mas133))
-```
-
-```
-## Error: could not find function "pData"
-```
-
-```r
 siNames <- siNames[pData(mas133)[4, ]/pData(mas133)[1, ] == 2]
-```
-
-```
-## Error: object 'siNames' not found
-```
-
-```r
 spikeinIndex = match(siNames, rownames(e))
-```
-
-```
-## Error: object 'siNames' not found
-```
-
-```r
 mypar()
 splot(A, M, ylim = c(-4, 4), cex = 0.5)
-```
-
-```
-## Error: object 'A' not found
-```
-
-```r
 abline(h = c(-1, 1), col = 1, lwd = 2, lty = 2)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], bg = 2, pch = 21)
 ```
 
-```
-## Error: object 'A' not found
-```
+![plot of chunk unnamed-chunk-2](figure/background-unnamed-chunk-2.png) 
 
 
 Note that distinguishing these 16 genes from the highly variabe (noisy) data seems impossible. So why so much noise? It turns out that modeling can help us explain this.
@@ -138,129 +96,66 @@ Microarray data is known to contain what is called _background noise_. Even in c
 
 
 ```r
+# library(devtools)
+# install_github('BackgroundExperimentYeast','stephaniehicks')
 library(BackgroundExperimentYeast)
-```
-
-```
-## Error: there is no package called 'BackgroundExperimentYeast'
-```
-
-```r
 data(backgroundData)
-```
-
-```
-## Warning: data set 'backgroundData' not found
-```
-
-```r
 pms = log2(pm(backgroundData))
 ```
 
 ```
-## Error: could not find function "pm"
+## Warning: replacing previous import by 'utils::head' when loading 'hgu95av2cdf'
+## Warning: replacing previous import by 'utils::tail' when loading 'hgu95av2cdf'
+```
+
+```
+## 
 ```
 
 ```r
 Names = pData(backgroundData)$sample_type
-```
-
-```
-## Error: could not find function "pData"
-```
-
-```r
 Names[3] <- "No label"
-```
-
-```
-## Error: object 'Names' not found
-```
-
-```r
 boxplot(pms, names = Names, ylab = "log (base 2) intensities")
 ```
 
-```
-## Error: object 'pms' not found
-```
+![plot of chunk unnamed-chunk-3](figure/background-unnamed-chunk-3.png) 
 
 
 
 
 ```r
 library(SpikeIn)
-```
-
-```
-## Error: there is no package called 'SpikeIn'
-```
-
-```r
 data(SpikeIn133)
-```
-
-```
-## Warning: data set 'SpikeIn133' not found
-```
-
-```r
 pd <- pData(SpikeIn133)
-```
-
-```
-## Error: could not find function "pData"
-```
-
-```r
 pns <- probeNames(SpikeIn133)
 ```
 
 ```
-## Error: could not find function "probeNames"
+## Warning: replacing previous import by 'utils::head' when loading 'hgu133atagcdf'
+## Warning: replacing previous import by 'utils::tail' when loading 'hgu133atagcdf'
+```
+
+```
+## 
+## 
+## Attaching package: 'hgu133atagcdf'
+## 
+## The following objects are masked from 'package:hgu95av2cdf':
+## 
+##     i2xy, xy2i
 ```
 
 ```r
 pms <- pm(SpikeIn133[, 1:14])  ##pick the first 14, rest are reps
-```
-
-```
-## Error: could not find function "pm"
-```
-
-```r
 ind <- which(pns == colnames(pd)[1])  ##probes in gene 1
-```
-
-```
-## Error: object 'pns' not found
-```
-
-```r
 concentration <- pd[1:14, 1]
-```
-
-```
-## Error: object 'pd' not found
-```
-
-```r
 concentration[1] <- 1/16
-```
-
-```
-## Error: object 'concentration' not found
-```
-
-```r
 mypar(1, 1)
 matplot(log2(concentration), t(log2(pms[ind, ])), type = "b", xlab = "log (base 2) concentration", 
     ylab = "log (base 2) instensity")
 ```
 
-```
-## Error: object 'concentration' not found
-```
+![plot of chunk unnamed-chunk-4](figure/background-unnamed-chunk-4.png) 
 
 Here are other genes
 
@@ -275,9 +170,7 @@ for (i in 1:14) {
 }
 ```
 
-```
-## Error: object 'pns' not found
-```
+![plot of chunk unnamed-chunk-5](figure/background-unnamed-chunk-5.png) 
 
 
 These figures motivate a statistical model for the PM intensities. 
@@ -289,13 +182,6 @@ Here is an example of how this model fits the data for one of the probes
 ```r
 mypar(1, 2)
 ind <- which(pns == colnames(pd)[1])  ##probes in gene i
-```
-
-```
-## Error: object 'pns' not found
-```
-
-```r
 for (i in c(5, 7)) {
     y <- pms[ind[i], ]
     x <- pd[1:14, 1]
@@ -311,9 +197,7 @@ for (i in c(5, 7)) {
 }
 ```
 
-```
-## Error: object 'pms' not found
-```
+![plot of chunk unnamed-chunk-6](figure/background-unnamed-chunk-6.png) 
 
 
 
@@ -324,52 +208,15 @@ One difficult challenge is that, even within the same gene, each probe has a dif
 
 ```r
 library(BackgroundExperimentYeast)
-```
-
-```
-## Error: there is no package called 'BackgroundExperimentYeast'
-```
-
-```r
 data(backgroundData)
-```
-
-```
-## Warning: data set 'backgroundData' not found
-```
-
-```r
 pms = log2(pm(backgroundData[, 6]))
-```
-
-```
-## Error: could not find function "pm"
-```
-
-```r
 mms = log2(mm(backgroundData[, 6]))
-```
-
-```
-## Error: could not find function "mm"
-```
-
-```r
 mypar(1, 1)
 splot(mms, pms, main = paste0("correlation=", signif(cor(pms, mms), 2)))
-```
-
-```
-## Error: object 'mms' not found
-```
-
-```r
 abline(0, 1, col = 2)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-7](figure/background-unnamed-chunk-7.png) 
 
 
 If, for simplicity, we assume that the signal related to expression is $\alpha$ then the data suggests this model
@@ -421,7 +268,7 @@ abline(0, 1, col = 2)
 Model based approaches have been suggested for correcting for background while controling variance inflation. The most widely used approach assumes that that signal follows an exponential distirubtion with rate $\lambda$ and the background a normal distribution with mean $\mu$ and standard deviation $\sigma$. The parameters are estimated from the signal and then these are plugged into to the posterior mean of the signal given the observed values
 
 $$
-\mbox{E}[ \mbox{signal} | PM ]=PM-\mu-\lambda \sigma^2+\sigma\left[ \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{(PM/\sigma)^2}{ 2\Phi(PM/\sigma) } \right\}\right]
+\mbox{E}[ \mbox{signal} | PM ] = PM - \mu - \lambda \sigma^2 + \sigma \left[ \frac{1}{\sqrt{2\pi}} \exp\left( -\frac{ (PM/\sigma)^2 }{ 2 \Phi(PM/\sigma) } \right) \right] 
 $$
 
 This parametric model does not fit the data well, but does provide a usable background correction approach. It is implemented in the widely used Robust Multi-array Average (RMA). 
@@ -430,94 +277,24 @@ This parametric model does not fit the data well, but does provide a usable back
 
 ```r
 data(mas133)
-```
-
-```
-## Warning: data set 'mas133' not found
-```
-
-```r
 e = exprs(mas133)  ##get expression
-```
-
-```
-## Error: could not find function "exprs"
-```
-
-```r
 A = (log2(e[, 4]) + log(e[, 1]))/2
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 M = log2(e[, 4]/e[, 1])
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 mypar(1, 2)
 splot(A, M, xlim = c(0, 13), ylim = c(-4, 4), cex = 0.5, main = "MAS 5.0")
 abline(h = c(-1, 1), col = 1, lwd = 2, lty = 2)
 points(A[spikeinIndex], M[spikeinIndex], bg = 2, pch = 21)
-```
-
-```
-## Error: object 'spikeinIndex' not found
-```
-
-```r
 
 data(rma133)
-```
-
-```
-## Warning: data set 'rma133' not found
-```
-
-```r
 e = exprs(rma133)  ##get expression
-```
-
-```
-## Error: could not find function "exprs"
-```
-
-```r
 A = (e[, 4] + e[, 1])/2  ##already in log
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 M = e[, 4] - e[, 1]
-```
-
-```
-## Error: object 'e' not found
-```
-
-```r
 splot(A, M, xlim = c(0, 13), ylim = c(-4, 4), cex = 0.5, main = "RMA")
 abline(h = c(-1, 1), col = 1, lwd = 2, lty = 2)
-```
-
-![plot of chunk unnamed-chunk-9](figure/background-unnamed-chunk-9.png) 
-
-```r
 points(A[spikeinIndex], M[spikeinIndex], bg = 2, pch = 21)
 ```
 
-```
-## Error: object 'spikeinIndex' not found
-```
+![plot of chunk unnamed-chunk-9](figure/background-unnamed-chunk-9.png) 
 
 Althought the variance is greatly reduced we also note that the size of the signal is also reduced. An improved background model was proposed by Zhijin Wu, "A Model Based Background Adjustment for Oligonucleotide Expression Arrays" ( http://biostats.bepress.com/jhubiostat/paper1/?35 )
 
