@@ -53,3 +53,15 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 [Normalization](pages/normalization.html)
 
+## Distance and prediction (week 5)
+
+[Distance lecture](pages/distance_lecture.html)
+
+[Distance and clustering lab](pages/distance_clustering.html)
+
+[Dimension reduction and heatmaps](pages/dimension_reduction_heatmaps.html)
+
+[Prediction lecture](pages/prediction.html)
+
+[Cross-validation](pages/crossvalidation.html)
+
