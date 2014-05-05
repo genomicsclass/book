@@ -296,5 +296,10 @@ points(A[spikeinIndex], M[spikeinIndex], bg = 2, pch = 21)
 
 ![plot of chunk unnamed-chunk-9](figure/background-unnamed-chunk-9.png) 
 
-Althought the variance is greatly reduced we also note that the size of the signal is also reduced. An improved background model was proposed by Zhijin Wu, "A Model Based Background Adjustment for Oligonucleotide Expression Arrays" ( http://biostats.bepress.com/jhubiostat/paper1/?35 )
+Althought the variance is greatly reduced we also note that the size
+of the signal is also reduced. An improved background model was
+proposed by Zhijin Wu, "A Model Based Background Adjustment for
+Oligonucleotide Expression Arrays"
+
+<http://biostats.bepress.com/jhubiostat/paper1/?35>
 
