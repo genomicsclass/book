@@ -53,7 +53,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 [Normalization](pages/normalization.html)
 
-## Distance and prediction (week 5)
+### Distance and prediction (week 5)
 
 [Distance lecture](pages/distance_lecture.html)
 
