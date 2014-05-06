@@ -51,26 +51,10 @@ library(affy)
 
 ```r
 basedir <- "celfiles"
-tab <- read.delim(file.path(basedir, "sampleinfo.txt"), check.names = FALSE, 
-    as.is = TRUE)
-fns <- list.celfiles(basedir)
-fns %in% tab[, 1]  ##check
-```
-
-```
-## [1] TRUE TRUE TRUE TRUE TRUE TRUE
-```
-
-```r
-ab <- ReadAffy(filenames = file.path(basedir, tab[, 1]), phenoData = tab)
-```
-
-```
-## Warning: Mismatched phenoData and celfile names!
-## 
-## Please note that the row.names of your phenoData object should be identical to what you get from list.celfiles()!
-## Otherwise you are responsible for ensuring that the ordering of your phenoData object conforms to the ordering of the celfiles as they are read into the AffyBatch!
-## If not, errors may result from using the phenoData for subsetting or creating linear models, etc.
+setwd(basedir)
+tab <- read.delim("sampleinfo.txt", check.names = FALSE, as.is = TRUE)
+rownames(tab) <- tab$filenames
+ab <- ReadAffy(phenoData = tab)
 ```
 
 
@@ -79,12 +63,6 @@ This creates an AffyBatch object which object contains infomration you need.
 
 ```r
 dim(pm(ab))
-```
-
-```
-## 
-## The downloaded source packages are in
-## 	'/private/var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T/RtmpjcHJ2q/downloaded_packages'
 ```
 
 ```
@@ -134,14 +112,6 @@ If you are not interested in probe level data you could can use this function
 
 ```r
 e <- justRMA(filenames = tab[, 1], celfile.path = basedir, phenoData = tab)
-```
-
-```
-## Warning: Mismatched phenoData and celfile names!
-## 
-## Please note that the row.names of your phenoData object should be identical to what you get from list.celfiles()!
-## Otherwise you are responsible for ensuring that the ordering of your phenoData object conforms to the ordering of the celfiles as they are read into the AffyBatch!
-## If not, errors may result from using the phenoData for subsetting or creating linear models, etc.
 ```
 
 
@@ -256,25 +226,6 @@ fns %in% tab[, 1]  ##check
 pd <- as(tab, "AnnotatedDataFrame")
 efs <- read.celfiles(filenames = file.path(basedir, tab[, 1]), phenoData = pd, 
     sampleNames = sampleNames(pd))
-```
-
-```
-## Loading required package: pd.hg.u95a
-```
-
-```
-## Warning: there is no package called 'pd.hg.u95a'
-```
-
-```
-## Attempting to obtain 'pd.hg.u95a' from BioConductor website.
-## Checking to see if your internet connection works...
-```
-
-```
-## 
-## The downloaded source packages are in
-## 	'/private/var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T/RtmpjcHJ2q/downloaded_packages'
 ```
 
 ```
