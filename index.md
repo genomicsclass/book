@@ -65,3 +65,11 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 [Cross-validation](pages/crossvalidation.html)
 
+### Batch effect (week 6)
+
+[Confounding](pages/confounding.html)
+
+[SVA, ComBat, PCA and SVD](pages/svacombat.html)
+
+[Running PCA and SVD in R](pages/pca_svd.html)
+
