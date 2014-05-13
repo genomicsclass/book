@@ -58,8 +58,8 @@ prop.table(tab)
 
 ```
 ## winners
-##     0     1     2     3     4     5 
-## 0.642 0.279 0.063 0.014 0.001 0.001
+##     0     1     2     3     4 
+## 0.568 0.335 0.078 0.018 0.001
 ```
 
 
@@ -356,7 +356,7 @@ for (d in c(1, 5, 10)) {
 
 ![plot of chunk unnamed-chunk-14](figure/modeling-unnamed-chunk-14.png) 
 
-Now which $s_0$ and $d$ fit our data best? This is a rather advanced to topic as the MLE does not perform well for this particular distribution (we refer to Smyth (2004)). The Bioconductor limma package provides a function to estimate these parameters
+Now which $s_0$ and $d$ fit our data best? This is a rather advanced to topic as the MLE does not perform well for this particular distribution (we refer to the statistical method described in [Smyth (2004)](#foot)). The Bioconductor limma package provides a function to estimate these parameters
 
 
 ```r
@@ -392,3 +392,8 @@ lines(sds, dd * k, type = "l", col = 2, lwd = 2)
 ![plot of chunk unnamed-chunk-15](figure/modeling-unnamed-chunk-15.png) 
 
 Apart for one outlier, this is not a bad fit at all. This approximation will come in very handy when we learn about emprical Bayes.
+
+## Footnotes
+<a name="foot"></a>
+
+Smyth GK, "Linear models and empirical bayes methods for assessing differential expression in microarray experiments". Stat Appl Genet Mol Biol. 2004 <http://www.ncbi.nlm.nih.gov/pubmed/16646809>

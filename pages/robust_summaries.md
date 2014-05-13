@@ -107,7 +107,7 @@ abline(0, 1)
 
 So if these statistics are robust to outliers, why would we ever use the non-robust version? In general, if we know there are outliers then median and mad are recommended over the mean and standard devtiaion conterparts. However, in the inference modules we learn of an example in which robust statistics are less powerful than the non-robust versions.
 
-We also note that there is a large statistical literature on Robust Statistics that go far beyond the median and the mad [CITE BOOKS]
+We also note that there is a [large statistical literature](#foot) on Robust Statistics that go far beyond the median and the mad.
 
 ## Transformations
 
@@ -229,6 +229,15 @@ abline(h = 1)
 
 ![plot of chunk unnamed-chunk-11](figure/robust_summaries-unnamed-chunk-112.png) 
 
+
+## Footnotes
+<a name="foot"></a>
+
+### Robust statistics
+
+- *Robust Statistics*, Peter. J. Huber and Elvezio M. Ronchetti, Wiley, 2009.
+- *Introduction to Robust Estimation and Hypothesis Testing*, Rand R. Wilcox, 2012.
+- *Robust Statistics: The Approach Based on Influence Functions*, Frank R. Hampel, Elvezio M. Ronchetti, Peter J. Rousseeuw, Werner A. Stahel
 
 
 

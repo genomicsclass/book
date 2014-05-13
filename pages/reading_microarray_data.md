@@ -8,6 +8,14 @@ title: Reading in microarray data
 
 ## Affymterix CEL files
 
+We start by reading in the sample information table. This is usually created by the person who performed the experiment. 
+
+The raw data files for this lab are in the `rawdata` repository, available here:
+
+<https://github.com/genomicsclass/rawdata>
+
+Click Download ZIP in order to download all the files, unzip this file which should result in a `rawdata-master` folder. 
+
 First we save the initial working directory, so we can return to it.
 
 
@@ -16,10 +24,13 @@ wd <- getwd()
 ```
 
 
-We start by reading in the sample information table. This is usually created by the person who performed the experiment. 
+Now we can start reading in the files:
 
 
 ```r
+datadir <- "rawdata-master"
+basedir <- paste0(datadir, "/celfiles")
+setwd(basedir)
 library(affy)
 ```
 
@@ -58,8 +69,6 @@ library(affy)
 ```
 
 ```r
-basedir <- "celfiles"
-setwd(basedir)
 tab <- read.delim("sampleinfo.txt", check.names = FALSE, as.is = TRUE)
 rownames(tab) <- tab$filenames
 tab
@@ -219,7 +228,7 @@ library(rafalib)
 ```
 
 ```r
-basedir <- "agilent"
+basedir <- paste0(datadir, "/agilent")
 setwd(basedir)
 targets <- readTargets("TargetBeta7.txt")
 RG <- read.maimages(targets$FileName, source = "genepix")
@@ -298,7 +307,7 @@ library(oligo)
 ```
 
 ```r
-basedir <- "celfiles"
+basedir <- paste0(datadir, "/celfiles")
 setwd(basedir)
 tab <- read.delim("sampleinfo.txt", check.names = FALSE, as.is = TRUE)
 fns <- list.celfiles(listGzipped = TRUE)
