@@ -26,7 +26,7 @@ qqline(nonsmokers)
 ![plot of chunk unnamed-chunk-1](figure/modeling-unnamed-chunk-1.png) 
 
 
-But this does not imply that every dataset we collect will follow a normal distribtion. Example are: coin tosses, the number of people who win the lottery, and US incomes.The normal is not the only parametric distribution that is available from modeling. Here we show we describe some useful parametric distribution and their use in genomics. For many more please consult these books [CITE books]
+But this does not imply that every dataset we collect will follow a normal distribtion. Example are: coin tosses, the number of people who win the lottery, and US incomes.The normal is not the only parametric distribution that is available from modeling. Here we show we describe some useful parametric distribution and their use in genomics. 
 
 ## The Binomial distribution
 
@@ -59,7 +59,7 @@ prop.table(tab)
 ```
 ## winners
 ##     0     1     2     3     4 
-## 0.568 0.335 0.078 0.018 0.001
+## 0.604 0.302 0.081 0.012 0.001
 ```
 
 
@@ -319,7 +319,7 @@ There are parametric distributions that posses these properties (striclty positi
 $$
 f(x;\alpha,\beta)=\frac{\beta^\alpha x^{\alpha-1}\exp{-\beta x}}{\Gamma(\alpha)}
 $$
-Itis defined by two parameters $\alpha$ and $\beta$ that can, indirectly, control location and scale. They also control the shape of the distribution. For more on this distribution please refer [CITE BOOKs]. 
+Itis defined by two parameters $\alpha$ and $\beta$ that can, indirectly, control location and scale. They also control the shape of the distribution. The [Wikipedia article](http://en.wikipedia.org/wiki/Gamma_distribution) describes many of the properties of the gamma distribution.
 
 Two special cases of the gamma distribution are the chi-sqaured distribution, which we used earlier to analyze a 2x2 table and the exponential distribution which we will use later in this section. For chi-square we $\alpha=\nu/2$ and $\beta=2$ with $\nu$ the degrees of freedom. For exponential we have $\alpha=1$ and $\beta=\lambda$ the rate.
 
