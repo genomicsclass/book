@@ -94,7 +94,7 @@ chisq.test(tab)$p.value
 
 
 ## The t-test
-Suppose we are asked if new borns from smoking mothers weigh less than those from non-smoker mothers in a population of 1,236 babies. Suppose we are charged $1000 for each measurement and are given a $50,000 prize if we answer correclty, how many babies do we weigh? Let's start with 10
+Suppose we are asked if new borns from smoking mothers weigh less than those from non-smoker mothers in a population of 1,236 babies. Suppose we are charged \$1000 for each measurement and are given a \$50,000 prize if we answer correclty, how many babies do we weigh? Let's start with 10
 
 
 ```r
@@ -247,7 +247,7 @@ cat(mean(smokers) - mean(nonsmokers) + c(-2, 2) * sqrt(var(smokers) + var(nonsmo
 Note that the true difference is in fact included in the sample above
 
 ## Gene expression
-We have data for two strains of mice which we will refer to as strain 0 and 1. We want to know which genes are differentially expressed.  We extracted RNA from 12 randomely selected mice from each strain [CITE POOLING PAPER]. In one experiment we pooled the RNA from all individuals from each strain and then created 4 replicate samples from this pool. 
+We have data for two strains of mice which we will refer to as strain 0 and 1. We want to know which genes are differentially expressed.  RNA was extracted from 12 randomly selected mice from each strain [(Kendziorski 2005)](#foot). In one experiment we pooled the RNA from all individuals from each strain and then created 4 replicate samples from this pool. 
 
 
 ```r
@@ -486,34 +486,8 @@ abline(v = c(-1, 1) * log2(1.5), lty = 2)
 
 In a later module we will leanr statistical techniques from improving the standard deviation estimates.
 
+## Footnotes
+<a name="foot"></a>
 
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+C. Kendziorski, R. A. Irizarry, K.-S. Chen, J. D. Haag, and M. N. Gould, "On the utility of pooling biological samples in microarray experiments", PNAS, 2005. <http://www.pnas.org/content/102/12/4252.long>
 
