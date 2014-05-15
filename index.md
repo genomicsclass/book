@@ -3,7 +3,7 @@ layout: page
 title: Data Analysis for Genomics
 ---
 
-The repository of the R markdown files (.Rmd) for the labs shown here is:
+The repository of the R markdown files (.Rmd) for the PH525x labs shown here is:
 
 <http://github.com/genomicsclass/labs>
 
@@ -51,4 +51,11 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Confounding](pages/confounding.html)
 - [SVA, ComBat, PCA and SVD](pages/svacombat.html)
 - [Running PCA and SVD in R](pages/pca_svd.html)
+
+## Advanced differential expression (week 7)
+
+- [Hierarchical modeling and using limma](pages/using_limma.html)
+- [Mapping features to genes](pages/mapping_features.html)
+- [Gene set testing](pages/gene_set_testing.html)
+- [Multiple testing](pages/multtest.html)
 
