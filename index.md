@@ -52,7 +52,7 @@ The repository of the R markdown files (.Rmd) for the PH525x labs shown here is:
 - [SVA, ComBat, PCA and SVD](pages/svacombat.html)
 - [Running PCA and SVD in R](pages/pca_svd.html)
 
-## Advanced differential expression (week 7)
+### Advanced differential expression (week 7)
 
 - [Hierarchical modeling and using limma](pages/using_limma.html)
 - [Mapping features to genes](pages/mapping_features.html)
