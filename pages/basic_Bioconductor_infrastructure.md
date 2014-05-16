@@ -660,7 +660,7 @@ library(GEOquery)
 ```
 
 ```
-## Error: there is no package called 'GEOquery'
+## Setting options('download.file.method.GEOquery'='auto')
 ```
 
 ```r
@@ -668,7 +668,11 @@ geoq <- getGEO("GSE9514")
 ```
 
 ```
-## Error: could not find function "getGEO"
+## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE9nnn/GSE9514/matrix/
+## Found 1 file(s)
+## GSE9514_series_matrix.txt.gz
+## File stored at: 
+## /var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T//RtmpIx0G3f/GPL90.soft
 ```
 
 ```r
@@ -676,15 +680,11 @@ names(geoq)
 ```
 
 ```
-## Error: object 'geoq' not found
+## [1] "GSE9514_series_matrix.txt.gz"
 ```
 
 ```r
 e <- geoq[[1]]
-```
-
-```
-## Error: object 'geoq' not found
 ```
 
 
@@ -696,7 +696,8 @@ dim(e)
 ```
 
 ```
-## Error: object 'e' not found
+## Features  Samples 
+##     9335        8
 ```
 
 ```r
@@ -704,7 +705,10 @@ exprs(e)[1:3, 1:3]
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'e' not found
+##            GSM241146 GSM241147 GSM241148
+## 10000_at       15.33     9.459     7.985
+## 10001_at      283.47   300.729   270.016
+## 10002_i_at   2569.45  2382.815  2711.814
 ```
 
 ```r
@@ -712,7 +716,7 @@ dim(exprs(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'e' not found
+## [1] 9335    8
 ```
 
 ```r
@@ -721,7 +725,18 @@ pData(e)[1:3, 1:6]
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
+##                                                                           title
+## GSM241146 hem1 strain grown in YPD with 250 uM ALA (08-15-06_Philpott_YG_S98_1)
+## GSM241147    WT strain grown in YPD under Hypoxia (08-15-06_Philpott_YG_S98_10)
+## GSM241148    WT strain grown in YPD under Hypoxia (08-15-06_Philpott_YG_S98_11)
+##           geo_accession                status submission_date
+## GSM241146     GSM241146 Public on Nov 06 2007     Nov 02 2007
+## GSM241147     GSM241147 Public on Nov 06 2007     Nov 02 2007
+## GSM241148     GSM241148 Public on Nov 06 2007     Nov 02 2007
+##           last_update_date type
+## GSM241146      Aug 14 2011  RNA
+## GSM241147      Aug 14 2011  RNA
+## GSM241148      Aug 14 2011  RNA
 ```
 
 ```r
@@ -729,7 +744,7 @@ dim(pData(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
+## [1]  8 31
 ```
 
 ```r
@@ -737,7 +752,22 @@ names(pData(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
+##  [1] "title"                   "geo_accession"          
+##  [3] "status"                  "submission_date"        
+##  [5] "last_update_date"        "type"                   
+##  [7] "channel_count"           "source_name_ch1"        
+##  [9] "organism_ch1"            "characteristics_ch1"    
+## [11] "molecule_ch1"            "extract_protocol_ch1"   
+## [13] "label_ch1"               "label_protocol_ch1"     
+## [15] "taxid_ch1"               "hyb_protocol"           
+## [17] "scan_protocol"           "description"            
+## [19] "data_processing"         "platform_id"            
+## [21] "contact_name"            "contact_email"          
+## [23] "contact_department"      "contact_institute"      
+## [25] "contact_address"         "contact_city"           
+## [27] "contact_state"           "contact_zip/postal_code"
+## [29] "contact_country"         "supplementary_file"     
+## [31] "data_row_count"
 ```
 
 ```r
@@ -745,7 +775,13 @@ pData(e)$characteristics_ch1
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
+##                       V2                       V3                       V4 
+## BY4742 hem1 delta strain                   BY4742                   BY4742 
+##                       V5                       V6                       V7 
+## BY4742 hem1 delta strain BY4742 hem1 delta strain BY4742 hem1 delta strain 
+##                       V8                       V9 
+##            BY4742 strain            BY4742 strain 
+## Levels: BY4742 BY4742 hem1 delta strain BY4742 strain
 ```
 
 ```r
@@ -754,7 +790,10 @@ fData(e)[1:3, 1:3]
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'fData': Error: object 'e' not found
+##                    ID     ORF SPOT_ID
+## 10000_at     10000_at YLR331C    <NA>
+## 10001_at     10001_at YLR332W    <NA>
+## 10002_i_at 10002_i_at YLR333C    <NA>
 ```
 
 ```r
@@ -762,7 +801,7 @@ dim(fData(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'fData': Error: object 'e' not found
+## [1] 9335   17
 ```
 
 ```r
@@ -770,7 +809,15 @@ names(fData(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'fData': Error: object 'e' not found
+##  [1] "ID"                               "ORF"                             
+##  [3] "SPOT_ID"                          "Species Scientific Name"         
+##  [5] "Annotation Date"                  "Sequence Type"                   
+##  [7] "Sequence Source"                  "Target Description"              
+##  [9] "Representative Public ID"         "Gene Title"                      
+## [11] "Gene Symbol"                      "ENTREZ_GENE_ID"                  
+## [13] "RefSeq Transcript ID"             "SGD accession number"            
+## [15] "Gene Ontology Biological Process" "Gene Ontology Cellular Component"
+## [17] "Gene Ontology Molecular Function"
 ```
 
 ```r
@@ -778,8 +825,8 @@ head(fData(e)$"Gene Symbol")
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'head': Error in fData(e) : 
-##   error in evaluating the argument 'object' in selecting a method for function 'fData': Error: object 'e' not found
+## [1] JIP3   MID2          RPS25B        NUP2  
+## 4869 Levels:  ACO1 ARV1 ATP14 BOP2 CDA1 CDA2 CDC25 CDC3 CDD1 CTS1 ... Il4
 ```
 
 ```r
@@ -787,8 +834,8 @@ head(rownames(e))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'head': Error in rownames(e) : 
-##   error in evaluating the argument 'x' in selecting a method for function 'rownames': Error: object 'e' not found
+## [1] "10000_at"   "10001_at"   "10002_i_at" "10003_f_at" "10004_at"  
+## [6] "10005_at"
 ```
 
 ```r
@@ -797,7 +844,14 @@ experimentData(e)
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'experimentData': Error: object 'e' not found
+## Experiment data
+##   Experimenter name:  
+##   Laboratory:  
+##   Contact information:  
+##   Title:  
+##   URL:  
+##   PMIDs:  
+##   No abstract available.
 ```
 
 ```r
@@ -805,7 +859,7 @@ annotation(e)
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'annotation': Error: object 'e' not found
+## [1] "GPL90"
 ```
 
 
@@ -814,34 +868,20 @@ annotation(e)
 
 ```r
 library(parathyroidSE)
-```
-
-```
-## Error: there is no package called 'parathyroidSE'
-```
-
-```r
 data(parathyroidGenesSE)
-```
-
-```
-## Warning: data set 'parathyroidGenesSE' not found
-```
-
-```r
 se <- parathyroidGenesSE
-```
-
-```
-## Error: object 'parathyroidGenesSE' not found
-```
-
-```r
 se
 ```
 
 ```
-## Error: object 'se' not found
+## class: SummarizedExperiment 
+## dim: 63193 27 
+## exptData(1): MIAME
+## assays(1): counts
+## rownames(63193): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
+## rowData metadata column names(0):
+## colnames: NULL
+## colData names(8): run experiment ... study sample
 ```
 
 
@@ -852,7 +892,7 @@ dim(se)
 ```
 
 ```
-## Error: object 'se' not found
+## [1] 63193    27
 ```
 
 ```r
@@ -860,7 +900,10 @@ assay(se)[1:3, 1:3]
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'assay': Error: object 'se' not found
+##                 [,1] [,2] [,3]
+## ENSG00000000003  792 1064  444
+## ENSG00000000005    4    1    2
+## ENSG00000000419  294  282  164
 ```
 
 ```r
@@ -868,7 +911,7 @@ dim(assay(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'assay': Error: object 'se' not found
+## [1] 63193    27
 ```
 
 ```r
@@ -877,7 +920,12 @@ colData(se)[1:3, 1:6]
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'colData': Error: object 'se' not found
+## DataFrame with 3 rows and 6 columns
+##           run experiment  patient treatment     time submission
+##   <character>   <factor> <factor>  <factor> <factor>   <factor>
+## 1   SRR479052  SRX140503        1   Control      24h  SRA051611
+## 2   SRR479053  SRX140504        1   Control      48h  SRA051611
+## 3   SRR479054  SRX140505        1       DPN      24h  SRA051611
 ```
 
 ```r
@@ -885,7 +933,7 @@ dim(colData(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'colData': Error: object 'se' not found
+## [1] 27  8
 ```
 
 ```r
@@ -893,7 +941,8 @@ names(colData(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'colData': Error: object 'se' not found
+## [1] "run"        "experiment" "patient"    "treatment"  "time"      
+## [6] "submission" "study"      "sample"
 ```
 
 ```r
@@ -901,7 +950,11 @@ colData(se)$treatment
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'colData': Error: object 'se' not found
+##  [1] Control Control DPN     DPN     OHT     OHT     Control Control
+##  [9] DPN     DPN     DPN     OHT     OHT     OHT     Control Control
+## [17] DPN     DPN     OHT     OHT     Control DPN     DPN     DPN    
+## [25] OHT     OHT     OHT    
+## Levels: Control DPN OHT
 ```
 
 ```r
@@ -910,7 +963,27 @@ rowData(se)[1]
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'rowData': Error: object 'se' not found
+## GRangesList of length 1:
+## $ENSG00000000003 
+## GRanges with 17 ranges and 2 metadata columns:
+##        seqnames               ranges strand   |   exon_id       exon_name
+##           <Rle>            <IRanges>  <Rle>   | <integer>     <character>
+##    [1]        X [99883667, 99884983]      -   |    664095 ENSE00001459322
+##    [2]        X [99885756, 99885863]      -   |    664096 ENSE00000868868
+##    [3]        X [99887482, 99887565]      -   |    664097 ENSE00000401072
+##    [4]        X [99887538, 99887565]      -   |    664098 ENSE00001849132
+##    [5]        X [99888402, 99888536]      -   |    664099 ENSE00003554016
+##    ...      ...                  ...    ... ...       ...             ...
+##   [13]        X [99890555, 99890743]      -   |    664106 ENSE00003512331
+##   [14]        X [99891188, 99891686]      -   |    664108 ENSE00001886883
+##   [15]        X [99891605, 99891803]      -   |    664109 ENSE00001855382
+##   [16]        X [99891790, 99892101]      -   |    664110 ENSE00001863395
+##   [17]        X [99894942, 99894988]      -   |    664111 ENSE00001828996
+## 
+## ---
+## seqlengths:
+##                  1                 2 ...            LRG_99
+##          249250621         243199373 ...             13294
 ```
 
 ```r
@@ -918,7 +991,9 @@ class(rowData(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'rowData': Error: object 'se' not found
+## [1] "GRangesList"
+## attr(,"package")
+## [1] "GenomicRanges"
 ```
 
 ```r
@@ -926,7 +1001,7 @@ length(rowData(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'rowData': Error: object 'se' not found
+## [1] 63193
 ```
 
 ```r
@@ -934,8 +1009,8 @@ head(rownames(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'head': Error in rownames(se) : 
-##   error in evaluating the argument 'x' in selecting a method for function 'rownames': Error: object 'se' not found
+## [1] "ENSG00000000003" "ENSG00000000005" "ENSG00000000419" "ENSG00000000457"
+## [5] "ENSG00000000460" "ENSG00000000938"
 ```
 
 ```r
@@ -943,8 +1018,66 @@ metadata(rowData(se))
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'metadata': Error in rowData(se) : 
-##   error in evaluating the argument 'x' in selecting a method for function 'rowData': Error: object 'se' not found
+## $genomeInfo
+## $genomeInfo$`Db type`
+## [1] "TranscriptDb"
+## 
+## $genomeInfo$`Supporting package`
+## [1] "GenomicFeatures"
+## 
+## $genomeInfo$`Data source`
+## [1] "BioMart"
+## 
+## $genomeInfo$Organism
+## [1] "Homo sapiens"
+## 
+## $genomeInfo$`Resource URL`
+## [1] "www.biomart.org:80"
+## 
+## $genomeInfo$`BioMart database`
+## [1] "ensembl"
+## 
+## $genomeInfo$`BioMart database version`
+## [1] "ENSEMBL GENES 72 (SANGER UK)"
+## 
+## $genomeInfo$`BioMart dataset`
+## [1] "hsapiens_gene_ensembl"
+## 
+## $genomeInfo$`BioMart dataset description`
+## [1] "Homo sapiens genes (GRCh37.p11)"
+## 
+## $genomeInfo$`BioMart dataset version`
+## [1] "GRCh37.p11"
+## 
+## $genomeInfo$`Full dataset`
+## [1] "yes"
+## 
+## $genomeInfo$`miRBase build ID`
+## [1] NA
+## 
+## $genomeInfo$transcript_nrow
+## [1] "213140"
+## 
+## $genomeInfo$exon_nrow
+## [1] "737783"
+## 
+## $genomeInfo$cds_nrow
+## [1] "531154"
+## 
+## $genomeInfo$`Db created by`
+## [1] "GenomicFeatures package from Bioconductor"
+## 
+## $genomeInfo$`Creation time`
+## [1] "2013-07-30 17:30:25 +0200 (Tue, 30 Jul 2013)"
+## 
+## $genomeInfo$`GenomicFeatures version at creation time`
+## [1] "1.13.21"
+## 
+## $genomeInfo$`RSQLite version at creation time`
+## [1] "0.11.4"
+## 
+## $genomeInfo$DBSCHEMAVERSION
+## [1] "1.0"
 ```
 
 ```r
@@ -953,7 +1086,15 @@ exptData(se)$MIAME
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'exptData': Error: object 'se' not found
+## Experiment data
+##   Experimenter name: Felix Haglund 
+##   Laboratory: Science for Life Laboratory Stockholm 
+##   Contact information: Mikael Huss 
+##   Title: DPN and Tamoxifen treatments of parathyroid adenoma cells 
+##   URL: http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE37211 
+##   PMIDs: 23024189 
+## 
+##   Abstract: A 251 word abstract is available. Use 'abstract' method.
 ```
 
 ```r
@@ -961,7 +1102,21 @@ abstract(exptData(se)$MIAME)
 ```
 
 ```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'abstract': Error in exptData(se) : 
-##   error in evaluating the argument 'x' in selecting a method for function 'exptData': Error: object 'se' not found
+## [1] "Primary hyperparathyroidism (PHPT) is most frequently present in postmenopausal women. Although the involvement of estrogen has been suggested, current literature indicates that parathyroid tumors are estrogen receptor (ER) alpha negative. Objective: The aim of the study was to evaluate the expression of ERs and their putative function in parathyroid tumors. Design: A panel of 37 parathyroid tumors was analyzed for expression and promoter methylation of the ESR1 and ESR2 genes as well as expression of the ERalpha and ERbeta1/ERbeta2 proteins. Transcriptome changes in primary cultures of parathyroid adenoma cells after treatment with the selective ERbeta1 agonist diarylpropionitrile (DPN) and 4-hydroxytamoxifen were identified using next-generation RNA sequencing. Results: Immunohistochemistry revealed very low expression of ERalpha, whereas all informative tumors expressed ERbeta1 (n = 35) and ERbeta2 (n = 34). Decreased nuclear staining intensity and mosaic pattern of positive and negative nuclei of ERbeta1 were significantly associated with larger tumor size. Tumor ESR2 levels were significantly higher in female vs. male cases. In cultured cells, significantly increased numbers of genes with modified expression were detected after 48 h, compared to 24-h treatments with DPN or 4-hydroxytamoxifen, including the parathyroid-related genes CASR, VDR, JUN, CALR, and ORAI2. Bioinformatic analysis of transcriptome changes after DPN treatment revealed significant enrichment in gene sets coupled to ER activation, and a highly significant similarity to tumor cells undergoing apoptosis. Conclusions: Parathyroid tumors express ERbeta1 and ERbeta2. Transcriptional changes after ERbeta1 activation and correlation to clinical features point to a role of estrogen signaling in parathyroid function and disease."
 ```
+
+
+## Footnotes
+
+For more information about the `GenomicRanges` package, check out the PLOS Comp Bio paper, which the authors of GenomicRanges published:
+
+<http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118>
+
+Also the software vignettes have a lot of details about the functionality. Check out "An Introduction to Genomic Ranges Classes":
+
+<http://www.bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.pdf>
+
+All of the vignette PDFs are available here:
+
+<http://www.bioconductor.org/packages/release/bioc/html/GenomicRanges.html>
 
