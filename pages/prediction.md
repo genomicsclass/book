@@ -112,29 +112,22 @@ p <- function(x) {
     p1/(p0 + p1)
 }
 
+### Create the bayesrule prediction
+bayesrule <- apply(newx, 1, p)
+colshat <- bayesrule
+colshat[bayesrule >= 0.5] <- mycols[2]
+colshat[bayesrule < 0.5] <- mycols[1]
+
+
 ## Draw contours of E(Y|X) < 0.5
 mypar(1, 1)
 plot(x, type = "n", xlab = "X1", ylab = "X2", xlim = XLIM, ylim = YLIM)
-```
-
-![plot of chunk unnamed-chunk-2](figure/prediction-unnamed-chunk-2.png) 
-
-```r
 points(newx, col = colshat, pch = 16, cex = 0.35)
-```
-
-```
-## Error: object 'colshat' not found
-```
-
-```r
 contour(tmpx, tmpy, matrix(round(bayesrule), GS, GS), levels = c(1, 2), add = TRUE, 
     drawlabels = FALSE)
 ```
 
-```
-## Error: object 'bayesrule' not found
-```
+![plot of chunk unnamed-chunk-2](figure/prediction-unnamed-chunk-2.png) 
 
 
 Now make a plot of training data and test data

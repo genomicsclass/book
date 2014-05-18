@@ -19,6 +19,7 @@ The repository of the R markdown files (.Rmd) for the PH525x labs shown here is:
 
 - [Installing packages from Github](pages/github.html)
 - [Reading microarray data](pages/reading_microarray_data.html)
+- [Downloading data from GEO using GEOquery](pages/GEOquery.html)
 - [EDA plots for microarray](pages/EDA_plots_for_microarray.html)
 - [Basic Bioconductor infrastructure](pages/basic_Bioconductor_infrastructure.html)
 - [EDA plots for next generation sequencing](pages/EDA_plots_for_NGS.html)
