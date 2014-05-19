@@ -467,7 +467,7 @@ r2tab[, 1:2]
 Masuno K, Haldar SM, Jeyaraj D, Mailloux CM, Huang X, Panettieri RA Jr, Jain MK, Gerber AN., "Expression profiling identifies Klf15 as a glucocorticoid target that regulates airway hyperresponsiveness". Am J Respir Cell Mol Biol. 2011.
 <http://www.ncbi.nlm.nih.gov/pubmed/21257922>
 
-**The ROAST method**
+The ROAST method
 
 Wu D, Lim E, Vaillant F, Asselin-Labat ML, Visvader JE, Smyth GK. "ROAST: rotation gene set tests for complex microarray experiments". Bioinformatics. 2010.
 <http://www.ncbi.nlm.nih.gov/pubmed/20610611>
