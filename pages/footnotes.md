@@ -136,25 +136,23 @@ Dunteman, George H. Principal components analysis. No. 69. Sage, 1989.
 # Week 7
 
 ## Gene set testing
-The ROAST method
+### Methods within the limma package
 
 Wu D, Lim E, Vaillant F, Asselin-Labat ML, Visvader JE, Smyth GK. "ROAST: rotation gene set tests for complex microarray experiments". Bioinformatics. 2010.
 
 <http://www.ncbi.nlm.nih.gov/pubmed/20610611>
 
-Another method within the limma package is Camera:
-
 Di Wu and Gordon K. Smyth, "Camera: a competitive gene set test accounting for inter-gene correlation" Nucleic Acids Research, 2012.
 
 <http://nar.oxfordjournals.org/content/40/17/e133>
 
-### Correlation within gene sets
-
-The GSEA paper:
+### GSEA
 
 Subramanian A1, Tamayo P, Mootha VK, Mukherjee S, Ebert BL, Gillette MA, Paulovich A, Pomeroy SL, Golub TR, Lander ES, Mesirov JP, "Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles" Proc Natl Acad Sci U S A. 2005.
 
 <http://www.ncbi.nlm.nih.gov/pubmed/16199517>
+
+### Correlation within gene sets
 
 William T. Barry, Andrew B. Nobel, and Fred A. Wright, "A statistical framework for testing functional categories in microarray data" Ann. Appl. Stat, 2008.
 
