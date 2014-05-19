@@ -60,3 +60,8 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Gene set testing](pages/gene_set_testing.html)
 - [Multiple testing](pages/multtest.html)
 
+### Footnotes for all lectures
+
+- [Footnotes](pages/footnotes.html)
+
+
