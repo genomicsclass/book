@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Surragate variables and batch effects 
+title: Surrogate variables and batch effects 
 ---
 
 
@@ -8,7 +8,7 @@ title: Surragate variables and batch effects
 
 ## Confounding
 
-Admission data from Berkeley (Yaer?) showed more men were being admitted than women: 44\% men admitted compared to 30\% women!
+Admission data from Berkeley 1973 showed more men were being admitted than women: 44\% men admitted compared to 30\% women!
 
 
 ```r

@@ -440,3 +440,10 @@ image(t(error), col = icolors, zlim = c(-5, 5), xaxt = "n", yaxt = "n")
 ![plot of chunk unnamed-chunk-11](figure/svacombat-unnamed-chunk-11.png) 
 
 
+## Footnotes
+
+### Principal Components Analysis (PCA)
+
+Jolliffe, Ian. Principal component analysis. John Wiley & Sons, Ltd, 2005.
+
+Dunteman, George H. Principal components analysis. No. 69. Sage, 1989.

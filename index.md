@@ -3,7 +3,7 @@ layout: page
 title: Data Analysis for Genomics
 ---
 
-The repository of the R markdown files (.Rmd) for the PH525x labs shown here is:
+The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 <http://github.com/genomicsclass/labs>
 
