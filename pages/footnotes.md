@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Collated footnotes for Data Analysis for Genomics
+title: Footnotes for Data Analysis for Genomics
 ---
 
 # Week 1
