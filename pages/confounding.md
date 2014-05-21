@@ -83,7 +83,8 @@ y
 ```
 
 
-Homework: run the chisq test in each major.
+#### *Homework*
+1. Run the `chisq.test` in each major.
 
 
 ```r

@@ -71,7 +71,7 @@ abline(h = c(-1, 1), col = 1, lwd = 2, lty = 2)
 ![plot of chunk unnamed-chunk-1](figure/background-unnamed-chunk-1.png) 
 
 
-The data shown here happens to be from an experimetn were the same RNA was hybridized to several arrays and 16 genes spiked-in at different concentrations. This means that only 16 genes should have large fold-chages yet we see hundreds of genes with fold changes above 2. 
+The data shown here happens to be from an experiment were the same RNA was hybridized to several arrays and 16 genes were spiked-in at different concentrations. This means that only 16 genes should have large fold-chages, yet we see hundreds of genes with fold changes above 2. 
 
 We now add the 16 genes that, in this particular comparison, are epxected to be twice as expressed on one experiment versus the other.
 
@@ -89,7 +89,7 @@ points(A[spikeinIndex], M[spikeinIndex], bg = 2, pch = 21)
 ![plot of chunk unnamed-chunk-2](figure/background-unnamed-chunk-2.png) 
 
 
-Note that distinguishing these 16 genes from the highly variabe (noisy) data seems impossible. So why so much noise? It turns out that modeling can help us explain this.
+Note that distinguishing these 16 genes from the highly variable (noisy) data seems impossible. So why so much noise? It turns out that modeling can help us explain this.
 
 ## Background noise
 Microarray data is known to contain what is called _background noise_. Even in cases were a target is not present, a probe will return an intensity. We have experimental data to confirm this.
@@ -157,7 +157,7 @@ matplot(log2(concentration), t(log2(pms[ind, ])), type = "b", xlab = "log (base 
 
 ![plot of chunk unnamed-chunk-4](figure/background-unnamed-chunk-4.png) 
 
-Here are other genes
+Here are other genes:
 
 ```r
 mypar(3, 5)
@@ -173,11 +173,13 @@ for (i in 1:14) {
 ![plot of chunk unnamed-chunk-5](figure/background-unnamed-chunk-5.png) 
 
 
-These figures motivate a statistical model for the PM intensities. 
+These figures motivate a statistical model for the PM (perfect match) intensities.
 $$
-Y_j =\beta_j + \phi_j \theta + \varepsilon_j
+Y_{ij} =\beta_j + \theta_i \phi_j + \varepsilon_{ij}
 $$
-Here is an example of how this model fits the data for one of the probes
+with $Y_{ij}$ the observed intensity for gene $i$ and probe $j$, $\beta_j$ a background level, $\phi_j$ a multiplicative affinity affect and $\theta_i$, a value proportional to $\varepsilon_{ij}$, which denotes the measurement error. 
+
+Here is an example of how this model fits the data for one of the genes:
 
 ```r
 mypar(1, 2)
@@ -201,9 +203,9 @@ for (i in c(5, 7)) {
 
 
 
-with $Y$ the observed intensity for probe $j$, $\beta_j$ a background level, $\phi_j$ a multiplicative affinity affect and $\theta$ a value proportional to $\varepsilon$ is measruement error. From the figures it appears that the $\beta$s range from 16 to 1024 across genes. One adverse effect of this is that fold changes will be extremely attenuated for small values of $\theta$. Note for example that if we are comparing true expression values that are $2$ and $1$, with a background of $32$, we will observe a fold change of $(32 + 2)/(32 + 1) \approx 1$. For larger values, this is not a problem $(32+20000)/(32+10000)\approx 2$. 
+From the figures it appears that the values of $\beta_j$ range from 16 to 1024 across genes. One adverse effect of this is that fold changes will be extremely attenuated for small values of $\theta_i$. Note for example that if we are comparing true expression values that are $2$ and $1$, with a background of $32$, we will observe a fold change of $(32 + 2)/(32 + 1) \approx 1$. For larger values, this is not a problem, as $(32+20000)/(32+10000)\approx 2$. 
 
-One difficult challenge is that, even within the same gene, each probe has a different background level. The solution proposed by the manufacturer was to designa background probe for each probe. These pairs were named the _perfect match_ (PM) and _mismath_ (MM) probes respectively. The assumption was that the MM would measure only the background part of the intensity and $PM-MM$ would sever a corrected measure. This actually explains the high levels of variability observed in our first plot. We illustrate this with a simple statistical model.
+One difficult challenge is that, even within the same gene, each probe has a different background level. The solution proposed by the manufacturer was to design background probes for each probe. These pairs were named the _perfect match_ (PM) and _mismatch_ (MM) probes respectively. The assumption was that the MM would measure only the background part of the intensity and $PM-MM$ would serve a corrected measure. This actually explains the high levels of variability observed in our first plot. We illustrate this with a simple statistical model.
 
 
 ```r
@@ -221,8 +223,8 @@ abline(0, 1, col = 2)
 
 If, for simplicity, we assume that the signal related to expression is $\alpha$ then the data suggests this model
 $$PM = \beta_{PM} + \alpha \mbox{ and } MM = \beta_{MM}$$
-with the background are not identical but rather correlated
-$\mbox{corr}(\beta_{MM},\beta_{PM}) \approx 0.8$. Let's generate some data
+with the backgrounds not being identical but rather correlated
+$\mbox{corr}(\beta_{MM},\beta_{PM}) \approx 0.8$. Let's generate some data:
 
 ```r
 library(MASS)
@@ -265,7 +267,7 @@ abline(0, 1, col = 2)
 
 
 ## Model based adjustment
-Model based approaches have been suggested for correcting for background while controling variance inflation. The most widely used approach assumes that that signal follows an exponential distirubtion with rate $\lambda$ and the background a normal distribution with mean $\mu$ and standard deviation $\sigma$. The parameters are estimated from the signal and then these are plugged into to the posterior mean of the signal given the observed values
+Model based approaches have been suggested for correcting for background while controling variance inflation. The most widely used approach assumes that that signal follows an exponential distribution with rate $\lambda$ and the background a normal distribution with mean $\mu$ and standard deviation $\sigma$. The parameters are estimated from the signal and then these are plugged into the posterior mean of the signal given the observed values
 
 $$
 \mbox{E}[ \mbox{signal} | PM ] = PM - \mu - \lambda \sigma^2 + \sigma \left[ \frac{1}{\sqrt{2\pi}} \exp\left( -\frac{ (PM/\sigma)^2 }{ 2 \Phi(PM/\sigma) } \right) \right] 

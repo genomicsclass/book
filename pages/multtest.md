@@ -157,8 +157,7 @@ legend("top", expression(slope ~ alpha/m))
 ![plot of chunk unnamed-chunk-10](figure/multtest-unnamed-chunk-10.png) 
 
 
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
 Yoav Benjamini and Yosef Hochberg, "Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing". Journal of the Royal Statistical Society. 1995.
 <http://www.jstor.org/discover/10.2307/2346101>

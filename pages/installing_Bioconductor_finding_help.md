@@ -151,7 +151,7 @@ mad
 ##     }
 ##     else median(abs(x - center))
 ## }
-## <bytecode: 0x7f8368989ff8>
+## <bytecode: 0x7ff2180673f8>
 ## <environment: namespace:stats>
 ```
 
@@ -170,7 +170,7 @@ plotMA
 ## {
 ##     standardGeneric("plotMA")
 ## }
-## <environment: 0x7f836513d548>
+## <environment: 0x7ff21493d548>
 ## Methods may be defined for arguments: object
 ## Use  showMethods("plotMA")  for currently available ones.
 ```

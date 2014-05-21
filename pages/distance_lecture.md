@@ -370,11 +370,7 @@ for (i in ind) {
 ![plot of chunk unnamed-chunk-14](figure/distance_lecture-unnamed-chunk-14.png) 
 
 
-
-##Home work: genotype SNPs using k-means
-
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
 ### MDS references
 

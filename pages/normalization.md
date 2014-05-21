@@ -8,11 +8,12 @@ title: Normalization
 
 # Normalization
 
-Normalization is one of the most important procedures in genomics data analays. A typical dataset contains more than one sample and we are almost always interested in making comparisons between these. Unfortunately, technical and biological sources of unwanted variation can cloud downstream results. Here we demonstrate with real data, how this can happen and the describe several existing solutions. The examples are based on microarray data but can be applied to other datasets.
+Normalization is one of the most important procedures in genomics data analysis. A typical dataset contains more than one sample and we are almost always interested in making comparisons between these. Unfortunately, technical and biological sources of unwanted variation can cloud downstream results. Here we demonstrate with real data, how this can happen and then describe several existing solutions. The examples are based on microarray data but can be applied to other datasets.
 
-Our first example a Dilution dataset that is not publically available. To obtain the dataset you need to request it here: http://www.genelogic.com/support/scientific-studies
+<a name="dilution"></a>
+Our first example is the Dilution dataset that is not publically available. To obtain the dataset you need to request it here: http://www.genelogic.com/support/scientific-studies
 
-This Dilution dataset has six sets of five technical replicates. The six sets differ in the concentration of RNA. The RNA was diluted 5 times so that 1/2 as much RNA was hybridized in each set. We start by showing  data from five technical replicates. We show boxplots and densities
+This Dilution dataset has six sets of five technical replicates. The six sets differ in the concentration of RNA. The RNA was diluted 5 times so that 1/2 as much RNA was hybridized in each set. We start by showing  data from five technical replicates. We show boxplots and densities:
 
 ```r
 library(rafalib)
@@ -33,7 +34,7 @@ for (i in 1:5) shist(log2(pms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2,
 ```
 
 
-Notice that although being technical replicates we see different distributions. The shifts in median are quite dramatic with changes of almost 2 fold. To see that simply changing the location by, for example, subtracting the median is not enough we show an MA plot between two of these samples
+Notice that although being technical replicates we see different distributions. The shifts in median are quite dramatic with changes of almost 2 fold. To see that simply changing the location by, for example, subtracting the median is not enough we show an MA plot between two of these samples:
 
 
 ```r
@@ -49,7 +50,7 @@ shist(x, unit = 0.1, xlab = "log (base) intenisty", add = TRUE, col = 2)
 ```
 
 
-The MA-plot shows non-linear bias. Median normalization would simple move the plot up so that the median difference is 0. But this will not correct the non-linear bias as demonstrated here
+The MA-plot shows non-linear bias. Median normalization would simply move the plot up so that the median difference is 0. But this will not correct the non-linear bias as demonstrated here.
 
 
 ```r
@@ -66,7 +67,7 @@ shist(x, unit = 0.1, xlab = "log (base) intenisty", add = TRUE, col = 2)
 ```
 
 
-To undersand the downstream consequences of not normalizing we will use the spike-in experiment used in previous units.
+To understand the downstream consequences of not normalizing we will use the spike-in experiment used in previous units.
 
 ```r
 library(SpikeIn)
@@ -157,9 +158,9 @@ In this plot the green dots are genes spiked in to be different in the two sampl
 
 ## Loess normalization
 
-In the MA-plot above we see a non-linear bias in the M that changes as function of A. The general idea behind loess normalization is to estimate this bias and remove it. Because the bias a curve of no obvious parametric form (it is not a line or parabola or a sine function, etc..) We want to fit a curve to the data. Local weighted regression ([loess](#foot)) provides one way to do this. Loess is inspired by Taylor's theorem that in practice means that at any given point, if one looks at a small enough region around that point, the curve looks like a parabolla. If you look even closer it looks like a straight line (note that gardeners can make a curved edge with a straight shovel). 
+In the MA-plot above we see a non-linear bias in the M that changes as function of A. The general idea behind loess normalization is to estimate this bias and remove it. Because the bias is a curve of no obvious parametric form (it is not a line or parabola or a sine function, etc.) we want to fit a curve to the data. Local weighted regression ([loess](#foot)) provides one way to do this. Loess is inspired by Taylor's theorem that in practice means that at any given point, if one looks at a small enough region around that point, the curve looks like a parabola. If you look even closer it looks like a straight line (note that gardeners can make a curved edge with a straight shovel). 
 
-Loess takes advantage of this mathematical property of functions. For each point in your data set a region is defined considered to be small enough to assume the curve approximated by a line in that region and a line is fit with weighted least squares. The weights depend on the distance from the point of interest. The robuse version of loess also down weighs points considered to be outliers. The following code makes an annimation that shows loess at work:
+Loess takes advantage of this mathematical property of functions. For each point in your data set a region is defined considered to be small enough to assume the curve approximated by a line in that region and a line is fit with weighted least squares. The weights depend on the distance from the point of interest. The robust version of loess also weights points down that are considered outliers. The following code makes an animation that shows loess at work:
 
 ```r
 o <- order(A)
@@ -222,7 +223,7 @@ abline(h = 0, col = 2, lwd = 2)
 ![plot of chunk unnamed-chunk-6](figure/normalization-unnamed-chunk-62.png) 
 
 
-Note that the bias is removed and now the highest fold changes are almost all spike-ins. Also note that the we can control the size of the intervals in which lines are fit. The smaller we make these intervals the more flexobility we get. This is controlled with span argument of the loess function. A span of 0.75 means that the closest points are considered untile 3/4 are used. Finally, we are fitting parabalas, but for some datasets these can result in over fitting. For example, a few points can force a parabola to "shoot up" very fast. For this reason using lines (the argument is degree=1) is safer.
+Note that the bias is removed and now the highest fold changes are almost all spike-ins. Also note that the we can control the size of the intervals in which lines are fit. The smaller we make these intervals the more flexibility we get. This is controlled with the `span` argument of the `loess` function. A span of 0.75 means that the closest points are considered until 3/4 of all points are used. Finally, we are fitting parabolas, but for some datasets these can result in over fitting. For example, a few points can force a parabola to "shoot up" very fast. For this reason using lines (the argument is `degree=1`) is safer.
 
 
 ```r
@@ -247,22 +248,23 @@ abline(h = 0, col = 2, lwd = 2)
 
 
 
-Homework: try different values of span of 0.75 and change the degree. Decide which you believe to be the best and defend the choice.
+#### *Homework*
+1. Try various values of span different from 0.75 and change the degree. Decide which you believe to be the best and defend the choice.
 
 
 
 
 ## Quantile normalization
 
-One limitation of loess normalization is that it depeneds on pairings of samples. We have this for two color arrays, but for other platforms, such as Affymetrix, we do not have such pairings. [Quantile normalization](#foot) offers a solution that is more generally applicable.
+One limitation of loess normalization is that it depends on pairings of samples. We have this for two color arrays, but for other platforms, such as Affymetrix, we do not have such pairings. [Quantile normalization](#foot) offers a solution that is more generally applicable.
 
-The smooth histogram plots demonstrate that different samples have different distributions, not just median shifts. This happens even when we look at data from replicated RNA. Qunatile normalization forces all these distributions the same: it makes each quantile (not just the median) the same across samples. The algorithm, as implemeted in Biocondcutor, does the following for a matrix with rows representing genes and columns representing samples
+The smooth histogram plots demonstrate that different samples have different distributions, not just median shifts. This happens even when we look at data from replicated RNA. Quantile normalization forces all these distributions to be the same: it makes each quantile (not just the median) the same across samples. The algorithm, as implemeted in Biocondcutor, does the following for a matrix with rows representing genes and columns representing samples:
 
-1 - Order the value in each column
-2 - Replace the values of each row with the average of that row
-3- Re-order back to the original order
+1. Order the value in each column
+2. Replace the values of each row with the average of that row
+3. Re-order back to the original order
 
-[Put FIgure from POWER point here]
+<!-- Put Figure from POWER point here -->
 
 Here we demonstrate how to use quantile normalization in practice and how it corrects the bias. 
 
@@ -292,61 +294,37 @@ points(A[spikeinIndex], M[spikeinIndex], bg = 1, pch = 21)
 Note that the densities are now identical as expected since we forced this to be the case.
 
 ```r
+pms <- spms
 mypar(1, 1)
 shist(log2(pms[, 2]), unit = 0.1, type = "n", xlab = "log (base 2) intensity", 
     main = "Five techical replicates")
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 for (i in 1:5) shist(log2(pms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2, 
     lty = i)
 ```
 
-```
-## Error: object 'pms' not found
-```
+![plot of chunk unnamed-chunk-9](figure/normalization-unnamed-chunk-91.png) 
 
 ```r
 qpms <- normalize.quantiles(pms[, 1:5])
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 shist(log2(qpms[, 2]), unit = 0.1, type = "n", xlab = "log (base 2) intensity", 
     main = "Five techical replicates")
-```
-
-```
-## Error: object 'qpms' not found
-```
-
-```r
 for (i in 1:5) shist(log2(qpms[, i]), unit = 0.1, col = i, add = TRUE, lwd = 2, 
     lty = i)
 ```
 
-```
-## Error: object 'qpms' not found
-```
+![plot of chunk unnamed-chunk-9](figure/normalization-unnamed-chunk-92.png) 
 
 
 Note how quantile normalization also fixes the bias but keeps the spiked-in genes different.
 
 ## VSN
 
-In the background unit we learned that the background noise appears to be additive. However, shifts we see that explain some of the need for normalization appear to be multiplicative terms. Also we have observed a strong mean and variance relationship that is in agreement with multiplicative error. [Varianze stabilizing normalization](#foot) (vsn) motivates the need for normalization with an additive backgroun multiplicative noise model:
+In the background unit we learned that the background noise appears to be additive. However, shifts we see that explain some of the need for normalization appear to be multiplicative terms. Also we have observed a strong mean and variance relationship that is in agreement with multiplicative error. [Varianze stabilizing normalization](#foot) (vsn) motivates the need for normalization with an additive background multiplicative noise model:
 
 $$
 Y_{ij}= \beta_i + \varepsilon_{ij} + A_i \theta_{j} \eta_{ij}
 $$
-The expression level we are interested in estimating is $\theta_j$ which we assume changes across genes $j$ is the same across array $i$. Here, $\beta_i$ is an array specific background level that changes from probe to probe due to additive noise $\varepsilon_{ij}$. We refer to $A_i$ and the gain and note that it changes from array to array.  Here is a monte carlo simulation demonstrating that by changing $\beta$ and $A$ we can generate non-linear biases as we see in practice.
+The expression level we are interested in estimating is $\theta_j$ which we assume changes across genes $j$ and is the same across arrays $i$. Here, $\beta_i$ is an array specific background level that changes from probe to probe due to additive noise $\varepsilon_{ij}$. We refer to $A_i$ as the gain and note that it changes from array to array.  Here is a monte carlo simulation demonstrating that by changing $\beta$ and $A$ we can generate non-linear biases as we see in practice.
 
 ```r
 library(rafalib)
@@ -367,21 +345,14 @@ maplot(log2(y1), log2(y2), ylim = c(-1, 1), curve.add = FALSE)
 ![plot of chunk unnamed-chunk-10](figure/normalization-unnamed-chunk-10.png) 
 
 
-For this type of data, the variance depends on the mean. We seek a transfromation that stabilizies the variance of the estimates of $\theta$ after we subctract the additive backgroun estimate and divide by the estimate of gain.
+For this type of data, the variance depends on the mean. We seek a transfromation that stabilizies the variance of the estimates of $\theta$ after we subctract the additive background estimate and divide by the estimate of the gain.
 
 
 ```r
 ny1 = (y1 - b1)/A1
 ny2 = (y2 - b2)/A2
 mypar(1, 2)
-maplot(ny1, ny2, curve.add = FALE, ylim = c(-500, 500))
-```
-
-```
-## Error: object 'FALE' not found
-```
-
-```r
+maplot(ny1, ny2, curve.add = FALSE, ylim = c(-500, 500))
 maplot(log2(ny1), log2(ny2), ylim = c(-2, 2), xlim = c(0, 15))
 ```
 
@@ -399,16 +370,16 @@ maplot(log2(ny1), log2(ny2), ylim = c(-2, 2), xlim = c(0, 15))
 
 If we know how the variance depends on the mean, we can compute a variance stabilizing transform:
 $$
-Y \mbox{ with } \mbox{E}(Y)=\mu \mbox{ and } \mbox{var}(Y) = v(\mu)
-\mbox{var}\{f(Y)\} \mbox{ does not depend on } \mu
+Y \text{ with } \text{E}(Y)=\mu \text{ and } \text{var}(Y) = v(\mu)\\
+\text{var}\{f(Y)\} \text{ does not depend on } \mu
 $$
 In the case of the model above we can derive the following transformation 
 
 $$
-\mbox{arsinh}(y) = \log\left(y + \sqrt{y^2+1} \right)
+\text{arsinh}(y) = \log\left(y + \sqrt{y^2+1} \right)
 $$
 
-The vsn library implements this apprach. It estimates $\beta$ and $A$ by assuming that most genes don't change, i.e. the $\theta$ does not depend on $i$.
+The `vsn` library implements this apprach. It estimates $\beta$ and $A$ by assuming that most genes don't change, i.e. $\theta$ does not depend on $i$.
 
 ```r
 
@@ -435,7 +406,7 @@ points(A[spikeinIndex], M[spikeinIndex], bg = 1, pch = 21)
 ![plot of chunk unnamed-chunk-12](figure/normalization-unnamed-chunk-122.png) 
 
 
-We notice that it corrects the bias in a similar way to loess and quantile normalization 
+We notice that it corrects the bias in a similar way to loess and quantile normalization.
 ## RNA-seq
 
 
@@ -462,7 +433,7 @@ boxplot(log2(f + 0.5), col = as.fumeric(pd[, 4]), names = pd[, 5], ylab = "log (
 
 ![plot of chunk unnamed-chunk-13](figure/normalization-unnamed-chunk-13.png) 
 
-We see that there is also need for normalization. Fragments per Kilobase per Million (FPKM) normalizes by dividing by the total number of reads. This removes much of the variability seen in the first plot
+We see that there is also need for normalization. Fragments per Kilobase per Million (FPKM) normalizes by dividing by the total number of reads. This removes much of the variability seen in the first plot.
 
 
 ```r
@@ -553,7 +524,7 @@ plot(colMeans(fpkm == 0), ylab = "proportion of 0s", xlab = "proportion index",
 
 ## When not to use normalization
 
-Boxplots of all Dilution data. Obviousy we don't want to normalize
+Boxplots of all Dilution data (see [above](#dilution)). Obviously we don't want to normalize.
 
 
 ```r
@@ -561,67 +532,16 @@ library(rafalib)
 library(affy)
 library(preprocessCore)
 setwd("/Users/ririzarr/myDocuments/teaching/HarvardX/genomicsclass/week4/Dilution")
-```
-
-```
-## Error: cannot change working directory
-```
-
-```r
 pd = read.table("pdata.txt", header = TRUE, check.names = FALSE, as.is = TRUE)
-```
-
-```
-## Warning: cannot open file 'pdata.txt': No such file or directory
-```
-
-```
-## Error: cannot open the connection
-```
-
-```r
 pd <- pd[which(pd[, 3] == 0), ]  ##only liver
 dat <- ReadAffy(filenames = paste0(pd[, 1], ".cel"), verbose = FALSE)
-```
-
-```
-## Error: the following are not valid files:
-##     .cel
-```
-
-```r
 pms = pm(dat)
-```
-
-```
-## Error: error in evaluating the argument 'object' in selecting a method for function 'pm': Error: object 'dat' not found
-```
-
-```r
 npms = normalize.quantiles(pms)
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 mypar()
 boxplot(log2(pms), col = as.fumeric(pd[, 2]), range = 0, names = pd[, 2], las = 3, 
     main = "Dilution expreiment")
-```
-
-```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'boxplot': Error: object 'pms' not found
-```
-
-```r
 boxplot(log2(npms), col = as.fumeric(pd[, 2]), range = 0, names = pd[, 2], las = 3, 
     main = "Dilution expreiment")
-```
-
-```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'boxplot': Error: object 'npms' not found
 ```
 
 
@@ -632,171 +552,53 @@ Show the spike-in which are experimentally introduced to be a the same level.
 ```r
 siNames <- colnames(pd)[4:11]
 spikeIndex <- which(probeNames(dat) %in% siNames)
-```
-
-```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'which': Error in probeNames(dat) %in% siNames : 
-##   error in evaluating the argument 'x' in selecting a method for function '%in%': Error in probeNames(dat) : 
-##   error in evaluating the argument 'object' in selecting a method for function 'probeNames': Error: object 'dat' not found
-```
-
-```r
 boxplot(log2(pms)[spikeIndex, ], col = as.fumeric(pd[, 2]), names = pd[, 2], 
     ylim = range(log2(pms)), las = 3)
 ```
 
-```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'boxplot': Error: object 'pms' not found
-```
 
-
-The spike-ins show the problem with normalizing
+The spike-ins show the problem with normalizing.
 
 
 ```r
 i = 1
 j = 6
 M = log2(pms[, i]) - log2(pms[, j])
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 A = (log2(pms[, i]) + log2(pms[, j]))/2
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 splot(A, M, n = 50000, ylim = c(-1, 1))
 points(A[spikeIndex], M[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 abline(h = 0)
-```
-
-![plot of chunk unnamed-chunk-20](figure/normalization-unnamed-chunk-201.png) 
-
-```r
 M = log2(npms[, i]) - log2(npms[, j])
-```
-
-```
-## Error: object 'npms' not found
-```
-
-```r
 A = (log2(npms[, i]) + log2(npms[, j]))/2
-```
-
-```
-## Error: object 'npms' not found
-```
-
-```r
 splot(A, M, n = 50000, ylim = c(-1, 1))
 points(A[spikeIndex], M[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 abline(h = 0)
 ```
 
-![plot of chunk unnamed-chunk-20](figure/normalization-unnamed-chunk-202.png) 
 
-
-mention CHARM approach
+<!-- mention CHARM approach -->
 
 
 ```r
 i = 1
 j = 6
 M = log2(pms[, i]) - log2(pms[, j])
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 A = (log2(pms[, i]) + log2(pms[, j]))/2
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 splot(A, M, n = 50000, ylim = c(-1.5, 1.5))
-```
-
-![plot of chunk unnamed-chunk-21](figure/normalization-unnamed-chunk-211.png) 
-
-```r
 points(A[spikeIndex], M[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 a <- A[spikeIndex]
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 m <- M[spikeIndex]
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 o <- order(a)
 a <- a[o]
 m <- m[o]
 fit <- loess(m ~ a, degree = 1)
 bias <- predict(fit, newdata = data.frame(a = A))
 lines(a, fit$fitted, col = 2, lwd = 2)
-```
-
-```
-## Error: 'x' and 'y' lengths differ
-```
-
-```r
 nM <- M - bias
 splot(A, nM, n = 50000, ylim = c(-1.5, 1.5))
 points(A[spikeIndex], nM[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 abline(h = 0)
 ```
-
-![plot of chunk unnamed-chunk-21](figure/normalization-unnamed-chunk-212.png) 
 
 
 However, control genes are not always reliable
@@ -805,87 +607,35 @@ However, control genes are not always reliable
 i = 1
 j = 2
 M = log2(pms[, i]) - log2(pms[, j])
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 A = (log2(pms[, i]) + log2(pms[, j]))/2
-```
-
-```
-## Error: object 'pms' not found
-```
-
-```r
 splot(A, M, n = 50000, ylim = c(-1.5, 1.5))
 points(A[spikeIndex], M[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 abline(h = 0)
-```
-
-![plot of chunk unnamed-chunk-22](figure/normalization-unnamed-chunk-221.png) 
-
-```r
 a <- A[spikeIndex]
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 m <- M[spikeIndex]
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 o <- order(a)
 a <- a[o]
 m <- m[o]
 fit <- loess(m ~ a, degree = 1)
 bias <- predict(fit, newdata = data.frame(a = A))
 lines(a, fit$fitted, col = 2, lwd = 2)
-```
-
-```
-## Error: 'x' and 'y' lengths differ
-```
-
-```r
 nM <- M - bias
 splot(A, nM, n = 50000, ylim = c(-1.5, 1.5))
 points(A[spikeIndex], nM[spikeIndex], bg = 1, pch = 21)
-```
-
-```
-## Error: object 'spikeIndex' not found
-```
-
-```r
 abline(h = 0)
+
 ```
 
-![plot of chunk unnamed-chunk-22](figure/normalization-unnamed-chunk-222.png) 
 
+## Subset Quantile Normalization
+<!-- add rick youngs data show it similar to this -->
 
-##subset quantile
-##add rick youngs data show it similar to this
-
-Here is a dataset were the spike-ins appear to be performing well, at least in the one sample with biological replicates
+Here is a dataset were the spike-ins appear to be performing well, at least across biological replicates:
 
 ```r
+library(rafalib)
+library(affy)
+library(preprocessCore)
 library(mycAffyData)
 data(mycData)
 erccIndex <- grep("ERCC", probeNames(mycData))
@@ -922,9 +672,8 @@ for (h in 1:2) {
 ![plot of chunk unnamed-chunk-23](figure/normalization-unnamed-chunk-23.png) 
 
 
-But here are two samples experimentally desinged to be different:
+But here are two samples experimentally designed to be different:
 
-##subset quantile
 
 ```r
 library(mycAffyData)
@@ -945,10 +694,10 @@ for (h in 1:2) {
 ![plot of chunk unnamed-chunk-24](figure/normalization-unnamed-chunk-24.png) 
 
 
-Cell paper did not consider SQN but it works very wll:
+The Cell paper (Lovén, J. et al. 2012) did not consider SQN but it works very well:
 
 ```r
-library(SQN)  ##form CRAN
+library(SQN)  ##from CRAN
 ```
 
 ```
@@ -1001,8 +750,7 @@ for (h in 1:4) {
 ![plot of chunk unnamed-chunk-25](figure/normalization-unnamed-chunk-252.png) 
 
 
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
 ### loess
 

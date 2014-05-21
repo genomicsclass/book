@@ -230,21 +230,11 @@ abline(h = 1)
 ![plot of chunk unnamed-chunk-11](figure/robust_summaries-unnamed-chunk-112.png) 
 
 
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
 ### Robust statistics
 
-- *Robust Statistics*, Peter. J. Huber and Elvezio M. Ronchetti, Wiley, 2009.
-- *Introduction to Robust Estimation and Hypothesis Testing*, Rand R. Wilcox, 2012.
-- *Robust Statistics: The Approach Based on Influence Functions*, Frank R. Hampel, Elvezio M. Ronchetti, Peter J. Rousseeuw, Werner A. Stahel
-
-
-
-
-
-
-
-
-
+Robust Statistics, Peter. J. Huber and Elvezio M. Ronchetti, Wiley, 2009.
+Introduction to Robust Estimation and Hypothesis Testing, Rand R. Wilcox, 2012.
+Robust Statistics: The Approach Based on Influence Functions, Frank R. Hampel, Elvezio M. Ronchetti, Peter J. Rousseeuw, Werner A. Stahel
 

@@ -62,7 +62,7 @@ g <- getGEO("GSE34313")
 ## Found 1 file(s)
 ## GSE34313_series_matrix.txt.gz
 ## File stored at: 
-## /var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T//RtmphOMply/GPL6480.soft
+## /var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T//RtmpY5CFbp/GPL6480.soft
 ```
 
 ```r
@@ -321,19 +321,19 @@ head(r2)
 
 ```
 ##            NGenes PropDown  PropUp Direction PValue     FDR PValue.Mixed
-## GO:0006954    297   0.2290 0.09428      Down  0.002 0.01565        0.001
-## GO:0008083    167   0.2874 0.07784      Down  0.002 0.01565        0.001
-## GO:0005125    166   0.2651 0.04819      Down  0.002 0.01565        0.001
-## GO:0032496    122   0.2459 0.13115      Down  0.002 0.01565        0.001
-## GO:0006959     52   0.2500 0.09615      Down  0.002 0.01565        0.001
-## GO:0042102     48   0.1875 0.06250      Down  0.002 0.01565        0.001
+## GO:0006954    297   0.2290 0.09428      Down  0.002 0.01497        0.001
+## GO:0008083    167   0.2874 0.07784      Down  0.002 0.01497        0.001
+## GO:0005125    166   0.2651 0.04819      Down  0.002 0.01497        0.001
+## GO:0043433     61   0.2787 0.11475      Down  0.002 0.01497        0.001
+## GO:0006959     52   0.2500 0.09615      Down  0.002 0.01497        0.001
+## GO:0042102     48   0.1875 0.06250      Down  0.002 0.01497        0.001
 ##            FDR.Mixed
-## GO:0006954   0.00242
-## GO:0008083   0.00242
-## GO:0005125   0.00242
-## GO:0032496   0.00242
-## GO:0006959   0.00242
-## GO:0042102   0.00242
+## GO:0006954  0.002365
+## GO:0008083  0.002365
+## GO:0005125  0.002365
+## GO:0043433  0.002365
+## GO:0006959  0.002365
+## GO:0042102  0.002365
 ```
 
 ```r
@@ -391,17 +391,28 @@ r2tab[, 1:2]
 ```
 
 ```
-##          GOID                                                    TERM
-## 1  GO:0006954                                   inflammatory response
-## 2  GO:0008083                                  growth factor activity
-## 3  GO:0005125                                       cytokine activity
-## 4  GO:0032496                          response to lipopolysaccharide
-## 5  GO:0006959                                 humoral immune response
-## 6  GO:0042102             positive regulation of T cell proliferation
-## 7  GO:0051781                    positive regulation of cell division
-## 8  GO:0007623                                        circadian rhythm
-## 9  GO:0048661 positive regulation of smooth muscle cell proliferation
-## 10 GO:0043525         positive regulation of neuron apoptotic process
+##          GOID
+## 1  GO:0006954
+## 2  GO:0008083
+## 3  GO:0005125
+## 4  GO:0043433
+## 5  GO:0006959
+## 6  GO:0042102
+## 7  GO:0051781
+## 8  GO:0007623
+## 9  GO:0048661
+## 10 GO:0043525
+##                                                                                  TERM
+## 1                                                               inflammatory response
+## 2                                                              growth factor activity
+## 3                                                                   cytokine activity
+## 4  negative regulation of sequence-specific DNA binding transcription factor activity
+## 5                                                             humoral immune response
+## 6                                         positive regulation of T cell proliferation
+## 7                                                positive regulation of cell division
+## 8                                                                    circadian rhythm
+## 9                             positive regulation of smooth muscle cell proliferation
+## 10                                    positive regulation of neuron apoptotic process
 ```
 
 
@@ -419,22 +430,22 @@ r2tab[, 1:2]
 ##          GOID
 ## 1  GO:0042594
 ## 2  GO:0030032
-## 3  GO:0048008
-## 4  GO:0003950
-## 5  GO:0042813
-## 6  GO:0046847
-## 7  GO:0045926
+## 3  GO:0003950
+## 4  GO:0042813
+## 5  GO:0046847
+## 6  GO:0006471
+## 7  GO:0005528
 ## 8  GO:0071889
 ## 9  GO:0008209
 ## 10 GO:0008631
 ##                                                                     TERM
 ## 1                                                 response to starvation
 ## 2                                                 lamellipodium assembly
-## 3              platelet-derived growth factor receptor signaling pathway
-## 4                                   NAD+ ADP-ribosyltransferase activity
-## 5                                        Wnt-activated receptor activity
-## 6                                                    filopodium assembly
-## 7                                          negative regulation of growth
+## 3                                   NAD+ ADP-ribosyltransferase activity
+## 4                                        Wnt-activated receptor activity
+## 5                                                    filopodium assembly
+## 6                                               protein ADP-ribosylation
+## 7                                                          FK506 binding
 ## 8                                                 14-3-3 protein binding
 ## 9                                             androgen metabolic process
 ## 10 intrinsic apoptotic signaling pathway in response to oxidative stress
@@ -451,25 +462,56 @@ r2tab[, 1:2]
 ```
 
 ```
-##         GOID                           TERM
-## 1 GO:0006954          inflammatory response
-## 2 GO:0008083         growth factor activity
-## 3 GO:0005125              cytokine activity
-## 4 GO:0032496 response to lipopolysaccharide
-## 5 GO:0006959        humoral immune response
+##         GOID
+## 1 GO:0006954
+## 2 GO:0008083
+## 3 GO:0005125
+## 4 GO:0043433
+## 5 GO:0006959
+##                                                                                 TERM
+## 1                                                              inflammatory response
+## 2                                                             growth factor activity
+## 3                                                                  cytokine activity
+## 4 negative regulation of sequence-specific DNA binding transcription factor activity
+## 5                                                            humoral immune response
 ```
 
 
 
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
-Masuno K, Haldar SM, Jeyaraj D, Mailloux CM, Huang X, Panettieri RA Jr, Jain MK, Gerber AN., "Expression profiling identifies Klf15 as a glucocorticoid target that regulates airway hyperresponsiveness". Am J Respir Cell Mol Biol. 2011.
-<http://www.ncbi.nlm.nih.gov/pubmed/21257922>
-
-The ROAST method
+### Methods within the limma package
 
 Wu D, Lim E, Vaillant F, Asselin-Labat ML, Visvader JE, Smyth GK. "ROAST: rotation gene set tests for complex microarray experiments". Bioinformatics. 2010.
 <http://www.ncbi.nlm.nih.gov/pubmed/20610611>
 
+Di Wu and Gordon K. Smyth, "Camera: a competitive gene set test accounting for inter-gene correlation" Nucleic Acids Research, 2012.
+<http://nar.oxfordjournals.org/content/40/17/e133>
 
+### GSEA
+
+Subramanian A1, Tamayo P, Mootha VK, Mukherjee S, Ebert BL, Gillette MA, Paulovich A, Pomeroy SL, Golub TR, Lander ES, Mesirov JP, "Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles" Proc Natl Acad Sci U S A. 2005.
+<http://www.ncbi.nlm.nih.gov/pubmed/16199517>
+
+### Correlation within gene sets
+
+William T. Barry, Andrew B. Nobel, and Fred A. Wright, "A statistical framework for testing functional categories in microarray data" Ann. Appl. Stat, 2008.
+<http://projecteuclid.org/euclid.aoas/1206367822>
+
+William Barry has a package `safe` in Bioconductor for gene set testing with resampling.
+<http://www.bioconductor.org/packages/release/bioc/html/safe.html>
+
+Daniel M Gatti, William T Barry, Andrew B Nobel, Ivan Rusyn and Fred A Wright, "Heading Down the Wrong Pathway: on the Influence of Correlation within Gene Sets", BMC Genomics, 2010.
+<http://www.biomedcentral.com/1471-2164/11/574#B24>
+
+### Gene sets and power
+
+The following article points out an issue with gene set testing: the power to detect differential expression for an individual gene depends on the number of NGS reads which align to that gene, which depends on the transcript length among other factors.
+
+Alicia Oshlack* and Matthew J Wakefield, "Transcript length bias in RNA-seq data confounds systems biology", Biology Direct, 2009.
+<http://www.biologydirect.com/content/4/1/14>
+
+### The dataset used in this lab
+
+Masuno K, Haldar SM, Jeyaraj D, Mailloux CM, Huang X, Panettieri RA Jr, Jain MK, Gerber AN., "Expression profiling identifies Klf15 as a glucocorticoid target that regulates airway hyperresponsiveness". Am J Respir Cell Mol Biol. 2011.
+<http://www.ncbi.nlm.nih.gov/pubmed/21257922>

@@ -223,9 +223,6 @@ segments((rtt$s^2)[idx], rep(0.1, n), fit$s2.post[idx], rep(0.9, n))
 ![plot of chunk unnamed-chunk-10](figure/using_limma-unnamed-chunk-10.png) 
 
 
-
-
-## Footnotes
-<a name="foot"></a>
+## Footnotes <a name="foot"></a>
 
 Smyth GK, "Linear models and empirical bayes methods for assessing differential expression in microarray experiments". Stat Appl Genet Mol Biol. 2004 <http://www.ncbi.nlm.nih.gov/pubmed/16646809>
