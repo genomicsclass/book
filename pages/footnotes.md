@@ -199,3 +199,159 @@ Smyth GK, "Linear models and empirical bayes methods for assessing differential 
 
 # Week 8
 
+## ChIP-seq analysis
+### Model-based Analysis for ChIP-Seq (MACS)
+
+Zhang Y, Liu T, Meyer CA, Eeckhoute J, Johnson DS, Bernstein BE, Nusbaum C, Myers RM, Brown M, Li W, Liu XS. "Model-based Analysis of ChIP-Seq (MACS)". Genome Biol. 2008.
+
+<http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2592715/>
+
+Software: 
+
+<http://liulab.dfci.harvard.edu/MACS/>
+
+### Motif finding
+
+Wikipedia's article on DNA sequence motifs: <http://en.wikipedia.org/wiki/Sequence_motif>
+
+A non-comprehensive list of software for motif finding:
+
+- [MEME/DREME](http://meme.nbcr.net/meme/)
+
+- [RSAT peak-motifs](http://rsat.ulb.ac.be/peak-motifs_form.cgi)
+
+- [motifRG (Bioconductor)](http://www.bioconductor.org/packages/release/bioc/html/motifRG.html)
+
+- [rGADEM (Bioconductor)](http://www.bioconductor.org/packages/release/bioc/html/rGADEM.html)
+
+A survey of motif finding algorithms: <http://www.biomedcentral.com/1471-2105/8/S7/S21/>
+
+
+----
+
+## NGS read counting
+### Methods for counting reads which overlap features
+
+Bioconductor packages:
+
+- `summarizeOverlaps` in the `GenomicAlignments` package
+
+<http://www.bioconductor.org/packages/devel/bioc/html/GenomicAlignments.html>
+
+- `featureCounts` in the `Rsubread` package
+
+Liao Y, Smyth GK, Shi W., "featureCounts: an efficient general purpose program for assigning sequence reads to genomic features." Bioinformatics. 2014
+
+<http://www.ncbi.nlm.nih.gov/pubmed/24227677>
+
+<http://bioinf.wehi.edu.au/featureCounts/>
+
+- `easyRNAseq` package
+
+Delhomme N1, Padioleau I, Furlong EE, Steinmetz LM. "easyRNASeq: a bioconductor package for processing RNA-Seq data." Bioinformatics. 2012.
+
+<http://www.ncbi.nlm.nih.gov/pubmed/22847932>
+
+<http://www.bioconductor.org/packages/release/bioc/html/easyRNASeq.html>
+
+Command line tools: 
+
+- `htseq-count`, a program in the `htseq` Python package
+
+Simon Anders, Paul Theodor Pyl, Wolfgang Huber.
+
+HTSeq — A Python framework to work with high-throughput sequencing data
+
+bioRxiv preprint (2014), doi: [10.1101/002824](http://dx.doi.org/10.1101/002824)
+
+<http://www-huber.embl.de/users/anders/HTSeq/doc/count.html>
+
+- `bedtools` <https://code.google.com/p/bedtools/>
+
+- `bedops` <https://code.google.com/p/bedops/>
+
+
+----
+
+## RNA-seq analysis
+### Introduction
+
+Mortazavi A, Williams BA, McCue K, Schaeffer L, Wold B., "Mapping and quantifying mammalian transcriptomes by RNA-Seq", Nat Methods. 2008.
+
+<http://www.nature.com/nmeth/journal/v5/n7/full/nmeth.1226.html>
+
+John C. Marioni, Christopher E. Mason, Shrikant M. Mane, Matthew Stephens, and Yoav Gilad, "RNA-seq: An assessment of technical reproducibility and comparison with gene expression arrays" Genome Res. 2008.
+
+<http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2527709/>
+
+Trapnell C, Williams BA, Pertea G, Mortazavi AM, Kwan G, van Baren MJ, Salzberg SL, Wold B, Pachter L.,  "Transcript assembly and quantification by RNA-Seq reveals unannotated transcripts and isoform switching during cell differentiation", Nature Biotechnology, 2010.
+
+<http://www.nature.com/nbt/journal/v28/n5/full/nbt.1621.html>
+
+<http://cufflinks.cbcb.umd.edu/>
+
+### Hammer et al
+
+Hammer P, Banck MS, Amberg R, Wang C, Petznick G, Luo S, Khrebtukova I, Schroth GP, Beyerlein P, Beutler AS. "mRNA-seq with agnostic splice site discovery for nervous system transcriptomics tested in chronic pain." Genome Res. 2010
+
+<http://www.ncbi.nlm.nih.gov/pubmed?term=20452967>
+
+### ReCount
+
+Frazee AC, Langmead B, Leek JT. "ReCount: a multi-experiment resource of analysis-ready RNA-seq gene count datasets". BMC Bioinformatics 12:449 <http://www.ncbi.nlm.nih.gov/pubmed/22087737>
+
+### Negative Binomial methods for differential expression of count data
+
+All the following methods are available on Bioconductor:
+
+- `edgeR`
+
+Mark D. Robinson, Davis J. McCarthy, and Gordon K. Smyth, "edgeR: a Bioconductor package for differential expression analysis of digital gene expression data" Bioinformatics 2010.
+
+<http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/>
+
+- `DESeq` (the latest version is a separate package, `DESeq2`)
+
+Simon Anders and Wolfgang Huber, "Differential expression analysis for sequence count data", Genome Biology 2010.
+
+<http://genomebiology.com/2010/11/10/r106>
+
+- `DSS`
+
+Hao Wu, Chi Wang, Zhijin Wu, "A new shrinkage estimator for dispersion improves differential expression detection in RNA-seq data" Biostatistics 2013.
+
+<http://biostatistics.oxfordjournals.org/content/14/2/232>
+
+### Transformation followed by linear model methods
+
+`voom` in the `limma` Bioconductor package
+
+Charity W Law, Yunshun Chen, Wei Shi and Gordon K Smyth, "voom: precision weights unlock linear model analysis tools for RNA-seq read counts", Genome Biology. 2014.
+
+<http://genomebiology.com/2014/15/2/R29>
+
+### Resampling-based methods
+
+`SAMseq` in the `samr` package on CRAN
+
+Jun Li and Robert Tibshirani, "Finding consistent patterns: A nonparametric approach for identifying differential expression in RNA-Seq data", Stat Methods Med Res. 2013.
+
+<http://smm.sagepub.com/content/22/5/519.short>
+
+### Incorporating isoform-abundance
+
+- `Cuffdiff` (the latest version is `Cuffdiff2`)
+
+Trapnell C, Hendrickson DG, Sauvageau M, Goff L, Rinn JL, Pachter L., "Differential analysis of gene regulation at transcript resolution with RNA-seq" Nat Biotechnol. 2013.
+
+<http://www.ncbi.nlm.nih.gov/pubmed/23222703>
+
+- `BitSeq`
+
+Peter Glaus, Antti Honkela, and Magnus Rattray, "Identifying differentially expressed transcripts from RNA-seq data with biological variation", Bioinformatics. 2012.
+
+<http://bioinformatics.oxfordjournals.org/content/28/13/1721>
+
+
+----
+

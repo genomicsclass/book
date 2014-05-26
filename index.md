@@ -60,6 +60,17 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Gene set testing](pages/gene_set_testing.html)
 - [Multiple testing](pages/multtest.html)
 
+### Advanced workflows (week 8)
+
+- [Visualizing NGS data](pages/visualizing_NGS.html)
+- [Counting NGS reads in features](pages/read_counting.html)
+- [Methylation](pages/methylation.html)
+- [Reading 450K idat files with the minfi package](pages/minfi.html)
+- [Interactive visualization of DNA methylation data analysis](pages/epiviz.html)
+- [ChIP-seq](pages/ChIPseq.html)
+- [RNA-seq](pages/RNAseq.html)
+- [Genome variation](pages/SNP.html)
+
 ### Footnotes for all lectures
 
 - [Footnotes](pages/footnotes.html)
