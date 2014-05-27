@@ -5,7 +5,6 @@ title: Interactive visualization of DNA methylation data analysis
 
 
 
-
 ### contributed by Héctor Corrada Bravo
 
 Here we show how to visualize the results of your methylation data analysis in the [epiviz](http://epiviz.cbcb.umd.edu) interactive
@@ -14,7 +13,7 @@ genomics data visualization app. To plot your data there we use the Bioconductor
 
 
 ```r
-# biocLite('epivizr')
+# biocLite("epivizr")
 library(epivizr)
 ```
 
@@ -56,7 +55,6 @@ library(epivizr)
 ## Loading required package: GenomeInfoDb
 ```
 
-
 We assume you already ran the `methylation` lab. The following code is used to populate the environment with the necessary objects. Please see the methylation lab for description of what these functions are doing.
 
 
@@ -76,8 +74,8 @@ library(limma)
 ```
 
 ```r
-X <- model.matrix(~pd$Status)
-fit <- lmFit(meth, X)
+X<-model.matrix(~pd$Status)
+fit<-lmFit(meth,X)
 eb <- ebayes(fit)
 library(bumphunter)
 ```
@@ -90,11 +88,10 @@ library(bumphunter)
 ```
 
 ```r
-chr = as.factor(seqnames(gr))
-pos = start(gr)
-cl = clusterMaker(chr, pos, maxGap = 500)
-res <- bumphunter(meth, X, chr = chr, pos = pos, cluster = cl, cutoff = 0.1, 
-    B = 0)
+chr=as.factor(seqnames(gr))
+pos=start(gr)
+cl=clusterMaker(chr,pos,maxGap=500)
+res<-bumphunter(meth,X,chr=chr,pos=pos,cluster=cl,cutoff=0.1,B=0)
 ```
 
 ```
@@ -103,7 +100,6 @@ res <- bumphunter(meth, X, chr = chr, pos = pos, cluster = cl, cutoff = 0.1,
 ## [bumphunterEngine] Finding regions.
 ## [bumphunterEngine] Found 68682 bumps.
 ```
-
 
 You should therefore have in your environment the following objects:
 
@@ -138,7 +134,6 @@ head(eb$t)
 ```
 
 ```r
-
 # the result of running bumphunter
 head(res$fitted)
 ```
@@ -175,7 +170,6 @@ head(res$table)
 ```
 
 ```r
-
 # the CpG location object
 show(gr)
 ```
@@ -201,27 +195,23 @@ show(gr)
 ##       NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA
 ```
 
-
 `epivizr` uses `GRanges` objects to visualize data, so we'll create a new `GRanges` object containing CpG level
 estimates we want to visualize
 
 
 ```r
 cpgGR <- gr
-cpgGR$fitted <- round(res$fitted, digits = 3)
+cpgGR$fitted <- round(res$fitted,digits=3)
 ```
-
 
 and make another `GRanges` object containing the `bumphunter` result
 
 
 ```r
-dmrGR <- with(res$table, GRanges(chr, IRanges(start, end), area = area, value = value))
+dmrGR <- with(res$table,GRanges(chr,IRanges(start,end),area=area,value=value))
 
-# let's add an annotation for 'hypo-' or 'hyper-' methylation (as long as
-# the difference is large enough)
-dmrGR$type <- ifelse(abs(dmrGR$value) < 0.2, "neither", ifelse(dmrGR$value < 
-    0, "hypo", "hyper"))
+# let's add an annotation for "hypo-" or "hyper-" methylation (as long as the difference is large enough)
+dmrGR$type <- ifelse(abs(dmrGR$value)<0.2, "neither", ifelse(dmrGR$value<0,"hypo","hyper"))
 table(dmrGR$type)
 ```
 
@@ -231,20 +221,17 @@ table(dmrGR$type)
 ##    5141   18865   44676
 ```
 
-
 Now, we are ready to visualize this data on `epiviz`. First start an epiviz session:
 
 
 ```r
-mgr <- startEpiviz(workspace = "mi9NojjqT1l")
+mgr <- startEpiviz(workspace="mi9NojjqT1l")
 ```
-
 
 
 ```
 ## [epivizr] Starting websocket server...
 ```
-
 
 ----
 
@@ -255,7 +242,6 @@ mgr <- startEpiviz(workspace = "mi9NojjqT1l")
 # mgr$service()
 ```
 
-
 Non-Windows users don't need to do this.
 
 ----
@@ -264,22 +250,22 @@ Now, let's add tracks for hypo and hyper methylated regions:
 
 
 ```r
-hypoTrack <- mgr$addDevice(subset(dmrGR, dmrGR$type == "hypo"), "Hypo-methylated")
-hyperTrack <- mgr$addDevice(subset(dmrGR, dmrGR$type == "hyper"), "Hyper-methylated")
+hypoTrack <- mgr$addDevice(subset(dmrGR,dmrGR$type=="hypo"), "Hypo-methylated")
+hyperTrack <- mgr$addDevice(subset(dmrGR,dmrGR$type=="hyper"), "Hyper-methylated")
 ```
-
 
 We can also add the estimated methylation difference as another track:
 
 
 ```r
-diffTrack <- mgr$addDevice(cpgGR, "Meth difference", type = "bp", columns = "fitted")
+diffTrack <- mgr$addDevice(cpgGR,"Meth difference",type="bp",columns="fitted")
 ```
-
 
 Go to your browser and navigate around, search for your favorite gene and take a look at gene expression
 looks like around these regions according to the [gene expression barcode](http://www.ncbi.nlm.nih.gov/pubmed/21177656),
 which we preloaded when we started `epiviz`. Here's some interesting ones: "MMP10", "TIMP2", "MAGEA12".
+
+<a href="figure/epiviz.png"><img src="figure/epiviz.png" width=600 /></a>
 
 ----
 
@@ -291,31 +277,32 @@ Here's other useful analyses you can do with `epivizr`. Let's make a `Summarized
 
 
 ```r
-colData <- DataFrame(name = c("M", "A"))
+colData <- DataFrame(name=c("M","A"))
 rownames(colData) <- colData$name
 
 rowData <- gr
 rowData$cpg <- names(gr)
 
-cpgSE <- SummarizedExperiment(rowData = rowData, assays = SimpleList(ma = cbind(fit$coef[, 
-    2], fit$Amean)), colData = colData)
+cpgSE <- SummarizedExperiment(rowData=rowData,
+      assays=SimpleList(ma=cbind(fit$coef[,2],fit$Amean)),
+      colData=colData)
 ```
-
 
 and add the MA plot:
 
 
 ```r
-maPlot <- mgr$addDevice(cpgSE, columns = c("A", "M"), "cpg MA")
+maPlot <- mgr$addDevice(cpgSE,columns=c("A","M"),"cpg MA")
 ```
 
+<a href="figure/epivizma.png"><img src="figure/epivizma.png" width=600 /></a>
 
 Let's now browse the genome in order through the top 5 found regions in order (by area):
 
 
 ```r
-slideshowRegions <- dmrGR[1:10, ] + 10000
-mgr$slideshow(slideshowRegions, n = 5)
+slideshowRegions <- dmrGR[1:10,] + 10000
+mgr$slideshow(slideshowRegions, n=5)
 ```
 
 ```
@@ -326,14 +313,12 @@ mgr$slideshow(slideshowRegions, n = 5)
 ## Region 5 of 5 . Press key to continue (ESC to stop)...
 ```
 
-
 Last thing to do is disconnect the `epiviz` app:
 
 
 ```r
 mgr$stopServer()
 ```
-
 
 There's a lot more you can do with `epiviz`. It's a fairly flexible visualization tool. You can find out more about it in the [epiviz documentation site](http://epiviz.github.io).
 
@@ -347,6 +332,5 @@ browseVignettes("epivizr")
 ```
 ## starting httpd help server ... done
 ```
-
 
 
