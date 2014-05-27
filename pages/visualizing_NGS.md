@@ -69,8 +69,22 @@ Copy these files from the R library directory to the current working directory. 
 
 
 ```r
-system(paste("cp", fl1, basename(fl1)))
-system(paste("cp", fl2, basename(fl2)))
+file.copy(from = fl1, to = basename(fl1))
+```
+
+```
+## [1] FALSE
+```
+
+```r
+file.copy(from = fl2, to = basename(fl2))
+```
+
+```
+## [1] FALSE
+```
+
+```r
 library(Rsamtools)
 ```
 
