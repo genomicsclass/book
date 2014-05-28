@@ -7,6 +7,11 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 <http://github.com/genomicsclass/labs>
 
+### Resources
+
+- [Finding more help for data analysis](pages/more_help.html)
+- [Bioconductor reference card](https://github.com/mikelove/bioc-refcard)
+
 ### Introduction (week 1)
 
 - [Introduction](pages/introduction.html)
