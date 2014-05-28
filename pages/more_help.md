@@ -40,7 +40,7 @@ Bioconductor mailing list:
    not all questions are answered in the vignette, *many* are. Package
    maintainers can get grumpy (they are human) if you ask a question
    which is clearly answered in the vignette or the help page.
-   More on [how to find help within R.](pages/installing_Bioconductor_finding_help.html)
+   More on [how to find help within R.](installing_Bioconductor_finding_help.html)
 2. **Explain what you are trying to do**. If the question is not simply reporting a bug, i.e., you are not
    sure exactly what kind of analysis to run, then you should explain what biological question you are
    trying to answer with your experiment/data, and what the
