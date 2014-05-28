@@ -8,22 +8,19 @@ analysis for genomics.
 
 ## SEQanswers and Biostars
 
-These two websites are incredibly useful to getting feedback on
-genomics experiments and data analysis tips.
+These are both very useful for getting feedback on
+genomics experiments and getting data analysis tips.
 
-[SEQanswers](http://seqanswers.com/) is "an information resource and
+- [SEQanswers](http://seqanswers.com/) is "an information resource and
 user-driven community focused on all aspects of next-generation genomics".
-
 They say "The site will always attempt to cater to everyone,
 regardless of scientific background or knowledge."
-
 SEQanswers also has a wiki listing
 many various [software packages for genomics data analysis](http://seqanswers.com/wiki/Software).
 
-[Biostars](https://www.biostars.org/) is a website focused on
+- [Biostars](https://www.biostars.org/) is a website focused on
 "bioinformatics, computational genomics and biological data analysis"
-
-They say: No question is too trivial or too "newbie".
+They say: "No question is too trivial or too 'newbie'."
 
 ## Bioconductor mailing list
 
