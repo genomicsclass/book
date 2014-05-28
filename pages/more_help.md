@@ -54,7 +54,8 @@ Bioconductor mailing list:
 4. **Paste in all of your code**, and any errors or warnings if they
    occurred.
 
-The mailing list can be found at the link below, where there is more
+The mailing list details are
+[here](http://bioconductor.org/help/mailing-list/), and there is even more
 information in the [posting guide](http://bioconductor.org/help/mailing-list/posting-guide/).
 
 If you have a general R question, there is the [R-help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help).
