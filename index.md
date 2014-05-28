@@ -9,8 +9,8 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ### Resources
 
+- [Online resources and books](pages/resources.html)
 - [Finding more help for data analysis](pages/more_help.html)
-- [Bioconductor reference card](https://github.com/mikelove/bioc-refcard)
 
 ### Introduction (week 1)
 

@@ -6,7 +6,7 @@ title: Finding more help for data analysis
 Here are some resources for finding more help when performing data
 analysis for genomics.
 
-## SEQanswers and Biostars
+### SEQanswers and Biostars
 
 These are both very useful for getting feedback on
 genomics experiments and getting data analysis tips.
@@ -22,7 +22,7 @@ many various [software packages for genomics data analysis](http://seqanswers.co
 "bioinformatics, computational genomics and biological data analysis"
 They say: "No question is too trivial or too 'newbie'."
 
-## Bioconductor mailing list
+### Bioconductor mailing list
 
 If your question is about Bioconductor software, you can email the
 [Bioconductor mailing list](http://bioconductor.org/help/mailing-list/). 
