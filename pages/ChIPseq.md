@@ -5,14 +5,15 @@ title: ChIP-seq analysis
 
 
 
-
 ## Introduction
 
 ChIP-seq is a protocol for inferring the locations of proteins bound or associated with DNA. The raw data looks quite different than DNA- or RNA-seq, in that the NGS reads form tall "peaks" at the locations where the proteins were tightly bound to DNA in the cells which were used to create the sample. More specifically, ChIP-seq results in two peaks of reads of different strands (plus/minus also referred to as Watson/Crick), as shown in [Figure 1](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2592715/figure/F1/) of the MACS manuscript: [Zhang 2008](#foot)
 
 ## Peak calling
 
-In the first lab, we use the MACS software to call peaks. There are many different algorithms for calling peaks, which have varying performance on different kinds of experiments. As mentioned in the lecture, for ChIP of proteins with broad peaks (such as modified histones), algorithms other than those for detecting sharp peaks might perform better.
+In the first lab, we use the MACS software to call peaks. The code for this is in the [MACS.txt](https://github.com/genomicsclass/labs/blob/master/week8/MACS.txt) file.
+
+There are many different algorithms for calling peaks, which have varying performance on different kinds of experiments. As mentioned in the lecture, for ChIP of proteins with broad peaks (such as modified histones), algorithms other than those for detecting sharp peaks might perform better.
 
 ## After peak calling
 
@@ -26,9 +27,11 @@ The following lab will go over the functionality of the `DiffBind` package, most
 
 ## Reading peak files into R
 
+We check the files in the `DiffBind` folder, and in the `peaks` subdirectory:
+
 
 ```r
-# biocLite('DiffBind')
+#biocLite("DiffBind")
 library(DiffBind)
 ```
 
@@ -79,26 +82,14 @@ library(DiffBind)
 ```
 
 ```r
-setwd(system.file("extra", package = "DiffBind"))
-```
-
-
-We check the files in the `DiffBind` folder, and in the `peaks` subdirectory:
-
-
-```r
+setwd(system.file("extra", package="DiffBind"))
 list.files()
 ```
 
 ```
-##  [1] "ChIPseq_quiz.R"         "ChIPseq.Rmd"           
-##  [3] "cufflinks.txt"          "epiviz.Rmd"            
-##  [5] "MACS.txt"               "methylation_quiz.R"    
-##  [7] "methylation.Rmd"        "minfi.Rmd"             
-##  [9] "read_counting.Rmd"      "RNAseq_quiz.R"         
-## [11] "RNAseq.Rmd"             "SNP_quiz.R"            
-## [13] "SNP.Rmd"                "visualize_count_quiz.R"
-## [15] "visualizing_NGS.Rmd"    "wang_eset.RData"
+## [1] "config.csv"              "peaks"                  
+## [3] "tamoxifen_allfields.csv" "tamoxifen_GEO.csv"      
+## [5] "tamoxifen_GEO.R"         "tamoxifen.csv"
 ```
 
 ```r
@@ -106,11 +97,42 @@ read.csv("tamoxifen.csv")
 ```
 
 ```
-## Warning: cannot open file 'tamoxifen.csv': No such file or directory
-```
-
-```
-## Error: cannot open the connection
+##    SampleID Tissue Factor  Condition  Treatment Replicate
+## 1    BT4741  BT474     ER  Resistant Full-Media         1
+## 2    BT4742  BT474     ER  Resistant Full-Media         2
+## 3     MCF71   MCF7     ER Responsive Full-Media         1
+## 4     MCF72   MCF7     ER Responsive Full-Media         2
+## 5     MCF73   MCF7     ER Responsive Full-Media         3
+## 6     T47D1   T47D     ER Responsive Full-Media         1
+## 7     T47D2   T47D     ER Responsive Full-Media         2
+## 8    MCF7r1   MCF7     ER  Resistant Full-Media         1
+## 9    MCF7r2   MCF7     ER  Resistant Full-Media         2
+## 10    ZR751   ZR75     ER Responsive Full-Media         1
+## 11    ZR752   ZR75     ER Responsive Full-Media         2
+##                      bamReads ControlID                  bamControl
+## 1  reads/Chr18_BT474_ER_1.bam    BT474c reads/Chr18_BT474_input.bam
+## 2  reads/Chr18_BT474_ER_2.bam    BT474c reads/Chr18_BT474_input.bam
+## 3   reads/Chr18_MCF7_ER_1.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 4   reads/Chr18_MCF7_ER_2.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 5   reads/Chr18_MCF7_ER_3.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 6   reads/Chr18_T47D_ER_1.bam     T47Dc        reads/T47D_input.bam
+## 7   reads/Chr18_T47D_ER_2.bam     T47Dc        reads/T47D_input.bam
+## 8   reads/Chr18_TAMR_ER_1.bam     TAMRc        reads/TAMR_input.bam
+## 9         reads/TAMR_ER_2.bam     TAMRc        reads/TAMR_input.bam
+## 10  reads/Chr18_ZR75_ER_1.bam     ZR75c        reads/ZR75_input.bam
+## 11  reads/Chr18_ZR75_ER_2.bam     ZR75c        reads/ZR75_input.bam
+##                      Peaks PeakCaller
+## 1  peaks/BT474_ER_1.bed.gz        bed
+## 2  peaks/BT474_ER_2.bed.gz        bed
+## 3   peaks/MCF7_ER_1.bed.gz        bed
+## 4   peaks/MCF7_ER_2.bed.gz        bed
+## 5   peaks/MCF7_ER_3.bed.gz        bed
+## 6   peaks/T47D_ER_1.bed.gz        bed
+## 7   peaks/T47D_ER_2.bed.gz        bed
+## 8   peaks/TAMR_ER_1.bed.gz        bed
+## 9   peaks/TAMR_ER_2.bed.gz        bed
+## 10  peaks/ZR75_ER_1.bed.gz        bed
+## 11  peaks/ZR75_ER_2.bed.gz        bed
 ```
 
 ```r
@@ -118,9 +140,11 @@ list.files("peaks")
 ```
 
 ```
-## character(0)
+##  [1] "BT474_ER_1.bed.gz" "BT474_ER_2.bed.gz" "MCF7_ER_1.bed.gz" 
+##  [4] "MCF7_ER_2.bed.gz"  "MCF7_ER_3.bed.gz"  "T47D_ER_1.bed.gz" 
+##  [7] "T47D_ER_2.bed.gz"  "TAMR_ER_1.bed.gz"  "TAMR_ER_2.bed.gz" 
+## [10] "ZR75_ER_1.bed.gz"  "ZR75_ER_2.bed.gz"
 ```
-
 
 The `dba` function creates the basic object for an analysis of *Differential Binding Affinity*. The sample sheet specifies a data frame of file with certain required columns. Note that columns have restricted names, including *Tissue*, *Factor*, *Condition*, etc., which will be referred to later in analysis.
 
@@ -128,25 +152,45 @@ This function will automatically create a correlation plot showing the overlap o
 
 
 ```r
-ta <- dba(sampleSheet = "tamoxifen.csv")
+setwd(system.file("extra", package="DiffBind"))
+ta <- dba(sampleSheet="tamoxifen.csv")
 ```
 
 ```
-## Warning: cannot open file 'tamoxifen.csv': No such file or directory
+## BT4741 BT474 ER Resistant Full-Media 1 bed
+## BT4742 BT474 ER Resistant Full-Media 2 bed
+## MCF71 MCF7 ER Responsive Full-Media 1 bed
+## MCF72 MCF7 ER Responsive Full-Media 2 bed
+## MCF73 MCF7 ER Responsive Full-Media 3 bed
+## T47D1 T47D ER Responsive Full-Media 1 bed
+## T47D2 T47D ER Responsive Full-Media 2 bed
+## MCF7r1 MCF7 ER Resistant Full-Media 1 bed
+## MCF7r2 MCF7 ER Resistant Full-Media 2 bed
+## ZR751 ZR75 ER Responsive Full-Media 1 bed
+## ZR752 ZR75 ER Responsive Full-Media 2 bed
 ```
 
-```
-## Error: cannot open the connection
-```
+![plot of chunk unnamed-chunk-2](figure/ChIPseq-unnamed-chunk-2.png) 
 
 ```r
 ta
 ```
 
 ```
-## Error: object 'ta' not found
+## 11 Samples, 2602 sites in matrix (3557 total):
+##        ID Tissue Factor  Condition  Treatment Replicate Caller Intervals
+## 1  BT4741  BT474     ER  Resistant Full-Media         1    bed      1084
+## 2  BT4742  BT474     ER  Resistant Full-Media         2    bed      1115
+## 3   MCF71   MCF7     ER Responsive Full-Media         1    bed      1513
+## 4   MCF72   MCF7     ER Responsive Full-Media         2    bed      1037
+## 5   MCF73   MCF7     ER Responsive Full-Media         3    bed      1372
+## 6   T47D1   T47D     ER Responsive Full-Media         1    bed       509
+## 7   T47D2   T47D     ER Responsive Full-Media         2    bed       347
+## 8  MCF7r1   MCF7     ER  Resistant Full-Media         1    bed      1148
+## 9  MCF7r2   MCF7     ER  Resistant Full-Media         2    bed       933
+## 10  ZR751   ZR75     ER Responsive Full-Media         1    bed      2111
+## 11  ZR752   ZR75     ER Responsive Full-Media         2    bed      1975
 ```
-
 
 From the `DiffBind` vignette, we have:
 
@@ -163,7 +207,9 @@ names(ta)
 ```
 
 ```
-## Error: object 'ta' not found
+##  [1] "config"      "chrmap"      "peaks"       "class"       "masks"      
+##  [6] "samples"     "allvectors"  "overlapping" "vectors"     "attributes" 
+## [11] "minOverlap"
 ```
 
 ```r
@@ -171,7 +217,7 @@ class(ta$peaks)
 ```
 
 ```
-## Error: object 'ta' not found
+## [1] "list"
 ```
 
 ```r
@@ -179,9 +225,14 @@ head(ta$peaks[[1]])
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'ta' not found
+##      V1     V2     V3 1
+## 1 chr18  97113 100326 1
+## 2 chr18 205561 206065 1
+## 3 chr18 301531 302107 1
+## 4 chr18 346655 347317 1
+## 5 chr18 361153 362092 1
+## 6 chr18 385190 386464 1
 ```
-
 
 ## Differential binding
 
@@ -194,17 +245,70 @@ ta$samples
 ```
 
 ```
-## Error: object 'ta' not found
+##    SampleID Tissue Factor  Condition  Treatment Replicate
+## 1    BT4741  BT474     ER  Resistant Full-Media         1
+## 2    BT4742  BT474     ER  Resistant Full-Media         2
+## 3     MCF71   MCF7     ER Responsive Full-Media         1
+## 4     MCF72   MCF7     ER Responsive Full-Media         2
+## 5     MCF73   MCF7     ER Responsive Full-Media         3
+## 6     T47D1   T47D     ER Responsive Full-Media         1
+## 7     T47D2   T47D     ER Responsive Full-Media         2
+## 8    MCF7r1   MCF7     ER  Resistant Full-Media         1
+## 9    MCF7r2   MCF7     ER  Resistant Full-Media         2
+## 10    ZR751   ZR75     ER Responsive Full-Media         1
+## 11    ZR752   ZR75     ER Responsive Full-Media         2
+##                      bamReads ControlID                  bamControl
+## 1  reads/Chr18_BT474_ER_1.bam    BT474c reads/Chr18_BT474_input.bam
+## 2  reads/Chr18_BT474_ER_2.bam    BT474c reads/Chr18_BT474_input.bam
+## 3   reads/Chr18_MCF7_ER_1.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 4   reads/Chr18_MCF7_ER_2.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 5   reads/Chr18_MCF7_ER_3.bam     MCF7c  reads/Chr18_MCF7_input.bam
+## 6   reads/Chr18_T47D_ER_1.bam     T47Dc        reads/T47D_input.bam
+## 7   reads/Chr18_T47D_ER_2.bam     T47Dc        reads/T47D_input.bam
+## 8   reads/Chr18_TAMR_ER_1.bam     TAMRc        reads/TAMR_input.bam
+## 9         reads/TAMR_ER_2.bam     TAMRc        reads/TAMR_input.bam
+## 10  reads/Chr18_ZR75_ER_1.bam     ZR75c        reads/ZR75_input.bam
+## 11  reads/Chr18_ZR75_ER_2.bam     ZR75c        reads/ZR75_input.bam
+##                      Peaks PeakCaller
+## 1  peaks/BT474_ER_1.bed.gz        bed
+## 2  peaks/BT474_ER_2.bed.gz        bed
+## 3   peaks/MCF7_ER_1.bed.gz        bed
+## 4   peaks/MCF7_ER_2.bed.gz        bed
+## 5   peaks/MCF7_ER_3.bed.gz        bed
+## 6   peaks/T47D_ER_1.bed.gz        bed
+## 7   peaks/T47D_ER_2.bed.gz        bed
+## 8   peaks/TAMR_ER_1.bed.gz        bed
+## 9   peaks/TAMR_ER_2.bed.gz        bed
+## 10  peaks/ZR75_ER_1.bed.gz        bed
+## 11  peaks/ZR75_ER_2.bed.gz        bed
 ```
 
 ```r
-# this call does not actually work, because the BAM files are not included
-# in the package
-ta <- dba.count(ta, minOverlap = 3)
+# this call does not actually work, because the BAM files are not included in the package
+ta <- dba.count(ta, minOverlap=3)
 ```
 
 ```
-## Error: object 'ta' not found
+## Warning: reads/Chr18_BT474_ER_1.bam not accessible
+## Warning: reads/Chr18_BT474_ER_2.bam not accessible
+## Warning: reads/Chr18_MCF7_ER_1.bam not accessible
+## Warning: reads/Chr18_MCF7_ER_2.bam not accessible
+## Warning: reads/Chr18_MCF7_ER_3.bam not accessible
+## Warning: reads/Chr18_T47D_ER_1.bam not accessible
+## Warning: reads/Chr18_T47D_ER_2.bam not accessible
+## Warning: reads/Chr18_TAMR_ER_1.bam not accessible
+## Warning: reads/TAMR_ER_2.bam not accessible
+## Warning: reads/Chr18_ZR75_ER_1.bam not accessible
+## Warning: reads/Chr18_ZR75_ER_2.bam not accessible
+## Warning: reads/Chr18_BT474_input.bam not accessible
+## Warning: reads/Chr18_MCF7_input.bam not accessible
+## Warning: reads/T47D_input.bam not accessible
+## Warning: reads/TAMR_input.bam not accessible
+## Warning: reads/ZR75_input.bam not accessible
+```
+
+```
+## Error: Some read files could not be accessed. See warnings for details.
 ```
 
 ```r
@@ -214,8 +318,7 @@ ta2 <- tamoxifen
 plot(ta2)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/ChIPseq-unnamed-chunk-5.png) 
-
+![plot of chunk unnamed-chunk-4](figure/ChIPseq-unnamed-chunk-4.png) 
 
 We can perform a test by specifying to contrast over the levels of condition. This will call edgeR (the default) or DESeq software in order to normalize samples for sequencing depth and perform essentially the same analysis as a differential expression analysis for RNA-Seq counts. Here we could also include the tissue as a blocking factor, by providing `DBA_TISSUE` to the `block` argument of `dba.contrast`.
 
@@ -223,11 +326,11 @@ The plot produced then looks at correlation only for those peaks which showed ev
 
 
 ```r
-ta2 <- dba.contrast(ta2, categories = DBA_CONDITION)
+ta2 <- dba.contrast(ta2, categories=DBA_CONDITION)
 ta2 <- dba.analyze(ta2)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/ChIPseq-unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-5](figure/ChIPseq-unnamed-chunk-5.png) 
 
 ```r
 ta2
@@ -264,7 +367,6 @@ ta2
 ##      Group1 Members1     Group2 Members2 DB.edgeR
 ## 1 Resistant        4 Responsive        7      314
 ```
-
 
 From the `DiffBind` vignette, we have:
 
@@ -331,9 +433,8 @@ tadb
 ```
 
 ```r
-counts <- dba.report(ta2, bCounts = TRUE)
+counts <- dba.report(ta2, bCounts=TRUE)
 ```
-
 
 ## Reproducing the log fold changes
 
@@ -341,7 +442,7 @@ The following code is used only to see if we can reproduce the log fold change o
 
 
 ```r
-x <- mcols(counts)[1, -c(1:6)]
+x <- mcols(counts)[1,-c(1:6)]
 x <- unlist(x)
 (xord <- x[match(ta2$samples$SampleID, names(x))])
 ```
@@ -362,27 +463,24 @@ ta2$samples$SampleID
 ##  [8] "MCF7r1" "MCF7r2" "ZR751"  "ZR752"
 ```
 
-
 We create a vector of the conditions, and conditions combined with tissue:
 
 
 ```r
-cond <- factor(ta2$samples[, "Condition"])
-condcomb <- factor(paste(ta2$samples[, "Condition"], ta2$samples[, "Tissue"]))
+cond <- factor(ta2$samples[,"Condition"])
+condcomb <- factor(paste(ta2$samples[,"Condition"], ta2$samples[,"Tissue"]))
 ```
-
 
 A stripchart of the counts over the conditions:
 
 
 ```r
-par(mar = c(15, 5, 2, 2))
-stripchart(log(xord) ~ condcomb, method = "jitter", vertical = TRUE, las = 2, 
-    ylab = "log2 normalized counts")
+par(mar=c(15,5,2,2))
+stripchart(log(xord) ~ condcomb, method="jitter", 
+           vertical=TRUE, las=2, ylab="log2 normalized counts")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/ChIPseq-unnamed-chunk-10.png) 
-
+![plot of chunk unnamed-chunk-9](figure/ChIPseq-unnamed-chunk-9.png) 
 
 Finally, we show that the log2 fold change of the means is the same as reported by the `DiffBind` functions:
 
@@ -398,7 +496,7 @@ log2(means)
 ```
 
 ```r
-log2(means[1]/means[2])
+log2(means[1] / means[2])
 ```
 
 ```
@@ -407,7 +505,7 @@ log2(means[1]/means[2])
 ```
 
 ```r
-mcols(tadb)[1, ]
+mcols(tadb)[1,]
 ```
 
 ```
@@ -416,7 +514,6 @@ mcols(tadb)[1, ]
 ##   <numeric>      <numeric>       <numeric> <numeric> <numeric> <numeric>
 ## 1     5.827          1.453           6.454    -5.001   5.5e-08 9.617e-05
 ```
-
 
 ## Footnotes <a name="foot"></a>
 

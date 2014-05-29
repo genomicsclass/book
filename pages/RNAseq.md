@@ -5,12 +5,11 @@ title: RNA-seq analysis
 
 
 
-
 ## Introduction
 
 RNA-Seq is a valuable experiment for quantifying both the types and the amount of RNA molecules in a sample. We've covered the basic idea of the protocol in lectures, but some additional references for RNA-Seq include [Mortazavi (2008)](#foot) and [Marioni (2008)](#foot).
 
-In the file, `cufflinks.txt`, we show some example calls for aligning RNA-Seq reads to the reference genome, and an example call for running Cufflinks, which estimates both the expression levels and the different RNA isoforms which are present in the sample. The main paper describing the Cufflinks method is [Trapnell (2010)](#foot) and the website for the Cufflinks software is:
+In the file, [cufflinks.txt](https://github.com/genomicsclass/labs/blob/master/week8/cufflinks.txt), we show some example calls for aligning RNA-Seq reads to the reference genome, and an example call for running Cufflinks, which estimates both the expression levels and the different RNA isoforms which are present in the sample. The main paper describing the Cufflinks method is [Trapnell (2010)](#foot) and the website for the Cufflinks software is:
 
 <http://cufflinks.cbcb.umd.edu/>
 
@@ -86,10 +85,9 @@ library(GenomicRanges)
 
 ```r
 # the SimpleList() part below is only necessary for Bioc <= 2.13
-se <- SummarizedExperiment(SimpleList(counts = exprs(hammer.eset)))
+se <- SummarizedExperiment(SimpleList(counts=exprs(hammer.eset)))
 colData(se) <- DataFrame(pData(hammer.eset))
 ```
-
 
 We need to fix a typo in the Time column:
 
@@ -123,14 +121,13 @@ colData(se)$Time
 ## Levels: 2 months 2 weeks
 ```
 
-
 ### Normalization
 
 We will use the `DESeq2` package to normalize the sample for sequencing depth. For now, don't worry about the `design` argument.
 
 
 ```r
-# biocLite('DESeq2')
+# biocLite("DESeq2")
 library(DESeq2)
 ```
 
@@ -140,15 +137,14 @@ library(DESeq2)
 ```
 
 ```r
-dds <- DESeqDataSet(se, design = ~1)
+dds <- DESeqDataSet( se, design = ~ 1 )
 ```
-
 
 The following estimates size factors to account for differences in sequencing depth.
 
 
 ```r
-dds <- estimateSizeFactors(dds)
+dds <- estimateSizeFactors( dds )
 sizeFactors(dds)
 ```
 
@@ -177,15 +173,13 @@ abline(lm(colSums(counts(dds)) ~ sizeFactors(dds) + 0))
 
 ![plot of chunk unnamed-chunk-4](figure/RNAseq-unnamed-chunk-4.png) 
 
-
 Now we can divide the columns by the size factor and take the log2 of these normalized counts plus a pseudocount of 1. We transpose in order to run PCA.
 
 
 ```r
-logcounts <- log2(counts(dds, normalized = TRUE) + 1)
-pc <- prcomp(t(logcounts))
+logcounts <- log2( counts(dds, normalized=TRUE) + 1 )
+pc <- prcomp( t( logcounts ) )
 ```
-
 
 A couple EDA plots:
 
@@ -200,30 +194,30 @@ library(rafalib)
 
 ```r
 mypar()
-plot(pc$x[, 1], pc$x[, 2], col = colData(dds)$protocol, pch = as.numeric(colData(dds)$Time) + 
-    15)
+plot(pc$x[,1], pc$x[,2], 
+     col=colData(dds)$protocol, 
+     pch=as.numeric(colData(dds)$Time)+15)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/RNAseq-unnamed-chunk-61.png) 
 
 ```r
-plot(hclust(dist(t(logcounts))), labels = colData(dds)$protocol)
+plot(hclust(dist(t(logcounts))), labels=colData(dds)$protocol)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/RNAseq-unnamed-chunk-62.png) 
 
 ```r
-plot(hclust(dist(t(logcounts))), labels = colData(dds)$Time)
+plot(hclust(dist(t(logcounts))), labels=colData(dds)$Time)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/RNAseq-unnamed-chunk-63.png) 
 
 ```r
-plot(logcounts[, 1], logcounts[, 2], cex = 0.1)
+plot(logcounts[,1], logcounts[,2], cex=.1)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/RNAseq-unnamed-chunk-64.png) 
-
 
 Now we will use a normalization method, which is similar to the variance stablizing normalization method mentioned in Week 5. It uses the variance model to shrink together the sample values for lowly expressed genes with high variance. 
 
@@ -232,39 +226,38 @@ The data is in the `assay` slot, and needs to be transposed as before to run PCA
 
 ```r
 # this takes ~15 seconds
-rld <- rlog(dds)
-pc2 <- prcomp(t(assay(rld)))
+rld <- rlog( dds )
+pc2 <- prcomp( t( assay(rld) ) )
 ```
-
 
 We can look at the same plots now using this transformed data.
 
 
 ```r
-plot(pc2$x[, 1], pc2$x[, 2], col = colData(rld)$protocol, pch = as.numeric(colData(rld)$Time) + 
-    15)
+plot(pc2$x[,1], pc2$x[,2],
+     col=colData(rld)$protocol, 
+     pch=as.numeric(colData(rld)$Time)+15)
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/RNAseq-unnamed-chunk-81.png) 
 
 ```r
-plot(hclust(dist(t(assay(rld)))), labels = colData(rld)$protocol)
+plot(hclust(dist(t(assay(rld)))), labels=colData(rld)$protocol)
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/RNAseq-unnamed-chunk-82.png) 
 
 ```r
-plot(hclust(dist(t(assay(rld)))), labels = colData(rld)$Time)
+plot(hclust(dist(t(assay(rld)))), labels=colData(rld)$Time)
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/RNAseq-unnamed-chunk-83.png) 
 
 ```r
-plot(assay(rld)[, 1], assay(rld)[, 2], cex = 0.1)
+plot(assay(rld)[,1], assay(rld)[,2], cex=.1)
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/RNAseq-unnamed-chunk-84.png) 
-
 
 ## Differential gene expression
 
@@ -285,7 +278,7 @@ colData(dds)$protocol
 ```
 
 ```r
-# if control was not already the 'base level', we would do:
+# if control was not already the "base level", we would do:
 colData(dds)$protocol <- relevel(colData(dds)$protocol, "control")
 levels(colData(dds)$protocol)
 ```
@@ -295,16 +288,15 @@ levels(colData(dds)$protocol)
 ```
 
 ```r
-design(dds) <- ~Time + protocol
+design(dds) <- ~ Time + protocol
 ```
-
 
 The following line runs the model, and then we can extract a results table for all genes:
 
 
 ```r
 # this takes ~20 seconds
-dds <- DESeq(dds)
+dds <- DESeq( dds )
 ```
 
 ```
@@ -317,7 +309,7 @@ dds <- DESeq(dds)
 ```
 
 ```r
-res <- results(dds)
+res <- results( dds )
 head(res)
 ```
 
@@ -343,12 +335,11 @@ head(res)
 ## ENSRNOG00000000012 2.411e-04
 ```
 
-
 We can also make other results tables, such as control over SNL, or for comparing the time variable.
 
 
 ```r
-head(results(dds, contrast = c("protocol", "control", "L5 SNL")))
+head(results(dds, contrast=c("protocol","control","L5 SNL")))
 ```
 
 ```
@@ -374,7 +365,7 @@ head(results(dds, contrast = c("protocol", "control", "L5 SNL")))
 ```
 
 ```r
-head(results(dds, contrast = c("Time", "2 months", "2 weeks")))
+head(results(dds, contrast=c("Time","2 months","2 weeks")))
 ```
 
 ```
@@ -399,37 +390,34 @@ head(results(dds, contrast = c("Time", "2 months", "2 weeks")))
 ## ENSRNOG00000000012        NA
 ```
 
-
 We can now contruct an MA-plot of the fold change over the average expression level of all samples.
 
 
 ```r
 # Bioc 2.13
-plotMA(dds, ylim = c(-5, 5))
+plotMA(dds, ylim=c(-5,5))
 # Bioc 2.14
-plotMA(res, ylim = c(-5, 5))
+plotMA(res, ylim=c(-5,5))
 ```
 
 ![plot of chunk unnamed-chunk-12](figure/RNAseq-unnamed-chunk-12.png) 
-
 
 Suppose we are not interested in small log2 fold changes. We can also test for log2 fold changes larger than 1 in absolute value.
 
 
 ```r
-resBigFC <- results(dds, lfcThreshold = 1, altHypothesis = "greaterAbs")
-plotMA(resBigFC, ylim = c(-5, 5))
-abline(h = c(-1, 1), lwd = 5)
+resBigFC <- results(dds, lfcThreshold=1, altHypothesis="greaterAbs")
+plotMA(resBigFC, ylim=c(-5,5))
+abline(h=c(-1,1),lwd=5)
 ```
 
 ![plot of chunk unnamed-chunk-13](figure/RNAseq-unnamed-chunk-13.png) 
-
 
 Let's examine the top gene, sorting by p-value:
 
 
 ```r
-resSort <- res[order(res$pvalue), ]
+resSort <- res[order(res$pvalue),]
 head(resSort)
 ```
 
@@ -456,20 +444,19 @@ head(resSort)
 ```
 
 ```r
-k <- counts(dds)[rownames(resSort)[1], ]
+k <- counts(dds)[rownames(resSort)[1],]
 cond <- with(colData(se), factor(paste(Time, protocol)))
-par(mar = c(15, 5, 2, 2))
-stripchart(log2(k + 1) ~ cond, method = "jitter", vertical = TRUE, las = 2)
+par(mar=c(15,5,2,2))
+stripchart(log2(k + 1) ~ cond, method="jitter", vertical=TRUE, las=2)
 ```
 
 ![plot of chunk unnamed-chunk-14](figure/RNAseq-unnamed-chunk-14.png) 
-
 
 We can then check the annotation of these highly significant genes:
 
 
 ```r
-# biocLite('org.Rn.eg.db')
+# biocLite("org.Rn.eg.db")
 library(org.Rn.eg.db)
 ```
 
@@ -502,8 +489,9 @@ head(rownames(dds))
 ```
 
 ```r
-geneinfo <- select(org.Rn.eg.db, keys = rownames(resSort)[1:20], columns = c("ENSEMBL", 
-    "SYMBOL", "GENENAME"), keytype = "ENSEMBL")
+geneinfo <- select(org.Rn.eg.db, keys=rownames(resSort)[1:20],
+                   columns=c("ENSEMBL","SYMBOL","GENENAME"), 
+                   keytype="ENSEMBL")
 geneinfo
 ```
 
@@ -551,7 +539,6 @@ geneinfo
 ## 19                  RNA binding protein, fox-1 homolog (C. elegans) 3
 ## 20                                                 transglutaminase 1
 ```
-
 
 ## Footnotes <a name="foot"></a>
 

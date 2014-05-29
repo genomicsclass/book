@@ -355,3 +355,47 @@ Peter Glaus, Antti Honkela, and Magnus Rattray, "Identifying differentially expr
 
 ----
 
+## Visualizing NGS data
+- IGV 
+
+<https://www.broadinstitute.org/igv/home>
+
+- Gviz
+
+<http://www.bioconductor.org/packages/release/bioc/html/Gviz.html>
+
+- ggbio
+
+<http://www.bioconductor.org/packages/release/bioc/html/ggbio.html>
+
+- UCSC Genome Browser: zooms and scrolls over chromosomes, showing the work of annotators worldwide
+
+<http://genome.ucsc.edu/>
+
+- Ensembl genome browser: genome databases for vertebrates and other eukaryotic species
+
+<http://ensembl.org>
+
+- Roadmap Epigenome browser: public resource of human epigenomic data
+
+<http://www.epigenomebrowser.org>
+
+<http://genomebrowser.wustl.edu/>
+
+<http://epigenomegateway.wustl.edu/>
+
+- "Sashimi plots" for RNA-Seq
+
+<http://genes.mit.edu/burgelab/miso/docs/sashimi.html>
+
+- Circos: designed for visualizing genomic data in a cirlce
+
+<http://circos.ca/>
+
+- SeqMonk: a tool to visualise and analyse high throughput mapped sequence data
+
+<http://www.bioinformatics.babraham.ac.uk/projects/seqmonk/>
+
+
+----
+

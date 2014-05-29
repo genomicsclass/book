@@ -5,13 +5,12 @@ title: Visualizing NGS data
 
 
 
-
 We will use the following libraries to demonstrate visualization of NGS data.
 
 
 ```r
-# biocLite('pasillaBamSubset')
-# biocLite('TxDb.Dmelanogaster.UCSC.dm3.ensGene')
+#biocLite("pasillaBamSubset")
+#biocLite("TxDb.Dmelanogaster.UCSC.dm3.ensGene")
 library(pasillaBamSubset)
 library(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
 ```
@@ -60,7 +59,6 @@ fl1 <- untreated1_chr4()
 fl2 <- untreated3_chr4()
 ```
 
-
 We will try four ways to look at NGS coverage: using the standalone Java program IGV, using simple `plot` commands, and using the `Gviz` and `ggbio` packages in Bioconductor.
 
 ## IGV
@@ -69,7 +67,7 @@ Copy these files from the R library directory to the current working directory. 
 
 
 ```r
-file.copy(from = fl1, to = basename(fl1))
+file.copy(from=fl1,to=basename(fl1))
 ```
 
 ```
@@ -77,7 +75,7 @@ file.copy(from = fl1, to = basename(fl1))
 ```
 
 ```r
-file.copy(from = fl2, to = basename(fl2))
+file.copy(from=fl2,to=basename(fl2))
 ```
 
 ```
@@ -111,7 +109,6 @@ indexBam(basename(fl2))
 ## "untreated3_chr4.bam.bai"
 ```
 
-
 IGV is freely available for download here: https://www.broadinstitute.org/igv/home
 
 You will need to provide an email, and then you will get a download link.
@@ -131,7 +128,6 @@ Next we will look at the same gene using the simple `plot` function in R.
 library(GenomicRanges)
 ```
 
-
 Note: if you are using Bioconductor version 14, paired with R 3.1, you should also load this library. You do not need to load this library, and it will not be available to you, if you are using Bioconductor version 13, paired with R 3.0.x.
 
 
@@ -149,14 +145,13 @@ library(GenomicAlignments)
 ##     species
 ```
 
-
 We read in the alignments from the file `fl1`. Then we use the `coverage` function to tally up the basepair coverage. We then extract the subset of coverage which overlaps our gene of interest, and convert this coverage from an `RleList` into a `numeric` vector. Remember from Week 2, that `Rle` objects are compressed, such that repeating numbers are stored as a number and a length.
 
 
 ```r
 x <- readGAlignments(fl1)
 xcov <- coverage(x)
-z <- GRanges("chr4", IRanges(456500, 466000))
+z <- GRanges("chr4",IRanges(456500,466000))
 # Bioconductor 2.14
 xcov[z]
 ```
@@ -187,7 +182,6 @@ plot(xnum)
 
 ![plot of chunk unnamed-chunk-5](figure/visualizing_NGS-unnamed-chunk-5.png) 
 
-
 We can do the same for another file:
 
 
@@ -195,23 +189,21 @@ We can do the same for another file:
 y <- readGAlignmentPairs(fl2)
 ycov <- coverage(y)
 ynum <- as.numeric(ycov$chr4[ranges(z)])
-plot(xnum, type = "l", col = "blue", lwd = 2)
-lines(ynum, col = "red", lwd = 2)
+plot(xnum, type="l", col="blue", lwd=2)
+lines(ynum, col="red", lwd=2)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/visualizing_NGS-unnamed-chunk-6.png) 
-
 
 We can zoom in on a single exon:
 
 
 ```r
-plot(xnum, type = "l", col = "blue", lwd = 2, xlim = c(6200, 6600))
-lines(ynum, col = "red", lwd = 2)
+plot(xnum, type="l", col="blue", lwd=2, xlim=c(6200,6600))
+lines(ynum, col="red", lwd=2)
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/visualizing_NGS-unnamed-chunk-7.png) 
-
 
 ## Extracting the gene of interest using the transcript database
 
@@ -219,11 +211,11 @@ Suppose we are interested in visualizing the gene *lgs*. We can extract it from 
 
 
 ```r
-# biocLite('biomaRt')
+# biocLite("biomaRt")
 library(biomaRt)
 m <- useMart("ensembl", dataset = "dmelanogaster_gene_ensembl")
 lf <- listFilters(m)
-lf[grep("name", lf$description, ignore.case = TRUE), ]
+lf[grep("name", lf$description, ignore.case=TRUE),]
 ```
 
 ```
@@ -252,8 +244,10 @@ lf[grep("name", lf$description, ignore.case = TRUE), ]
 ```
 
 ```r
-map <- getBM(mart = m, attributes = c("ensembl_gene_id", "flybasename_gene"), 
-    filters = "flybasename_gene", values = "lgs")
+map <- getBM(mart = m,
+  attributes = c("ensembl_gene_id", "flybasename_gene"),
+  filters = "flybasename_gene", 
+  values = "lgs")
 map
 ```
 
@@ -262,12 +256,11 @@ map
 ## 1     FBgn0039907              lgs
 ```
 
-
 Now we extract the exons for each gene, and then the exons for the gene *lgs*.
 
 
 ```r
-grl <- exonsBy(TxDb.Dmelanogaster.UCSC.dm3.ensGene, by = "gene")
+grl <- exonsBy(TxDb.Dmelanogaster.UCSC.dm3.ensGene, by="gene")
 gene <- grl[[map$ensembl_gene_id[1]]]
 gene
 ```
@@ -288,31 +281,31 @@ gene
 ##     23011544  21146708  24543557 ...    204112    347038  29004656
 ```
 
-
 Finally we can plot these ranges to see what it looks like:
 
 
 ```r
 rg <- range(gene)
-plot(c(start(rg), end(rg)), c(0, 0), type = "n", xlab = seqnames(gene)[1], ylab = "")
-arrows(start(gene), rep(0, length(gene)), end(gene), rep(0, length(gene)), lwd = 3, 
-    length = 0.1)
+plot(c(start(rg), end(rg)), c(0,0), type="n", xlab=seqnames(gene)[1], ylab="")
+arrows(start(gene),rep(0,length(gene)),
+       end(gene),rep(0,length(gene)),
+       lwd=3, length=.1)
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/visualizing_NGS-unnamed-chunk-10.png) 
-
 
 But actually, the gene is on the minus strand. We should add a line which corrects for minus strand genes:
 
 
 ```r
-plot(c(start(rg), end(rg)), c(0, 0), type = "n", xlab = seqnames(gene)[1], ylab = "")
-arrows(start(gene), rep(0, length(gene)), end(gene), rep(0, length(gene)), lwd = 3, 
-    length = 0.1, code = ifelse(as.character(strand(gene)[1]) == "+", 2, 1))
+plot(c(start(rg), end(rg)), c(0,0), type="n", xlab=seqnames(gene)[1], ylab="")
+arrows(start(gene),rep(0,length(gene)),
+       end(gene),rep(0,length(gene)),
+       lwd=3, length=.1, 
+       code=ifelse(as.character(strand(gene)[1]) == "+", 2, 1))
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/visualizing_NGS-unnamed-chunk-11.png) 
-
 
 ## Gviz
 
@@ -320,7 +313,7 @@ We will briefly show two packages for visualizing genomic data in Bioconductor. 
 
 
 ```r
-# biocLite('Gviz')
+#biocLite("Gviz")
 library(Gviz)
 ```
 
@@ -336,7 +329,6 @@ plotTracks(list(gtrack, atrack))
 
 ![plot of chunk unnamed-chunk-12](figure/visualizing_NGS-unnamed-chunk-12.png) 
 
-
 Extract the coverage. `Gviz` expects that data will be provided as `GRanges` objects, so we convert the `RleList` coverage to a `GRanges` object:
 
 
@@ -351,17 +343,16 @@ plotTracks(list(gtrack, atrack, dtrack1, dtrack2))
 ![plot of chunk unnamed-chunk-13](figure/visualizing_NGS-unnamed-chunk-131.png) 
 
 ```r
-plotTracks(list(gtrack, atrack, dtrack1, dtrack2), type = "polygon")
+plotTracks(list(gtrack, atrack, dtrack1, dtrack2), type="polygon")
 ```
 
 ![plot of chunk unnamed-chunk-13](figure/visualizing_NGS-unnamed-chunk-132.png) 
-
 
 ## ggbio
 
 
 ```r
-# biocLite('ggbio')
+#biocLite("ggbio")
 library(ggbio)
 ```
 
@@ -385,7 +376,7 @@ autoplot(gene)
 ![plot of chunk unnamed-chunk-14](figure/visualizing_NGS-unnamed-chunk-141.png) 
 
 ```r
-autoplot(fl1, which = z)
+autoplot(fl1, which=z)
 ```
 
 ```
@@ -398,7 +389,7 @@ autoplot(fl1, which = z)
 ![plot of chunk unnamed-chunk-14](figure/visualizing_NGS-unnamed-chunk-142.png) 
 
 ```r
-autoplot(fl2, which = z)
+autoplot(fl2, which=z)
 ```
 
 ```
@@ -410,5 +401,24 @@ autoplot(fl2, which = z)
 
 ![plot of chunk unnamed-chunk-14](figure/visualizing_NGS-unnamed-chunk-143.png) 
 
+## Other visualizations
 
+- UCSC Genome Browser: zooms and scrolls over chromosomes, showing the work of annotators worldwide
+<http://genome.ucsc.edu/>
 
+- Ensembl genome browser: genome databases for vertebrates and other eukaryotic species
+<http://ensembl.org>
+
+- Roadmap Epigenome browser: public resource of human epigenomic data
+<http://www.epigenomebrowser.org>
+<http://genomebrowser.wustl.edu/>
+<http://epigenomegateway.wustl.edu/>
+
+- "Sashimi plots" for RNA-Seq
+<http://genes.mit.edu/burgelab/miso/docs/sashimi.html>
+
+- Circos: designed for visualizing genomic data in a cirlce
+<http://circos.ca/>
+
+- SeqMonk: a tool to visualise and analyse high throughput mapped sequence data
+<http://www.bioinformatics.babraham.ac.uk/projects/seqmonk/>
