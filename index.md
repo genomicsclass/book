@@ -62,7 +62,8 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 - [Hierarchical modeling and using limma](pages/using_limma.html)
 - [Mapping features to genes](pages/mapping_features.html)
-- [Gene set testing](pages/gene_set_testing.html)
+- [Gene set analysis lecture](pages/gsa.html)
+- [Gene set testing in R](pages/gene_set_testing.html)
 - [Multiple testing](pages/multtest.html)
 
 ### Advanced workflows (week 8)

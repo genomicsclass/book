@@ -183,6 +183,18 @@ Masuno K, Haldar SM, Jeyaraj D, Mailloux CM, Huang X, Panettieri RA Jr, Jain MK,
 
 ----
 
+## Gene set analysis
+Virtaneva K, "Expression profiling reveals fundamental biological differences in acute myeloid leukemia with isolated trisomy 8 and normal cytogenetics." PNAS 2001
+
+<http://www.ncbi.nlm.nih.gov/pubmed/?term=11158605>
+
+Jelle J. Goeman and Peter Bühlmann, "Analyzing gene expression data in terms of gene sets: methodological issues" Bioinformatics 2006.
+
+<http://bioinformatics.oxfordjournals.org/content/23/8/980>
+
+
+----
+
 ## Multiple testing
 Yoav Benjamini and Yosef Hochberg, "Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing". Journal of the Royal Statistical Society. 1995.
 
