@@ -5,7 +5,6 @@ title: Basic inference for microarray data
 
 
 
-
 # Basic inference for microarray data
 
 We have data for two strains of mice which we will refer to as strain 0 and 1. We want to know which genes are differentially expressed.  We extracted RNA from 12 randomely selected mice from each strain. In one experiment we pooled the RNA from all individuals from each strain and then created 4 replicate samples from this pool. 
@@ -49,7 +48,8 @@ library(Biobase)
 ```
 
 ```r
-# library(devtools) install_github('dagdata','genomicsclass')
+# library(devtools)
+# install_github("dagdata","genomicsclass")
 library(dagdata)
 data(maPooling)
 e <- maPooling
@@ -74,8 +74,7 @@ head(pData(e))
 ```
 
 ```r
-
-# install_github('rafalib','ririzarr')
+# install_github("rafalib","ririzarr")
 library(rafalib)
 ```
 
@@ -85,19 +84,21 @@ library(rafalib)
 
 ```r
 mypar()
-flipt <- function(m) t(m[nrow(m):1, ])
-myimage <- function(m, ...) {
-    image(flipt(m), xaxt = "n", yaxt = "n", ...)
-}
+flipt <- function(m) t(m[nrow(m):1,])
+myimage <- function(m,...) {
+  image(flipt(m),xaxt="n",yaxt="n",...)
+  }
 
-myimage(as.matrix(pData(e)), col = c("white", "black"), xlab = "experiments", 
-    ylab = "individuals", main = "phenoData")
+myimage(as.matrix(pData(e)),col=c("white","black"),
+        xlab="experiments",
+        ylab="individuals",
+        main="phenoData")
 ```
 
 ![plot of chunk unnamed-chunk-1](figure/basic_inference_microarray-unnamed-chunk-11.png) 
 
 ```r
-
+# individuals will contain the rows with data from only one experiment
 individuals <- which(rowSums(pData(e)) == 1)
 individuals
 ```
@@ -112,8 +113,7 @@ individuals
 ```
 
 ```r
-
-## remove replicates
+## remove replicates (tr = technical replicates)
 names(individuals)
 ```
 
@@ -125,17 +125,18 @@ names(individuals)
 ```
 
 ```r
-individuals <- individuals[-grep("tr", names(individuals))]
+individuals <- individuals[-grep("tr",names(individuals))]
 
-es <- e[, individuals]
-myimage(as.matrix(pData(es)), col = c("white", "black"))
+# graphical check: now we have only points, there are no stripes (stripe= several rows containing data from the same experiment, as in the original data).
+es <- e[,individuals]
+myimage(as.matrix(pData(es)),col=c("white","black"))
 ```
 
 ![plot of chunk unnamed-chunk-1](figure/basic_inference_microarray-unnamed-chunk-12.png) 
 
 ```r
-
-es$group <- factor(as.numeric(grepl("b", colnames(es))))
+# strains a and b are marked with a and b in the names
+es$group <- factor(as.numeric(grepl("b",colnames(es))))
 es$group
 ```
 
@@ -144,30 +145,35 @@ es$group
 ## Levels: 0 1
 ```
 
-
 ## Plots of gene expression across group
 
 Let's look at 2 pre-selected genes for illustration, which are the same genes from the lecture.
 
+Expression set contains normalized gene expression values (next lectures will explain normalization, this set has already been normalized)
 
 ```r
-i = 11425
-j = 11878
-mypar(1, 2)
-stripchart(split(exprs(es)[i, ], es$group), vertical = TRUE, method = "jitter", 
-    col = c(1, 2), main = "Gene 1", xlab = "Group", pch = 15)
-stripchart(split(exprs(es)[j, ], es$group), vertical = TRUE, method = "jitter", 
-    col = c(1, 2), main = "Gene 2", xlab = "Group", pch = 15)
+i=11425
+j=11878
+mypar(1,2)
+stripchart(split(exprs(es)[i,], es$group), vertical=TRUE, method="jitter", col=c(1,2), main="Gene 1", xlab="Group", pch=15)
+stripchart(split(exprs(es)[j,], es$group), vertical=TRUE, method="jitter", col=c(1,2), main="Gene 2", xlab="Group", pch=15)
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/basic_inference_microarray-unnamed-chunk-2.png) 
 
+# bloxplots can also be used
+boxplot(split(exprs(es)[i,], es$group))
+boxplot(split(exprs(es)[j,], es$group))
+
+# equivalent to
+boxplot(exprs(es)[i,] ~ es$group)
+boxplot(exprs(es)[j,] ~ es$group)
 
 ## Compute a t-test for each gene (row)
 
 
 ```r
-# biocLite('genefilter')
+# biocLite("genefilter")
 library(genefilter)
 ```
 
@@ -196,7 +202,8 @@ head(tt)
 ```
 
 ```r
-head(tt, 1)
+# check that rowttests computes the difference between the mean of the first group and the mean of the second group, reports it tt$dm
+head(tt,1)
 ```
 
 ```
@@ -205,8 +212,7 @@ head(tt, 1)
 ```
 
 ```r
-
-mean(exprs(es)[1, es$group == 0]) - mean(exprs(es)[1, es$group == 1])
+mean(exprs(es)[1,es$group == 0]) - mean(exprs(es)[1,es$group == 1]) 
 ```
 
 ```
@@ -214,8 +220,8 @@ mean(exprs(es)[1, es$group == 0]) - mean(exprs(es)[1, es$group == 1])
 ```
 
 ```r
-
-simple.t <- t.test(exprs(es)[1, ] ~ es$group, var.equal = TRUE)
+# for a single row, direct t.test calculation (rowtests will be faster for many rows)
+simple.t <- t.test(exprs(es)[1,] ~ es$group, var.equal=TRUE)
 simple.t$p.value
 ```
 
@@ -224,7 +230,15 @@ simple.t$p.value
 ```
 
 ```r
+head(tt,1)
+```
 
+```
+##            statistic       dm p.value
+## 1367452_at    -1.147 -0.09254  0.2635
+```
+
+```r
 tt$p.value[i]
 ```
 
@@ -241,10 +255,13 @@ tt$p.value[j]
 ```
 
 ```r
+mypar(1,1)
+with(tt, plot(dm, -log10(p.value), 
+              xlab="difference in means",
+              main="'Volcano' plot"))
 
-mypar(1, 1)
-with(tt, plot(dm, -log10(p.value), xlab = "difference in means", main = "'Volcano' plot"))
-tt[with(tt, identify(dm, -log10(p.value))), ]
+# gets the value of the a point in a plot
+tt[with(tt, identify(dm, -log10(p.value))),]
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/basic_inference_microarray-unnamed-chunk-3.png) 
@@ -254,22 +271,34 @@ tt[with(tt, identify(dm, -log10(p.value))), ]
 ## <0 rows> (or 0-length row.names)
 ```
 
-
 ## Compare with non-parametric tests
 
 
 ```r
-es2 <- es[, c(1, 2, 3, 13, 14, 15)]
-mypar(1, 1)
-stripchart(exprs(es2)[1, ] ~ es2$group, vertical = TRUE, method = "jitter", 
-    col = c(1, 2), main = "three samples per group", xlab = "Group", ylab = "", 
-    pch = 15)
+# take 3 samples from strain a and 3 from strain b (it is previously known that 1,2 3 belong to strain a and 13, 14, 15 belong to strain b)
+es2 <- es[,c(1,2,3,13,14,15)]
+head(exprs(es2))
+```
+
+```
+##               a10    a11    a12    b10    b11    b12
+## 1367452_at 10.052  9.773 10.101  9.930 10.049 10.226
+## 1367453_at 10.163 10.127 10.402 10.187 10.254 10.214
+## 1367454_at 10.212 10.364 10.267 10.086 10.372 10.280
+## 1367455_at 10.335 10.182 10.491 10.097 10.285 10.270
+## 1367456_at 10.889 10.716 10.804 10.716 10.817 10.907
+## 1367457_at  9.667  9.555  9.618  9.641  9.598  9.723
+```
+
+```r
+mypar(1,1)
+stripchart(exprs(es2)[1,] ~ es2$group, vertical=TRUE, method="jitter", col=c(1,2), main="three samples per group", xlab="Group", ylab="", pch=15)
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/basic_inference_microarray-unnamed-chunk-41.png) 
 
 ```r
-t.test(exprs(es2)[1, ] ~ es2$group)
+t.test(exprs(es2)[1,] ~ es2$group)
 ```
 
 ```
@@ -287,7 +316,7 @@ t.test(exprs(es2)[1, ] ~ es2$group)
 ```
 
 ```r
-wilcox.test(exprs(es2)[1, ] ~ es2$group)
+wilcox.test(exprs(es2)[1,] ~ es2$group)
 ```
 
 ```
@@ -300,11 +329,10 @@ wilcox.test(exprs(es2)[1, ] ~ es2$group)
 ```
 
 ```r
-
+# wilcox is conservative, in the following two examples we have clear separation between groups but p.value is much higher than t test
 y <- 1:6
 x <- es2$group
-stripchart(y ~ x, vertical = TRUE, method = "jitter", col = c(1, 2), main = "three samples per group", 
-    xlab = "Group", ylab = "", pch = 15)
+stripchart(y ~ x, vertical=TRUE, method="jitter", col=c(1,2), main="three samples per group", xlab="Group", ylab="", pch=15)
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/basic_inference_microarray-unnamed-chunk-42.png) 
@@ -341,10 +369,9 @@ wilcox.test(y ~ x)
 ```
 
 ```r
-
-y <- c(1:3, 11:13)
-stripchart(y ~ x, vertical = TRUE, method = "jitter", col = c(1, 2), main = "three samples per group", 
-    xlab = "Group", ylab = "", pch = 15)
+# very clear separation, and wilcox report conservative p-value, same as previous example, as ranks are identicals in both cases
+y <- c(1:3,11:13)
+stripchart(y ~ x, vertical=TRUE, method="jitter", col=c(1,2), main="three samples per group", xlab="Group", ylab="", pch=15)
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/basic_inference_microarray-unnamed-chunk-43.png) 
@@ -380,14 +407,13 @@ wilcox.test(y ~ x)
 ## alternative hypothesis: true location shift is not equal to 0
 ```
 
-
 ## Basic inference on microarray using lmFit from limma package
 
 We will discuss the limma package in the lecture on Hierarchical Modeling. The reference is [Smyth 2004](#foot).
 
 
 ```r
-# biocLite('limma')
+# biocLite("limma")
 library(limma)
 ```
 
@@ -402,7 +428,7 @@ library(limma)
 
 ```r
 # ?lmFit
-design <- model.matrix(~es$group)
+design <- model.matrix(~ es$group)
 design
 ```
 
@@ -466,7 +492,17 @@ head(coef(fit))
 ```
 
 ```r
-tt[1, ]
+# difference in means from t test is the same as the difference in means reported by t test
+coef(fit)[1,]
+```
+
+```
+## (Intercept)   es$group1 
+##    10.02745     0.09254
+```
+
+```r
+tt[1,]
 ```
 
 ```
@@ -475,9 +511,9 @@ tt[1, ]
 ```
 
 ```r
-# we will introduce the eBayes() function in a later module called
-# 'hierarchical modeling' but we call it now as it is standard in microarray
-# analysis
+# we will introduce the eBayes() function
+# in a later module called 'hierarchical modeling'
+# but we call it now as it is standard in microarray analysis
 fit <- eBayes(fit)
 names(fit)
 ```
@@ -494,7 +530,8 @@ names(fit)
 ```
 
 ```r
-fit$p.value[1, ]
+# p-values for intercept and difference between gene 1 and gene 2
+fit$p.value[1,]
 ```
 
 ```
@@ -503,7 +540,7 @@ fit$p.value[1, ]
 ```
 
 ```r
-fit$t[1, ]
+fit$t[1,]
 ```
 
 ```
@@ -512,7 +549,8 @@ fit$t[1, ]
 ```
 
 ```r
-tt[1, ]
+# ebayes and t test are different
+tt[1,]
 ```
 
 ```
@@ -521,14 +559,18 @@ tt[1, ]
 ```
 
 ```r
-plot(-1 * tt$statistic, fit$t[, 2], xlab = "rowttests", ylab = "eBayes t")
-abline(0, 1, col = "red", lwd = 3)
+# graphical comparison: in most cases they are close, but not the same
+plot(-1 * tt$statistic, fit$t[,2],
+     xlab="rowttests", 
+     ylab="eBayes t")
+abline(0,1,col="red",lwd=3)
 ```
 
 ![plot of chunk unnamed-chunk-5](figure/basic_inference_microarray-unnamed-chunk-5.png) 
 
 ```r
-head(topTable(fit, coef = 2, sort.by = "p"), 3)
+#
+head(topTable(fit, coef=2, sort.by="p"),3)
 ```
 
 ```
@@ -537,7 +579,6 @@ head(topTable(fit, coef = 2, sort.by = "p"), 3)
 ## 1372006_at -1.162  10.156 -11.20 1.252e-11 9.578e-08 16.27
 ## 1371293_at -1.240   6.414 -11.01 1.804e-11 9.578e-08 15.94
 ```
-
 
 ## Footnotes <a name="foot"></a>
 
