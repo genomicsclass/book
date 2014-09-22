@@ -5,7 +5,6 @@ title: Batch adjustment
 
 
 
-
 To illustrate how we can adjust for batch effects using statistcal methods, we will create a data example in which the outcome of interest is confounded with batch but not completely. We will also select a outcome for which we have an expectation of what genes should be differentially expressed. Namely, we make sex the outcome of interest and expect genes on the Y chromosome to be differentially expressed. Note that we may also see genes from the X chromosome as differentially expressed as some escape X inactivation. 
 
 We start by finding the genes on the Y chromosome.
@@ -25,7 +24,6 @@ library(Biobase)
 
 ```
 ## Loading required package: BiocGenerics
-## Loading required package: methods
 ## Loading required package: parallel
 ## 
 ## Attaching package: 'BiocGenerics'
@@ -71,7 +69,7 @@ library(genefilter)
 
 ```r
 data(GSE5859)
-library(hgfocus.db)  ##get the gene chromosome
+library(hgfocus.db) ##get the gene chromosome
 ```
 
 ```
@@ -82,30 +80,24 @@ library(hgfocus.db)  ##get the gene chromosome
 ```
 
 ```r
-chr <- mget(featureNames(e), hgfocusCHRLOC)
-chr <- sapply(chr, function(x) {
-    tmp <- names(x[1])
-    ifelse(is.null(tmp), NA, paste0("chr", tmp))
-})
-y <- colMeans(exprs(e)[which(chr == "chrY"), ])
-sex <- ifelse(y < 4.5, "F", "M")
+chr<-mget(featureNames(e),hgfocusCHRLOC)
+chr <- sapply(chr,function(x){ tmp<-names(x[1]); ifelse(is.null(tmp),NA,paste0("chr",tmp))})
+y<- colMeans(exprs(e)[which(chr=="chrY"),])
+sex <- ifelse(y<4.5,"F","M")
 ```
-
 
 Now we select samples so that sex and month of hybridization are confounded. 
 
 ```r
-batch <- format(pData(e)$date, "%y%m")
-ind <- which(batch %in% c("0506", "0510"))
+batch <- format(pData(e)$date,"%y%m")
+ind<-which(batch%in%c("0506","0510"))
 set.seed(1)
-N <- 12
-N1 <- 3
-M <- 12
-M1 <- 9
-ind <- c(sample(which(batch == "0506" & sex == "F"), N1), sample(which(batch == 
-    "0510" & sex == "F"), N - N1), sample(which(batch == "0506" & sex == "M"), 
-    M1), sample(which(batch == "0510" & sex == "M"), M - M1))
-table(batch[ind], sex[ind])
+N <- 12; N1 <-3; M<-12; M1<-9
+ind <- c(sample(which(batch=="0506" & sex=="F"),N1),
+sample(which(batch=="0510" & sex=="F"),N-N1),
+sample(which(batch=="0506" & sex=="M"),M1),
+sample(which(batch=="0510" & sex=="M"),M-M1))
+table(batch[ind],sex[ind])
 ```
 
 ```
@@ -115,26 +107,24 @@ table(batch[ind], sex[ind])
 ##   0510 9 3
 ```
 
-
 To illustrate the confounding we will pick some genes to show in a heatmap plot. We pick all Y chromosome genes, some genes that we see correlate with batch, and then some randomly selected genes.
 
 
 ```r
 set.seed(1)
-tt <- genefilter::rowttests(exprs(e)[, ind], factor(batch[ind]))
-ind1 <- which(chr == "chrY")  ##real differences
-ind2 <- setdiff(c(order(tt$dm)[1:25], order(-tt$dm)[1:25]), ind1)
-ind0 <- setdiff(sample(seq(along = tt$dm), 50), c(ind2, ind1))
-geneindex <- c(ind2, ind0, ind1)
-mat <- exprs(e)[geneindex, ind]
-mat <- mat - rowMeans(mat)  #;mat[mat>3]<-3;mat[mat< -3]<- -3
-icolors <- rev(brewer.pal(11, "RdYlBu"))
-mypar(1, 1)
-image(t(mat), xaxt = "n", yaxt = "n", col = icolors)
+tt<-genefilter::rowttests(exprs(e)[,ind],factor(batch[ind]))
+ind1 <- which(chr=="chrY") ##real differences
+ind2 <- setdiff(c(order(tt$dm)[1:25],order(-tt$dm)[1:25]),ind1)
+ind0 <- setdiff(sample(seq(along=tt$dm),50),c(ind2,ind1))
+geneindex<-c(ind2,ind0,ind1)
+mat<-exprs(e)[geneindex,ind]
+mat <- mat-rowMeans(mat)#;mat[mat>3]<-3;mat[mat< -3]<- -3
+icolors <- rev(brewer.pal(11,"RdYlBu"))
+mypar(1,1)
+image(t(mat),xaxt="n",yaxt="n",col=icolors)
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/svacombat-unnamed-chunk-3.png) 
-
 
 So what follows is like the analysis we would do in practice. We don't know there is a batch and we are interested in finding genes that are different between males and females. We start by computing t-statistics and p-values comparing males and females. We use histograms to notice the problem introduced by the batch.
 
@@ -144,14 +134,13 @@ The batch effect adjustment methods are best described with the linear models so
 
 
 ```r
-dat <- exprs(e)[, ind]
-X <- sex[ind]  ## the covariate
+dat <- exprs(e)[,ind]
+X <- sex[ind] ## the covariate
 Z <- batch[ind]
-tt <- genefilter::rowttests(dat, factor(X))
-HLIM <- c(0, 1500)
-mypar(1, 2)
-hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM, 
-    main = "")
+tt<-genefilter::rowttests(dat,factor(X))
+HLIM<-c(0,1500)
+mypar(1,2)
+hist(tt$p[!chr%in%c("chrX","chrY")],nc=20,xlab="p-value",ylim=HLIM,main="")
 ```
 
 ```
@@ -159,7 +148,7 @@ hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM,
 ```
 
 ```r
-hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main = "")
+hist(tt$p[chr%in%c("chrY")],nc=20,xlab="p-value",ylim=c(0,9),main="")
 ```
 
 ```
@@ -167,7 +156,6 @@ hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main =
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/svacombat-unnamed-chunk-4.png) 
-
 
 
 ## Combat
@@ -183,12 +171,12 @@ library(sva)
 ## Loading required package: corpcor
 ## Loading required package: mgcv
 ## Loading required package: nlme
-## This is mgcv 1.7-29. For overview type 'help("mgcv-package")'.
+## This is mgcv 1.8-1. For overview type 'help("mgcv-package")'.
 ```
 
 ```r
-mod <- model.matrix(~X)
-cleandat <- ComBat(dat, Z, mod)
+mod<-model.matrix(~X)
+cleandat <- ComBat(dat,Z,mod)
 ```
 
 ```
@@ -201,10 +189,9 @@ cleandat <- ComBat(dat, Z, mod)
 ```
 
 ```r
-tt <- genefilter::rowttests(cleandat, factor(X))
-mypar(1, 1)
-hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM, 
-    main = "")
+tt<-genefilter::rowttests(cleandat,factor(X))
+mypar(1,1)
+hist(tt$p[!chr%in%c("chrX","chrY")],nc=20,xlab="p-value",ylim=HLIM,main="")
 ```
 
 ```
@@ -214,7 +201,7 @@ hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM,
 ![plot of chunk unnamed-chunk-5](figure/svacombat-unnamed-chunk-51.png) 
 
 ```r
-hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main = "")
+hist(tt$p[chr%in%c("chrY")],nc=20,xlab="p-value",ylim=c(0,9),main="")
 ```
 
 ```
@@ -223,20 +210,18 @@ hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main =
 
 ![plot of chunk unnamed-chunk-5](figure/svacombat-unnamed-chunk-52.png) 
 
-
 But what exactly is a batch?
 
 ```r
 times <- (pData(e)$date)
-mypar(1, 2)
-o = order(times)
-plot(times[o], pch = 21, bg = as.fumeric(batch)[o], ylab = "date")
-o = order(times[ind])
-plot(times[ind][o], pch = 21, bg = as.fumeric(batch)[ind][o], ylab = "date")
+mypar(1,2)
+o=order(times)
+plot(times[o],pch=21,bg=as.fumeric(batch)[o],ylab="date")
+o=order(times[ind])
+plot(times[ind][o],pch=21,bg=as.fumeric(batch)[ind][o],ylab="date")
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/svacombat-unnamed-chunk-6.png) 
-
 
 
 ## Principal component analysis and Singular value decomposition
@@ -297,77 +282,67 @@ library(MASS)
 
 ```r
 set.seed(1)
-y = mvrnorm(1000, c(0, 0), 3^2 * matrix(c(1, 0.9, 0.9, 1), 2, 2))
-mypar(1, 1)
-plot(y, xlab = "Twin 1 (inches away from avg)", ylab = "Twin 2 (inches away from avg)")
+y=mvrnorm(1000,c(0,0),3^2*matrix(c(1,.9,.9,1),2,2))
+mypar(1,1)
+plot(y,xlab="Twin 1 (inches away from avg)",ylab="Twin 2 (inches away from avg)")
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/svacombat-unnamed-chunk-7.png) 
-
 
 
 Transmitting the two heights seems inefficient given how correlated they. If we tranmist the pricipal components instead we save money. Let's see how:
 
 
 ```r
-s = svd(y)
-plot(s$u[, 1] * s$d[1], s$u[, 2] * s$d[2], ylim = range(s$u[, 1] * s$d[1]), 
-    xlab = "First PC", ylab = "Second PC")
+s=svd(y)
+plot(s$u[,1]*s$d[1],s$u[,2]*s$d[2],ylim=range(s$u[,1]*s$d[1]),xlab="First PC",ylab="Second PC")
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/svacombat-unnamed-chunk-8.png) 
-
 
 ## SVA
 
 
 ```r
-s <- svd(dat - rowMeans(dat))
-mypar(1, 1)
-o <- order(Z)
-plot(s$v[o, 1], pch = 21, cex = 1.25, bg = as.fumeric(Z)[o], ylab = "First eigenvector", 
-    xaxt = "n", xlab = "")
-legend("topleft", c("batch 1", "batch 2"), col = 1:2, lty = 1, box.lwd = 0)
+s <- svd(dat-rowMeans(dat))
+mypar(1,1)
+o<-order(Z)
+plot(s$v[o,1],pch=21,cex=1.25,bg=as.fumeric(Z)[o],ylab="First eigenvector",xaxt="n",xlab="")
+legend("topleft",c("batch 1","batch 2"),col=1:2,lty=1,box.lwd=0)
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/svacombat-unnamed-chunk-91.png) 
 
 ```r
-
-mypar(1, 1)
-plot(s$d^2/sum(s$d^2), ylab = "% variance explained", xlab = "Principal component")
+mypar(1,1)
+plot(s$d^2/sum(s$d^2),ylab="% variance explained",xlab="Principal component")
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/svacombat-unnamed-chunk-92.png) 
 
 ```r
-
-mypar2(3, 4)
-for (i in 1:12) boxplot(split(s$v[, i], Z))
+mypar2(3,4)
+for(i in 1:12)
+boxplot(split(s$v[,i],Z))
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/svacombat-unnamed-chunk-93.png) 
 
 ```r
-
 times <- (pData(e)$date)
-day <- as.numeric(times[ind])
-day <- day - min(day)
-for (i in 1:12) boxplot(split(s$v[, i], day))
+day<-as.numeric(times[ind]);day<- day-min(day)
+for(i in 1:12)
+boxplot(split(s$v[,i],day))
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/svacombat-unnamed-chunk-94.png) 
 
 ```r
-
-
-D <- s$d
-D[1:6] <- 0  ##take out first 2
-cleandat <- sweep(s$u, 2, D, "*") %*% t(s$v)
-tt <- rowttests(cleandat, factor(X))
-mypar(1, 2)
-hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM, 
-    main = "")
+D <- s$d; D[1:6]<-0 ##take out first 2
+cleandat <- sweep(s$u,2,D,"*")%*%t(s$v)
+tt<-rowttests(cleandat,factor(X))
+mypar(1,2)
+hist(tt$p[!chr%in%c("chrX","chrY")],nc=20,xlab="p-value",ylim=HLIM,main="")
 ```
 
 ```
@@ -375,7 +350,7 @@ hist(tt$p[!chr %in% c("chrX", "chrY")], nc = 20, xlab = "p-value", ylim = HLIM,
 ```
 
 ```r
-hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main = "")
+hist(tt$p[chr%in%c("chrY")],nc=20,xlab="p-value",ylim=c(0,9),main="")
 ```
 
 ```
@@ -383,7 +358,6 @@ hist(tt$p[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main =
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/svacombat-unnamed-chunk-95.png) 
-
 
 
 ```r
@@ -400,7 +374,7 @@ library(limma)
 ```
 
 ```r
-svafit <- sva(dat, mod)
+svafit <- sva(dat,mod)
 ```
 
 ```
@@ -409,36 +383,34 @@ svafit <- sva(dat, mod)
 ```
 
 ```r
-svaX <- model.matrix(~X + svafit$sv)
-lmfit <- lmFit(dat, svaX)
-tt <- lmfit$coef[, 2] * sqrt(lmfit$df.residual)/(2 * lmfit$sigma)
-mypar(1, 2)
-pval <- 2 * (1 - pt(abs(tt), lmfit$df.residual[1]))
-hist(pval[!chr %in% c("chrX", "chrY")], xlab = "p-values", ylim = HLIM, main = "")
-hist(pval[chr %in% c("chrY")], nc = 20, xlab = "p-value", ylim = c(0, 9), main = "")
+svaX<-model.matrix(~X+svafit$sv)
+lmfit <- lmFit(dat,svaX)
+tt<-lmfit$coef[,2]*sqrt(lmfit$df.residual)/(2*lmfit$sigma)
+mypar(1,2)
+pval<-2*(1-pt(abs(tt),lmfit$df.residual[1]))
+hist(pval[!chr%in%c("chrX","chrY")],xlab="p-values",ylim=HLIM,main="")
+hist(pval[chr%in%c("chrY")],nc=20,xlab="p-value",ylim=c(0,9),main="")
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/svacombat-unnamed-chunk-10.png) 
 
-
 Decompose the data
 
 ```r
-Batch <- lmfit$coef[geneindex, 3:7] %*% t(svaX[, 3:7])
-Signal <- lmfit$coef[geneindex, 1:2] %*% t(svaX[, 1:2])
-error <- mat - Signal - Batch
-## demean for plot
-Signal <- Signal - rowMeans(Signal)
-mat <- mat - rowMeans(mat)
-mypar(1, 4, mar = c(2.75, 4.5, 2.6, 1.1))
-image(t(mat), col = icolors, zlim = c(-5, 5), xaxt = "n", yaxt = "n")
-image(t(Signal), col = icolors, zlim = c(-5, 5), xaxt = "n", yaxt = "n")
-image(t(Batch), col = icolors, zlim = c(-5, 5), xaxt = "n", yaxt = "n")
-image(t(error), col = icolors, zlim = c(-5, 5), xaxt = "n", yaxt = "n")
+Batch<- lmfit$coef[geneindex,3:7]%*%t(svaX[,3:7])
+Signal<-lmfit$coef[geneindex,1:2]%*%t(svaX[,1:2])
+error <- dat[geneindex,]-Signal-Batch
+##demean for plot
+Signal <-Signal-rowMeans(Signal)
+mat <- dat[geneindex,]-rowMeans(dat[geneindex,])
+mypar(1,4,mar = c(2.75, 4.5, 2.6, 1.1))
+image(t(mat),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+image(t(Signal),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+image(t(Batch),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+image(t(error),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/svacombat-unnamed-chunk-11.png) 
-
 
 ## Footnotes
 
