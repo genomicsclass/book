@@ -1,6 +1,6 @@
 ---
 layout: page
-title: PH525x series: Biomedical Data Science
+title: PH525x series - Biomedical Data Science
 ---
 
 The repository of the R markdown files (.Rmd) for the labs shown here is:
