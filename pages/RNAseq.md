@@ -9,7 +9,7 @@ title: RNA-seq analysis
 
 RNA-Seq is a valuable experiment for quantifying both the types and the amount of RNA molecules in a sample. We've covered the basic idea of the protocol in lectures, but some additional references for RNA-Seq include [Mortazavi (2008)](#foot) and [Marioni (2008)](#foot).
 
-In the file, [cufflinks.txt](https://github.com/genomicsclass/labs/blob/master/week8/cufflinks.txt), we show some example calls for aligning RNA-Seq reads to the reference genome, and an example call for running Cufflinks, which estimates both the expression levels and the different RNA isoforms which are present in the sample. The main paper describing the Cufflinks method is [Trapnell (2010)](#foot) and the website for the Cufflinks software is:
+In the file, [cufflinks.txt](https://github.com/genomicsclass/labs/blob/master/course5/cufflinks.txt), we show some example calls for aligning RNA-Seq reads to the reference genome, and an example call for running Cufflinks, which estimates both the expression levels and the different RNA isoforms which are present in the sample. The main paper describing the Cufflinks method is [Trapnell (2010)](#foot) and the website for the Cufflinks software is:
 
 <http://cufflinks.cbcb.umd.edu/>
 
