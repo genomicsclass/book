@@ -36,7 +36,8 @@ list.files(dir)
 ```
 
 ```
-## character(0)
+## [1] "data"        "DESCRIPTION" "extdata"     "help"        "html"       
+## [6] "Meta"        "NAMESPACE"   "script"
 ```
 
 ```r
@@ -44,21 +45,14 @@ list.files(file.path(dir,"extdata"))
 ```
 
 ```
-## character(0)
+## [1] "babies.txt"                   "femaleControlsPopulation.csv"
+## [3] "femaleMiceWeights.csv"        "mice_pheno.csv"              
+## [5] "msleep_ggplot2.csv"           "README"
 ```
 
 ```r
 filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
 dat <- read.csv(filename)
-```
-
-```
-## Warning in file(file, "rt"): cannot open file
-## '/extdata/femaleMiceWeights.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
 ```
 
 ## Our first look at data
@@ -71,7 +65,31 @@ dat
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'dat' not found
+##    Diet Bodyweight
+## 1  chow      21.51
+## 2  chow      28.14
+## 3  chow      24.04
+## 4  chow      23.45
+## 5  chow      23.68
+## 6  chow      19.79
+## 7  chow      28.40
+## 8  chow      20.98
+## 9  chow      22.51
+## 10 chow      20.10
+## 11 chow      26.91
+## 12 chow      26.25
+## 13   hf      25.71
+## 14   hf      26.37
+## 15   hf      22.80
+## 16   hf      25.34
+## 17   hf      24.97
+## 18   hf      28.14
+## 19   hf      29.58
+## 20   hf      30.92
+## 21   hf      34.02
+## 22   hf      21.90
+## 23   hf      31.53
+## 24   hf      20.73
 ```
 
 So are the hf mice heavier? Note that mouse 24 is 20.73 grams is one the lightest mice while 21 at 34.02 is one of the heaviest. Both are on the hf diet. Just from looking the data we see there is *variability*. Claims such as the one above usually refer to the averages. So let's look at the average of each group
@@ -79,26 +97,12 @@ So are the hf mice heavier? Note that mouse 24 is 20.73 grams is one the lightes
 
 ```r
 control <- dat[1:12,2]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'dat' not found
-```
-
-```r
 treatment <- dat[13:24,2]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'dat' not found
-```
-
-```r
 print(mean(treatment))
 ```
 
 ```
-## Error in mean(treatment): object 'treatment' not found
+## [1] 26.83417
 ```
 
 ```r
@@ -106,26 +110,16 @@ print(mean(control))
 ```
 
 ```
-## Error in mean(control): object 'control' not found
+## [1] 23.81333
 ```
 
 ```r
 diff <- mean(treatment)-mean(control)
-```
-
-```
-## Error in mean(treatment): object 'treatment' not found
-```
-
-```r
 print(diff)
 ```
 
 ```
-## function (x, ...) 
-## UseMethod("diff")
-## <bytecode: 0x1de2e78>
-## <environment: namespace:base>
+## [1] 3.020833
 ```
 
 So the hf diet mice are about 10% heavier. Are we done? Why do we need p-values and confidence intervals? The reason is that these averages are random variables. They can take many values. 
@@ -143,25 +137,8 @@ Read in the data, either from your home directory or from dagdata:
 ```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
 filename <- tempfile()
-download.file(url,destfile=filename,method="curl")
-```
-
-```
-## Warning in download.file(url, destfile = filename, method = "curl"):
-## download had nonzero exit status
-```
-
-```r
+download.file(url,destfile=filename,method="wget")
 population <- read.csv(filename)
-```
-
-```
-## Warning in file(file, "rt"): cannot open file
-## '/tmp/RtmpmKt1fI/file130518cc4f7e': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
 ```
 
 Now let's sample 12 mice three times and see how the average changes.
@@ -169,50 +146,29 @@ Now let's sample 12 mice three times and see how the average changes.
 
 ```r
 control <- sample(population[,1],12)
-```
-
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
-```r
 mean(control)
 ```
 
 ```
-## Error in mean(control): object 'control' not found
+## [1] 23.81333
 ```
 
 ```r
 control <- sample(population[,1],12)
-```
-
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
-```r
 mean(control)
 ```
 
 ```
-## Error in mean(control): object 'control' not found
+## [1] 23.77083
 ```
 
 ```r
 control <- sample(population[,1],12)
-```
-
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
-```r
 mean(control)
 ```
 
 ```
-## Error in mean(control): object 'control' not found
+## [1] 24.18667
 ```
 
 Note how the average varies. We can continue to do this over and over again and start learning something about 
@@ -229,27 +185,13 @@ Because we have access to the population, we can actually observe as many values
 ```r
 ###12 control mice
 control <- sample(population[,1],12)
-```
-
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
-```r
 ##another 12 control mice that we act as if they were not
 treatment <- sample(population[,1],12)
-```
-
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
-```r
 print(mean(treatment) - mean(control))
 ```
 
 ```
-## Error in mean(treatment): object 'treatment' not found
+## [1] 0.6375
 ```
 
 Now let's do it 10,000 times. We will use a for-loop, an operation that let's us automatize this
@@ -265,10 +207,6 @@ for(i in 1:n){
 }
 ```
 
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
-
 The values in 'null' form what we call the *null distribution*. We will define this more formally below.
 
 So what percent are bigger than `diff`?
@@ -278,7 +216,7 @@ mean(null>=diff)
 ```
 
 ```
-## Error in null >= diff: comparison (5) is possible only for atomic and list types
+## [1] 0.0151
 ```
 
 Only 1.5%. So what do we conclude as skeptics. When there is no diet effect, we see value as big as `diff` only 1.5% of the time. Note that this is what is known as a p-value which we will also define more formally later
@@ -290,11 +228,6 @@ Let's repeat the loop above but this time let's add a point to the figure every 
 ```r
 n <- 100
 plot(0,0,xlim=c(-5,5),ylim=c(1,30),type="n")
-```
-
-![plot of chunk unnamed-chunk-11](figure/random_variables-unnamed-chunk-11-1.png) 
-
-```r
 totals <- vector("numeric",11)
 for(i in 1:n){
   control <- sample(population[,1],12)
@@ -307,9 +240,7 @@ for(i in 1:n){
   }
 ```
 
-```
-## Error in sample(population[, 1], 12): object 'population' not found
-```
+![plot of chunk unnamed-chunk-11](figure/random_variables-unnamed-chunk-11-1.png) 
 
 <a name="distributions"></a>
 
@@ -341,17 +272,10 @@ Note that from the histogram we can see that values as large as `diff` are relat
 
 ```r
 hist(null)
-```
-
-![plot of chunk unnamed-chunk-13](figure/random_variables-unnamed-chunk-13-1.png) 
-
-```r
 abline(v=diff)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): cannot coerce type 'closure' to vector of type 'double'
-```
+![plot of chunk unnamed-chunk-13](figure/random_variables-unnamed-chunk-13-1.png) 
 
 We will provide more details on histograms in later chapters. 
 
@@ -374,7 +298,7 @@ Here $\mu$ and $\sigma$ are refereed to as the mean and standard deviation. If t
 ```
 
 ```
-## Error in pnorm(diff, mean(null), sd(null)): Non-numeric argument to mathematical function
+## [1] 0.01468484
 ```
 
 Later we will learn there is a mathematical explanation for this. A very useful characteristic of this approximation is that one only needs to know $\mu$ and $\sigma$ to describe the entire distribution. From this we can compute the proportion of values in any interval. 
