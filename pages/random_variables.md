@@ -10,7 +10,8 @@ title: Introduction to random variables
 ## Introduction 
 
 
-This course introduces the statistical concepts necessary to understand p-value and confidence intervals. These terms are ubiquitous in the life science literature. Let's look at [this paper](http://diabetes.diabetesjournals.org/content/53/suppl_3/S215.full]) as an example. 
+
+This course introduces the statistical concepts necessary to understand p-values and confidence intervals. These terms are ubiquitous in the life science literature. Let's look at [this paper](http://diabetes.diabetesjournals.org/content/53/suppl_3/S215.full]) as an example. 
 
 Note that the abstract has this statements: 
 
