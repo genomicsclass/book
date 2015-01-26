@@ -14,9 +14,10 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ### 1: Statistics and R for the Life Sciences
 
-- [Introduction](pages/introduction.html)
+- [Getting started](pages/getting-started.html)
 - [R refresher](pages/R_refresher.html)
 - [Installing packages from Github](pages/github.html)
+- [Random variables](pages/random_variables.html)
 - [Inference](pages/inference_lecture.html)
 - [Rank tests](pages/ranktest.html)
 - [Monte Carlo methods](pages/montecarlo.html)
