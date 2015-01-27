@@ -19,7 +19,7 @@ printf "\n  *** copy from LABS to BOOK *** \n\n"
 cp labs/$1/$2.md book/pages
 
 imgcount=$(ls labs/$1/figure/$2* 2> /dev/null | wc -l)
-if [ **"$files" != "0"** ]
+if [ **"$imgcount" != "0"** ]
 then
 cp labs/$1/figure/$2* book/pages/figure
 fi
@@ -29,7 +29,7 @@ printf "  *** add new files to BOOK, commit and push *** \n\n"
 cd book
 git add pages/$2.md
 
-if [ **"$files" != "0"** ]
+if [ **"$imgcount" != "0"** ]
 then
 git add pages/figure/$2*
 fi
