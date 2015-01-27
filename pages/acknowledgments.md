@@ -3,12 +3,12 @@ layout: page
 title: Acknowledgments for Data Analysis for Genomics / Biomedical Data Science series
 ---
 
-## Building course content
+## Course content and assessments
 
 * Stephanie Hicks
 * Alex D'Amour
 
-## Slides used in lectures
+## Slides/images borrowed in lectures
 
 * Héctor Corrada Bravo
 * Karl Broman
@@ -26,3 +26,6 @@ from Harvard School of Public Health
 
 * Bonnie Anderson
 
+## Lecture editing
+
+* Fred Ata
