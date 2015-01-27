@@ -18,7 +18,6 @@ The first step is to install R. There are several resources on the internet on h
 The next step is to install RStudio. Technically you can run all the code shown here without installing RStudio, but we highly recommend this integrated development environment (IDE). Instructions are [here](http://www.rstudio.com/products/rstudio/download/)
 
 ### Installing packages
-
 The first R command we will run is `install.packages`. R only includes a basic set of functions. There is much more it can do than this, but not everybody needs everything so we instead make some functions via packages. Many of these function are stored in the Comprehensive R Archive Network (CRAN). Note that these packages are vetted. You can install easily from within R if you know the name of the function. We are going to install the package `devtools` 
 
 
@@ -28,7 +27,7 @@ install.packages("devtools")
 
 In RStudio you can go click on "Tools" and then "Install Packages"
 
-Note to Windows users: To use devtools` you will have to also install `Rtools`. In general you will need to install packages as administrator. One way to do this is to start R as administrator. If you do not have permission to do this, then it is a bit [more complicated](http://www.magesblog.com/2012/04/installing-r-packages-without-admin.html). 
+Note to Windows users: To use devtools you will have to also install `Rtools`. In general you will need to install packages as administrator. One way to do this is to start R as administrator. If you do not have permission to do this, then it is a bit [more complicated](http://www.magesblog.com/2012/04/installing-r-packages-without-admin.html). 
 
 The reason we installed this package is that we can also install packages from github. These packages are not vetted but many experimental packages are on github because they are not yet ready for CRAN. An example, is the `dagdata` package that we use extensively here. We will load the library and use one of its functions.
 
@@ -41,10 +40,9 @@ install_github("genomicsclass/dagdata")
 ```
 ## Downloading github repo genomicsclass/dagdata@master
 ## Installing dagdata
-## '/usr/local/Cellar/r/3.1.0/R.framework/Resources/bin/R' --vanilla CMD  \
-##   INSTALL  \
-##   '/private/var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T/Rtmpj7KJHY/devtools5ffd174a9/genomicsclass-dagdata-9b9d385'  \
-##   --library='/usr/local/Cellar/r/3.1.0/R.framework/Versions/3.1/Resources/library'  \
+## '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
+##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/Rtmp1ua6ap/devtoolsa3ba18d38/genomicsclass-dagdata-9b9d385'  \
+##   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
 ##   --install-tests
 ```
 
@@ -66,11 +64,17 @@ If you have never programmed in R, we recommend going through the entire R Progr
 An other alternative is [TryR](http://tryr.codeschool.com/)
 
 ## Importing data into R
-
 The first step when getting ready to analyze data is to read in the data into R. There are several ways to do this and we will discuss three of them. But you only need to learn one. 
 
 In the life sciences, small datasets such as the one used as an example in the next sections are stored as Excel file. In general you want to avoid the Excel (xls) format and save files as comma delimited (csv) or tab delinted (txt) files. The first step is to find the file containing your data and know it's *path*. 
 
+The three files we start with in the class are these:
+
+* [female mouse weights](https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv)
+* [female control population](https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv)
+* [entire population dataset](https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv)
+
+You can navigate to these file by visiting the data directory of dagadat on [github](https://github.com/genomicsclass/dagdata/tree/master/inst/extdata)
 ### The working directory
 
 When you are working in R it is useful to know your _working directory_. This is the directory or folder in which R will save or look for files by default. You can see your working directory by typing:
@@ -81,7 +85,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/michael/scripts/genomicsclass/labs/course1"
+## [1] "/Users/ririzarr/myDocuments/teaching/HarvardX/labs/course1"
 ```
 
 You can also change your working directory using the function `setwd`. Or you can change it through RStudio by clicking on "Session". 
