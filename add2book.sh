@@ -18,7 +18,7 @@ printf "\n  *** copy from LABS to BOOK *** \n\n"
 
 cp labs/$1/$2.md book/pages
 
-imgcount = $(ls labs/$1/figure/$2* 2> /dev/null | wc -l)
+imgcount=$(ls labs/$1/figure/$2* 2> /dev/null | wc -l)
 if [ **"$files" != "0"** ]
 then
 cp labs/$1/figure/$2* book/pages/figure
