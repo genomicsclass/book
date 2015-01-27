@@ -40,10 +40,9 @@ install_github("genomicsclass/dagdata")
 ```
 ## Downloading github repo genomicsclass/dagdata@master
 ## Installing dagdata
-## '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
-##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/Rtmp1ua6ap/devtoolsa3ba18d38/genomicsclass-dagdata-9b9d385'  \
-##   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
-##   --install-tests
+## '/usr/lib/R/bin/R' --vanilla CMD INSTALL  \
+##   '/tmp/RtmprcXQTd/devtools38207417d504/genomicsclass-dagdata-9b9d385'  \
+##   --library='/usr/local/lib/R/site-library' --install-tests
 ```
 
 ### Learn R basics 
@@ -85,7 +84,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/ririzarr/myDocuments/teaching/HarvardX/labs/course1"
+## [1] "/home/love/scripts/genomicsclass/labs/course1"
 ```
 
 You can also change your working directory using the function `setwd`. Or you can change it through RStudio by clicking on "Session". 
