@@ -86,13 +86,6 @@ res <- sapply(Ns,function(n){
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 mypar2(2,2)
 for(i in seq(along=Ns)){
   title <- paste("Avg=",signif(mean(res[,i]),3),"SD=",signif(sd(res[,i]),3))
@@ -101,7 +94,7 @@ for(i in seq(along=Ns)){
 }
 ```
 
-![plot of chunk unnamed-chunk-9](assets/fig/unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-9](figure/clt_in_practice-unnamed-chunk-9-1.png) 
 
 
 ```r
@@ -109,7 +102,7 @@ mypar2(1,1)
 boxplot(res,names=Ns)
 ```
 
-![plot of chunk unnamed-chunk-10](assets/fig/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-10](figure/clt_in_practice-unnamed-chunk-10-1.png) 
 
 
 
