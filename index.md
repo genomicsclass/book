@@ -83,3 +83,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 - [Footnotes](pages/footnotes.html)
 
+### Acknowledgments
+
+- [Course acknowledgments](pages/acknowledgments.html)
+
