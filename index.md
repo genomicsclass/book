@@ -15,6 +15,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ### 1: Statistics and R for the Life Sciences
 
 - [Getting started](pages/getting_started.html)
+- [Setting up R and RStudio in Windows](https://github.com/genomicsclass/windows/blob/master/README.md)
 - [R refresher](pages/R_refresher.html)
 - [Installing packages from Github](pages/github.html)
 - [Random variables](pages/random_variables.html)
