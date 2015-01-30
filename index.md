@@ -20,7 +20,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Installing packages from Github](pages/github.html)
 - [Random variables](pages/random_variables.html)
 - [Inference](pages/inference_lecture.html)
-- [CLT in practice](pages/clt_in_practice.html)
+- [Central Limit Theorem in practice](pages/clt_in_practice.html)
 - [Monte Carlo methods](pages/montecarlo.html)
 - [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
 - [Robust summaries](pages/robust_summaries.html)
