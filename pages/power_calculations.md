@@ -6,6 +6,10 @@ layout: page
 
 
 
+
+
+
+
 # Introduction
 
 We have used the example of the effects of two different diets on the weight of mice. Because in this illustrative example we have access to the population we know that in fact there is a substantial (about 10%) difference between the average weights of the two populations:
@@ -127,7 +131,7 @@ Not surprisingly power increases with N:
 plot(Ns,power)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-10](figure/power_calculations-unnamed-chunk-10-1.png) 
 
 Similarly if we change the level `alpha` at which we reject, power changes. The smaller I want the chance of type I error to be, the less power I will have. We can see this by writing similar code but keeping $N$ fixed and considering several values of `alpha`
 
@@ -142,7 +146,7 @@ power <- sapply(alphas,function(alpha){
 plot(log10(alphas),power,xlab="log (base 10) alpha")
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](figure/power_calculations-unnamed-chunk-11-1.png) 
 
 Note that there is no "right"" power or "right" alpha level. But it is important that you understand what each means.
 
