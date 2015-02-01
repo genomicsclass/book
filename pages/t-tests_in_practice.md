@@ -1,0 +1,191 @@
+---
+title: "t-tests in practice"
+output: pdf_document
+layout: page
+---
+
+# Introduction
+
+Now we will demonstrate how to obtain a p-value in practice. We will load experimental data and walk you through the steps used to form a t-statistics and compute a p-value. Note that we can perform this task with just a few lines of code (go to end of section to see them). However, to understand the concepts we will construct a t-statistic for "scratch".
+
+##
+
+
+## Read in and prepare data
+We start by reading in the data. A first important step is to identify which rows are associated with treatment and control:
+
+```r
+library(downloader)
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
+filename <- tempfile()
+download(url,destfile=filename)
+dat <- read.csv(filename)
+head(dat) ##quick look at the data 
+```
+
+```
+##   Diet Bodyweight
+## 1 chow      21.51
+## 2 chow      28.14
+## 3 chow      24.04
+## 4 chow      23.45
+## 5 chow      23.68
+## 6 chow      19.79
+```
+
+```r
+controlIndex <- which(dat$Diet=="chow")
+treatmentIndex <- which(dat$Diet=="hf")
+```
+and then obtain the data and observed difference in mean:
+
+```r
+control <- dat[controlIndex,2]
+treatment <- dat[treatmentIndex,2]
+diff <- mean(treatment)-mean(control)
+print(diff)
+```
+
+```
+## [1] 3.020833
+```
+
+We are asked to report a p-value. What do we do? We learned that `diff`, refered to as the _observed effect size_ is a random variable. Under the null hypothesis what is the distribution of this random variable? Let's use what we learned.
+
+Under the null, the mean of the distribution of `diff` is 0. What about the standard deviation? 
+
+To simplify, let's start with `mean(control)`. This is also a random variable. We want to know the standard error of the distribution of this random variable, which from now on we will call a standard error (SE). In statistics we call the standard deviation of the distribution of a random variable, the standard error of the random variable. Previously, we learned that statistical theory tells us that the standard error of this random variable is the population standard deviation divided by the square root of the square root of the sample size. The formula we showed was
+
+$$ SE(\bar{X}) = \sigma / \sqrt{N}$$
+
+A problem is that we do not know the population standard deviation. So we use the sample standard deviation as an estimate. In R we simply use the `sd` function and the SE is simply
+
+
+```r
+sd(control)/length(control)
+```
+
+```
+## [1] 0.2518784
+```
+
+This is the SE of the sample average but we actually want the SE of `diff`. We saw how statistical theory tells us that the variance of the difference of two random variables is the sum of it's variances, so we compute the variance and take the square root:
+
+
+```r
+se <- sqrt( var(treatment)/length(treatment) + var(control)/length(control) )
+```
+
+Statistical theory tells us that if we divide a random variable by it's SE, we get a new random variable with SE=1.
+
+
+```r
+tstat <- diff/se 
+```
+
+This ratio is what we call the t-statistics. It's the ratio of two random variables, thus a random variable. Once we know the distribution of this random variable then we can easily compute a p-value.
+
+The central limit theorem (CLT) tells us that for large sample sizes both sample averages `mean(treatment)` and `mean(control)` are normal. Statistical theory tells us that the difference of two normal is again normal,  so CLT tells us that `tstat` is  approximately normal with mean 0 (the null hypothesis) and SD 1 (we divided by it's SE). 
+
+So now to calculate a p-value all we do is ask, how often is a normally distributed random variable exceed `diff`. R has a function specifically built to answer this question: `pnorm`. `pnorm(a)` returns the probability that random variable following the standard normal distribution falls below `a`. To obtain the probability that it is larger than `a` we simply use `1-pnorm(a)`. We want to know the probability of seeing something as extreme as `diff`: either smaller (more negative) than `-abs(diff)` or larger than `abs(diff)`:
+
+
+```r
+righttail <- 1-pnorm(abs(tstat)) 
+lefttail <- pnorm(-abs(tstat))
+pval <- lefttail + righttail
+print(pval)
+```
+
+```
+## [1] 0.0398622
+```
+
+In this case the p-value is 0.04 and we would call it significant.
+
+No there is a problem here. CLT works for large samples, but is 12 large enough? A rule of thumb for CLT is that 30 is a large enough sample size (but this is just a rule of thumb).  However, there is another option than using CLT.
+
+## The t-distribution in practice
+
+As described earlier, it turns out that statistical theory offers another useful result. If the distribution of the population is normal then we can work out the exact distribution of the t-statistic without the need for the CLT. Now note that this is a big "if" given with small samples it i hard to check if the population is normal. But for something like weight we suspect that the population distribution is likely well approximated by normal and use this result. Furthermore, we can look at qq-plot for the sample and this show that the approximation is at least close:
+
+
+```r
+library(rafalib)
+mypar2(1,2)
+qqnorm(treatment);qqline(treatment,col=2)
+qqnorm(control);qqline(control,col=2)
+```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+
+If we use this approximation, then statistical theory tells us that distribution of the random variable `tstat` follows a t-distribution. This is a much more complicated distribution than the normal that depends on another parameter called degrees of freedom. R has a nice function that actually computes everything for us.
+
+
+```r
+t.test(treatment,control)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  treatment and control
+## t = 2.0552, df = 20.236, p-value = 0.053
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.04296563  6.08463229
+## sample estimates:
+## mean of x mean of y 
+##  26.83417  23.81333
+```
+
+Note that the p-value is slightly bigger now. This is to be expected because the CLT approximation considers the denominator of t-stat practically fixed while the t-distribution approximation takes into account that it is random variable and that the smaller the sample size the more it varies.
+
+It may be confusing that one approximation gave us one p-value and another gave us another because we expect there to be just one answer. Later, in the power calculation section, we will describe type I and type II errors. As a preview we point out that the test based on the CLT approximation is more likely to incorrectly reject the null (false positive) while the t-distribution is more likely to incorrectly accept the null (false negative).
+
+## Running the t-test in practice
+
+Now that we have gone over the concepts, we can show the code that one actually would run to compute a t-test
+
+
+```r
+dat <- read.csv(filename)
+controlIndex <- which(dat$Diet=="chow")
+treatmentIndex <- which(dat$Diet=="hf")
+control <- dat[controlIndex,2]
+treatment <- dat[treatmentIndex,2]
+t.test(treatment,control)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  treatment and control
+## t = 2.0552, df = 20.236, p-value = 0.053
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.04296563  6.08463229
+## sample estimates:
+## mean of x mean of y 
+##  26.83417  23.81333
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
