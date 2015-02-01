@@ -4,6 +4,8 @@ output: pdf_document
 layout: page
 ---
 
+
+
 # Introduction
 
 Now that we have introduced the idea of a random variable, a null distribution, and a p-value, we are ready to describe the mathematical theory that permits us to compute p-values in practice. We will also learn about confidence intervals and power calculations. 
@@ -126,19 +128,12 @@ It is important to keep in mind that what we are assuming to be normal here is t
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 mypar2(1,2)
 hist(hfPopulation)
 hist(controlPopulation)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/populations_and_samples-unnamed-chunk-5-1.png) 
 
 We can use qq-plots to confirm that the distribution are relatively close to being normally distributed.
 
@@ -148,7 +143,7 @@ qqnorm(hfPopulation);qqline(hfPopulation)
 qqnorm(controlPopulation);qqline(controlPopulation)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-6](figure/populations_and_samples-unnamed-chunk-6-1.png) 
 
 The larger the sample, the more forgiving the result is to the weakness of this approximation. We will later see that for this particular dataset the t-distribution works well even for  sample sizes as small as 3.
 
