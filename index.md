@@ -18,16 +18,22 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Setting up R and RStudio in Windows](https://github.com/genomicsclass/windows/blob/master/README.md)
 - [R refresher](pages/R_refresher.html)
 - [Installing packages from Github](pages/github.html)
+
+
 - [Random variables](pages/random_variables.html)
+
+
 - [Populations and samples](pages/populations_and_samples.html)
 - [Inference](pages/inference_lecture.html)
 - [Central Limit Theorem in practice](pages/clt_in_practice.html)
 - [t-tests in practice](pages/t-tests_in_practice.html)
 - [Confidence intervals](pages/confidence_intervals.html)
 - [Association tests](pages/association_tests.html)
+- [Power calculations](pages/power_calculations.html)
 - [Monte Carlo methods](pages/monte_carlo.html)
 - [Permutations tests](pages/permutation_tests.html)
-- [Power calculations](pages/power_calculations.html)
+
+
 - [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
 - [Robust summaries](pages/robust_summaries.html)
 - [Rank tests](pages/ranktest.html)
