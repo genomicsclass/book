@@ -1,14 +1,14 @@
 ---
 title: "t-tests in practice"
-output: pdf_document
 layout: page
 ---
+
+
 
 # Introduction
 
 Now we will demonstrate how to obtain a p-value in practice. We will load experimental data and walk you through the steps used to form a t-statistics and compute a p-value. Note that we can perform this task with just a few lines of code (go to end of section to see them). However, to understand the concepts we will construct a t-statistic for "scratch".
 
-##
 
 
 ## Read in and prepare data
@@ -16,6 +16,18 @@ We start by reading in the data. A first important step is to identify which row
 
 ```r
 library(downloader)
+```
+
+```
+## 
+## Attaching package: 'downloader'
+## 
+## The following object is masked from 'package:devtools':
+## 
+##     source_url
+```
+
+```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
 filename <- tempfile()
 download(url,destfile=filename)
@@ -112,12 +124,19 @@ As described earlier, it turns out that statistical theory offers another useful
 
 ```r
 library(rafalib)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 mypar2(1,2)
 qqnorm(treatment);qqline(treatment,col=2)
 qqnorm(control);qqline(control,col=2)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-8](figure/t-tests_in_practice-unnamed-chunk-8-1.png) 
 
 If we use this approximation, then statistical theory tells us that distribution of the random variable `tstat` follows a t-distribution. This is a much more complicated distribution than the normal that depends on another parameter called degrees of freedom. R has a nice function that actually computes everything for us.
 
