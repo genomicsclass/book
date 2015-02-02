@@ -31,7 +31,6 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Monte Carlo methods](pages/monte_carlo.html)
 - [Permutations tests](pages/permutation_tests.html)
 
-
 - [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
 - [Robust summaries](pages/robust_summaries.html)
 - [Rank tests](pages/ranktest.html)
