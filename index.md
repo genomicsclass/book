@@ -26,7 +26,6 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ---
 
 - [Populations and samples](pages/populations_and_samples.html)
-- [Inference](pages/inference_lecture.html)
 - [Central Limit Theorem in practice](pages/clt_in_practice.html)
 - [t-tests in practice](pages/t-tests_in_practice.html)
 - [Confidence intervals](pages/confidence_intervals.html)
