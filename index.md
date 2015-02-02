@@ -19,9 +19,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [R refresher](pages/R_refresher.html)
 - [Installing packages from Github](pages/github.html)
 
-
 - [Random variables](pages/random_variables.html)
-
 
 - [Populations and samples](pages/populations_and_samples.html)
 - [Inference](pages/inference_lecture.html)
