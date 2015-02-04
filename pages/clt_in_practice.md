@@ -74,11 +74,18 @@ identical(var(x)*(N-1)/N, popvar)
 ## [1] TRUE
 ```
 
-So to be mathematically correct we do not use `sd` or  `var`.
+So to be mathematically correct we do not use `sd` or  `var`. I am going to define a function for this:
 
 ```r
-sd_hf <- sqrt(mean((hfPopulation-mu_hf)^2))
-sd_control <- sqrt(mean((controlPopulation-mu_control)^2))
+popvar <- function(x) mean( (x-mean(x))^2)
+popsd <- function(x) sqrt(popvar(x)) 
+```
+
+
+
+```r
+sd_hf <- popsd(hfPopulation)
+sd_control <- popsd(controlPopulation)
 ```
 
 Remember, that in practice we do not get to compute these population parameters,
@@ -114,14 +121,16 @@ library(rafalib)
 ```r
 mypar2(2,2)
 for(i in seq(along=Ns)){
-  title <- paste("Avg=",signif(mean(res[,i]),3),"SD=",signif(sd(res[,i]),3))
+  title <- paste("N=",Ns[i],"Avg=",signif(mean(res[,i]),3),"SD=",signif(popsd(res[,i]),3)) ##popsd defined above
   qqnorm(res[,i],main=title)
   qqline(res[,i],col=2)
 }
 ```
 
-![plot of chunk unnamed-chunk-9](figure/clt_in_practice-unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-10](figure/clt_in_practice-unnamed-chunk-10-1.png) 
+
 Here we see a pretty good fit even for 3. Why is this? Because the population itself is relatively close to normally distributed, the averages are close to normal as well, (the sum of normals is normals). Now in practice we actually calculate a ratio, we divide by the estimate standard deviation. Here is where the sample size starts to matter more.
+
 
 ```r
 Ns <- c(3,12,25,50)
@@ -142,7 +151,7 @@ for(i in seq(along=Ns)){
 }
 ```
 
-![plot of chunk unnamed-chunk-10](figure/clt_in_practice-unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-11](figure/clt_in_practice-unnamed-chunk-11-1.png) 
 
 Now we see that for $N=3$ the CLT does not provide a usable approximation. For $N=12$ their is a slight deviation at the higher values, although the approximation appears useful. For 25 and 50 the appoximation is spot on. 
 
