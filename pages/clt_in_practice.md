@@ -81,6 +81,7 @@ popvar <- function(x) mean( (x-mean(x))^2)
 popsd <- function(x) sqrt(popvar(x)) 
 ```
 
+Now we can compute the popultion SD:
 
 
 ```r
@@ -112,13 +113,6 @@ Now we can use qq-plots to see how well CLT approximations  works for these. If 
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 mypar2(2,2)
 for(i in seq(along=Ns)){
   title <- paste("N=",Ns[i],"Avg=",signif(mean(res[,i]),3),"SD=",signif(popsd(res[,i]),3)) ##popsd defined above
