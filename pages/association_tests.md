@@ -126,7 +126,7 @@ p
 The expected table is therefore
 
 ```r
-expected <- rbind(c(1-p,p)*sum(genotype=="aa"),c(1-p,p)*sum(genotype=="AA/Aa"))
+expected <- rbind(c(1-p,p)*sum(genotype=="AA/Aa"),c(1-p,p)*sum(genotype=="aa"))
 dimnames(expected)<-dimnames(tab)
 expected
 ```
@@ -134,8 +134,8 @@ expected
 ```
 ##         disease
 ## genotype control cases
-##    AA/Aa      44     6
-##    aa        176    24
+##    AA/Aa     176    24
+##    aa         44     6
 ```
 
 The Chi-square test uses an asymptotic result (similar to CLT) about the sums of independent binary outcomes, we can compute an approximate probability of seeing a deviation for the expected table as big as this one. The p-value for this table is 
