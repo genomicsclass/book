@@ -1,6 +1,5 @@
 ---
 title: "Central Limit Theorem in practice"
-output: pdf_document
 layout: page
 ---
 
@@ -78,8 +77,8 @@ identical(var(x)*(N-1)/N, popvar)
 So to be mathematically correct we do not use `sd` or  `var`.
 
 ```r
-sd_hf <- mean((hfPopulation-mu_hf)^2)
-sd_control <- mean((controlPopulation-mu_control)^2)
+sd_hf <- sqrt(mean((hfPopulation-mu_hf)^2))
+sd_control <- sqrt(mean((controlPopulation-mu_control)^2))
 ```
 
 Remember, that in practice we do not get to compute these population parameters,
@@ -106,6 +105,13 @@ Now we can use qq-plots to see how well CLT approximations  works for these. If 
 
 ```r
 library(rafalib)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 mypar2(2,2)
 for(i in seq(along=Ns)){
   title <- paste("Avg=",signif(mean(res[,i]),3),"SD=",signif(sd(res[,i]),3))
