@@ -89,7 +89,31 @@ head(dat)
 ## 221 control       aa
 ```
 
-To create the appropriate two by two table we simply use:
+To create the appropriate two by two table we will use the function `table`. This function tabulates the frequency of each level in a factor. For exampel:
+
+
+```r
+table(genotype)
+```
+
+```
+## genotype
+## AA/Aa    aa 
+##   200    50
+```
+
+```r
+table(disease)
+```
+
+```
+## disease
+## control   cases 
+##     220      30
+```
+
+If you you feed the function two factors it will tabulate all possible pairs and thus create the two by two table:
+
 
 ```r
 tab <- table(genotype,disease)
@@ -102,6 +126,8 @@ tab
 ##    AA/Aa     180    20
 ##    aa         40    10
 ```
+
+Note that you can feed `table` $n$ factors and it will tabulate all $n$-tubles.
 
 The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ration: $(10/40) / (20/180)$ 
 
@@ -194,7 +220,8 @@ exp(ci)
 ## [1] 0.9618616 5.2632310
 ```
 
-Note that the confidence includes 1, which is consistent with the p-value being bigger than 0.05.
+Note that the confidence includes 1, which is consistent with the p-value being bigger than 0.05. Also note that the p-value shown here is based on a different approximation to the one used by the Chi-square test which is why they differ.
+
 
 
 
