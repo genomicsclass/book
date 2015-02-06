@@ -1,6 +1,9 @@
 ---
-title: dplyr
+layout: page
+title: dplyr tutorial
 ---
+
+
 
 ### What is dplyr?
 
@@ -58,12 +61,7 @@ library(downloader)
 ```
 
 ```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
+## Error in library(downloader): there is no package called 'downloader'
 ```
 
 ```r
