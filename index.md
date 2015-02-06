@@ -38,6 +38,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ---
 
 - [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
+- [dplyr tutorial](pages/dplyr_tutorial.html)
 - [Robust summaries](pages/robust_summaries.html)
 - [Rank tests](pages/ranktest.html)
 
