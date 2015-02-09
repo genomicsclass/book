@@ -17,6 +17,7 @@ The methods described above relate to _univariate_ variables. In the biomedical 
 
 
 ```r
+library(UsingR)
 data("father.son")
 x=father.son$fheight
 y=father.son$sheight
