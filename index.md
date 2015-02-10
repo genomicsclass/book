@@ -47,7 +47,6 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ### 2: Introduction to Linear Models and Matrix Algebra
 
 - [Expressing design formula in R](pages/expressing_design_formula.html)
-- [Linear models](pages/linear_models.html)
 
 ### 3: Advanced Statistics for the Life Sciences
 
