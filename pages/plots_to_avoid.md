@@ -92,7 +92,11 @@ Much more informative is to summarizing with a boxplot. If the number of points 
 
 
 ```r
-load("R/fig1.RData")
+library("downloader")
+tmpfile <- tempfile()
+download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig1.RData",tmpfile)
+load(tmpfile)
+
 library(rafalib)
 mypar2(1,1)
 dat <- list(Treatment=x,Control=y)
@@ -114,7 +118,8 @@ A quick look at the data demonstrates that this difference is mostly driven by j
 
 
 ```r
-load("R/fig3.RData")
+download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig3.RData",tmpfile) ##overwrite
+load(tmpfile)
 library(rafalib)
 mypar2(1,2)
 dat <- list(Treatment=x,Control=y)
@@ -133,7 +138,8 @@ The purpose of many statistical analyses is to determine relationships between t
 
 
 ```r
-load("R/fig4.RData")
+download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig4.RData",tmpfile)
+load(tmpfile)
 plot(x,y,lwd=2,type="n")
 fit <- lm(y~x)
 abline(fit$coef,lwd=2)
@@ -148,7 +154,6 @@ text(78, 187,expression(paste(rho," = 0.8567")),adj=c(0,0.5))
 Showing the data is much more informative:
 
 ```r
-load("R/fig4.RData")
 plot(x,y,lwd=2)
 fit <- lm(y~x)
 abline(fit$coef,lwd=2)
@@ -270,7 +275,8 @@ This plot can be made better by simply using color to distinguish the three line
 
 
 ```r
-x <- read.table("R/fig8dat.csv", sep=",", header=TRUE)
+download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig8dat.csv",tmpfile)
+x <- read.table(tmpfile, sep=",", header=TRUE)
 plot(x[,1],x[,2],xlab="log Dose",ylab="Proportion survived",ylim=c(0,1),
      type="l",lwd=2,col=1)
 lines(x[,1],x[,3],lwd=2,col=2)
