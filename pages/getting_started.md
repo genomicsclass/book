@@ -42,7 +42,7 @@ install_github("genomicsclass/dagdata")
 ## Downloading github repo genomicsclass/dagdata@master
 ## Installing dagdata
 ## '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
-##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/RtmpX0UZMf/devtools14912df8c9b9/genomicsclass-dagdata-20d8fbb'  \
+##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/RtmpX0UZMf/devtools1491532885ed/genomicsclass-dagdata-20d8fbb'  \
 ##   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
 ##   --install-tests
 ```
@@ -112,16 +112,11 @@ You can also use R to download the file and define the path yourself. In this ex
 
 
 ```r
-library(downloader) ##use install.packages to install
+library(downloader,message=FALSE) ##use install.packages to install
 ```
 
 ```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
+## Error in library(downloader, message = FALSE): unused argument (message = FALSE)
 ```
 
 ```r
