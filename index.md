@@ -37,15 +37,27 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ---
 
-- [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
+- [Exploratory Data Analysis 1](pages/exploratory_data_analysis_1.html)
+- [Exploratory Data Analysis 2](pages/exploratory_data_analysis_2.html)
+- [Plots to avoid](pages/plots_to_avoid.html)
 - [dplyr tutorial](pages/dplyr_tutorial.html)
 - [Robust summaries](pages/robust_summaries.html)
 - [Rank tests](pages/ranktest.html)
 
 ### 2: Introduction to Linear Models and Matrix Algebra
 
+- [Matrix algebra in practice](pages/matrix_algebra_in_practice.html)
+- [Introduction to using regression](pages/intro_using_regression.html)
+- [Standard errors](pages/standard_errors.html)
+
+---
+
+- [Linear models in practice](pages/linear_models_in_practice.html)
+- [Collinearity](pages/collinearity.html)
 - [Expressing design formula in R](pages/expressing_design_formula.html)
-- [Linear models](pages/linear_models.html)
+- [Interactions and contrasts](pages/interactions_and_contrasts.html)
+- [QR and regression](pages/qr_and_regression.html)
+
 
 ### 3: Advanced Statistics for the Life Sciences
 

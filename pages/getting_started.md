@@ -18,6 +18,7 @@ The first step is to install R. There are several resources on the internet on h
 The next step is to install RStudio. Technically you can run all the code shown here without installing RStudio, but we highly recommend this integrated development environment (IDE). Instructions are [here](http://www.rstudio.com/products/rstudio/download/)
 
 ### Installing packages
+
 The first R command we will run is `install.packages`. R only includes a basic set of functions. There is much more it can do than this, but not everybody needs everything so we instead make some functions via packages. Many of these function are stored in the Comprehensive R Archive Network (CRAN). Note that these packages are vetted. You can install easily from within R if you know the name of the function. We are going to install the package `devtools` 
 
 
@@ -40,9 +41,10 @@ install_github("genomicsclass/dagdata")
 ```
 ## Downloading github repo genomicsclass/dagdata@master
 ## Installing dagdata
-## '/usr/lib/R/bin/R' --vanilla CMD INSTALL  \
-##   '/tmp/RtmprcXQTd/devtools38207417d504/genomicsclass-dagdata-9b9d385'  \
-##   --library='/usr/local/lib/R/site-library' --install-tests
+## '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
+##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/RtmpRqDvBk/devtools158eb5722bf/genomicsclass-dagdata-20d8fbb'  \
+##   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
+##   --install-tests
 ```
 
 ### Learn R basics 
@@ -63,6 +65,7 @@ If you have never programmed in R, we recommend going through the entire R Progr
 An other alternative is [TryR](http://tryr.codeschool.com/)
 
 ## Importing data into R
+
 The first step when getting ready to analyze data is to read in the data into R. There are several ways to do this and we will discuss three of them. But you only need to learn one. 
 
 In the life sciences, small datasets such as the one used as an example in the next sections are stored as Excel file. In general you want to avoid the Excel (xls) format and save files as comma delimited (csv) or tab delinted (txt) files. The first step is to find the file containing your data and know it's *path*. 
@@ -84,7 +87,7 @@ getwd()
 ```
 
 ```
-## [1] "/home/love/scripts/genomicsclass/labs/course1"
+## [1] "/Users/ririzarr/myDocuments/teaching/HarvardX/labs/course1"
 ```
 
 You can also change your working directory using the function `setwd`. Or you can change it through RStudio by clicking on "Session". 
@@ -109,9 +112,10 @@ You can also use R to download the file and define the path yourself. In this ex
 
 
 ```r
+library(downloader) ##use install.packages to install
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
 filename <- tempfile()
-download.file(url,destfile=filename,method="curl")
+download(url,destfile=filename)
 ```
 
 Now we are ready to read in the file 
@@ -141,7 +145,8 @@ list.files(file.path(dir,"extdata"))
 ```
 ## [1] "babies.txt"                   "femaleControlsPopulation.csv"
 ## [3] "femaleMiceWeights.csv"        "mice_pheno.csv"              
-## [5] "msleep_ggplot2.csv"           "README"
+## [5] "msleep_ggplot2.csv"           "README"                      
+## [7] "spider_wolff_gorb_2013.csv"
 ```
 
 ```r
