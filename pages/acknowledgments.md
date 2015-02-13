@@ -7,6 +7,7 @@ title: Acknowledgments for Data Analysis for Genomics / Biomedical Data Science 
 
 * Stephanie Hicks
 * Alex D'Amour
+* Yered Pita-Juarez
 
 ## Slides/images borrowed in lectures
 
