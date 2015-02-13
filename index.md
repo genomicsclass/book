@@ -48,15 +48,16 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 - [Matrix algebra in practice](pages/matrix_algebra_in_practice.html)
 - [Introduction to using regression](pages/intro_using_regression.html)
-- [Standard errors](pages/standard_errors.html)
 
 ---
 
-- [Linear models in practice](pages/linear_models_in_practice.html)
-- [Collinearity](pages/collinearity.html)
 - [Expressing design formula in R](pages/expressing_design_formula.html)
-- [Interactions and contrasts](pages/interactions_and_contrasts.html)
+- [Linear models in practice](pages/linear_models_in_practice.html)
+- [Standard errors](pages/standard_errors.html)
+- [Collinearity](pages/collinearity.html)
 - [QR and regression](pages/qr_and_regression.html)
+- [Interactions and contrasts](pages/interactions_and_contrasts.html)
+
 
 
 ### 3: Advanced Statistics for the Life Sciences
