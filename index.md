@@ -46,10 +46,10 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ### 2: Introduction to Linear Models and Matrix Algebra
 
-- [Introduction to Linear Models](pages/intro_using_regression.md)
-- [Matrix Algebra Notation](pages/matrix_notation.md)
-- [Matrix Algebra Operations](pages/matrix_operations.md)
-- [Linear Models Expressed as Matrix Algebra](pages/matrix_algebra_examples.md)
+- [Introduction to Linear Models](pages/intro_using_regression.html)
+- [Matrix Algebra Notation](pages/matrix_notation.html)
+- [Matrix Algebra Operations](pages/matrix_operations.html)
+- [Linear Models Expressed as Matrix Algebra](pages/matrix_algebra_examples.html)
 - [Matrix algebra in practice](pages/matrix_algebra_in_practice.html)
 - [Introduction to using regression](pages/intro_using_regression.html)
 
