@@ -118,7 +118,7 @@ Note that, for the object falling example $x_{1,1}= t_i$ and $x_{i,1}=t_i^2$ wit
 
 For reasons that will become clear soon, it is convenient to representing  these in matrices:
 
-$$ \mathbf{X} = [ \mathbf{X}_1 \mathbf{X_2} ] = \begin{pmatrix}
+$$ \mathbf{X} = [ \mathbf{X}\_1 \mathbf{X}\_2 ] = \begin{pmatrix}
 x_{1,1}&x_{1,2}\\\
 \vdots\\\
 x_{N,1}&x_{N,2}
