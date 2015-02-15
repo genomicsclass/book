@@ -12,8 +12,8 @@ layout: page
 
 In the previous section we motivated the use of matrix algebra with this system of equations:
 $$\begin{eqnarray}
-a + b + c &=& 6\\
-3a - 2b + c &=& 2\\
+a + b + c &=& 6\\\
+3a - 2b + c &=& 2\\\
 2a + b  - c &=& 1
 \end{eqnarray}
 $$
@@ -22,36 +22,34 @@ We described how this system can be rewritten and solved using matrix algebra:
 
 $$
 \begin{pmatrix}
-1&1&1\\
-3&-2&1\\
+1&1&1\\\
+3&-2&1\\\
 2&1&-1
 \end{pmatrix}
 \begin{pmatrix}
-a\\
-b\\
-c\\
-\end{pmatrix}
-=
+a\\\
+b\\\
+c
+\end{pmatrix} =
 \begin{pmatrix}
-6\\
-2\\
+6\\\
+2\\\
 1
 \end{pmatrix}
 \implies
 \begin{pmatrix}
-a\\
-b\\
+a\\\
+b\\\
 c
-\end{pmatrix}
-=
+\end{pmatrix}=
 \begin{pmatrix}
-1&1&1\\
-3&-2&1\\
+1&1&1\\\
+3&-2&1\\\
 2&1&-1
 \end{pmatrix}^{-1}
 \begin{pmatrix}
-6\\
-2\\
+6\\\
+2\\\
 1
 \end{pmatrix}
 $$
@@ -66,8 +64,8 @@ We start with one of the simplest operation: scalar multiplication. If $a$ is sc
 $$
 a \mathbf{X} = 
 \begin{pmatrix}
-  a x_{1,1} & \dots & a x_{1,p}\\
-  & \vdots & \\
+  a x_{1,1} & \dots & a x_{1,p}\\\
+  & \vdots & \\\
   a x_{N,1} & \dots & a  x_{N,p}
 \end{pmatrix}
 $$
@@ -109,16 +107,16 @@ The transpose is an operation that simply changes columns to rows. We use either
 
 $$
 \mathbf{X} = \begin{pmatrix}
-  x_{1,1}&\dots & x_{1,p} \\
-  x_{2,1}&\dots & x_{2,p} \\
-   & \vdots & \\
-  x_{N,1}&\dots & x_{N,p} \\
+  x_{1,1}&\dots & x_{1,p} \\\
+  x_{2,1}&\dots & x_{2,p} \\\
+   & \vdots & \\\
+  x_{N,1}&\dots & x_{N,p} \\\
   \end{pmatrix} \implies
 \mathbf{X}^\top = \begin{pmatrix}
-  x_{1,1}&\dots & x_{p,1} \\
-  x_{1,2}&\dots & x_{p,2} \\
-   & \vdots & \\
-  x_{1,N}&\dots & x_{p,N} \\
+  x_{1,1}&\dots & x_{p,1} \\\
+  x_{1,2}&\dots & x_{p,2} \\\
+   & \vdots & \\\
+  x_{1,N}&\dots & x_{p,N} \\\
   \end{pmatrix}
 $$
 
@@ -154,9 +152,9 @@ We start by describing the matrix multiplication shown in the original system of
 
 $$
 \begin{aligned}
-a + b + c &=6\\
-3a - 2b + c &= 2\\
-2a + b  - c &= 1\\
+a + b + c &=6\\\
+3a - 2b + c &= 2\\\
+2a + b  - c &= 1
 \end{aligned}
 $$
 
@@ -166,19 +164,18 @@ can be written like this:
 
 $$
 \begin{pmatrix}
-1&1&1\\
-3&-2&1\\
+1&1&1\\\
+3&-2&1\\\
 2&1&-1
 \end{pmatrix}
 \begin{pmatrix}
-a\\
-b\\
-c\\
-\end{pmatrix}
-=
+a\\\
+b\\\
+c
+\end{pmatrix}=
 \begin{pmatrix}
-a + b + c \\
-3a - 2b + c \\
+a + b + c \\\
+3a - 2b + c \\\
 2a + b  - c 
 \end{pmatrix}
 $$
@@ -220,23 +217,22 @@ Here is the general definition of matrix multiplication of matrices $A$ and $X$
 
 $$
 \mathbf{AX} = \begin{pmatrix}
-  a_{1,1} & a_{1,2} & \dots & a_{1,N}\\
-  a_{2,1} & a_{2,2} & \dots & a_{2,N}\\
-  & & \vdots & \\
-  a_{M,1} & a_{M,2} & \dots & a_{M,N}\\
+  a_{1,1} & a_{1,2} & \dots & a_{1,N}\\\
+  a_{2,1} & a_{2,2} & \dots & a_{2,N}\\\
+  & & \vdots & \\\
+  a_{M,1} & a_{M,2} & \dots & a_{M,N}
 \end{pmatrix}
 \begin{pmatrix}
-  x_{1,1}&\dots & x_{1,p} \\
-  x_{2,1}&\dots & x_{2,p} \\
-   & \vdots & \\
-  x_{N,1}&\dots & x_{N,p} \\
+  x_{1,1}&\dots & x_{1,p} \\\
+  x_{2,1}&\dots & x_{2,p} \\\
+   & \vdots & \\\
+  x_{N,1}&\dots & x_{N,p} 
   \end{pmatrix}
 $$
   
-$$  =
-\begin{pmatrix}
-  \sum_{i=1}^N a_{1,i} x_{i,1} & \dots & \sum_{i=1}^N a_{1,i} x_{i,p}\\
-  & \vdots & \\
+$$  = \begin{pmatrix}
+  \sum_{i=1}^N a_{1,i} x_{i,1} & \dots & \sum_{i=1}^N a_{1,i} x_{i,p}\\\
+  & \vdots & \\\
   \sum_{i=1}^N a_{M,i} x_{i,1} & \dots & \sum_{i=1}^N a_{M,i} x_{i,p}
 \end{pmatrix}
 $$
@@ -250,12 +246,12 @@ The identity matrix is analogous to the number 1: if you multiply the identity m
 
 $$
 \mathbf{I} = \begin{pmatrix}
-1&0&0&\dots&0&0\\
-0&1&0&\dots&0&0\\
-0&0&1&\dots&0&0\\
-\vdots &\vdots & \vdots&\ddots&\vdots&\vdots\\
-0&0&0&\dots&1&0\\
-0&0&0&\dots&0&1\\
+1&0&0&\dots&0&0\\\
+0&1&0&\dots&0&0\\\
+0&0&1&\dots&0&0\\\
+\vdots &\vdots & \vdots&\ddots&\vdots&\vdots\\\
+0&0&0&\dots&1&0\\\
+0&0&0&\dots&0&1
 \end{pmatrix}
 $$
 
@@ -266,22 +262,21 @@ If you follow the matrix multiplication rule above you notice this works out:
 $$
 \mathbf{XI} = 
 \begin{pmatrix}
-  a x_{1,1} & \dots & a x_{1,p}\\
-  & \vdots & \\
+  a x_{1,1} & \dots & a x_{1,p}\\\
+  & \vdots & \\\
   a x_{N,1} & \dots & a  x_{N,p}
 \end{pmatrix}
 \begin{pmatrix}
-1&0&0&\dots&0&0\\
-0&1&0&\dots&0&0\\
-0&0&1&\dots&0&0\\
- & & &\vdots& &\\
-0&0&0&\dots&1&0\\
-0&0&0&\dots&0&1\\
-\end{pmatrix}
-= 
+1&0&0&\dots&0&0\\\
+0&1&0&\dots&0&0\\\
+0&0&1&\dots&0&0\\\
+ & & &\vdots& &\\\
+0&0&0&\dots&1&0\\\
+0&0&0&\dots&0&1
+\end{pmatrix} = 
 \begin{pmatrix}
-   x_{1,1} & \dots &  x_{1,p}\\
-  & \vdots & \\
+   x_{1,1} & \dots &  x_{1,p}\\\
+  & \vdots & \\\
    x_{N,1} & \dots & x_{N,p}
 \end{pmatrix}
 $$
