@@ -8,7 +8,7 @@ layout: page
 
 
 
-# Introduciton
+# Introduction
 
 Here we introduce the basics of matrix notation. At first this will all seem over-complicated but once we get to the examples you will start to appreciate its power of using this notation to both explain and derive solutions as well as implement them as R code. 
 
@@ -102,8 +102,7 @@ Note: we don't always use bold because commonly one can tell what is a matrix fr
 
 Similarly we can use math notation to represent the covariates or predictors. In the case of the two, with the second one just being the square of the first.
 
-$$
-\mathbf{X}_1 = \begin{pmatrix}
+$$ \mathbf{X}_1 = \begin{pmatrix}
 x_{1,1}\\\
 \vdots\\\
 x_{N,1}
@@ -119,8 +118,7 @@ Note that, for the object falling example $x_{1,1}= t_i$ and $x_{i,1}=t_i^2$ wit
 
 For reasons that will become clear soon, it is convenient to representing  these in matrices:
 
-$$
-\mathbf{X} = [ \mathbf{X}_1 \mathbf{X_2} ] = \begin{pmatrix}
+$$ \mathbf{X} = [ \mathbf{X}_1 \mathbf{X_2} ] = \begin{pmatrix}
 x_{1,1}&x_{1,2}\\\
 \vdots\\\
 x_{N,1}&x_{N,2}
