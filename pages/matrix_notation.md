@@ -43,8 +43,7 @@ $$
 a\\\
 b\\\
 c
-\end{pmatrix}
-=
+\end{pmatrix} =
 \begin{pmatrix}
 6\\\
 2\\\
@@ -55,8 +54,7 @@ c
 a\\\
 b\\\
 c
-\end{pmatrix}
-=
+\end{pmatrix} =
 \begin{pmatrix}
 1&1&1\\\
 3&-2&1\\\
