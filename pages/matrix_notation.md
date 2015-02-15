@@ -26,7 +26,7 @@ $$
 \begin{aligned}
 a + b + c &= 6\\
 3a - 2b + c &= 2\\
-2a + b  - c &= 1
+2a + b  - c &= 1\\
 \end{aligned}
 $$
 
@@ -37,7 +37,7 @@ $$
 \begin{pmatrix}
 1&1&1\\
 3&-2&1\\
-2&1&-1
+2&1&-1\\
 \end{pmatrix}
 \begin{pmatrix}
 a\\
@@ -48,24 +48,24 @@ c\\
 \begin{pmatrix}
 6\\
 2\\
-1
+1\\
 \end{pmatrix}
 \implies
 \begin{pmatrix}
 a\\
 b\\
-c
+c\\
 \end{pmatrix}
 =
 \begin{pmatrix}
 1&1&1\\
 3&-2&1\\
-2&1&-1
+2&1&-1\\
 \end{pmatrix}^{-1}
 \begin{pmatrix}
 6\\
 2\\
-1
+1\\
 \end{pmatrix}
 $$
 
@@ -94,7 +94,7 @@ $$ \mathbf{Y} = \begin{pmatrix}
 Y_1\\
 Y_2\\
 \vdots\\
-Y_N
+Y_N\\
 \end{pmatrix}
 $$
 
