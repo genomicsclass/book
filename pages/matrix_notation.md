@@ -24,9 +24,9 @@ Linear algebra was created by mathematicians to solve systems of linear equation
 
 $$
 \begin{aligned}
-a + b + c &= 6\\
-3a - 2b + c &= 2\\
-2a + b  - c &= 1\\
+a + b + c &= 6\\\
+3a - 2b + c &= 2\\\
+2a + b  - c &= 1\\\
 \end{aligned}
 $$
 
