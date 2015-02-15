@@ -103,12 +103,12 @@ Note: we don't always use bold because commonly one can tell what is a matrix fr
 Similarly we can use math notation to represent the covariates or predictors. In the case of the two, with the second one just being the square of the first.
 
 $$
-\mathbf{X}_1=\begin{pmatrix}
+\mathbf{X}_1 = \begin{pmatrix}
 x_{1,1}\\\
 \vdots\\\
 x_{N,1}
-\end{pmatrix}\mbox{ and }
-\mathbf{X}_2=\begin{pmatrix}
+\end{pmatrix} \mbox{ and }
+\mathbf{X}_2 = \begin{pmatrix}
 x_{1,2}\\\
 \vdots\\\
 x_{N,2}
