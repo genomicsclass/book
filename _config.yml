@@ -16,15 +16,15 @@ production_url : http://genomicsclass.github.io/book
 
 # Tell Github to use the kramdown markdown interpreter
 # (see https://help.github.com/articles/migrating-your-pages-site-from-maruku)
-# markdown: redcarpet
+markdown: redcarpet
 
-# redcarpet: 
-#   extensions: ["no_intra_emphasis","tables"]
+redcarpet: 
+  extensions: ["no_intra_emphasis","tables"]
 
-markdown: kramdown
+#markdown: kramdown
 
-kramdown:
-  input: GFM
+#kramdown:
+#  input: GFM
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
