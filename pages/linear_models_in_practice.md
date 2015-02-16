@@ -5,6 +5,8 @@ layout: page
 
 
 
+We will be examining the weights of mice on a control diet and a high fat diet. We read in the data and make a quick stripchart:
+
 
 ```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
@@ -18,7 +20,11 @@ stripchart(dat$Bodyweight ~ dat$Diet, vertical=TRUE, method="jitter",
 
 ![plot of chunk unnamed-chunk-1](figure/linear_models_in_practice-unnamed-chunk-1-1.png) 
 
+We can see that the high fat diet group appear to have higher weights on average, although there is overlap between the two samples.
+
 ## A linear model with one variable
+
+We will build for demonstration purposes the design matrix $\mathbf{X}$ using the formula `~ Diet`. Note that the group with the 1's in the second column is determined by the level of `Diet` which comes second, that is, the non-reference level. 
 
 
 ```r
@@ -113,13 +119,21 @@ model.matrix(~ Diet, data=dat)
 ## [1] "contr.treatment"
 ```
 
+After trying out the `relevel` function we finally reset `chow` as the reference level, because we want the comparison to be $hf - chow$:
+
+
 ```r
 dat$Diet <- relevel(dat$Diet, ref="chow")
 ```
 
 ## The mathematics behind lm()
 
-$$ \hat{\beta} = (X^t X)^{-1} X^t y $$
+Before we use our shortcut for running linear models, `lm`, we just want to remind what will happen internally. Inside of `lm`, we will form the design matrix $\mathbf{X}$, and calculate the $\boldsymbol{\beta}$ which minimizes the sum of squares, as described in a previous lecture. The formula for this solution is:
+
+$$ \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathbf{Y} $$
+
+We can calculate this in R using our matrix multiplication operator `%*%`, the inverse function `solve` and the transpose function `t`.
+
 
 
 ```r
@@ -133,6 +147,9 @@ solve(t(X) %*% X) %*% t(X) %*% y
 ## (Intercept) 23.813333
 ## Diethf       3.020833
 ```
+
+Note that these coefficients are the average of the control group and the difference of the averages:
+
 
 
 ```r
@@ -151,6 +168,8 @@ mean(s[["hf"]]) - mean(s[["chow"]])
 ```
 ## [1] 3.020833
 ```
+
+Finally, we use our shortcut, `lm`, to run the linear model:
 
 
 ```r
@@ -190,6 +209,8 @@ summary(fit)
 
 ## Examining the coefficients
 
+The following large and clunky piece of code allows us to visualize the meaning of the coefficients with colored arrows:
+
 
 ```r
 stripchart(dat$Bodyweight ~ dat$Diet, vertical=TRUE, method="jitter",
@@ -206,9 +227,15 @@ abline(h=coefs[1]+coefs[2],col=cols[2])
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/linear_models_in_practice-unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-7](figure/linear_models_in_practice-unnamed-chunk-7-1.png) 
 
-## Comparing simple two group to a t-test
+## Comparing simple two group lm to a t-test
+
+To make a connection with earlier material, this simple linear model is actually giving us the same result (the t-statistic and p-value) for the difference as a specific kind of t-test. This is the t-test between two groups with the assumption that both groups have the same variance. This was encoded into our linear model when we assume that the errors $\boldsymbol{\varepsilon}$ are all equally distributed.
+
+Though the linear model in this case is equivalent to a t-test, we will soon explore more complicated designs, where the linear model is a useful extension.
+
+Our `lm` coefficients were:
 
 
 ```r
@@ -220,6 +247,9 @@ summary(fit)$coefficients
 ## (Intercept) 23.813333   1.039353 22.911684 7.642256e-17
 ## Diethf       3.020833   1.469867  2.055174 5.192480e-02
 ```
+
+And the t-statistic of the t-test is the same, with a flipped sign:
+
 
 ```r
 (ttest <- t.test(s[["chow"]], s[["hf"]], var.equal=TRUE))
@@ -255,6 +285,9 @@ ttest$statistic
 ##         t 
 ## -2.055174
 ```
+
+If we put the high fat group first, we get the same sign as the linear model:
+
 
 ```r
 t.test(s[["hf"]], s[["chow"]], var.equal=TRUE)$statistic
