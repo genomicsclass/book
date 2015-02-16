@@ -3,7 +3,7 @@
 permalink: /:categories/:year/:month/:day/:title 
 
 exclude: [".rvmrc", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
-pygments: true
+highlighter: pygments
 
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
@@ -16,10 +16,15 @@ production_url : http://genomicsclass.github.io/book
 
 # Tell Github to use the kramdown markdown interpreter
 # (see https://help.github.com/articles/migrating-your-pages-site-from-maruku)
-markdown: redcarpet
+# markdown: redcarpet
 
-redcarpet: 
-  extensions: ["no_intra_emphasis","tables","footnotes"]
+# redcarpet: 
+#   extensions: ["no_intra_emphasis","tables"]
+
+markdown: kramdown
+
+kramdown:
+  input: GFM
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
