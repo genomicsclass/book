@@ -12,7 +12,7 @@ Here we will show how to use the two base R functions:
 
 in order to produce *design matrices* (also known as *model matrices*) for a variety of linear models. The design matrix is the matrix $\mathbf{X}$ that we have seen in lecture. 
 
-For fitting linear models in R, we will directly provide a *formula* to the `lm` function. In this script, we will use the `model.matrix` function, which is used internally by the `lm` function. This will help us to connect the R *formula* with the matrix $\mathbf{X}$ from the  equation $\mathbf{Y} = \mathbf{X} \mathbf{\beta} + \mathbf{\varepsilon}$ that we have seen in the lectures. It will also help us therefore to interpret the results from `lm`.
+For fitting linear models in R, we will directly provide a *formula* to the `lm` function. In this script, we will use the `model.matrix` function, which is used internally by the `lm` function. This will help us to connect the R *formula* with the matrix $\mathbf{X}$ from the  equation $\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}$ that we have seen in the lectures. It will also help us therefore to interpret the results from `lm`.
 
 ## Choice of design
 
