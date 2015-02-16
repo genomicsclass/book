@@ -5,27 +5,21 @@ layout: page
 
 
 
-For learning about linear models, we will be using a datasest which compares the different frictional coefficients on the different legs on a spider, and whether more friction comes from a pushing or pulling motion of the leg. The original paper from which the data was provided is: Jonas O. Wolff  & Stanislav N. Gorb, "Radial arrangement of Janus-like setae permits friction control in spiders", Scientific Reports, 22 January 2013. http://dx.doi.org/10.1038/srep01101
+For learning about linear models, we will be using a datasest which compares the different frictional coefficients on the different legs on a spider, and whether more friction comes from a pushing or pulling motion of the leg. The original paper from which the data was provided is:
 
-The abstract of the paper says, "The hunting spider Cupiennius salei (Arachnida, Ctenidae) possesses hairy attachment pads (claw tufts) at its distal legs, consisting of directional branched setae... Friction of claw tufts on smooth glass was measured to reveal the functional effect of seta arrangement within the pad." Figure 1 includes some very pretty electron microscope images of the tufts. We are intereseted in the comparisons in Figure 4, where the pulling and pushing motions are compared for different leg pairs (for an example of pushing and pulling see the top of Figure 3). We can recreate Figure 4 of the paper, by loading the data and calling boxplot():
+Jonas O. Wolff  & Stanislav N. Gorb, [Radial arrangement of Janus-like setae permits friction control in spiders](http://dx.doi.org/10.1038/srep01101), Scientific Reports, 22 January 2013.
+
+The abstract of the paper says, 
+
+> The hunting spider Cupiennius salei (Arachnida, Ctenidae) possesses hairy attachment pads (claw tufts) at its distal legs, consisting of directional branched setae... Friction of claw tufts on smooth glass was measured to reveal the functional effect of seta arrangement within the pad.
+
+Figure 1 includes some pretty cool electron microscope images of the tufts. We are intereseted in the comparisons in Figure 4, where the pulling and pushing motions are compared for different leg pairs (for an example of pushing and pulling see the top of Figure 3). We can recreate Figure 4 of the paper, by loading the data and calling boxplot():
 
 
 ```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/spider_wolff_gorb_2013.csv"
 filename <- "spider_wolff_gorb_2013.csv"
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 if (!file.exists(filename)) download(url, filename)
 spider <- read.csv(filename, skip=1)
 boxplot(spider$friction ~ spider$type * spider$leg, 
@@ -35,10 +29,18 @@ boxplot(spider$friction ~ spider$type * spider$leg,
 
 ![plot of chunk unnamed-chunk-1](figure/interactions_and_contrasts-unnamed-chunk-1-1.png) 
 
+## Initial visual inspection of the data
+
 What we can see immediately, are two trends: 
 
 * pulling motion has a higher frictional coefficient than pushing motion
-* the leg pairs to the back of the spider (L4 being the last) generally have higher pulling frictional coefficients (although the trend is not there for pushing).
+* the leg pairs to the back of the spider (L4 being the last) generally have higher pulling frictional coefficients.
+
+Another thing to notice is that the groups have different spread, what we call *within-group variance*. This is somewhat of a problem for the kinds of linear models we will explore below, because we will assume that around the fitted values $\hat{Y}_i$, the errors $\varepsilon_i$ are distributed identically, meaning the same variance within each group. The consequence of ignoring the different variance is that comparisons between the groups with small variances with be overly "conservative" (because the overall estimate of variance is larger than these groups), and comparisons between the groups with large variances will be overly confident.
+
+An alternative test for comparing groups would be t-tests without the equal variance assumption, using a "Welch" or "Satterthwaite approximation", or a test of a shift in distribution, such as the Mann-Whitney-Wilcoxon test.
+
+However, we will continue, and show the different kinds of linear models using this dataset, setting aside the issue of different within-group variances.
 
 ## A linear model with one variable
 
