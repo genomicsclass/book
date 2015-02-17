@@ -44,8 +44,7 @@ However, we will continue, and show the different kinds of linear models using t
 
 ## A linear model with one variable
 
-Note: this is a not a good approach for analysis, but we show here for demonstration purposes. It ignores the information we have regarding the different leg type, and so it loses power. We will show better approaches below.
-
+Just to remind ourselves about the simple two-group linear model, let's subset to the L1 leg pair, and run `lm`:
 
 
 ```r
@@ -84,6 +83,9 @@ summary(fit)
 ##   0.9214706  -0.5141176
 ```
 
+We remember that the coefficients are just the mean of the pull observations, and the difference between the means of the two groups:
+
+
 ```r
 s <- split(spider.sub$friction, spider.sub$type)
 mean(s[["pull"]])
@@ -101,9 +103,11 @@ mean(s[["push"]]) - mean(s[["pull"]])
 ## [1] -0.5141176
 ```
 
+We can form the design matrix which was used internally to `lm`:
+
 
 ```r
-X <- model.matrix(~ type, data=spider)
+X <- model.matrix(~ type, data=spider.sub)
 colnames(X)
 ```
 
@@ -125,15 +129,20 @@ head(X)
 ## 6           1        0
 ```
 
+A useful plot, which is not very interesting for this example, is to put a black block for the 1's in the design matrix, and a white block for the 0's. If you have installed the *rafalib* library, you can make this plot with the `imagemat` function:
+
+
 ```r
 # library(devtools); install_github("ririzarr/rafalib")
 library(rafalib)
-imagemat(X, main="Model matrix for linear model with interactions")
+imagemat(X, main="Model matrix for linear model with one variable")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/interactions_and_contrasts-unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-5](figure/interactions_and_contrasts-unnamed-chunk-5-1.png) 
 
 ### Examining the coefficients
+
+Now we will use a big chunk of code just to show how the coefficients from the linear model can be drawn as arrows. You wouldn't necessarily use this code in your daily practice, but it's helpful for visualizing what's going on in the linear model in your head.
 
 
 ```r
@@ -151,9 +160,11 @@ abline(h=coefs[1]+coefs[2],col=cols[2])
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/interactions_and_contrasts-unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-6](figure/interactions_and_contrasts-unnamed-chunk-6-1.png) 
 
 ## A linear model with two variables
+
+Now, we'll continue and examine the full dataset, including the observations from all leg pairs. In order to model both the leg pair differences and the push vs pull difference, we need to include both terms in the formula. Let's see what kind of design matrix will be formed with two variables in the formula:
 
 
 ```r
@@ -180,10 +191,13 @@ head(X)
 ```
 
 ```r
-imagemat(X, main="Model matrix for linear model with 2 factors")
+imagemat(X, main="Model matrix for linear model with two factors")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/interactions_and_contrasts-unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-7](figure/interactions_and_contrasts-unnamed-chunk-7-1.png) 
+
+
+
 
 ```r
 fit2 <- lm(friction ~ type + leg, data=spider)
@@ -288,7 +302,7 @@ arrows(8+a,coefs[1]+coefs[5],8+a,coefs[1]+coefs[5]+coefs[2],lwd=3,col=cols[2],le
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/interactions_and_contrasts-unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-10](figure/interactions_and_contrasts-unnamed-chunk-10-1.png) 
 
 ### Contrasting the coefficients
 
@@ -427,7 +441,7 @@ head(X)
 imagemat(X, main="Model matrix for linear model with interactions")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/interactions_and_contrasts-unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-12](figure/interactions_and_contrasts-unnamed-chunk-12-1.png) 
 
 
 ```r
@@ -496,7 +510,7 @@ arrows(8+a,coefs[1]+coefs[5]+coefs[2],8+a,coefs[1]+coefs[5]+coefs[2]+coefs[8],lw
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-11](figure/interactions_and_contrasts-unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-14](figure/interactions_and_contrasts-unnamed-chunk-14-1.png) 
 
 ### Contrasts
 
@@ -629,10 +643,10 @@ head(X)
 ```
 
 ```r
-imagemat(X, main="Model matrix for linear model with interactions")
+imagemat(X, main="Model matrix for linear model with group variable")
 ```
 
-![plot of chunk unnamed-chunk-15](figure/interactions_and_contrasts-unnamed-chunk-15-1.png) 
+![plot of chunk unnamed-chunk-18](figure/interactions_and_contrasts-unnamed-chunk-18-1.png) 
 
 
 ```r
@@ -685,7 +699,7 @@ for (i in 1:8) {
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-17](figure/interactions_and_contrasts-unnamed-chunk-17-1.png) 
+![plot of chunk unnamed-chunk-20](figure/interactions_and_contrasts-unnamed-chunk-20-1.png) 
 
 ### Simple contrasts using the contrast package
 
