@@ -74,7 +74,7 @@ This section explains the notation used above. It turns that we can borrow this 
 
 ## Vectors, Matrices and Scalars
 
-In the examples above the random variables associated with the data were represented by $$ Y_1,\dots,Y_n $. We can think of this as a vector. In fact, in R we are already doing this:
+In the examples above the random variables associated with the data were represented by $$ Y_1,\dots,Y_n $$ . We can think of this as a vector. In fact, in R we are already doing this:
 
 
 ```r
@@ -96,36 +96,38 @@ Y_N
 \end{pmatrix}
 $$
 
-For reasons that will become clear soon, default representation of data vectors have dimension $N\times 1$ as opposed to $1 \times N$.
+For reasons that will become clear soon, default representation of data vectors have dimension $$ N\times 1 $$ as opposed to $$ 1 \times N $.
 
 Note: we don't always use bold because commonly one can tell what is a matrix from the context.
 
 Similarly we can use math notation to represent the covariates or predictors. In the case of the two, with the second one just being the square of the first.
 
-$$ \mathbf{X}\_1 = \begin{pmatrix}
-x_{1,1}\\\
-\vdots\\\
+$$ 
+\mathbf{X}_1 = \begin{pmatrix}
+x_{1,1}\\
+\vdots\\
 x_{N,1}
 \end{pmatrix} \mbox{ and }
-\mathbf{X}\_2 = \begin{pmatrix}
-x_{1,2}\\\
-\vdots\\\
+\mathbf{X}_2 = \begin{pmatrix}
+x_{1,2}\\
+\vdots\\
 x_{N,2}
 \end{pmatrix}
 $$
 
-Note that, for the object falling example $x_{1,1}= t_i$ and $x_{i,1}=t_i^2$ with $t_i$ the time of the i-th observation. Also note that vectors can be thought of as $N\times 1$ matrices 
+Note that, for the object falling example $$ x_{1,1}= t_i $$ and $$ x_{i,1}=t_i^2 $$ with $$ t_i $$ the time of the i-th observation. Also note that vectors can be thought of as $$ N\times 1 $$ matrices 
 
 For reasons that will become clear soon, it is convenient to representing  these in matrices:
 
-$$ \mathbf{X} = [ \mathbf{X}\_1 \mathbf{X}\_2 ] = \begin{pmatrix}
-x_{1,1}&x_{1,2}\\\
-\vdots\\\
+$$ 
+\mathbf{X} = [ \mathbf{X}_1 \mathbf{X}_2 ] = \begin{pmatrix}
+x_{1,1}&x_{1,2}\\
+\vdots\\
 x_{N,1}&x_{N,2}
 \end{pmatrix}
 $$
 
-This matrix has dimension $N \times 2$. We can create this matrix in R this way
+This matrix has dimension $$ N \times 2 $$ . We can create this matrix in R this way
 
 
 ```r
@@ -153,13 +155,13 @@ dim(X)
 ## [1] 25  2
 ```
 
-Note that we can also use this notation to denote an arbitrary number of covariates with the following $N\times p$ matrix:
+Note that we can also use this notation to denote an arbitrary number of covariates with the following $$ N\times p $$ matrix:
 
 $$
 \mathbf{X} = \begin{pmatrix}
-  x_{1,1}&\dots & x_{1,p} \\\
-  x_{2,1}&\dots & x_{2,p} \\\
-   & \vdots & \\\
+  x_{1,1}&\dots & x_{1,p} \\
+  x_{2,1}&\dots & x_{2,p} \\
+   & \vdots & \\
   x_{N,1}&\dots & x_{N,p} 
   \end{pmatrix}
 $$
@@ -211,8 +213,4 @@ head(X)
 ```
 
 Finally, we define a scalar. A scalar is just a number. So why a special name? We want to distinguish it from vectors and matrices. We usually use lower case and don't bold. In the next section we will understand why we make this distinction.
-
-
-
-
 
