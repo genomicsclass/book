@@ -8,8 +8,8 @@ layout: page
 
 
 
-# Introduciton
-
+# Introduction
+ 
 Now we are ready to see how matrix algebra can be useful when analyzing data. We start with some simple example and eventually get to the main one: how to write linear models with matrix algebra notation and solve the least squares problem.
 
 
