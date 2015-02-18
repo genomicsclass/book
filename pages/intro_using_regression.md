@@ -225,7 +225,7 @@ Trial and error here is not going to work. Instead we can use calculus: take the
 When studying the father son data, Galton made a fascinating discovery using exploratory analysis.
 
 <center>
-<img src="http://upload.wikimedia.org/wikipedia/commons/b/b2/Galton's_correlation_diagram_1875.jpg" width=400 />
+<img src="http://upload.wikimedia.org/wikipedia/commons/b/b2/Galton's_correlation_diagram_1875.jpg" width="400">
 </center>
 
 He noted that if he tabulated the number of father/son height pairs and followed all the x,y values having the same totals in the table they formed an ellipses. In the plot above, made by Galton, you see the ellipsis formed by the pairs having 3 cases. This then led to modeling this data as correlated bivariate normal. 
