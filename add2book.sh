@@ -16,9 +16,9 @@ cd ..
 
 printf "\n  *** copy from LABS to BOOK *** \n\n"
 
-sed 's/$$/@@@@/g' labs/$1/$2.md |
-    sed 's/$/$$/g' |
-    sed 's/@@@@/$$/g' > book/pages/$2.md
+sed 's/\$\$/@@@@/g' labs/$1/$2.md |
+    sed 's/\$/\$\$/g' |
+    sed 's/@@@@/\$\$/g' > book/pages/$2.md
 
 imgcount=`ls -1 labs/$1/figure/$2* 2> /dev/null | wc -l`
 if [ $imgcount -gt 0 ]
