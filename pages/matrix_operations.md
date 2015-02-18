@@ -103,7 +103,7 @@ print(a*X)
 
 # The Transpose
 
-The transpose is an operation that simply changes columns to rows. We use either a $$\top$$ or $$'$$ to denote transpose.  Here is the technical definition. If X is as we defined it above, here is the transpose which will be $$p\times N$:
+The transpose is an operation that simply changes columns to rows. We use either a $$\top$$ or $$'$$ to denote transpose.  Here is the technical definition. If X is as we defined it above, here is the transpose which will be $$p\times N$$:
 
 
 $$
