@@ -11,9 +11,10 @@ layout: page
 # Introduction
 
 In the previous section we motivated the use of matrix algebra with this system of equations:
+
 $$\begin{eqnarray}
-a + b + c &=& 6\\\
-3a - 2b + c &=& 2\\\
+a + b + c &=& 6\\
+3a - 2b + c &=& 2\\
 2a + b  - c &=& 1
 \end{eqnarray}
 $$
@@ -22,34 +23,34 @@ We described how this system can be rewritten and solved using matrix algebra:
 
 $$
 \begin{pmatrix}
-1&1&1\\\
-3&-2&1\\\
+1&1&1\\
+3&-2&1\\
 2&1&-1
 \end{pmatrix}
 \begin{pmatrix}
-a\\\
-b\\\
+a\\
+b\\
 c
 \end{pmatrix} =
 \begin{pmatrix}
-6\\\
-2\\\
+6\\
+2\\
 1
 \end{pmatrix}
 \implies
 \begin{pmatrix}
-a\\\
-b\\\
+a\\
+b\\
 c
 \end{pmatrix}=
 \begin{pmatrix}
-1&1&1\\\
-3&-2&1\\\
+1&1&1\\
+3&-2&1\\
 2&1&-1
 \end{pmatrix}^{-1}
 \begin{pmatrix}
-6\\\
-2\\\
+6\\
+2\\
 1
 \end{pmatrix}
 $$
@@ -59,13 +60,13 @@ Having described matrix notation, here we will explain the operation we perform 
 
 # Multiplying by a scalar
 
-We start with one of the simplest operation: scalar multiplication. If $a$ is scalar and $\mathbf{X}$ is a matrix then:
+We start with one of the simplest operation: scalar multiplication. If $$a$$ is scalar and $$\mathbf{X}$$ is a matrix then:
 
 $$
 a \mathbf{X} = 
 \begin{pmatrix}
-  a x_{1,1} & \dots & a x_{1,p}\\\
-  & \vdots & \\\
+  a x_{1,1} & \dots & a x_{1,p}\\
+  & \vdots & \\
   a x_{N,1} & \dots & a  x_{N,p}
 \end{pmatrix}
 $$
@@ -102,25 +103,26 @@ print(a*X)
 
 # The Transpose
 
-The transpose is an operation that simply changes columns to rows. We use either a $\top$ or $'$ to denote transpose.  Here is the technical definition. If X is as we defined it above, here is the transpose which will be $p\times N$:
+The transpose is an operation that simply changes columns to rows. We use either a $$\top$$ or $$'$$ to denote transpose.  Here is the technical definition. If X is as we defined it above, here is the transpose which will be $$p\times N$:
 
 
 $$
 \mathbf{X} = \begin{pmatrix}
-  x_{1,1}&\dots & x_{1,p} \\\
-  x_{2,1}&\dots & x_{2,p} \\\
-   & \vdots & \\\
-  x_{N,1}&\dots & x_{N,p} \\\
+  x_{1,1}&\dots & x_{1,p} \\
+  x_{2,1}&\dots & x_{2,p} \\
+   & \vdots & \\
+  x_{N,1}&\dots & x_{N,p} \\
   \end{pmatrix} \implies
 \mathbf{X}^\top = \begin{pmatrix}
-  x_{1,1}&\dots & x_{p,1} \\\
-  x_{1,2}&\dots & x_{p,2} \\\
-   & \vdots & \\\
-  x_{1,N}&\dots & x_{p,N} \\\
+  x_{1,1}&\dots & x_{p,1} \\
+  x_{1,2}&\dots & x_{p,2} \\
+   & \vdots & \\
+  x_{1,N}&\dots & x_{p,N} \\
   \end{pmatrix}
 $$
 
 In R we simply use `t`
+
 
 ```r
 X <- matrix(1:12,4,3)
@@ -152,35 +154,34 @@ We start by describing the matrix multiplication shown in the original system of
 
 $$
 \begin{aligned}
-a + b + c &=6\\\
-3a - 2b + c &= 2\\\
+a + b + c &=6\\
+3a - 2b + c &= 2\\
 2a + b  - c &= 1
 \end{aligned}
 $$
 
 What we are doing is multiplying the rows of the first matrix by the columns of the second. The second matrix only has one column so to perform this multiplication we can do the following:
 
-can be written like this:
-
 $$
 \begin{pmatrix}
-1&1&1\\\
-3&-2&1\\\
+1&1&1\\
+3&-2&1\\
 2&1&-1
 \end{pmatrix}
 \begin{pmatrix}
-a\\\
-b\\\
+a\\
+b\\
 c
 \end{pmatrix}=
 \begin{pmatrix}
-a + b + c \\\
-3a - 2b + c \\\
+a + b + c \\
+3a - 2b + c \\
 2a + b  - c 
 \end{pmatrix}
 $$
 
 Here is a simple example. We can check to see if `abc=c(3,2,1)` is a solution:
+
 
 ```r
 X  <- matrix(c(1,3,2,1,-2,1,1,1,-1),3,3)
@@ -194,6 +195,7 @@ rbind( sum(X[1,]*abc), sum(X[2,]*abc), sum(X[3,]%*%abc))
 ## [2,]    6
 ## [3,]    7
 ```
+
 We can use the `%*%` to perform the matrix multiplication and make this much more compact
 
 
@@ -213,44 +215,44 @@ We can see that `c(3,2,1)` is not a solution as the answer here is not the requi
 
 To get the solution we will need to invert the matrix on the left; a concept we learn about below.
 
-Here is the general definition of matrix multiplication of matrices $A$ and $X$
+Here is the general definition of matrix multiplication of matrices $$A$$ and $$X$
 
 $$
 \mathbf{AX} = \begin{pmatrix}
-  a_{1,1} & a_{1,2} & \dots & a_{1,N}\\\
-  a_{2,1} & a_{2,2} & \dots & a_{2,N}\\\
-  & & \vdots & \\\
+  a_{1,1} & a_{1,2} & \dots & a_{1,N}\\
+  a_{2,1} & a_{2,2} & \dots & a_{2,N}\\
+  & & \vdots & \\
   a_{M,1} & a_{M,2} & \dots & a_{M,N}
 \end{pmatrix}
 \begin{pmatrix}
-  x_{1,1}&\dots & x_{1,p} \\\
-  x_{2,1}&\dots & x_{2,p} \\\
-   & \vdots & \\\
+  x_{1,1}&\dots & x_{1,p} \\
+  x_{2,1}&\dots & x_{2,p} \\
+   & \vdots & \\
   x_{N,1}&\dots & x_{N,p} 
   \end{pmatrix}
 $$
   
 $$  = \begin{pmatrix}
-  \sum_{i=1}^N a_{1,i} x_{i,1} & \dots & \sum_{i=1}^N a_{1,i} x_{i,p}\\\
-  & \vdots & \\\
+  \sum_{i=1}^N a_{1,i} x_{i,1} & \dots & \sum_{i=1}^N a_{1,i} x_{i,p}\\
+  & \vdots & \\
   \sum_{i=1}^N a_{M,i} x_{i,1} & \dots & \sum_{i=1}^N a_{M,i} x_{i,p}
 \end{pmatrix}
 $$
 
-Note that you can only take the produce if the number of columns of the first matrix $A$ equals the number of rows of the second one $X$, and that the final matrix has the same row numbers as the first $A$ and the same column numbers as the second $X$. 
+Note that you can only take the produce if the number of columns of the first matrix $$A$$ equals the number of rows of the second one $$X$$, and that the final matrix has the same row numbers as the first $$A$$ and the same column numbers as the second $$X$$. 
 After you study the example below you may want to come back and re-read the sections above.
 
-#The identity matrix
+# The identity matrix
 
 The identity matrix is analogous to the number 1: if you multiply the identity matrix by another matrix you get the same matrix. For this top happen we need it to be like this:
 
 $$
 \mathbf{I} = \begin{pmatrix}
-1&0&0&\dots&0&0\\\
-0&1&0&\dots&0&0\\\
-0&0&1&\dots&0&0\\\
-\vdots &\vdots & \vdots&\ddots&\vdots&\vdots\\\
-0&0&0&\dots&1&0\\\
+1&0&0&\dots&0&0\\
+0&1&0&\dots&0&0\\
+0&0&1&\dots&0&0\\
+\vdots &\vdots & \vdots&\ddots&\vdots&\vdots\\
+0&0&0&\dots&1&0\\
 0&0&0&\dots&0&1
 \end{pmatrix}
 $$
@@ -262,27 +264,27 @@ If you follow the matrix multiplication rule above you notice this works out:
 $$
 \mathbf{XI} = 
 \begin{pmatrix}
-  a x_{1,1} & \dots & a x_{1,p}\\\
-  & \vdots & \\\
+  a x_{1,1} & \dots & a x_{1,p}\\
+  & \vdots & \\
   a x_{N,1} & \dots & a  x_{N,p}
 \end{pmatrix}
 \begin{pmatrix}
-1&0&0&\dots&0&0\\\
-0&1&0&\dots&0&0\\\
-0&0&1&\dots&0&0\\\
- & & &\vdots& &\\\
-0&0&0&\dots&1&0\\\
+1&0&0&\dots&0&0\\
+0&1&0&\dots&0&0\\
+0&0&1&\dots&0&0\\
+ & & &\vdots& &\\
+0&0&0&\dots&1&0\\
 0&0&0&\dots&0&1
 \end{pmatrix} = 
 \begin{pmatrix}
-   x_{1,1} & \dots &  x_{1,p}\\\
-  & \vdots & \\\
+   x_{1,1} & \dots &  x_{1,p}\\
+  & \vdots & \\
    x_{N,1} & \dots & x_{N,p}
 \end{pmatrix}
 $$
 
 
-<b> Optional homework</b>: use what you know about matrix multiplication to convince yourself that the above is correct.
+**Optional homework**: use what you know about matrix multiplication to convince yourself that the above is correct.
 
 In R you can form an identity matrix this way:
 
@@ -302,7 +304,7 @@ diag(n)
 
 # The inverse
 
-The inverse of matrix of $X$, denoted with $X^{-1}$ has the property that when multiplied give you the identity$X^{-1}X=I$. Note that not all matrices have inverses. For example a $2\times 2$ matrix with 1s in all it's entries does not have an inverse. 
+The inverse of matrix of $$X$$, denoted with $$X^{-1}$$ has the property that when multiplied give you the identity$X^{-1}X=I$$. Note that not all matrices have inverses. For example a $$2\times 2$$ matrix with 1s in all it's entries does not have an inverse. 
 
 As we will see when we get to the applications to linear models, being able to compute the inverse of a matrix is quite useful. A very convenient aspect of R is that it includes a predefined function `solve` to do this. Here is how would use it to solve the linear of equations.
 
