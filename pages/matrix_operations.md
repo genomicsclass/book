@@ -8,7 +8,7 @@ layout: page
 
 
 
-# Introduciton
+# Introduction
 
 In the previous section we motivated the use of matrix algebra with this system of equations:
 $$\begin{eqnarray}
@@ -211,7 +211,7 @@ X%*%abc
 
 We can see that `c(3,2,1)` is not a solution as the answer here is not the required `c(6,2,1)`
 
-To get the solution we 
+To get the solution we will need to invert the matrix on the left; a concept we learn about below.
 
 Here is the general definition of matrix multiplication of matrices $A$ and $X$
 
