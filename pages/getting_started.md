@@ -7,15 +7,15 @@ title: Getting Started
 
 ### Installing R
 
-The first step is to install R. There are several resources on the internet on how to do this. But here are two:
+The first step is to install R. There are several resources on the internet on how to do this.
 
-* [Installing R on Windows](http://youtu.be/mfGFv-iB724)
+* [Installing R on Windows](https://github.com/genomicsclass/windows)
 * [Installing R on Mac](http://youtu.be/Icawuhf0Yqo)
 * [Installing R on Ubuntu](http://cran.r-project.org/bin/linux/ubuntu/README)
 
 ### Installing RStudio
 
-The next step is to install RStudio. Technically you can run all the code shown here without installing RStudio, but we highly recommend this integrated development environment (IDE). Instructions are [here](http://www.rstudio.com/products/rstudio/download/)
+The next step is to install RStudio. Technically you can run all the code shown here without installing RStudio, but we highly recommend this integrated development environment (IDE). Instructions are [here](http://www.rstudio.com/products/rstudio/download/) and for Windows we have special [instructions](https://github.com/genomicsclass/windows).
 
 ### Installing packages
 
@@ -41,10 +41,9 @@ install_github("genomicsclass/dagdata")
 ```
 ## Downloading github repo genomicsclass/dagdata@master
 ## Installing dagdata
-## '/Library/Frameworks/R.framework/Resources/bin/R' --vanilla CMD INSTALL  \
-##   '/private/var/folders/v5/7nl7dwsd41q_kr1k89bwtbzm0000gn/T/RtmpRqDvBk/devtools158eb5722bf/genomicsclass-dagdata-20d8fbb'  \
-##   --library='/Library/Frameworks/R.framework/Versions/3.1/Resources/library'  \
-##   --install-tests
+## '/Users/michael/bin/R/bin/R' --vanilla CMD INSTALL  \
+##   '/private/var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T/RtmpRzPOvs/devtools34e2ac470fa/genomicsclass-dagdata-20d8fbb'  \
+##   --library='/Users/michael/Library/R/3.2/library' --install-tests
 ```
 
 ### Learn R basics 
@@ -77,6 +76,7 @@ The three files we start with in the class are these:
 * [entire population dataset](https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv)
 
 You can navigate to these file by visiting the data directory of dagadat on [github](https://github.com/genomicsclass/dagdata/tree/master/inst/extdata)
+
 ### The working directory
 
 When you are working in R it is useful to know your _working directory_. This is the directory or folder in which R will save or look for files by default. You can see your working directory by typing:
@@ -87,7 +87,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/ririzarr/myDocuments/teaching/HarvardX/labs/course1"
+## [1] "/Users/michael/scripts/genomicsclass/labs/course1"
 ```
 
 You can also change your working directory using the function `setwd`. Or you can change it through RStudio by clicking on "Session". 
