@@ -215,7 +215,7 @@ We can see that `c(3,2,1)` is not a solution as the answer here is not the requi
 
 To get the solution we will need to invert the matrix on the left; a concept we learn about below.
 
-Here is the general definition of matrix multiplication of matrices $$A$$ and $$X$
+Here is the general definition of matrix multiplication of matrices $$A$$ and $$X$$:
 
 $$
 \mathbf{AX} = \begin{pmatrix}
@@ -304,7 +304,7 @@ diag(n)
 
 # The inverse
 
-The inverse of matrix of $$X$$, denoted with $$X^{-1}$$ has the property that when multiplied give you the identity$X^{-1}X=I$$. Note that not all matrices have inverses. For example a $$2\times 2$$ matrix with 1s in all it's entries does not have an inverse. 
+The inverse of matrix of $$X$$, denoted with $$X^{-1}$$ has the property that when multiplied give you the identity $$X^{-1}X=I$$. Note that not all matrices have inverses. For example a $$2\times 2$$ matrix with 1s in all it's entries does not have an inverse. 
 
 As we will see when we get to the applications to linear models, being able to compute the inverse of a matrix is quite useful. A very convenient aspect of R is that it includes a predefined function `solve` to do this. Here is how would use it to solve the linear of equations.
 
