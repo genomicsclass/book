@@ -1,4 +1,7 @@
---- layout: page title: Finding more help for data analysis ---
+---
+layout: page
+title: Finding more help for data analysis
+---
 
 Here are some resources for finding more help when performing data analysis for genomics.
 
