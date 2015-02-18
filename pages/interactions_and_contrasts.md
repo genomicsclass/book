@@ -22,7 +22,7 @@ filename <- "spider_wolff_gorb_2013.csv"
 library(downloader)
 if (!file.exists(filename)) download(url, filename)
 spider <- read.csv(filename, skip=1)
-boxplot(spider$friction ~ spider$type * spider$leg, 
+boxplot(spider$$friction ~ spider$$type * spider$$leg, 
         col=c("grey90","grey40"), las=2, 
         main="Comparison of friction coefficients of different leg pairs ")
 ```
@@ -36,7 +36,7 @@ What we can see immediately, are two trends:
 * pulling motion has a higher frictional coefficient than pushing motion
 * the leg pairs to the back of the spider (L4 being the last) generally have higher pulling frictional coefficients.
 
-Another thing to notice is that the groups have different spread, what we call *within-group variance*. This is somewhat of a problem for the kinds of linear models we will explore below, because we will assume that around the fitted values $\hat{Y}_i$, the errors $\varepsilon_i$ are distributed identically, meaning the same variance within each group. The consequence of ignoring the different variance is that comparisons between the groups with small variances will be overly "conservative" (because the overall estimate of variance is larger than these groups), and comparisons between the groups with large variances will be overly confident.
+Another thing to notice is that the groups have different spread, what we call *within-group variance*. This is somewhat of a problem for the kinds of linear models we will explore below, because we will assume that around the fitted values $$\hat{Y}_i$$, the errors $$\varepsilon_i$$ are distributed identically, meaning the same variance within each group. The consequence of ignoring the different variance is that comparisons between the groups with small variances will be overly "conservative" (because the overall estimate of variance is larger than these groups), and comparisons between the groups with large variances will be overly confident.
 
 If the spread is related to the location, such that groups with large values also have larger spread, a possibility is to transform the data with a function such as the `log` or `sqrt`. This looks like it could be useful here, as three of the four push groups (L1, L2, L3) have the smallest values and also the smallest spread.
 
@@ -50,7 +50,7 @@ Just to remind ourselves about the simple two-group linear model, let's subset t
 
 
 ```r
-spider.sub <- spider[spider$leg == "L1",]
+spider.sub <- spider[spider$$leg == "L1",]
 fit <- lm(friction ~ type, data=spider.sub)
 summary(fit)
 ```
@@ -89,7 +89,7 @@ We remember that the coefficients are just the mean of the pull observations, an
 
 
 ```r
-s <- split(spider.sub$friction, spider.sub$type)
+s <- split(spider.sub$$friction, spider.sub$$type)
 mean(s[["pull"]])
 ```
 
@@ -145,7 +145,7 @@ tail(X)
 ## 68           1        1
 ```
 
-Now we'll make a plot of the `X` matrix, by putting a black block for the 1's in the design matrix and a white block for the 0's. This plot will be more interesting for the linear models later on in this script. Along the y-axis is the sample number (the row number of the `data`), and along the x-axis is the column of the design matrix $\mathbf{X}$. If you have installed the *rafalib* library, you can make this plot with the `imagemat` function:
+Now we'll make a plot of the `X` matrix, by putting a black block for the 1's in the design matrix and a white block for the 0's. This plot will be more interesting for the linear models later on in this script. Along the y-axis is the sample number (the row number of the `data`), and along the x-axis is the column of the design matrix $$\mathbf{X}$$. If you have installed the *rafalib* library, you can make this plot with the `imagemat` function:
 
 
 ```r
@@ -169,7 +169,7 @@ Now we will use a big chunk of code just to show how the coefficients from the l
 
 
 ```r
-stripchart(split(spider.sub$friction, spider.sub$type), 
+stripchart(split(spider.sub$$friction, spider.sub$$type), 
            vertical=TRUE, pch=1, method="jitter", las=2, xlim=c(0,3), ylim=c(0,2))
 a <- -0.25
 lgth <- .1
@@ -271,7 +271,7 @@ $$ \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathb
 
 
 ```r
-Y <- spider$friction
+Y <- spider$$friction
 X <- model.matrix(~ type + leg, data=spider)
 beta <- solve(t(X) %*% X) %*% t(X) %*% Y
 t(beta)
@@ -297,8 +297,8 @@ We can make the same plot as before, with arrows for each of the coefficients in
 
 
 ```r
-spider$group <- factor(paste0(spider$leg, spider$type))
-stripchart(split(spider$friction, spider$group), 
+spider$$group <- factor(paste0(spider$$leg, spider$$type))
+stripchart(split(spider$$friction, spider$$group), 
            vertical=TRUE, pch=1, method="jitter", las=2, xlim=c(0,11), ylim=c(0,2))
 cols <- brewer.pal(5,"Dark2")
 abline(h=0)
@@ -323,7 +323,7 @@ Because we have 8 groups, and only 5 coefficients, the fitted means (the tips of
 
 
 ```r
-s <- split(spider$friction, spider$group)
+s <- split(spider$$friction, spider$$group)
 mean(s[["L1pull"]])
 ```
 
@@ -404,7 +404,7 @@ coefs
 
 We have the push vs pull effect across all leg pairs, and and the L2 vs L1 effect, the L3 vs L1 effect, and the L4 vs L1 effect. What if we want to compare two groups, and one of the groups is not L1? The solution to this question is to use *contrasts*. 
 
-A *contrast* is a combination of coefficients: $\mathbf{C} \hat{\boldsymbol{\beta}}$, where $\mathbf{C}$ is a row vector with as many columns as the number of coefficients in the linear model. If $\mathbf{C}$ has a 0 then the coefficients are not involved in the contrast.
+A *contrast* is a combination of coefficients: $$\mathbf{C} \hat{\boldsymbol{\beta}}$$, where $$\mathbf{C}$$ is a row vector with as many columns as the number of coefficients in the linear model. If $$\mathbf{C}$$ has a 0 then the coefficients are not involved in the contrast.
 
 If we want to compare L3 and L2, this is equivalent to contrasting two coefficents from the linear model, because in this contrast, the comparison to the reference level *L1* cancels out:
 
@@ -467,7 +467,7 @@ coefs[4] - coefs[3]
 ```
 
 ```r
-(C <- L3vsL2$X)
+(C <- L3vsL2$$X)
 ```
 
 ```
@@ -476,10 +476,10 @@ coefs[4] - coefs[3]
 ## attr(,"assign")
 ## [1] 0 1 2 2 2
 ## attr(,"contrasts")
-## attr(,"contrasts")$type
+## attr(,"contrasts")$$type
 ## [1] "contr.treatment"
 ## 
-## attr(,"contrasts")$leg
+## attr(,"contrasts")$$leg
 ## [1] "contr.treatment"
 ```
 
@@ -492,7 +492,7 @@ C %*% beta
 ## 1 -0.01142949
 ```
 
-What about the standard error, and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector $\mathbf{C}$ on either side of the estimated covariance matrix, $\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}})$:
+What about the standard error, and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector $$\mathbf{C}$$ on either side of the estimated covariance matrix, $$\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}})$$:
 
 $$ \sqrt{\mathbf{C} \mathbf{\Sigma} \mathbf{C}^T} $$
 
@@ -502,7 +502,7 @@ $$ \mathbf{\Sigma} = \hat{\sigma}^2 (\mathbf{X}^T \mathbf{X})^{-1}$$
 
 
 ```r
-(Sigma <- sum(fitTL$residuals^2)/(nrow(X) - 5) * solve(t(X) %*% X))
+(Sigma <- sum(fitTL$$residuals^2)/(nrow(X) - 5) * solve(t(X) %*% X))
 ```
 
 ```
@@ -530,7 +530,7 @@ sqrt(C %*% Sigma %*% t(C))
 ```
 
 ```r
-L3vsL2$SE
+L3vsL2$$SE
 ```
 
 ```
@@ -542,7 +542,7 @@ Again, to show it doesn't matter if we had picked `type="push"`. The reason it d
 
 ```r
 L3vsL2.equiv <- contrast(fitTL,list(leg="L3",type="push"),list(leg="L2",type="push"))
-L3vsL2.equiv$X
+L3vsL2.equiv$$X
 ```
 
 ```
@@ -551,10 +551,10 @@ L3vsL2.equiv$X
 ## attr(,"assign")
 ## [1] 0 1 2 2 2
 ## attr(,"contrasts")
-## attr(,"contrasts")$type
+## attr(,"contrasts")$$type
 ## [1] "contr.treatment"
 ## 
-## attr(,"contrasts")$leg
+## attr(,"contrasts")$$leg
 ## [1] "contr.treatment"
 ```
 
@@ -640,7 +640,7 @@ coefs <- coef(fitX)
 
 
 ```r
-stripchart(split(spider$friction, spider$group), 
+stripchart(split(spider$$friction, spider$$group), 
            vertical=TRUE, pch=1, method="jitter", las=2, xlim=c(0,11), ylim=c(0,2))
 cols <- brewer.pal(8,"Dark2")
 abline(h=0)
@@ -766,7 +766,7 @@ coefs[7] - coefs[6]
 
 ```r
 # earlier, we defined the 'group' column:
-spider$group <- factor(paste0(spider$leg, spider$type))
+spider$$group <- factor(paste0(spider$$leg, spider$$type))
 X <- model.matrix(~ 0 + group, data=spider)
 colnames(X)
 ```
@@ -844,7 +844,7 @@ coefs <- coef(fitG)
 
 
 ```r
-stripchart(split(spider$friction, spider$group), 
+stripchart(split(spider$$friction, spider$$group), 
            vertical=TRUE, pch=1, method="jitter", las=2, xlim=c(0,11), ylim=c(0,2))
 cols <- brewer.pal(8,"Dark2")
 abline(h=0)
