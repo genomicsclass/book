@@ -15,13 +15,6 @@ We are going to describe three examples from the life sciences. One from physics
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 mypar2()
 ```
 
@@ -232,7 +225,7 @@ Trial and error here is not going to work. Instead we can use calculus: take the
 When studying the father son data, Galton made a fascinating discovery using exploratory analysis.
 
 <center>
-<img src="http://upload.wikimedia.org/wikipedia/commons/b/b2/Galton's_correlation_diagram_1875.jpg" width=400>
+<img src="http://upload.wikimedia.org/wikipedia/commons/b/b2/Galton's_correlation_diagram_1875.jpg" width=400 />
 </center>
 
 He noted that if he tabulated the number of father/son height pairs and followed all the x,y values having the same totals in the table they formed an ellipses. In the plot above, made by Galton, you see the ellipsis formed by the pairs having 3 cases. This then led to modeling this data as correlated bivariate normal. 
@@ -248,6 +241,6 @@ $$ Pr(X<a,Y<b) = \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sig
 }
 $$
 
-From here we can show, with some math, that if you keep $$X$$ fixed (condition to be $$x$) the the distribution of $$Y$$ is normally distributed with mean: $$\mu_x +\sigma_y \rho \left(\frac{x-\mu_x}{\sigma_x}\right)$$ and standard deviation $$\sigma_y \sqrt{1-\rho^2}$$. Note that $$\rho$$ is the correlation between $$Y$$ and $$X$$ and this implies that if we fix $$X=x$$, $$Y$$ does in fact follow a linear model. Homework what are $$\beta_0$$ and $$\beta_1$$ in terms of $$\mu_x,\mu_y,\sigma_x,\sigma_y$$, and $$\rho$$. It turns out that the least squares estimate of $$\beta_1$$ can be written in terms of the sample correlation and standard deviations.
+From here we can show, with some math, that if you keep $$X$$ fixed (condition to be $$x$$) the the distribution of $$Y$$ is normally distributed with mean: $$\mu_x +\sigma_y \rho \left(\frac{x-\mu_x}{\sigma_x}\right)$$ and standard deviation $$\sigma_y \sqrt{1-\rho^2}$$. Note that $$\rho$$ is the correlation between $$Y$$ and $$X$$ and this implies that if we fix $$X=x$$, $$Y$$ does in fact follow a linear model. Homework what are $$\beta_0$$ and $$\beta_1$$ in terms of $$\mu_x,\mu_y,\sigma_x,\sigma_y$$, and $$\rho$$. It turns out that the least squares estimate of $$\beta_1$$ can be written in terms of the sample correlation and standard deviations.
 
 
