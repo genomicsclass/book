@@ -8,11 +8,18 @@ layout: page
 
 
 
-# Introduciton
+# Introduction
 
 
 ```r
 library(rafalib)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 mypar2()
 ```
 
