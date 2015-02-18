@@ -1,7 +1,7 @@
 ---
 title: "Linear Algebra Examples "
 author: "Rafa"
-date: "January 31, 2015"
+date: "February 18, 2015"
 output: html_document
 layout: page
 ---
@@ -15,13 +15,13 @@ Now we are ready to see how matrix algebra can be useful when analyzing data. We
 
 # The average
 
-To compute the sample average and variance of our data we use these formulas $\bar{Y}=\frac{1}{N} Y_i$ and $\mbox{var}(Y)=\frac{1}{N} \sum_{i=1}^N (Y_i - \bar{Y})^2$. We can represent these with matrix multiplication. First define this $N \times 1$ matrix made just of 1s
+To compute the sample average and variance of our data we use these formulas $$\bar{Y}=\frac{1}{N} Y_i$$ and $$\mbox{var}(Y)=\frac{1}{N} \sum_{i=1}^N (Y_i - \bar{Y})^2$$. We can represent these with matrix multiplication. First define this $$N \times 1$$ matrix made just of 1s
 
 $$
 A=\begin{pmatrix}
-1\\\
-1\\\
-\vdots\\\
+1\\
+1\\
+\vdots\\
 1
 \end{pmatrix}
 $$
@@ -33,16 +33,16 @@ $$
 \mathbf{A}^\top Y = \frac{1}{N}
 \begin{pmatrix}1&1&,\dots&1\end{pmatrix}
 \begin{pmatrix}
-Y_1\\\
-Y_2\\\
-\vdots\\\
+Y_1\\
+Y_2\\
+\vdots\\
 Y_N
 \end{pmatrix}=
 \frac{1}{N} \sum_{i=1}^N Y_i
 = \bar{Y}
 $$
 
-Note that we are multiplying by the scalar $1/N$. In R we multiply matrix using `%*%`
+Note that we are multiplying by the scalar $$1/N$$. In R we multiply matrix using `%*%`
 
 
 ```r
@@ -86,14 +86,15 @@ For the variance we note that if
 
 $$
 \mathbf{r}\equiv \begin{pmatrix}
-Y_1 - \bar{Y}\\\
-\vdots\\\
+Y_1 - \bar{Y}\\
+\vdots\\
 Y_N - \bar{Y}
 \end{pmatrix}, \,\,
 \frac{1}{N} \mathbf{r}^\top\mathbf{r} = 
 \frac{1}{N}\sum_{i=1}^N (Y_i - \bar{Y})^2
 $$
-And in R if you only send one matrix into `crossprod` it computes: $r^\top r$ so we can simply type:
+
+And in R if you only send one matrix into `crossprod` it computes: $$r^\top r$$ so we can simply type:
 
 
 ```r
@@ -115,7 +116,7 @@ var(y)
 ```
 ## [1] 7.922545
 ```
-The difference is due to the fact that `var` is for the sample estimate which divides by $N-1$, so this
+The difference is due to the fact that `var` is for the sample estimate which divides by $$N-1$$, so this
 
 
 ```r
@@ -133,25 +134,25 @@ Now we are ready to put all this to use. Let's start with Galton's example. If w
 
 $$
 \mathbf{Y} = \begin{pmatrix}
-Y_1\\\
-Y_2\\\
-\vdots\\\
+Y_1\\
+Y_2\\
+\vdots\\
 Y_N
 \end{pmatrix},
 \mathbf{X} = \begin{pmatrix}
-1&x_1\\\
-1&x_2\\\
-\vdots\\\
+1&x_1\\
+1&x_2\\
+\vdots\\
 1&x_N
 \end{pmatrix},
 \mathbf{\beta} = \begin{pmatrix}
-\beta_0\\\
+\beta_0\\
 \beta_1
 \end{pmatrix} \mbox{ and }
 \mathbf{\varepsilon} = \begin{pmatrix}
-\varepsilon_1\\\
-\varepsilon_2\\\
-\vdots\\\
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
 \varepsilon_N
 \end{pmatrix}
 $$
@@ -166,36 +167,38 @@ as
 
 $$
 \begin{pmatrix}
-Y_1\\\
-Y_2\\\
-\vdots\\\
+Y_1\\
+Y_2\\
+\vdots\\
 Y_N
 \end{pmatrix} = 
 \begin{pmatrix}
-1&x_1\\\
-1&x_2\\\
-\vdots\\\
+1&x_1\\
+1&x_2\\
+\vdots\\
 1&x_N
 \end{pmatrix}
 \begin{pmatrix}
-\beta_0\\\
+\beta_0\\
 \beta_1
 \end{pmatrix} +
 \begin{pmatrix}
-\varepsilon_1\\\
-\varepsilon_2\\\
-\vdots\\\
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
 \varepsilon_N
 \end{pmatrix}
 $$
 
 or simply: 
-$$\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}
 $$
 
 which is a much simpler way to write it. 
 
-<b>Optional homework</b>: write out the matrices multiplication convince yourself that this this is the case.
+**Optional homework**: write out the matrices multiplication convince yourself that this this is the case.
 
 The least squares equation becomes simpler as well as it is the following cross-product:
 
@@ -204,7 +207,7 @@ $$
 (\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})
 $$
 
-So now we are ready to determine which values of $\beta$ minimize the above. There are a series of rules that permit us to compute partial derivatives equations in matrix notation. By equating the derivative to 0 and solving for the $\beta$ we will have our solution. The only one we need here tells us that the derivative of the above equation is:
+So now we are ready to determine which values of $$\beta$$ minimize the above. There are a series of rules that permit us to compute partial derivatives equations in matrix notation. By equating the derivative to 0 and solving for the $$\beta$$ we will have our solution. The only one we need here tells us that the derivative of the above equation is:
 
 
 $$
@@ -220,11 +223,9 @@ $$
 \boldsymbol{\hat{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}   
 $$
 
+and we have our solution. We usually put a hat on the $$\beta$$ that solves this, $$\hat{\beta}$$ as it is an estimate of the "real" $$\beta$$ that generated the data.
 
-and we have our solution. We usually put a hat on the $\beta$ that solves this, $\hat{\beta}$ as it is an estimate of the "real" $\beta$ that generated the data.
-
-Note: that the least squares are like a square (multiply something by itself) and that this formula is similar to the derivative of $f(x)^2$ being $2f(x)f'(x)$. 
-
+Note: that the least squares are like a square (multiply something by itself) and that this formula is similar to the derivative of $$f(x)^2$$ being $$2f(x)f'(x)$$. 
 
 Let's see how it works in R
 
@@ -240,7 +241,7 @@ betahat <- solve(crossprod(X))%*%crossprod(X,y)
 ```
 
 
-Now we can see the results of this by computing the estimated $\hat{\beta}_0+\hat{\beta}_1 x$ for any value of $x$
+Now we can see the results of this by computing the estimated $$\hat{\beta}_0+\hat{\beta}_1 x$$ for any value of $$x$
 
 
 ```r
@@ -253,8 +254,7 @@ lines(newx,fitted,col=2)
 
 ![plot of chunk unnamed-chunk-7](figure/matrix_algebra_examples-unnamed-chunk-7-1.png) 
 
-This $\hat{\boldsymbol{\beta}}=(\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}$
- is one of the most widely used results in data analysis. One of the beauties of this approach is that we can use in many different situations, for example our falling object problem. 
+This $$\hat{\boldsymbol{\beta}}=(\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}$$ is one of the most widely used results in data analysis. One of the beauties of this approach is that we can use in many different situations, for example our falling object problem. 
  
 
 ```r
@@ -335,20 +335,6 @@ Note that we obtain the same values as above.
 
 # Summary
 
-We have shown how write linear models using linear algebra. We are going to do this for several examples many of which are related to designed experiments. We showed how to obtain least squares estimates. But keep in mind the because $y$ is a random variable, these estimates are random as well. In a later section we will learn how to compute standard error for this estimates and use this to perform inference.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+We have shown how write linear models using linear algebra. We are going to do this for several examples many of which are related to designed experiments. We showed how to obtain least squares estimates. But keep in mind the because $$y$$ is a random variable, these estimates are random as well. In a later section we will learn how to compute standard error for this estimates and use this to perform inference.
 
 
