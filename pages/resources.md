@@ -5,9 +5,7 @@ title: Online resources and books
 
 ### Online R classes
 
-- [swirl](http://swirlstats.com/): "swirl teaches you R programming and
-  data science interactively, at your own pace, and right in the R
-  console"
+- [swirl](http://swirlstats.com/): "swirl teaches you R programming and data science interactively, at your own pace, and right in the R console"
 
 - The [R programming](http://tryr.codeschool.com/) class on Coursera, taught by Roger Peng, Jeff Leek and Brian Caffo
 
@@ -15,15 +13,11 @@ title: Online resources and books
 
 ### Online R resources
 
-- [Quick-R](http://www.statmethods.net/): quick online reference for data input, basic statistics and
-plots
+- [Quick-R](http://www.statmethods.net/): quick online reference for data input, basic statistics and plots
 
-- [R referecence card (PDF)](http://cran.r-project.org/doc/contrib/Short-refcard.pdf) by Tom
-Short (more can be found under [Short Documents and Reference Cards](http://cran.r-project.org/other-docs.html))
+- [R referecence card (PDF)](http://cran.r-project.org/doc/contrib/Short-refcard.pdf) by Tom Short (more can be found under [Short Documents and Reference Cards](http://cran.r-project.org/other-docs.html))
 
-- [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham: "for R users
-  who want to improve their programming skills and understanding of
-  the language"
+- [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham: "for R users who want to improve their programming skills and understanding of the language"
 
 ### Online Bioconductor resources
 
@@ -34,13 +28,11 @@ Short (more can be found under [Short Documents and Reference Cards](http://cran
 
 ### R books
 
-- *Software for Data Analysis: Programming with R*
-by John M. Chambers (Springer)
+- *Software for Data Analysis: Programming with R* by John M. Chambers (Springer)
 
 - *S Programming* by Brian D. Ripley and William N. Venables (Springer)
 
-- *Programming with Data: A Guide to the S Language* by John M. Chambers
-(Springer)
+- *Programming with Data: A Guide to the S Language* by John M. Chambers (Springer)
 
 ### Bioconductor books
 
