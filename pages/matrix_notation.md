@@ -74,7 +74,7 @@ This section explains the notation used above. It turns that we can borrow this 
 
 ## Vectors, Matrices and Scalars
 
-In the examples above the random variables associated with the data were represented by $$$ Y_1,\dots,Y_n $$$ . We can think of this as a vector. In fact, in R we are already doing this:
+In the examples above the random variables associated with the data were represented by $$ Y_1,\dots,Y_n $$ . We can think of this as a vector. In fact, in R we are already doing this:
 
 
 ```r
@@ -96,7 +96,7 @@ Y_N
 \end{pmatrix}
 $$
 
-For reasons that will become clear soon, default representation of data vectors have dimension $$$ N\times 1 $$$ as opposed to $$$ 1 \times N $$$ .
+For reasons that will become clear soon, default representation of data vectors have dimension $$ N\times 1 $$ as opposed to $$ 1 \times N $$ .
 
 Note: we don't always use bold because commonly one can tell what is a matrix from the context.
 
@@ -115,7 +115,7 @@ x_{N,2}
 \end{pmatrix}
 $$
 
-Note that, for the object falling example $$$ x_{1,1}= t_i $$$ and $$$ x_{i,1}=t_i^2 $$$ with $$$ t_i $$$ the time of the i-th observation. Also note that vectors can be thought of as $$$ N\times 1 $$$ matrices 
+Note that, for the object falling example $$ x_{1,1}= t_i $$ and $$ x_{i,1}=t_i^2 $$ with $$ t_i $$ the time of the i-th observation. Also note that vectors can be thought of as $$ N\times 1 $$ matrices 
 
 For reasons that will become clear soon, it is convenient to representing  these in matrices:
 
@@ -127,7 +127,7 @@ x_{N,1}&x_{N,2}
 \end{pmatrix}
 $$
 
-This matrix has dimension $$$ N \times 2 $$$ . We can create this matrix in R this way
+This matrix has dimension $$ N \times 2 $$ . We can create this matrix in R this way
 
 
 ```r
@@ -155,7 +155,7 @@ dim(X)
 ## [1] 25  2
 ```
 
-Note that we can also use this notation to denote an arbitrary number of covariates with the following $$$ N\times p $$$ matrix:
+Note that we can also use this notation to denote an arbitrary number of covariates with the following $$ N\times p $$ matrix:
 
 $$
 \mathbf{X} = \begin{pmatrix}
