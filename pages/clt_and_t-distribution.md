@@ -48,7 +48,7 @@ We don't need to buy more mouse,  12 and 12 suffices.
 
 However, we can't claim victory just yet because  we don't know the population standard deviations: $$\sigma_X$$ and $$\sigma_Y$$. These are population parameters. But we can get around this by using the sample standard deviations, call then $$s_X$$ and $$s_Y$$. These are defined as 
 
-$$ s_X^2 = \frac{1}{N - 1} \sum_{i=1}^M (Y_i - \bar{Y})^2  \mbox{ and } s_X^2 = \frac{1}{M  -1} \sum_{i=1}^M (X_i - \bar{X})^2$$
+$$ s_X^2 = \frac{1}{N - 1} \sum_{i=1}^N (Y_i - \bar{Y})^2  \mbox{ and } s_X^2 = \frac{1}{M  -1} \sum_{i=1}^M (X_i - \bar{X})^2$$
 
 Note that we are dividing by $$N-1$$ and $$M-1$$. There is a theoretical reason for doing this which we won't explain now. But to get an intuition think of the case when you just have 2 numbers. The average distance to the mean is basically the 1/2 the difference between the two numbers. So you really just have information from one number. This is somewhat of a minor point, the main point is that $$s_X$$ and $$s_Y$$ serve as estimates of $$\sigma_X$$ and $$\sigma_Y$$
 
@@ -56,6 +56,12 @@ So we can redefine our ratio as
 
 $$
 \sqrt{N} \frac{\bar{Y}-\bar{X}}{\sqrt{s_X^2 +s_Y^2}}
+$$
+
+if $$M=N$$ or in general,
+
+$$
+\frac{\bar{Y}-\bar{X}}{\sqrt{s_X^2/M +s_Y^2/N}}
 $$
 
 The CLT tells us that when $$N$$ and $$M$$ are large (rule of thumb is 30) this random variable is normally distributed with mean 0 and SD 1. Thus we can compute p-values using the function `pnorm`.
