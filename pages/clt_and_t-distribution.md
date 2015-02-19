@@ -61,7 +61,7 @@ $$
 if $$M=N$$ or in general,
 
 $$
-\frac{\bar{Y}-\bar{X}}{\sqrt{s_X^2/M +s_Y^2/N}}
+\frac{\bar{Y}-\bar{X}}{\sqrt{\frac{s_X^2}{M} + \frac{s_Y^2}{N}}}
 $$
 
 The CLT tells us that when $$N$$ and $$M$$ are large (rule of thumb is 30) this random variable is normally distributed with mean 0 and SD 1. Thus we can compute p-values using the function `pnorm`.
