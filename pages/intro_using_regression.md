@@ -15,6 +15,13 @@ We are going to describe three examples from the life sciences. One from physics
 
 ```r
 library(rafalib)
+```
+
+```
+## Loading required package: RColorBrewer
+```
+
+```r
 mypar2()
 ```
 
@@ -44,7 +51,7 @@ He does not know the exact equation but looking at the plot above, he deduces th
 
 $$ Y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \varepsilon, i=1,\dots,n $$
 
-With $$Y_i$$ representing location, $$x_i$$ representing the time, and $$\varepsilon$$ accounts for measurement error. This is a linear model becuase it is a linear combination of known quantities (th $$x$$ s) referred to as predictors or covariates and unknown parameters (the $$\beta$$ s). 
+With $Y_i$ representing location, $x_i$ representing the time, and $\varepsilon$ accounts for measurement error. This is a linear model becuase it is a linear combination of known quantities (th $x$ s) referred to as predictors or covariates and unknown parameters (the $\beta$ s). 
 
 # Father son's heights
 Now imagine you are Francis Galton in the 19th century and you collect paired height data from father and sons. You suspect that height is inherited. Your data 
@@ -90,7 +97,7 @@ The son's height does seem to increase linearly with father's height. In this ca
 
 $$ Y_i = \beta_0 + \beta_1 x_i + \varepsilon, i=1,\dots,N $$
 
-This is also a linear model. Here $$x_i$$ and $$Y_i$$ the father and son heights respectively for the $$i$-th pair and $$\varepsilon$$ a term to account for the extra variability. Here we think of the father's height as the predictor and being fixed (not random) so we use lower case. Note that measurement error alone can't explain all the variability seen in $$\varepsilon$$. Note that this makes sense as there are other variables not in the model, for example, mother's height and environmentalism factors.
+This is also a linear model. Here $x_i$ and $Y_i$ the father and son heights respectively for the $i$-th pair and $\varepsilon$ a term to account for the extra variability. Here we think of the father's height as the predictor and being fixed (not random) so we use lower case. Note that measurement error alone can't explain all the variability seen in $\varepsilon$. Note that this makes sense as there are other variables not in the model, for example, mother's height and environmentalism factors.
 
 
 # Random samples from multiple populations
@@ -103,17 +110,31 @@ Here we read-in mouse body weight data from mice that were fed two different die
 dir <- system.file(package="dagdata")
 filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
 dat <- read.csv(filename)
+```
+
+```
+## Warning in file(file, "rt"): cannot open file
+## '/extdata/femaleMiceWeights.csv': No such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 mypar2(1,1)
 stripchart(Bodyweight~Diet,data=dat,vertical=TRUE,method="jitter",pch=1,main="Mice weights")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/intro_using_regression-unnamed-chunk-5-1.png) 
+```
+## Error in eval(expr, envir, enclos): object 'dat' not found
+```
 
 We want to estimate the difference in average weight between populations. We showed how to do this using t-tests and confidence intervals based on the difference in sample averages. We can obtain the same exact results using a linear model:
 
 $$ Y_i = \beta_0 + \beta_1 x_{i} + \varepsilon_i$$
 
-with $$\beta_0$$ the chow diet average weight, $$\beta_1$$ the difference between averages, $$x_i = 1$$ when mouse $$i$$ gets the high fat (hf) diet, $$x_i = 0$$ when it gets the chow diet, and $$\varepsilon_i$$ explains the differences between mice of same population. 
+with $\beta_0$ the chow diet average weight, $\beta_1$ the difference between averages, $x_i = 1$ when mouse $i$ gets the high fat (hf) diet, $x_i = 0$ when it gets the chow diet, and $\varepsilon_i$ explains the differences between mice of same population. 
  
 
 # General linear model
@@ -125,26 +146,26 @@ $$ Y_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \dots +  \beta_2 x_{i,p} 
  
 $$ Y_i = \beta_0 + \sum_{j=1}^p \beta_j x_{i,j} + \varepsilon_i, i=1,\dots,n $$
 
-Note that we have a general number of predictors $$p$$. Matrix algebra provides a compact language and mathematical framework to compute and make derivations with any linear models that first into the above framework.
+Note that we have a general number of predictors $p$. Matrix algebra provides a compact language and mathematical framework to compute and make derivations with any linear models that first into the above framework.
 
 <a name="estimates"></a>
 
 # Estimating parameters
 
-For the models above to be useful we have to estimate the unknown $$\beta$$ s. In the first example, we want to describe a physical process for which we can't have unknown parameters. In the second example we better understand inheritence by estimating how much, on average, father height affects the son's. In the final example we want to determine if their is infact a difference: if $$\beta_1 \neq 0$$. 
+For the models above to be useful we have to estimate the unknown $\beta$ s. In the first example, we want to describe a physical process for which we can't have unknown parameters. In the second example we better understand inheritence by estimating how much, on average, father height affects the son's. In the final example we want to determine if their is infact a difference: if $\beta_1 \neq 0$. 
 
 The standard approach in science is to find the values that minimize the distance of the fitted model to the data. The following is called the least squares (LS) equation and we will see it often in this chapter:
 
-$$ \sum_{i=1}^n \\{  Y_i - (\beta_0 + \sum_{j=1}^p \beta_j x_{i,j}\\}^2 $$
+$$ \sum_{i=1}^n \{  Y_i - (\beta_0 + \sum_{j=1}^p \beta_j x_{i,j}\}^2 $$
 
-Once we find the minimum, we will call the values the least squares estimates (LSE) and denote them with $$\hat{\beta}$$. The quantity obtained when evaluating the least square equation at the estimates is called the residual sum of squares (RSS). Note that because all these quantities depend on $$Y$$, *they are random variables*. The $$\hat{\beta}$$ s are random variables and we will eventually perform inference on them.
+Once we find the minimum, we will call the values the least squares estimates (LSE) and denote them with $\hat{\beta}$. The quantity obtained when evaluating the least square equation at the estimates is called the residual sum of squares (RSS). Note that because all these quantities depend on $Y$, *they are random variables*. The $\hat{\beta}$ s are random variables and we will eventually perform inference on them.
 
 ## Falling object example revisited
 Thanks to my high school physics teacher I know that the equation for the falling object is 
 
 $$d = h_0 + v_0 t -  0.5 \times 9.8 t^2$$
 
-with $$h_0$$ and $$v_0$$ the starting height and velocity respectively. The data we simulated above followed this equation and added measurement error to simulate `n` observations for dropping  the ball $$(v_0=0)$$ from the tower of Pisa $$(h_0=56.67)$$. This is why we used this code to simulate data:
+with $h_0$ and $v_0$ the starting height and velocity respectively. The data we simulated above followed this equation and added measurement error to simulate `n` observations for dropping  the ball $(v_0=0)$ from the tower of Pisa $(h_0=56.67)$. This is why we used this code to simulate data:
 
 
 ```r
@@ -184,9 +205,9 @@ summary(fit)$coef
 
 ```
 ##               Estimate Std. Error    t value     Pr(>|t|)
-## (Intercept) 57.1047803  0.4996845 114.281666 5.119823e-32
-## tt          -0.4460393  0.6806757  -0.655289 5.190757e-01
-## tt2         -4.7471698  0.1933701 -24.549662 1.767229e-17
+## (Intercept) 56.4305502  0.3969358 142.165421 4.226652e-34
+## tt           0.1467666  0.5407103   0.271433 7.885888e-01
+## tt2         -4.8943619  0.1536079 -31.862690 6.638629e-20
 ```
 
 It gives us the LSE as well as standard errors and p-values. 
@@ -195,7 +216,7 @@ Part of what we do in this course is explain the mathematics behind this functio
 
 ## The LSE
 
-Let's write a function that computes the RSS for any vector $$\beta$
+Let's write a function that computes the RSS for any vector $\beta$
 
 ```r
 rss <- function(Beta0,Beta1,Beta2){
@@ -204,7 +225,7 @@ rss <- function(Beta0,Beta1,Beta2){
 }
 ```
 
-So for any three dimensional vector we get an RSS. Here is a plot of the RSS as a function of $$\beta_2$$ when we keep the other two fixed:
+So for any three dimensional vector we get an RSS. Here is a plot of the RSS as a function of $\beta_2$ when we keep the other two fixed:
 
 
 ```r
@@ -241,6 +262,6 @@ $$ Pr(X<a,Y<b) = \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sig
 }
 $$
 
-From here we can show, with some math, that if you keep $$X$$ fixed (condition to be $$x$$) the the distribution of $$Y$$ is normally distributed with mean: $$\mu_x +\sigma_y \rho \left(\frac{x-\mu_x}{\sigma_x}\right)$$ and standard deviation $$\sigma_y \sqrt{1-\rho^2}$$. Note that $$\rho$$ is the correlation between $$Y$$ and $$X$$ and this implies that if we fix $$X=x$$, $$Y$$ does in fact follow a linear model. Homework what are $$\beta_0$$ and $$\beta_1$$ in terms of $$\mu_x,\mu_y,\sigma_x,\sigma_y$$, and $$\rho$$. It turns out that the least squares estimate of $$\beta_1$$ can be written in terms of the sample correlation and standard deviations.
+From here we can show, with some math, that if you keep $X$ fixed (condition to be $x$) the the distribution of $Y$ is normally distributed with mean: $\mu_x +\sigma_y \rho \left(\frac{x-\mu_x}{\sigma_x}\right)$ and standard deviation $\sigma_y \sqrt{1-\rho^2}$. Note that $\rho$ is the correlation between $Y$ and $X$ and this implies that if we fix $X=x$, $Y$ does in fact follow a linear model. Homework what are $\beta_0$ and $\beta_1$ in terms of $\mu_x,\mu_y,\sigma_x,\sigma_y$, and $\rho$. It turns out that the least squares estimate of $\beta_1$ can be written in terms of the sample correlation and standard deviations.
 
 
