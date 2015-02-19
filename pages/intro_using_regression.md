@@ -28,7 +28,7 @@ mypar2()
 
 # Objects falling
 
-Imagine you are Galileo back in the 16th century trying to describe the velocity of an objects falling. An assistant climbs the Tower of Pizza and drops a ball while several anothers record the position at different times. Let's simulate some data using the equations we know today and adding some measurement error:
+Imagine you are Galileo back in the 16th century trying to describe the velocity of an objects falling. An assistant climbs the Tower of Pizza and drops a ball while several others record the position at different times. Let's simulate some data using the equations we know today and adding some measurement error:
 
 ```r
 set.seed(1)
@@ -60,26 +60,8 @@ Now imagine you are Francis Galton in the 19th century and you collect paired he
 ```r
 #install.packages("UsingR")
 library(UsingR)
-```
-
-```
-## Error in library(UsingR): there is no package called 'UsingR'
-```
-
-```r
 x=father.son$fheight
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'father.son' not found
-```
-
-```r
 y=father.son$sheight
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'father.son' not found
 ```
 
 looks like this:
@@ -89,9 +71,7 @@ looks like this:
 plot(x,y,xlab="Father's height",ylab="Son's height")
 ```
 
-```
-## Error in plot(x, y, xlab = "Father's height", ylab = "Son's height"): object 'x' not found
-```
+![plot of chunk unnamed-chunk-4](figure/intro_using_regression-unnamed-chunk-4-1.png) 
 
 The son's height does seem to increase linearly with father's height. In this case a model that describes the data is as follows:
 
@@ -110,25 +90,11 @@ Here we read-in mouse body weight data from mice that were fed two different die
 dir <- system.file(package="dagdata")
 filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
 dat <- read.csv(filename)
-```
-
-```
-## Warning in file(file, "rt"): cannot open file
-## '/extdata/femaleMiceWeights.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 mypar2(1,1)
 stripchart(Bodyweight~Diet,data=dat,vertical=TRUE,method="jitter",pch=1,main="Mice weights")
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'dat' not found
-```
+![plot of chunk unnamed-chunk-5](figure/intro_using_regression-unnamed-chunk-5-1.png) 
 
 We want to estimate the difference in average weight between populations. We showed how to do this using t-tests and confidence intervals based on the difference in sample averages. We can obtain the same exact results using a linear model:
 
@@ -205,9 +171,9 @@ summary(fit)$coef
 
 ```
 ##               Estimate Std. Error    t value     Pr(>|t|)
-## (Intercept) 56.4305502  0.3969358 142.165421 4.226652e-34
-## tt           0.1467666  0.5407103   0.271433 7.885888e-01
-## tt2         -4.8943619  0.1536079 -31.862690 6.638629e-20
+## (Intercept) 57.1047803  0.4996845 114.281666 5.119823e-32
+## tt          -0.4460393  0.6806757  -0.655289 5.190757e-01
+## tt2         -4.7471698  0.1933701 -24.549662 1.767229e-17
 ```
 
 It gives us the LSE as well as standard errors and p-values. 

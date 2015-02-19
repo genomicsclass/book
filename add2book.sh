@@ -44,6 +44,5 @@ fi
 
 git commit -am "adding $2 to book"
 git push origin gh-pages
-cd ..
 
 printf "\n  *** done! *** \n\n"
