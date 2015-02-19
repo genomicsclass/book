@@ -56,10 +56,10 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Expressing design formula in R](pages/expressing_design_formula.html)
 - [Linear models in practice](pages/linear_models_in_practice.html)
 - [Standard errors](pages/standard_errors.html)
+- [Interactions and contrasts](pages/interactions_and_contrasts.html)
 - [Collinearity](pages/collinearity.html)
 - [QR and regression](pages/qr_and_regression.html)
-- [Interactions and contrasts](pages/interactions_and_contrasts.html)
-
+- [Going further](pages/linear_models_going_further.html)
 
 
 ### 3: Advanced Statistics for the Life Sciences
