@@ -7,12 +7,7 @@ layout: page
 
 # Introduction
 
-Below we will discuss two mathematical results, the Central Limit Theorem and the t-distribution,
-which help us to calculate probabilities of observing events,
-and both are often used in science to test statistical hypotheses.
-They have different assumptions, but both results are similar in that through
-mathematical formula, we are able to calculate exact probabilities of events, if we think that certain
-assumptions about the data hold true.
+Below we will discuss two mathematical results, the Central Limit Theorem and the t-distribution, which help us to calculate probabilities of observing events, and both are often used in science to test statistical hypotheses. They have different assumptions, but both results are similar in that through mathematical formula, we are able to calculate exact probabilities of events, if we think that certain assumptions about the data hold true.
 
 # Central Limit Theorem 
 
@@ -28,8 +23,8 @@ $$
 
 is approximated with a normal distribution centered at 0 and with standard deviation 1.
 
-Now we are interested in the difference of two sample averages. Here again a mathematical result helps. If we have two random variables $$X$$ and $$Y$$ with means $$\mu_X$$ and $$\mu_Y$$ and variance $$\sigma_X$$ and $$\sigma_Y$$ respectively, then we have the following results. The mean of the sum $$Y$+$X$$ is the sum of the means $$\mu_Y$$ + $$\mu_X$$. Using one of the facts we mentioned earlier, this implies that the mean of $$Y$$ - $$X$$ = $$Y$$ + $$aX$$ with $$a=-1$$ which means the mean of $$Y-X$$ is $$\mu_Y$-$\mu_X$$.This is intuitive. However, the next result is perhaps not as intuitive.  If $$X$$ and $$Y$$ are independent of each other, as they are in our mouse example, then the variance (SD squared) of $$Y$+$X$$ is the sum of the variances $$\sigma_Y^2+\sigma_X^2$$. This implies that variance of the difference $$Y-X$$ is the variance of $$Y - aX$$ with a=-1 which is $$\sigma^2_Y + a^2 \sigma_X^2$$ = 
-$\sigma^2_Y + \sigma_X^2$$. So the variance of the difference is also the sum of the variances. If this seems like a counter intuitive result, think that if $$X$$ and $$Y$$ are independent of each other, the sign does not really matter, it can be considered random: if $$X$$ is normal with certain variance, for example, so is $$-X$$.  Finally, another useful result is that the sum of normal variables is again normal.
+Now we are interested in the difference of two sample averages. Here again a mathematical result helps. If we have two random variables $$X$$ and $$Y$$ with means $$\mu_X$$ and $$\mu_Y$$ and variance $$\sigma_X$$ and $$\sigma_Y$$ respectively, then we have the following results. The mean of the sum $$Y$+$X$$ is the sum of the means $$\mu_Y$$ + $$\mu_X$$. Using one of the facts we mentioned earlier, this implies that the mean of $$Y$$ - $$X$$ = $$Y$$ + $$aX$$ with $$a=-1$$ which means the mean of $$Y-X$$ is $$\mu_Y$-$\mu_X$$.This is intuitive. However, the next result is perhaps not as intuitive.  If $$X$$ and $$Y$$ are independent of each other, as they are in our mouse example, then the variance (SD squared) of $$Y$+$X$$ is the sum of the variances $$\sigma_Y^2+\sigma_X^2$$. This implies that variance of the difference $$Y-X$$ is the variance of $$Y - aX$$ with $$a = -1$$ which is $$\sigma^2_Y + a^2 \sigma_X^2 = 
+\sigma^2_Y + \sigma_X^2$$. So the variance of the difference is also the sum of the variances. If this seems like a counter intuitive result, think that if $$X$$ and $$Y$$ are independent of each other, the sign does not really matter, it can be considered random: if $$X$$ is normal with certain variance, for example, so is $$-X$$.  Finally, another useful result is that the sum of normal variables is again normal.
 
 All this math is very useful for the purposes of our study because we have two sample averages and are interested in the difference. Because both are normal the difference is normal as well, and the variance (the standard deviation squared) is the sum of the two variance.
 Under the null hypothesis that there is no difference between the population averages, the difference between the sample averages $$\hat{Y}-\hat{X}$$, with $$\hat{X}$$ and $$\hat{Y}$$ the sample average for the two diets respectively, is approximated by a normal distribution centered at 0 (there is no difference) and with standard deviation $$\sqrt{\sigma_X^2 +\sigma_Y^2}/\sqrt{N}$$. 
