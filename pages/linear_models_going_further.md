@@ -3,7 +3,7 @@ title: "Going further"
 author: "Mike"
 date: "02/19/2015"
 output: html_document
-layout:page
+layout: page
 ---
 
 Linear models can be extended in many directions. Here are some examples of extensions, which you might come across in analyzing data in the life sciences:
