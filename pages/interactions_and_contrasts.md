@@ -871,7 +871,7 @@ Finally, there is a column which lists the *F value*. The F value is the *mean o
 
 $$ r_i = Y_i - \hat{Y}_i $$
 
-$$ MeanSq = \frac{1}{N - p} \sum_{i=1}^N r_i^2 $$
+$$ Mean Sq Residuals = \frac{1}{N - p} \sum_{i=1}^N r_i^2 $$
 
 where $$p$$ is the sum of all the terms in the model (here 8, including the intercept term).
 
