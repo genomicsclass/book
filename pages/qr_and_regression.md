@@ -41,6 +41,7 @@ Thus  we need to compute $$(\mathbf{X}^\top \mathbf{X})^{-1}$$
 
 Here we construct an extreme case 
 
+
 ```r
 n <- 50;M <- 500
 x <- seq(1,M,len=n)
@@ -60,16 +61,17 @@ To see why this happens look at $$(\mathbf{X}^\top \mathbf{X})$$
 
 
 
+
 ```r
 log10(crossprod(X))
 ```
 
 ```
-##          x          
-##   1.7  4.1  6.6  9.2
-## x 4.1  6.6  9.2 11.8
-##   6.6  9.2 11.8 14.4
-##   9.2 11.8 14.4 17.1
+##              x              
+##   1.699  4.098  6.625  9.203
+## x 4.098  6.625  9.203 11.810
+##   6.625  9.203 11.810 14.434
+##   9.203 11.810 14.434 17.070
 ```
 
 Note the difference of several orders of magnitude. On a digitial computer we have a limited range of numbers which makes some numbers seem like 0 which leads to division by 0 errors.
@@ -146,11 +148,11 @@ R <- qr.R( QR )
 ```
 
 ```
-##      [,1]
-## [1,]  0.9
-## [2,]  1.0
-## [3,]  1.0
-## [4,]  1.0
+##        [,1]
+## [1,] 0.9038
+## [2,] 1.0066
+## [3,] 1.0000
+## [4,] 1.0000
 ```
 
 Note that in practice we do not need to do any of this due to the built in `solve.qr` function:
@@ -162,11 +164,11 @@ QR <- qr(X)
 ```
 
 ```
-##   [,1]
-##    0.9
-## x  1.0
-##    1.0
-##    1.0
+##     [,1]
+##   0.9038
+## x 1.0066
+##   1.0000
+##   1.0000
 ```
 
 
@@ -216,11 +218,11 @@ cbind(betahat,SE)
 ```
 
 ```
-##            SE
-##   0.9 4.5e-01
-## x 1.0 7.9e-03
-##   1.0 3.7e-05
-##   1.0 4.8e-08
+##                 SE
+##   0.9038 4.508e-01
+## x 1.0066 7.858e-03
+##   1.0000 3.662e-05
+##   1.0000 4.802e-08
 ```
 
 Note that this gives us identical results to the `lm` function.
@@ -231,19 +233,10 @@ summary(lm(y~0+X))$coef
 ```
 
 ```
-##    Estimate Std. Error t value Pr(>|t|)
-## X       0.9    4.5e-01 2.0e+00  5.1e-02
-## Xx      1.0    7.9e-03 1.3e+02  2.2e-60
-## X       1.0    3.7e-05 2.7e+04 1.7e-167
-## X       1.0    4.8e-08 2.1e+07 4.6e-300
+##    Estimate Std. Error   t value   Pr(>|t|)
+## X    0.9038  4.508e-01 2.005e+00  5.089e-02
+## Xx   1.0066  7.858e-03 1.281e+02  2.171e-60
+## X    1.0000  3.662e-05 2.731e+04 1.745e-167
+## X    1.0000  4.802e-08 2.082e+07 4.559e-300
 ```
-
-
-
-
-
-
-
-
-
 
