@@ -46,6 +46,7 @@ n <- 50;M <- 500
 x <- seq(1,M,len=n)
 X <- cbind(1,x,x^2,x^3)
 beta <- matrix(c(1,1,1,1),4,1)
+set.seed(1)
 y <- X%*%beta+rnorm(n,sd=1)
 ```
 
@@ -141,7 +142,15 @@ We use `backsolve` which takes advantage of the upper triangular nature of $$\ma
 QR <- qr(X)
 Q <- qr.Q( QR )
 R <- qr.R( QR )
-betahat <- backsolve(R, crossprod(Q,y) ) 
+(betahat <- backsolve(R, crossprod(Q,y) ) )
+```
+
+```
+##      [,1]
+## [1,]  0.9
+## [2,]  1.0
+## [3,]  1.0
+## [4,]  1.0
 ```
 
 Note that in practice we do not need to do any of this due to the built in `solve.qr` function:
@@ -149,7 +158,15 @@ Note that in practice we do not need to do any of this due to the built in `solv
 
 ```r
 QR <- qr(X)
-betahat <- solve.qr(QR, y)
+(betahat <- solve.qr(QR, y))
+```
+
+```
+##   [,1]
+##    0.9
+## x  1.0
+##    1.0
+##    1.0
 ```
 
 
@@ -191,19 +208,19 @@ The function `chol2inv` is specifically designed to find this inverse. So all we
 
 
 ```r
-df <- length(y)-QR$rank
+df <- length(y) - QR$rank
 sigma2 <- sum((y-fitted)^2)/df
-var <- sigma2*chol2inv(QR$qr)
-SE <- sqrt(diag(var))
+varbeta <- sigma2*chol2inv(qr.R(QR))
+SE <- sqrt(diag(varbeta))
 cbind(betahat,SE)
 ```
 
 ```
-##             SE
-##   1.46 5.2e-01
-## x 0.99 9.1e-03
-##   1.00 4.3e-05
-##   1.00 5.6e-08
+##            SE
+##   0.9 4.5e-01
+## x 1.0 7.9e-03
+##   1.0 3.7e-05
+##   1.0 4.8e-08
 ```
 
 Note that this gives us identical results to the `lm` function.
@@ -215,10 +232,10 @@ summary(lm(y~0+X))$coef
 
 ```
 ##    Estimate Std. Error t value Pr(>|t|)
-## X      1.46    5.2e-01 2.8e+00  7.6e-03
-## Xx     0.99    9.1e-03 1.1e+02  3.7e-57
-## X      1.00    4.3e-05 2.3e+04 1.8e-164
-## X      1.00    5.6e-08 1.8e+07 4.6e-297
+## X       0.9    4.5e-01 2.0e+00  5.1e-02
+## Xx      1.0    7.9e-03 1.3e+02  2.2e-60
+## X       1.0    3.7e-05 2.7e+04 1.7e-167
+## X       1.0    4.8e-08 2.1e+07 4.6e-300
 ```
 
 
