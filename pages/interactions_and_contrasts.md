@@ -514,7 +514,7 @@ $$ \mathbf{\Sigma} = \hat{\sigma}^2 (\mathbf{X}^T \mathbf{X})^{-1}$$
 
 
 ```r
-(Sigma <- sum(fitTL$residuals^2)/(nrow(X) - 5) * solve(t(X) %*% X))
+(Sigma <- sum(fitTL$residuals^2)/(nrow(X) - ncol(X)) * solve(t(X) %*% X))
 ```
 
 ```
