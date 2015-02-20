@@ -78,7 +78,9 @@ Note the difference of several orders of magnitude. On a digitial computer we ha
 The QR factorization is based on a mathematical result that tells us that for a full rank $$N\times p$$ matrix $$\mathbf{X}$$ we can decompose as
 
 $$
-\mathbf{X = QR}$$
+\mathbf{X = QR}
+$$
+
 with 
 
 * $$\mathbf{Q}$$ a $$N \times p$$ matrix with  $$\mathbf{Q^\top Q=I}$$
@@ -109,8 +111,7 @@ c\\
 \end{pmatrix}
 $$
 
-We immediately know that 
-$$c=1$$ which implies that $$b+2=4$$ which implies  $$b=2$$ and thuse $$a+4-1=6$$ so $$a = 3$$. Writing an algorithm to do this is straigh-forward for any upper triangular matrix.
+We immediately know that $$c=1$$ which implies that $$b+2=4$$ which implies  $$b=2$$ and thuse $$a+4-1=6$$ so $$a = 3$$. Writing an algorithm to do this is straigh-forward for any upper triangular matrix.
 
 # Finding LSE with QR 
 
@@ -128,8 +129,7 @@ $$(\mathbf{R}^\top)^{-1} \mathbf{R}^\top \mathbf{R} \boldsymbol{\beta} = (\mathb
 
 $$\mathbf{R} \boldsymbol{\beta} = \mathbf{Q}^\top \mathbf{Y}$$
 
-
-$$\mathbf{R}$$ being uppertriangular makes solving this more stable. Also beacuse $$\mathbf{Q}^\top\mathbf{Q}=\mathbf{I}$$ we know that the columns of $$\mathbf{Q}$$ are in the same scale which stabilizes the right side. 
+$$\mathbf{R}$$ being upper triangular makes solving this more stable. Also beacuse $$\mathbf{Q}^\top\mathbf{Q}=\mathbf{I}$$ we know that the columns of $$\mathbf{Q}$$ are in the same scale which stabilizes the right side. 
 
 Now we are ready to find LSE using the QR decomposition. To solve 
 
@@ -200,10 +200,10 @@ cbind(betahat,SE)
 
 ```
 ##             SE
-##   0.93 6.2e-01
-## x 1.00 1.1e-02
-##   1.00 5.0e-05
-##   1.00 6.6e-08
+##   1.46 5.2e-01
+## x 0.99 9.1e-03
+##   1.00 4.3e-05
+##   1.00 5.6e-08
 ```
 
 Note that this gives us identical results to the `lm` function.
@@ -215,10 +215,10 @@ summary(lm(y~0+X))$coef
 
 ```
 ##    Estimate Std. Error t value Pr(>|t|)
-## X      0.93    6.2e-01 1.5e+00  1.4e-01
-## Xx     1.00    1.1e-02 9.3e+01  6.1e-54
-## X      1.00    5.0e-05 2.0e+04 3.2e-161
-## X      1.00    6.6e-08 1.5e+07 8.3e-294
+## X      1.46    5.2e-01 2.8e+00  7.6e-03
+## Xx     0.99    9.1e-03 1.1e+02  3.7e-57
+## X      1.00    4.3e-05 2.3e+04 1.8e-164
+## X      1.00    5.6e-08 1.8e+07 4.6e-297
 ```
 
 
