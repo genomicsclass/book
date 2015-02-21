@@ -16,9 +16,13 @@ rlm in MASS, robust package
 
 glm
 
+## Linear models with fixed and random effects (mixed effects)
+
+lme4
+
 ## Bayesian linear models
 
-lme4, stan, BUGS
+stan, BUGS
 
 ## Penalized linear models
 
