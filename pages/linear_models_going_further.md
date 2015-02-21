@@ -10,13 +10,19 @@ Linear models can be extended in many directions. Here are some examples of exte
 
 ## Robust linear models
 
-rlm in MASS, robust package
+rlm in MASS
+
+robust package
 
 ## Generalized linear models
 
 glm
 
-## Linear models with fixed and random effects (mixed effects)
+[Quick R](http://www.statmethods.net/advstats/glm.html)
+
+## Mixed effects linear models
+
+Linear models with fixed and random effects
 
 lme4
 
