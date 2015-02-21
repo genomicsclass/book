@@ -1,5 +1,5 @@
 ---
-title: "Going further"
+title: "Going further with linear models"
 author: "Mike"
 date: "02/19/2015"
 output: html_document
