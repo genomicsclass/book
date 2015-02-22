@@ -26,14 +26,35 @@ In the standard linear model, we assumed that the matrix $\mathbf{X}$ was *fixed
 
 ## Bayesian linear models
 
-stan, BUGS
+The approach presented here focused the estimation of $\boldsymbol{beta}$ which minimized the squared error and then calculating its standard error. An alternative approach to the statistical inference about $\boldsymbol{\beta}$ is using *Bayesian* methods. Bayesian methods first involve the formulation of *prior* distributional beliefs about model parameters, and then calculating either directly or computing using computational methods the *posterior* distribution of $\boldsymbol{\beta}$, from which we can examine the *posterior mode* (the most likely value), and [credible intervals](http://en.wikipedia.org/wiki/Credible_interval). In addition, many models can be connected together in what is referred to as a *hierarchical model*. A good reference for Bayesian hierarchical models is [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/), and some software for computing Bayesian linear models can be found on the [Bayes](http://cran.r-project.org/web/views/Bayesian.html) page on CRAN. Some well known software for computing Bayesian models are [stan](http://mc-stan.org/) and [BUGS](http://www.mrc-bsu.cam.ac.uk/software/bugs/).
 
 ## Penalized linear models
 
-Lasso, ridge, elastic neet
+https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html
+
+http://statweb.stanford.edu/~tibs/ElemStatLearn/
+
+http://cran.r-project.org/web/packages/lars/index.html
+
+http://cran.r-project.org/web/packages/glmnet/index.html
 
 ## Many simultaneous linear models
 
-(Y is not M x 1, but M x N)
+$\mathbf{Y}$ is not M x 1, but M x N
 
 limma
+
+Statistica Sinica 12(2002), 31-46. REPLICATED MICROARRAY DATA. Ingrid Lönnstedt and Terry Speed
+
+http://www.statsci.org/smyth/pubs/
+
+http://www.ncbi.nlm.nih.gov/pubmed/16646809
+
+Stat Appl Genet Mol Biol. 2004;3:Article3. Epub 2004 Feb 12.
+Linear models and empirical bayes methods for assessing differential expression in microarray experiments.
+Smyth GK1.
+
+http://www.bioconductor.org/packages/release/bioc/html/limma.html
+
+UserGuide
+
