@@ -14,11 +14,11 @@ In calculating the solution and its estimated error in the standard linear model
 
 ## Generalized linear models
 
-In the standard linear model, 
+In the standard linear model, we did not make any assumptions about the distribution of $\mathbf{Y}$, though in some cases we can gain better estimates if we know that $\mathbf{Y}$ is, for example restricted to non-negative integers $0,1,2,\dots$, or restricted to the interval $[0,1]$. A framework for analyzing such cases is referred to as *generalized linear models*, commonly abbreviated as GLMs. The two key components of the GLM are the *link function* and a probability distribution. The link function $g$ connects our familiar matrix product $\mathbf{X} \boldsymbol{\beta}$ to the $\mathbf{Y}$ values through:
 
-glm
+$$ \textrm{E}(\mathbf{Y}) = g^{-1}( \mathbf{X} \boldsymbol{\beta} $$
 
-[Quick R](http://www.statmethods.net/advstats/glm.html)
+There is a function in base R for fitting GLMs, which is `glm` and uses a familiar form as `lm`, with additional arguments including `family` which specifies the distributional assumption of $\mathbf{Y}$. Some examples of the use of GLMs are shown at the [Quick R](http://www.statmethods.net/advstats/glm.html) website. There are a number of references for GLMs on the [Wikipedia page](http://en.wikipedia.org/wiki/Generalized_linear_model). 
 
 ## Mixed effects linear models
 
