@@ -122,6 +122,7 @@ c
 1-1\\
 \end{pmatrix}
 $$
+
 $$
 =(a+c)
 \begin{pmatrix}
