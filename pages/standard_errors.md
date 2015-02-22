@@ -208,17 +208,20 @@ $$\mbox{var}\{Y_1+Y_2\} =
 
 $$ =\begin{pmatrix}1&1\end{pmatrix} \sigma^2 \mathbf{I}\begin{pmatrix} 1\\1\\ \end{pmatrix}=2\sigma^2$$
 
-as we expect. We use this result to obtain the standard errors of LSE.
+as we expect. We use this result to obtain the standard errors of LSE (least squared estimate).
 
-# LSE standard errors
+# Least squared estimate standard errors
 
 Note that $$\boldsymbol{\hat{\beta}}$$ is a linear combination of $$\mathbf{Y}$$: $$\mathbf{AY}$$ with  $$\mathbf{A}=\mathbf{(X^\top X)^{-1}X}^\top$$ so we can use the equation above to derive the variance of our estimates:
 
-$$
-\mbox{var}(\boldsymbol{\hat{\beta}}) = \mbox{var}( \mathbf{(X^\top X)^{-1}X^\top Y} ) =  $$
+$$\mbox{var}(\boldsymbol{\hat{\beta}}) = \mbox{var}( \mathbf{(X^\top X)^{-1}X^\top Y} ) =  $$
+
 $$\mathbf{(X^\top X)^{-1} X^\top} \mbox{var}(Y) (\mathbf{(X^\top X)^{-1} X^\top})^\top = $$
+
 $$\mathbf{(X^\top X)^{-1} X^\top} \sigma^2 \mathbf{I} (\mathbf{(X^\top X)^{-1} X^\top})^\top = $$
+
 $$\sigma^2 \mathbf{(X^\top X)^{-1} X^\top}\mathbf{X} \mathbf{(X^\top X)^{-1}} = $$
+
 $$\sigma^2\mathbf{(X^\top X)^{-1}}$$
 
 The diagonal of the square root of this matrix contains the standard error of our estimates. 
