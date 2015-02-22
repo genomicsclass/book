@@ -30,6 +30,8 @@ The approach presented here focused the estimation of $\boldsymbol{beta}$ which 
 
 ## Penalized linear models
 
+Penalized linear models introduce an penalty term to the minimization in addition to the squares of the residuals. These are typically of the form, $\lambda \sum_i \| \beta_i \|^k$, for different numbers $k$. The motivation for these is to introduce some stability
+
 https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html
 
 http://statweb.stanford.edu/~tibs/ElemStatLearn/
