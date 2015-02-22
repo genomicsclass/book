@@ -30,25 +30,9 @@ The approach presented here focused the estimation of $\boldsymbol{beta}$ which 
 
 ## Penalized linear models
 
-Penalized linear models introduce an penalty term to the minimization in addition to the squares of the residuals. These are typically of the form, $\lambda \sum_i \|\beta_i\|^k$, for different numbers $k$. The motivation for this extra term is to introduce some stability of the $\boldsymbol{\beta}$, and requires picking a parameter $\lambda$ which tunes how much the least squares part and how much the penalty affect the solution. When $k=2$, this is referred to as *ridge* regression or Tikhonov regularization, or L2 regularization. When $k=1$, this is referred to as *LASSO* or L1 regularization. A good reference for these penalized linear models is the [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/) textbook, which is available as a free pdf. Some R packages which implement penalized linear models are the [lm.ridge](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html) function in the MASS package, the [lars](http://cran.r-project.org/web/packages/lars/index.html) package, and the [glmnet](http://cran.r-project.org/web/packages/glmnet/index.html) package.
+Penalized linear models introduce an penalty term to the minimization in addition to the squares of the residuals. These are typically of the form, $\lambda \sum_i \|\beta_i\|^k$, for different numbers $k$. The motivation for this extra term is to introduce some stability of the $\boldsymbol{\beta}$, and requires picking a parameter $\lambda$ which tunes how much the least squares part and how much the penalty affect the solution. When $k=2$, this is referred to as *ridge* regression, Tikhonov regularization, or L2 regularization. When $k=1$, this is referred to as *LASSO* or L1 regularization. A good reference for these penalized linear models is the [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/) textbook, which is available as a free pdf. Some R packages which implement penalized linear models are the [lm.ridge](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html) function in the MASS package, the [lars](http://cran.r-project.org/web/packages/lars/index.html) package, and the [glmnet](http://cran.r-project.org/web/packages/glmnet/index.html) package.
 
 ## Many simultaneous linear models
 
-$\mathbf{Y}$ is not M x 1, but M x N
-
-limma
-
-Statistica Sinica 12(2002), 31-46. REPLICATED MICROARRAY DATA. Ingrid Lönnstedt and Terry Speed
-
-http://www.statsci.org/smyth/pubs/
-
-http://www.ncbi.nlm.nih.gov/pubmed/16646809
-
-Stat Appl Genet Mol Biol. 2004;3:Article3. Epub 2004 Feb 12.
-Linear models and empirical bayes methods for assessing differential expression in microarray experiments.
-Smyth GK1.
-
-http://www.bioconductor.org/packages/release/bioc/html/limma.html
-
-UserGuide
+Finally, in the next courses we will encounter an approach to improving the inference in linear models when $\mathbf{Y}$ is not a single column vector $M \times 1$, but we have thousands of such models to fit, $M \times N$. Typically such data is presented in a *tall* format, $N \times M$, where there are $M$ samples for each linear model, and $N$ linear models to fit, for example a linear model for each of the 10,000 genes. The improved statistical inference comes from modeling some of the terms, such as the variance, as a *hierarchical model*, essentially sharing information across the $N$ linear models. This will be covered in more detail in PH525.3x. Two of the first references for this approach are Lönnstedt and Speed, *Replicated microarray data* (2002), and Smyth, [Linear models and empirical bayes methods for assessing differential expression in microarray experiments](http://www.ncbi.nlm.nih.gov/pubmed/16646809) (2004). The methods in the Smyth paper are employed in the [limma](http://www.bioconductor.org/packages/release/bioc/html/limma.html) package on Bioconductor. The User Guide of the *limma* package contains extensive documentation and examples for analysis of genomics data.
 
