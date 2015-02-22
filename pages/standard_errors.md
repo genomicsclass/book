@@ -208,9 +208,9 @@ $$\mbox{var}\{Y_1+Y_2\} =
 
 $$ =\begin{pmatrix}1&1\end{pmatrix} \sigma^2 \mathbf{I}\begin{pmatrix} 1\\1\\ \end{pmatrix}=2\sigma^2$$
 
-as we expect. We use this result to obtain the standard errors of LSE (least squared estimate).
+as we expect. We use this result to obtain the standard errors of the LSE (least squares estimate).
 
-# Least squared estimate standard errors
+# LSE standard errors
 
 Note that $$\boldsymbol{\hat{\beta}}$$ is a linear combination of $$\mathbf{Y}$$: $$\mathbf{AY}$$ with  $$\mathbf{A}=\mathbf{(X^\top X)^{-1}X}^\top$$ so we can use the equation above to derive the variance of our estimates:
 
