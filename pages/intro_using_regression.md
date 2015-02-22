@@ -77,7 +77,7 @@ The son's height does seem to increase linearly with father's height. In this ca
 
 $$ Y_i = \beta_0 + \beta_1 x_i + \varepsilon, i=1,\dots,N $$
 
-This is also a linear model. Here $$x_i$$ and $$Y_i$$ the father and son heights respectively for the $$i$-th pair and $$\varepsilon$$ a term to account for the extra variability. Here we think of the father's height as the predictor and being fixed (not random) so we use lower case. Note that measurement error alone can't explain all the variability seen in $$\varepsilon$$. Note that this makes sense as there are other variables not in the model, for example, mother's height and environmentalism factors.
+This is also a linear model. Here $$x_i$$ and $$Y_i$$ the father and son heights respectively for the $$i$$-th pair and $$\varepsilon$$ a term to account for the extra variability. Here we think of the father's height as the predictor and being fixed (not random) so we use lower case. Note that measurement error alone can't explain all the variability seen in $$\varepsilon$$. Note that this makes sense as there are other variables not in the model, for example, mother's height and environmentalism factors.
 
 
 # Random samples from multiple populations
