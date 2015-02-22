@@ -30,15 +30,7 @@ The approach presented here focused the estimation of $\boldsymbol{beta}$ which 
 
 ## Penalized linear models
 
-Penalized linear models introduce an penalty term to the minimization in addition to the squares of the residuals. These are typically of the form, $\lambda \sum_i \|\beta_i\|^k$, for different numbers $k$. The motivation for these is to introduce some stability of the $\boldsymbol{\beta}$.
-
-https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html
-
-http://statweb.stanford.edu/~tibs/ElemStatLearn/
-
-http://cran.r-project.org/web/packages/lars/index.html
-
-http://cran.r-project.org/web/packages/glmnet/index.html
+Penalized linear models introduce an penalty term to the minimization in addition to the squares of the residuals. These are typically of the form, $\lambda \sum_i \|\beta_i\|^k$, for different numbers $k$. The motivation for this extra term is to introduce some stability of the $\boldsymbol{\beta}$, and requires picking a parameter $\lambda$ which tunes how much the least squares part and how much the penalty affect the solution. When $k=2$, this is referred to as *ridge* regression or Tikhonov regularization, or L2 regularization. When $k=1$, this is referred to as *LASSO* or L1 regularization. A good reference for these penalized linear models is the [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/) textbook, which is available as a free pdf. Some R packages which implement penalized linear models are the [lm.ridge](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/lm.ridge.html) function in the MASS package, the [lars](http://cran.r-project.org/web/packages/lars/index.html) package, and the [glmnet](http://cran.r-project.org/web/packages/glmnet/index.html) package.
 
 ## Many simultaneous linear models
 
