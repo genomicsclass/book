@@ -14,6 +14,8 @@ In calculating the solution and its estimated error in the standard linear model
 
 ## Generalized linear models
 
+In the standard linear model, 
+
 glm
 
 [Quick R](http://www.statmethods.net/advstats/glm.html)

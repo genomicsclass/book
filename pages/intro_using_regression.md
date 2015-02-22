@@ -182,7 +182,7 @@ Part of what we do in this course is explain the mathematics behind this functio
 
 ## The LSE
 
-Let's write a function that computes the RSS for any vector $$\beta$
+Let's write a function that computes the RSS for any vector $$\beta$$
 
 ```r
 rss <- function(Beta0,Beta1,Beta2){
