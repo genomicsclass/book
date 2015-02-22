@@ -73,7 +73,7 @@ As we will see later, multiplying the transpose of a matrix with another is very
 
 
 ```r
-bary=crossprod(A,Y) / N
+barY=crossprod(A,Y) / N
 print(barY)
 ```
 
