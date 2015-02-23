@@ -14,6 +14,7 @@ We introduce EDA for _univariate_ data. Here we describe EDA and summary statist
 <a name="scatterplots"></a>
 
 # Scatterplots and correlation
+
 The methods described above relate to _univariate_ variables. In the biomedical sciences it is common to be interested in the relationship between two or more variables. A classic examples is the father/son height data used by Galton to understand heredity. Were we to summarize these data we could use the two averages and two standard deviations as both distributions are well approximated by the normal distribution. This summary, however, fails to describe an important characteristic of the data.
 
 
