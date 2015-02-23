@@ -80,18 +80,6 @@ Here we will use the mice phenotypes data as example:
 
 ```r
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
 filename <- "mice_pheno.csv"
 if (!file.exists(filename)) download(url, destfile=filename)
