@@ -14,12 +14,14 @@ Biases, systematic errors and unexpected variability are common in data from the
 Graphing data is a powerful approach to detecting these problems. We refer to this as _exploratory data analyis_ (EDA). Many important methodological contributions to existing data analysis techniques in data analysis were initiated by discoveries made via EDA. Through this book we make use of exploratory plots to motivate the analyses we choose. Here we present a general introduction to EDA using height data.
 
 <a name="histograms"></a>
+
 # Histograms
 
 We can think of any given dataset as a list of numbers. Suppose you have measured the heights of all men in a population. Imagine you need to describe these numbers to someone that has no idea what these heights are, for example an alien that has never visited earth.
 
 
 ```r
+# install.packages("UsingR")
 library(UsingR)
 x=father.son$fheight
 ```
@@ -55,9 +57,10 @@ Showing this plot to the alien is much more informative than showing the numbers
 
 
 <a name="ecdf"></a>
+
 # Empirical Cummulative Density Function
 
-Although not as popular as the histogram for EDA, the empirical cumulative density function (CDF) shows us the same information and does not require us to define bins. For any number $x$ the empirical CDF reports the proportion of numbers in our list smaller or equal to $x$. R provides a function that has as out the empirical CDF function. Here:
+Although not as popular as the histogram for EDA, the empirical cumulative density function (CDF) shows us the same information and does not require us to define bins. For any number $$x$$ the empirical CDF reports the proportion of numbers in our list smaller or equal to $$x$$. R provides a function that has as out the empirical CDF function. Here:
 
 
 ```r
@@ -77,6 +80,7 @@ plot(xs,myCDF(xs),type="l",xlab="x=Height",ylab="F(x)")
 ![plot of chunk unnamed-chunk-4](figure/exploratory_data_analysis_1-unnamed-chunk-4-1.png) 
 
 <a name="normaldistribution"></a>
+
 # Normal approximation
 
 If instead of the total numbers we report the proportions, then the histogram above can be thought of a probability distribution. The probability distribution we see above approximates one that is very common in a nature: the normal distribution also refereed to as the bell curve or Gaussian distribution. When the histogram of a list of numbers approximates the normal distribution we can use a convenient mathematical formula to approximate the proportion of individuals in any given interval
@@ -85,7 +89,7 @@ $$
 \mbox{Pr}(a < x < b) = \int_a^b \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left( \frac{-(x-\mu)^2}{2 \sigma^2} \right)} \, dx
 $$
 
-Here $\mu$ and $\sigma$ are the mean and standard deviation and we can get them like this:
+Here $$\mu$$ and $$\sigma$$ are the mean and standard deviation and we can get them like this:
 
 
 ```r
@@ -98,7 +102,7 @@ popsd(x)
 ## [1] 2.743595
 ```
 
-Note the `sd` function in R gives us a sample estimate of the $\sigma$ as opposed to the population $\sigma$.
+Note the `sd` function in R gives us a sample estimate of the $$\sigma$$ as opposed to the population $$\sigma$$.
 
 If this approximation holds for our list then the population mean and variance of our list can be used in the formula above. To see this with an example remember that above we noted that 70 individuals or 6% of our population were taller than 6 feet. The normal approximation works well:
 
@@ -110,7 +114,7 @@ If this approximation holds for our list then the population mean and variance o
 ## [1] 0.05797647
 ```
 
-A very useful characteristic of this approximation is that one only needs to know $\mu$ and $\sigma$ to describe the entire distribution. All we really have to tell our alien friend is that heights follow a normal distribution with average height 68'' and a standard deviation of 3''. From this we can compute the proportion of individuals in any interval. It is a very compact summary. 
+A very useful characteristic of this approximation is that one only needs to know $$\mu$$ and $$\sigma$$ to describe the entire distribution. All we really have to tell our alien friend is that heights follow a normal distribution with average height 68'' and a standard deviation of 3''. From this we can compute the proportion of individuals in any interval. It is a very compact summary. 
 
 # QQ-plot
 
@@ -165,6 +169,7 @@ for(df in dfs){
 
 
 <a name="boxplots"></a>
+
 # Boxplots
 
 Data is not always normally distributed. Income is widely cited example. In these cases the average and standard deviation are not necessarily informative since one can't infer the distribution from just these two numbers. The properties described above are specific to the normal. For example, the normal distribution does not seem to be a good approximation for the direct compensation for 199 United States CEOs in the year 2000
@@ -181,7 +186,7 @@ qqline(exec.pay)
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/exploratory_data_analysis_1-unnamed-chunk-11-2.png) 
-A practical summary is to compute 3 percentiles: 25-th, 50-th (the median) and the 75-th. A boxplots shows these 3 values along with a range calculated as median $\pm$ 1.5 75-th percentiles - 25th-percentile. Values outside this range are shown as points and sometimes refereed to as _outliers_.
+A practical summary is to compute 3 percentiles: 25-th, 50-th (the median) and the 75-th. A boxplots shows these 3 values along with a range calculated as median $$\pm$$ 1.5 75-th percentiles - 25th-percentile. Values outside this range are shown as points and sometimes refereed to as _outliers_.
 
 
 ```r
