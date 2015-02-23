@@ -11,8 +11,7 @@ layout: page
 
 # Introduction 
 
-This section is based on talk by Karl W. Broman titled "How to Display Data Badly" in which he described how the default plots offered by Microsoft Excel "obscure your data and annoy your readers". His lecture was inspired by the 1984 paper by H Wainer: How to display data badly. American Statistician 38(2): 137--147}. Dr. Wainer was the first to elucidate the principles of the bad display of data. But according to Karl "The now widespread use of Microsoft Excel has
-resulted in remarkable advances in the field."
+This section is based on talk by Karl W. Broman titled "How to Display Data Badly" in which he described how the default plots offered by Microsoft Excel "obscure your data and annoy your readers". His lecture was inspired by the 1984 paper by H Wainer: How to display data badly. American Statistician 38(2): 137--147}. Dr. Wainer was the first to elucidate the principles of the bad display of data. But according to Karl "The now widespread use of Microsoft Excel has resulted in remarkable advances in the field."
 
 # General Principles
 
@@ -69,13 +68,13 @@ barplot(browsers,main="Browser Usage (August 2013)")
 Note that we can now pretty easily determine the percentages by following a horizontal line to the x-axis. Do avoid 3-D version as the obfuscate the plot and remove this particular advantage.
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig2b.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig2b.png" width="400">
 </center>
 
 Note that even worse that piecharts are donut plots.
 
 <center>
-<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Donut-Chart.svg/360px-Donut-Chart.svg.png" width=200 align="middle">
+<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Donut-Chart.svg/360px-Donut-Chart.svg.png" width="200" align="middle">
 </center>
 
 The reason is that by removing the center we remove one of the visual cues for determining the different areas: the angles. There is no reason to ever use a donut to display data.
@@ -85,7 +84,7 @@ The reason is that by removing the center we remove one of the visual cues for d
 While barplots are useful for showing percentages, they are incorrectly used to display data from two groups begin compared. Specifically, barplots are created with height equal to the group means and an antenna is added at the top to represent standard errors. This plot is simply showing two numbers per groups and the plot adds nothing:
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig1c.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig1c.png" width="400">
 </center>
 
 Much more informative is to summarizing with a boxplot. If the number of points is small enough, we might as well add them to the plot. When the number of points is too large for us to see them, just showing a boxplot is preferable.
@@ -93,10 +92,10 @@ Much more informative is to summarizing with a boxplot. If the number of points 
 
 ```r
 library("downloader")
-tmpfile <- tempfile()
-download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig1.RData",tmpfile)
-load(tmpfile)
-
+filename <- "fig1.RData"
+url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig1.RData"
+if (!file.exists(filename)) download(url,filename)
+load(filename)
 library(rafalib)
 mypar2(1,1)
 dat <- list(Treatment=x,Control=y)
@@ -111,15 +110,18 @@ Note how much more we see here: the center, spread, range and the points themsel
 This problem is magnified when our data has outliers or very large tails. Note that from this plot there appears to be very large and consistent difference between the two groups:
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig3c.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig3c.png" width="400">
 </center>
 
 A quick look at the data demonstrates that this difference is mostly driven by just two points. A version showing the data in the log-scale is much more informative.
 
 
 ```r
-download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig3.RData",tmpfile) ##overwrite
-load(tmpfile)
+library(downloader)
+url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig3.RData"
+filename <- "fig3.RData"
+if (!file.exists(filename)) download(url, filename)
+load(filename)
 library(rafalib)
 mypar2(1,2)
 dat <- list(Treatment=x,Control=y)
@@ -138,8 +140,10 @@ The purpose of many statistical analyses is to determine relationships between t
 
 
 ```r
-download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig4.RData",tmpfile)
-load(tmpfile)
+url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig4.RData"
+filename <- "fig4.RData"
+if (!file.exists(filename)) download(url, filename)
+load(filename)
 plot(x,y,lwd=2,type="n")
 fit <- lm(y~x)
 abline(fit$coef,lwd=2)
@@ -173,33 +177,115 @@ library(Biobase)
 library(SpikeInSubset)
 ```
 
+```
+## Error in library(SpikeInSubset): there is no package called 'SpikeInSubset'
+```
+
 ```r
 data(mas95)
+```
+
+```
+## Warning in data(mas95): data set 'mas95' not found
+```
+
+```r
 mypar2(1,2)
 r <- exprs(mas95)[,1] ##original measures were not logged
+```
+
+```
+## Error in exprs(mas95): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'mas95' not found
+```
+
+```r
 g <- exprs(mas95)[,2]
+```
+
+```
+## Error in exprs(mas95): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'mas95' not found
+```
+
+```r
 plot(r,g,lwd=2,cex=0.2,pch=16,
      xlab=expression(paste(E[1])),
      ylab=expression(paste(E[2])), 
      main=paste0("corr=",signif(cor(r,g),3)))
+```
+
+```
+## Error in plot(r, g, lwd = 2, cex = 0.2, pch = 16, xlab = expression(paste(E[1])), : object 'r' not found
+```
+
+```r
 abline(0,1,col=2,lwd=2)
+```
+
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
+
+```r
 f <- function(a,x,y,p=0.95) mean(x<=a & y<=a)-p
 a95 <- uniroot(f,lower=2000,upper=20000,x=r,y=g)$root
+```
+
+```
+## Error in mean(x <= a & y <= a): object 'r' not found
+```
+
+```r
 abline(a95,-1,lwd=2,col=1)
+```
+
+```
+## Error in abline(a95, -1, lwd = 2, col = 1): object 'a95' not found
+```
+
+```r
 text(8500,0,"95% of data below this line",col=1,cex=1.2,adj=c(0,0))
+```
+
+```
+## Error in text.default(8500, 0, "95% of data below this line", col = 1, : plot.new has not been called yet
+```
+
+```r
 r <- log2(r)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'r' not found
+```
+
+```r
 g <- log2(g)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'g' not found
+```
+
+```r
 plot(r,g,lwd=2,cex=0.2,pch=16,
      xlab=expression(paste(log[2], " ", E[1])),
      ylab=expression(paste(log[2], " ", E[2])),
      main=paste0("corr=",signif(cor(r,g),3)))
+```
+
+```
+## Error in plot(r, g, lwd = 2, cex = 0.2, pch = 16, xlab = expression(paste(log[2], : object 'r' not found
+```
+
+```r
 abline(0,1,col=2,lwd=2)
 ```
 
-<img src="figure/plots_to_avoid-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
 
-Although the correlation is reduced in the log-scale, it is very close to 1 in both cases. Does this mean these data are reproduced? To examine how well the second vector reproduces the first 
-What we need to study the differences so we should instead plot that. In this plot we plot the difference (in the log scale) versus the average:
+Although the correlation is reduced in the log-scale, it is very close to 1 in both cases. Does this mean these data are reproduced? To examine how well the second vector reproduces the first, we need to study the differences. So we should instead plot that. In this plot we plot the difference (in the log scale) versus the average:
 
 
 ```r
@@ -208,10 +294,19 @@ plot((r+g)/2,(r-g),lwd=2,cex=0.2,pch=16,
      xlab=expression(paste("Ave{ ",log[2], " ", E[1],", ",log[2], " ", E[2]," }")),
      ylab=expression(paste(log[2]," { ",E[1]," / ",E[2]," }")),
      main=paste0("SD=",signif(sqrt(mean((r-g)^2)),3)))
+```
+
+```
+## Error in plot((r + g)/2, (r - g), lwd = 2, cex = 0.2, pch = 16, xlab = expression(paste("Ave{ ", : object 'r' not found
+```
+
+```r
 abline(h=0,col=2,lwd=2)
 ```
 
-<img src="figure/plots_to_avoid-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
 These are referred to as Bland-Altman plots or MA plots in the genomics literature and will say more later. In this plot we see that the typical difference in the log (base 2) scale between two replicated measures is about 1. This means that when measurements should be the same we will, on average, observe 2 fold difference. We can now compare this variability to the differences we want to detect and decide if this technology is precise enough for our purposes.
 
 
@@ -220,7 +315,7 @@ These are referred to as Bland-Altman plots or MA plots in the genomics literatu
 A common task in data analysis is the comparison of two groups. When the dataset is small and  data are paired, for example outcomes before and after a treatment, an unfortunate display that is used is the barplot with two colors:
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig6r_e.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig6r_e.png" width="400">
 </center>
 
 There are various better ways of showing these data to illustrate there is an increase after treatment. One is to simply make a scatterplot and which shows that most points are above the identity line. Another alternative is plot the differences against the before values.
@@ -268,7 +363,7 @@ boxplot(before,after,names=c("Before","After"),ylab="Response")
 The follow figure shows three curves. Pseudo 3D is used but it is not clear way. Maybe to separate the three curves? Note how difficult it is to determine the values of the curves at any given point:
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig8b.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig8b.png" width="400">
 </center>
 
 This plot can be made better by simply using color to distinguish the three lines:
@@ -276,15 +371,52 @@ This plot can be made better by simply using color to distinguish the three line
 
 ```r
 download("https://github.com/kbroman/Talk_Graphs/raw/master/R/fig8dat.csv",tmpfile)
+```
+
+```
+## Error in download.file(url, method = method, ...): object 'tmpfile' not found
+```
+
+```r
 x <- read.table(tmpfile, sep=",", header=TRUE)
+```
+
+```
+## Error in read.table(tmpfile, sep = ",", header = TRUE): object 'tmpfile' not found
+```
+
+```r
 plot(x[,1],x[,2],xlab="log Dose",ylab="Proportion survived",ylim=c(0,1),
      type="l",lwd=2,col=1)
+```
+
+```
+## Error in x[, 1]: incorrect number of dimensions
+```
+
+```r
 lines(x[,1],x[,3],lwd=2,col=2)
+```
+
+```
+## Error in x[, 1]: incorrect number of dimensions
+```
+
+```r
 lines(x[,1],x[,4],lwd=2,col=3)
+```
+
+```
+## Error in x[, 1]: incorrect number of dimensions
+```
+
+```r
 legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 ```
 
-<img src="figure/plots_to_avoid-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+```
+## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+```
 
 # Ignoring important factors
 
@@ -293,7 +425,7 @@ legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 In this example we generate data with a simulation. We are studying a dose response relationship between two groups treatment and control. We have three groups of measurements for both control and treatment. Comparing treatment and control using the common barplot:
 
 <center>
-<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig9d.png" width=400>
+<img src="https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig9d.png" width="400">
 </center>
 
 Instead we should show each curve. We can use color to distinguish treatment and control and dashed and solid lines to distinguish the original data from the mean of the three groups.
