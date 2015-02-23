@@ -83,7 +83,7 @@ Stratification followed by boxplots lets us see the distribution of each group. 
 
 # Bi-variate normal distribution
 
-A pair of random variable $$(X,y)$is considered to be approximated by bivariate normal when the proportion of values below, say $$x$$ and $$y$$ is approximated by this expression:
+A pair of random variable $$(X,y)$$ is considered to be approximated by bivariate normal when the proportion of values below, say $$x$$ and $$y$$ is approximated by this expression:
 
 $$ Pr(X<a,Y<b) = \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}
 \exp{ \left(
