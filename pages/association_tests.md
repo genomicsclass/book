@@ -18,14 +18,12 @@ One of the most famous examples of hypothesis testing was performed by RA Fisher
 
 The basic question we ask is: if the lady is just guessing, what are the chances that she gets 3 or more correct? Just as we have done before we can compute a probability under the null that hypothesis that she is just guessing. If we assume the lady is just guessing randomly, we can think of this particular examples as picking 4 balls out of an urn with 4 green (correct answer) and 4 red (incorrect answer) balls. 
 
-Under the null hypothesis that the lady is just guessing each ball has the same chance of being picked. We can then use combinatorics to figure out the probability. The probability of picking 3 is 
-${4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70$.  
-The probability of picking all correct is
-${4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70$. Thus the chance of observing a 3 or something more extreme, under the null hypothesis, is 0.24. This is called a p-value. This is called Fisher's exact test and it uses the hyper geometric distribution.
+Under the null hypothesis that the lady is just guessing each ball has the same chance of being picked. We can then use combinatorics to figure out the probability. The probability of picking 3 is $${4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70$$. The probability of picking all correct is $${4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70$$. Thus the chance of observing a 3 or something more extreme, under the null hypothesis, is 0.24. This is called a p-value. This is called Fisher's exact test and it uses the hyper geometric distribution.
 
 ## Two by two tables
 
 Note that the data from the experiment above can be summarized by a 2 by 2 tables:
+
 
 ```r
 tab <- matrix(c(3,1,1,3),2,2)
@@ -39,6 +37,7 @@ tab
 ## Poured Before              3             1
 ## Poured After               1             3
 ```
+
 The function `fisher.test` performs the calculations above and can be obtained like this:
 
 
@@ -60,7 +59,6 @@ fisher.test(tab,alternative="greater")
 ##   6.408309
 ```
 
-
 ## Chi-square test
 
 Genome-wide association studies (GWAS) have become ubiquitous in Biology. One of the main statistical summaries used in these studies are Manhattan plots. The y-axis of a Manhattan plot typically represents the negative of log (base 10) of the p-values obtained for association tests applied at millions of single nucleotide polymorphisms (SNP). These p-values are obtained in a similar way to the test performed on the tea tasting lady. However in that example the number of green and red balls is experimentally fixed and the number of answers given for each category is also fixed. Another way to say this is that the sum of the rows and the sum of the columns are fixed. This defines constraints on the possible ways we can fill the 2 by 2 table and also permits us to use the hypergeometric distribution. In general, this is not the case. But there is another approach which is the Chi-squared test described here.
@@ -68,6 +66,7 @@ Genome-wide association studies (GWAS) have become ubiquitous in Biology. One of
 Imagine we have 280 individuals, some of them have a given disease others don’t. We observe that a 20% of the individuals that are homozygous for the minor allele (aa) have the disease compared to 10% of the rest. Would we see this again if we picked another 220 individuals?
 
 Let's create an dataset with these perencentages:
+
 
 ```r
 disease=factor(c(rep(0,180),rep(1,20),rep(0,40),rep(1,10)),
@@ -127,9 +126,10 @@ tab
 ##    aa         40    10
 ```
 
-Note that you can feed `table` $n$ factors and it will tabulate all $n$-tubles.
+Note that you can feed `table` $$n$$ factors and it will tabulate all $$n$$-tubles.
 
-The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ration: $(10/40) / (20/180)$ 
+The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ration: $$(10/40) / (20/180)$$ 
+
 
 ```r
 (tab[2,2]/tab[2,1]) / (tab[1,2]/tab[1,1])
@@ -141,6 +141,7 @@ The typical statistics we use to summarize these results is the odds ratio (OR).
 
 Now to compute p-value we don't use the OR directly, we assume that there is no association between genotype and disease and compute what we expect to see in each cell. Note under the null that 200 and 50 individuals in each group were assigned disease with the same probability. If this is the case then the probability of disease is
 
+
 ```r
 p=mean(disease=="cases")
 p
@@ -149,7 +150,9 @@ p
 ```
 ## [1] 0.12
 ```
+
 The expected table is therefore
+
 
 ```r
 expected <- rbind(c(1-p,p)*sum(genotype=="AA/Aa"),
@@ -167,6 +170,7 @@ expected
 
 The Chi-square test uses an asymptotic result (similar to CLT) about the sums of independent binary outcomes, we can compute an approximate probability of seeing a deviation for the expected table as big as this one. The p-value for this table is 
 
+
 ```r
 chisq.test(tab)$p.value
 ```
@@ -180,6 +184,7 @@ chisq.test(tab)$p.value
 As we mentioned earlier reporting only p-values is not an appropriate way to report the results of your experiment. Many genetic association studies seem to over emphasize p-values. They have large sample sizes, report impressively small p-values, yet when one looks closely at the results, we realize odds ratios are quite modest: barely bigger than 1.
 
 We note that there is not a one to one relationship between the odds ratio and the p-value. To demonstrate we re calculate the p-value keeping all the proportions identical but increasing the sample size by 10 which reduces the p-value substantially
+
 
 ```r
 tab<-tab*10
@@ -222,9 +227,4 @@ exp(ci)
 ```
 
 Note that the confidence includes 1, which is consistent with the p-value being bigger than 0.05. Also note that the p-value shown here is based on a different approximation to the one used by the Chi-square test which is why they differ.
-
-
-
-
-
 
