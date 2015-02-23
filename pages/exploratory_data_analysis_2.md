@@ -12,12 +12,42 @@ layout: page
 We introduce EDA for _univariate_ data. Here we describe EDA and summary statistics for paired data. 
 
 <a name="scatterplots"></a>
+
 # Scatterplots and correlation
 The methods described above relate to _univariate_ variables. In the biomedical sciences it is common to be interested in the relationship between two or more variables. A classic examples is the father/son height data used by Galton to understand heredity. Were we to summarize these data we could use the two averages and two standard deviations as both distributions are well approximated by the normal distribution. This summary, however, fails to describe an important characteristic of the data.
 
 
 ```r
+# install.packages("UsingR")
 library(UsingR)
+```
+
+```
+## Loading required package: MASS
+## Loading required package: HistData
+## Loading required package: Hmisc
+## Loading required package: methods
+## Loading required package: grid
+## Loading required package: lattice
+## Loading required package: survival
+## Loading required package: splines
+## Loading required package: Formula
+## 
+## Attaching package: 'Hmisc'
+## 
+## The following objects are masked from 'package:base':
+## 
+##     format.pval, round.POSIXt, trunc.POSIXt, units
+## 
+## 
+## Attaching package: 'UsingR'
+## 
+## The following object is masked from 'package:survival':
+## 
+##     cancer
+```
+
+```r
 data("father.son")
 x=father.son$fheight
 y=father.son$sheight
@@ -29,6 +59,7 @@ plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=pas
 The scatter plot shows a general trend: the taller the father the taller to son. A summary of this trend is the correlation coefficient which in this cases is 0.5. We motivate this statistic by trying to predict son's height using the father's. 
 
 # Stratification
+
 Suppose we are asked to guess the height of randomly select sons. The average height, 68.7 inches, is the value with the highest proportion (see histogram) and would be our prediction. But what if we are told that the father is 72 inches tall, do we sill guess 68.7?
 
 Note that the father is taller than average. He is 1.7 standard deviations taller than the average father. So should we predict that the son is also 1.75 standard deviations taller? Turns out this is an overestimate. To see this we look at all the sons with fathers who are about 72 inches. We do this by _stratifying_ the son heights.
@@ -51,7 +82,7 @@ Stratification followed by boxplots lets us see the distribution of each group. 
 
 # Bi-variate normal distribution
 
-A pair of random variable $(X,y)$is considered to be approximated by bivariate normal when the proportion of values below, say $x$ and $y$ is approximated by this expression:
+A pair of random variable $$(X,y)$is considered to be approximated by bivariate normal when the proportion of values below, say $$x$$ and $$y$$ is approximated by this expression:
 
 $$ Pr(X<a,Y<b) = \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}
 \exp{ \left(
@@ -64,7 +95,7 @@ $$ Pr(X<a,Y<b) = \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sig
 }
 $$
 
-A definition that is more intuitive is the following. Fix a value $x$ and look at all the pairs $(X,Y)$ for which $X=x$. Generally, in Statistics we call this exercise _conditionion_. We are conditioning $Y$ on $X$. If a pair of random variables is approximated by a bivariate normal distribution then the distribution of $Y$ condition on $X=x$ is approximated with a normal distribution for all $x$. Let's see if this happens here. We take 4 different strata to demonstrate this:
+A definition that is more intuitive is the following. Fix a value $$x$$ and look at all the pairs $$(X,Y)$$ for which $$X=x$$. Generally, in Statistics we call this exercise _conditionion_. We are conditioning $$Y$$ on $$X$$. If a pair of random variables is approximated by a bivariate normal distribution then the distribution of $$Y$$ condition on $$X=x$$ is approximated with a normal distribution for all $$x$$. Let's see if this happens here. We take 4 different strata to demonstrate this:
 
 
 ```r
@@ -80,20 +111,21 @@ for(i in c(5,8,11,14)){
 ![plot of chunk unnamed-chunk-4](figure/exploratory_data_analysis_2-unnamed-chunk-4-1.png) 
 
 
-Now we come back to defining correlation. Mathematical statistics tells us that when two variables follow a bivariate normal distribution then for any given value of $x$ the average of the $Y$ in pairs for which $X=x$ is
+Now we come back to defining correlation. Mathematical statistics tells us that when two variables follow a bivariate normal distribution then for any given value of $$x$$ the average of the $$Y$$ in pairs for which $$X=x$$ is
 
 $$ 
 \mu_Y +  r \frac{X-\mu_X}{\sigma_X}\sigma_Y
 $$
 
-Note that this is a line with slope $r \frac{\sigma_Y}{\sigma_X}$. This is referred to as the _regression line_. Note also that if the SDs are the same, then the slope of the regression line is the correlation $r$. Therefore, if we standardize $X$ and $Y$ the correlation is the slope of the regression line.
+Note that this is a line with slope $$r \frac{\sigma_Y}{\sigma_X}$$. This is referred to as the _regression line_. Note also that if the SDs are the same, then the slope of the regression line is the correlation $$r$$. Therefore, if we standardize $$X$$ and $$Y$$ the correlation is the slope of the regression line.
 
-Another way to see this is that to form a prediction $\hat{Y}$, for every SD away from the mean in $x$, we predict $r$ SDs away for $Y$: 
+Another way to see this is that to form a prediction $$\hat{Y}$$, for every SD away from the mean in $$x$$, we predict $$r$$ SDs away for $$Y$$: 
 
 $$
 \frac{\hat{Y} - \mu_Y}{\sigma_Y} = r \frac{x-\mu_X}{\sigma_X}
 $$
-with the $\mu$ representing the averages, $\sigma$ the standard deviations, and $r$ the correlation. So if there is perfect correlation we predict the same number of SDs, if there is 0 correlation then we don't use $x$ at all, and for values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
+
+with the $$\mu$$ representing the averages, $$\sigma$$ the standard deviations, and $$r$$ the correlation. So if there is perfect correlation we predict the same number of SDs, if there is 0 correlation then we don't use $$x$$ at all, and for values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
 
 
 To confirm that the above approximations hold here, let's compare the mean of each strata to the identity line and the regression line
@@ -112,6 +144,7 @@ abline(0,cor(x,y))
 ![plot of chunk unnamed-chunk-5](figure/exploratory_data_analysis_2-unnamed-chunk-5-1.png) 
 
 # Spearman's correlation
+
 Just like the average and standard deviation are not good summaries when the data is not well approximated by the normal distribution, the correlation is not a good summary when pairs of lists are not approximated by the bivariate normal distribution. Examples include cases in which on variable is related to another by a parabolic function. Another, more common example are caused by outliers or extreme values.
 
 
@@ -123,5 +156,4 @@ plot(a,b,main=paste("correlation =",signif(cor(a,b),2)))
 
 ![plot of chunk unnamed-chunk-6](figure/exploratory_data_analysis_2-unnamed-chunk-6-1.png) 
 In the example above the data are not associated but for one pair both values are very large. The correlation here is about 0.5. This is driven by just that one point as taking it out lowers to correlation to about 0. An alternative summary for cases with outliers or extreme values is Spearman's correlation which is based on ranks instead of the values themselves. 
-
 
