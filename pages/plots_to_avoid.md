@@ -282,45 +282,15 @@ library(downloader)
 filename <- "fig8dat.csv"
 url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig8dat.csv"
 if (!file.exists(filename)) download(url, filename)
-x <- read.table(tmpfile, sep=",", header=TRUE)
-```
-
-```
-## Error in read.table(tmpfile, sep = ",", header = TRUE): object 'tmpfile' not found
-```
-
-```r
+x <- read.table(filename, sep=",", header=TRUE)
 plot(x[,1],x[,2],xlab="log Dose",ylab="Proportion survived",ylim=c(0,1),
      type="l",lwd=2,col=1)
-```
-
-```
-## Error in x[, 1]: incorrect number of dimensions
-```
-
-```r
 lines(x[,1],x[,3],lwd=2,col=2)
-```
-
-```
-## Error in x[, 1]: incorrect number of dimensions
-```
-
-```r
 lines(x[,1],x[,4],lwd=2,col=3)
-```
-
-```
-## Error in x[, 1]: incorrect number of dimensions
-```
-
-```r
 legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 ```
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
+<img src="figure/plots_to_avoid-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
 
 # Ignoring important factors
 
