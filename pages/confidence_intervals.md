@@ -21,19 +21,7 @@ We start by reading in the data and selecting the appropriate rows:
 
 
 ```r
-library(downloader, quietly=TRUE)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
+library(downloader)
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
 filename <- "mice_pheno.csv"
 if (!file.exists(filename)) download(url,destfile=filename)

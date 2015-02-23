@@ -11,6 +11,6 @@
 printf "\n  *** knit *** \n\n"
 
 cd ../labs/$1
-Rscript -e "library(knitr); knit('$2.Rmd')"
+Rscript --no-init-file -e "library(knitr); knit('$2.Rmd')"
 
 printf "\n  *** done! *** \n\n"
