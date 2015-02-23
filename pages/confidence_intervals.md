@@ -21,7 +21,7 @@ We start by reading in the data and selecting the appropriate rows:
 
 
 ```r
-library(downloader)
+library(downloader, quietly=TRUE)
 ```
 
 ```
