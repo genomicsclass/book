@@ -16,21 +16,9 @@ We start by reading in the data. A first important step is to identify which row
 
 ```r
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
-filename <- tempfile()
-download(url,destfile=filename)
+filename <- "femaleMiceWeights.csv"
+if (!file.exists(filename)) download(url,filename)
 dat <- read.csv(filename)
 head(dat) ##quick look at the data 
 ```
@@ -74,11 +62,11 @@ A problem is that we do not know the population standard deviation. So we use th
 
 
 ```r
-sd(control)/length(control)
+sd(control)/sqrt(length(control))
 ```
 
 ```
-## [1] 0.2518784
+## [1] 0.8725323
 ```
 
 This is the SE of the sample average but we actually want the SE of `diff`. We saw how statistical theory tells us that the variance of the difference of two random variables is the sum of it's variances, so we compute the variance and take the square root:
