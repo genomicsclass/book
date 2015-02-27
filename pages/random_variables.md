@@ -139,18 +139,6 @@ Read in the data, either from your home directory or from dagdata:
 
 ```r
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
 filename <- "femaleControlsPopulation.csv"
 if (!file.exists(filename)) download(url,destfile=filename)
