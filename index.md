@@ -64,17 +64,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ### 3: Advanced Statistics for the Life Sciences
 
-- [Introduction and example of high-throughput data](pages/intro.html)
-- [Modeling](pages/modeling.html)
-- [Distance lecture](pages/distance_lecture.html)
-- [Distance and clustering lab](pages/distance_clustering.html)
-- [Dimension reduction and heatmaps](pages/dimension_reduction_heatmaps.html)
-- [Confounding](pages/confounding.html)
-- [Running PCA and SVD in R](pages/pca_svd.html)
-- [Prediction lecture](pages/prediction.html)
-- [Cross-validation](pages/crossvalidation.html)
-- [Multiple testing](pages/multtest.html)
-- [Hierarchical modeling and using limma](pages/using_limma.html)
+- [Introduction and example of high-throughput data](pages/intro_to_highthroughput_data.html)
 
 ### 4: Introduction to Bioconductor
 
