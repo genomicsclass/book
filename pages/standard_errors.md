@@ -293,7 +293,8 @@ ses
 ##   7.7164683   0.1129019
 ```
 
-They are identical because they are doing the same thing. Also note that we approxiamte the Monte Carlo reulsts:
+They are identical because they are doing the same thing. Also note that we approximate the Monte Carlo results:
+
 
 ```r
 apply(betahat,2,sd)
