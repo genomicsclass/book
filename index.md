@@ -64,6 +64,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ### 3: Advanced Statistics for the Life Sciences
 
+- [Introduction and example of high-throughput data](pages/intro.html)
 - [Modeling](pages/modeling.html)
 - [Distance lecture](pages/distance_lecture.html)
 - [Distance and clustering lab](pages/distance_clustering.html)
