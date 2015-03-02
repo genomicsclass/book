@@ -65,6 +65,9 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ### 3: Advanced Statistics for the Life Sciences
 
 - [Introduction and example of high-throughput data](pages/intro_to_highthroughput_data.html)
+- [Inference on high-throughput data](pages/inference_for_highthroughput.html)
+- [EDA of high-throughput data](pages/eda_for_highthroughput.html)
+
 
 ### 4: Introduction to Bioconductor
 
