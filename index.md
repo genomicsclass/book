@@ -67,7 +67,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Introduction and example of high-throughput data](pages/intro_to_highthroughput_data.html)
 - [Inference on high-throughput data](pages/inference_for_highthroughput.html)
 - [EDA of high-throughput data](pages/eda_for_highthroughput.html)
-
+- [Quick introduction to Bioconductor](pages/quick_Bioc_intro.html)
 
 ### 4: Introduction to Bioconductor
 
