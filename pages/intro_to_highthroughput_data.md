@@ -127,7 +127,7 @@ head(match(geneAnnotation$PROBEID,rownames(geneExpression)))
 ```
 ## [1] 1 2 3 4 5 6
 ```
-The talbe also includes biological information abuot the features. Namely,  chromosome location and the gene "name" used by biologists.
+The table also includes biological information abuot the features. Namely,  chromosome location and the gene "name" used by biologists.
 
 # Examples
 
