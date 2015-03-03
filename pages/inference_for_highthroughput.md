@@ -110,24 +110,20 @@ Before, we continue, we should note that the above implementation is very ineffi
 
 ```r
 library(genefilter)
-```
-
-```
-## 
-## Attaching package: 'genefilter'
-## 
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
 results <- rowttests(geneExpression,factor(g))
 max(abs(pvals-results$p))
 ```
 
 ```
 ## [1] 6.528111e-14
+```
+
+Note that `genefilter` is available from the Bioconductor projects. In a later section we will say more about this project but here is how one installs it:
+ 
+
+```r
+source("http://www.bioconductor.org/biocLite.R")
+biocLite("genefilter")
 ```
 
 Note that we get practically the same answer and much faster performance.
