@@ -20,18 +20,6 @@ Figure 1 includes some pretty cool electron microscope images of the tufts. We a
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/spider_wolff_gorb_2013.csv"
 filename <- "spider_wolff_gorb_2013.csv"
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 if (!file.exists(filename)) download(url, filename)
 spider <- read.csv(filename, skip=1)
 boxplot(spider$friction ~ spider$type * spider$leg, 
@@ -369,11 +357,12 @@ coefs[1] + coefs[2]
 ##   0.2749082
 ```
 
-We can demonstrate, though, that the push vs pull coefficient, `coefs[2]`, is now a weighted mean of the difference of means for each group. And the weighting is determined by the sample size of each group.
+We can demonstrate, though, that the push vs pull coefficient, `coefs[2]`, is now a weighted mean of the difference of means for each group. And the weighting is determined by the sample size of each group. Note that the math works out so simply here because the sample size is equal for the push and pull subgroups within each leg pair. If the sample sizes were not equal for push and pull within each leg pair, the weighting is uniquely determined by a formula involving the sample size of each subgroup, the total sample size, and the number of coefficients. This can be worked out from $$(\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T$$.
 
 
 ```r
 means <- sapply(s, mean)
+# the sample size of push or pull groups for each leg pair
 ns <- sapply(s, length)[c(1,3,5,7)]
 (w <- ns/sum(ns))
 ```
@@ -433,6 +422,7 @@ library(contrast)
 ```
 ## Loading required package: rms
 ## Loading required package: Hmisc
+## Loading required package: methods
 ## Loading required package: grid
 ## Loading required package: lattice
 ## Loading required package: survival
