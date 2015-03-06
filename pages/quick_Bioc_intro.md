@@ -35,20 +35,20 @@ biocLite("Biobase")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/79/m125hnm95cs7j8dm_1xj_qk40000gp/T//Rtmph84fqx/downloaded_packages
+## 	/var/folders/79/m125hnm95cs7j8dm_1xj_qk40000gp/T//Rtmpqo2mJN/downloaded_packages
 ```
 
 ```
-## Old packages: 'boot', 'class', 'cluster', 'codetools', 'foreign',
-##   'KernSmooth', 'lattice', 'manipulate', 'MASS', 'Matrix', 'mgcv', 'nlme',
-##   'nnet', 'rpart', 'spatial', 'survival'
+## Old packages: 'boot', 'class', 'cluster', 'codetools', 'colorspace',
+##   'foreign', 'KernSmooth', 'lattice', 'manipulate', 'MASS', 'Matrix',
+##   'mgcv', 'nlme', 'nnet', 'qvalue', 'rpart', 'spatial', 'survival'
 ```
 
 You can install a suite of recommended packages by simply typing `biocLite()`
 
 # Data organized in three tables
 
-One of the great advantages of using Bioconductor for high throughput data is that it provides obeject classes specifically designed to keep high throughput data organized. Below we show an example of how the three tables that are needed to conduct data analysis are avaialabe from bioconductor data objects. For example for gene expression we can use the ExpressionSet object.
+One of the great advantages of using Bioconductor for high throughput data is that it provides object classes specifically designed to keep high throughput data organized. Below we show an example of how the three tables that are needed to conduct data analysis are avaialabe from bioconductor data objects. For example for gene expression we can use the ExpressionSet object.
 
 
 ```r
