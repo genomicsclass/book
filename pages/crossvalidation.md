@@ -5,7 +5,6 @@ title: Cross-validation
 
 
 
-
 In this lab, we will explore a method for picking parameters in a
 prediction / machine learning task, which is called
 *cross-validation*.
@@ -34,64 +33,22 @@ fold has been used as a *test* set.
 Let's load in the tissue gene expression dataset:
 
 
+
 ```r
-# library(devtools) install_github('dagdata','genomicsclass')
-library(dagdata)
+library(tissuesGeneExpression)
 data(tissuesGeneExpression)
-library(Biobase)
 ```
 
-```
-## Loading required package: BiocGenerics
-## Loading required package: methods
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-```
-
-```r
-rownames(tab) <- tab$filename
-t <- ExpressionSet(e, AnnotatedDataFrame(tab))
-t$Tissue <- factor(t$Tissue)
-colnames(t) <- paste0(t$Tissue, seq_len(ncol(t)))
-```
-
-
-Let's drop one of the tissues which doesn't have many samples:
+For illustration purposes 
+let's drop one of the tissues which doesn't have many samples:
 
 
 ```r
-library(class)
-table(t$Tissue)
+table(tissue)
 ```
 
 ```
-## 
+## tissue
 ##  cerebellum       colon endometrium hippocampus      kidney       liver 
 ##          38          34          15          31          39          26 
 ##    placenta 
@@ -99,21 +56,10 @@ table(t$Tissue)
 ```
 
 ```r
-t <- t[, t$Tissue != "placenta"]
-t$Tissue <- droplevels(t$Tissue)
-table(t$Tissue)
+ind <- which(tissue != "placenta")
+y <- tissue[ind]
+X <- t( e[,ind] )
 ```
-
-```
-## 
-##  cerebellum       colon endometrium hippocampus      kidney       liver 
-##          38          34          15          31          39          26
-```
-
-```r
-x <- t(exprs(t))
-```
-
 
 We will use the `createFolds` function from the `caret` 
 package to make 5 folds of the data, which are
@@ -127,63 +73,87 @@ the test observations.
 
 
 ```r
-# install.packages('caret')
+# install.packages("caret")
+#library(class)
 library(caret)
 ```
 
 ```
 ## Loading required package: lattice
 ## Loading required package: ggplot2
+## Loading required package: methods
 ```
 
 ```r
 set.seed(1)
-idx <- createFolds(t$Tissue, k = 5)
-sapply(idx, function(i) table(t$Tissue[i]))
+idx <- createFolds(y, k=10)
+sapply(idx, function(i) table(y[i]))
 ```
 
 ```
-##             Fold1 Fold2 Fold3 Fold4 Fold5
-## cerebellum      7     8     7     8     8
-## colon           6     7     7     7     7
-## endometrium     3     3     3     3     3
-## hippocampus     6     6     6     7     6
-## kidney          8     8     8     8     7
-## liver           5     6     5     5     5
+##             Fold01 Fold02 Fold03 Fold04 Fold05 Fold06 Fold07 Fold08 Fold09
+## cerebellum       3      4      4      4      4      4      4      4      4
+## colon            4      3      3      3      4      4      3      3      4
+## endometrium      2      2      1      1      1      2      1      2      2
+## hippocampus      3      3      3      3      3      3      4      3      3
+## kidney           4      4      3      4      4      4      4      4      4
+## liver            2      3      3      2      2      3      3      3      3
+##             Fold10
+## cerebellum       3
+## colon            3
+## endometrium      1
+## hippocampus      3
+## kidney           4
+## liver            2
 ```
 
+
+Because tissues have very different gene expression profiles, predicting tissue with all genes will be too easy. For illustration purposes we will try to predict tissue type with just two dimensional data. We will reduce dimension using `cmdscale`
+
+
+```r
+Xsmall <- cmdscale(dist(X))
+plot(Xsmall,col=as.fumeric(y))
+```
+
+```
+## Error in plot.xy(xy, type, ...): could not find function "as.fumeric"
+```
+
+```r
+legend("topleft",levels(factor(y)),fill=seq_along(levels(factor(y))))
+```
+
+![plot of chunk unnamed-chunk-4](figure/crossvalidation-unnamed-chunk-4-1.png) 
 
 Now we can try out the K-nearest neighbors method on a single fold:
 
 
 ```r
-pred <- knn(train = x[-idx[[1]], ], test = x[idx[[1]], ], cl = t$Tissue[-idx[[1]]], 
-    k = 5)
-table(true = t$Tissue[idx[[1]]], pred)
+library(class)
+i=1
+pred <- knn(train =  Xsmall[ -idx[[i]] , ], test = Xsmall[ idx[[i]], ], cl=  y[ -idx[[i]] ], k=5)
+table(true=y[ idx[[i]] ], pred)
 ```
 
 ```
 ##              pred
 ## true          cerebellum colon endometrium hippocampus kidney liver
-##   cerebellum           7     0           0           0      0     0
-##   colon                0     6           0           0      0     0
-##   endometrium          0     0           3           0      0     0
-##   hippocampus          0     0           0           6      0     0
-##   kidney               0     0           0           0      8     0
-##   liver                0     0           0           0      0     5
+##   cerebellum           2     0           0           1      0     0
+##   colon                0     4           0           0      0     0
+##   endometrium          0     0           1           0      1     0
+##   hippocampus          1     0           0           2      0     0
+##   kidney               0     0           0           0      4     0
+##   liver                0     0           0           0      0     2
 ```
-
-
-As the prediction is looking too good in the space of all the genes,
-let's make it more difficult for the K-nearest neighbors algorithm.
-We will use a reduced dimension representation of the dataset, using
-the *multi-dimensional scaling* algorithm used in the previous section.
-
 
 ```r
-xsmall <- cmdscale(dist(x))
+mean(y[ idx[[i]] ] != pred)
 ```
 
+```
+## [1] 0.1666667
+```
 
 Now we will create a loop, which tries out each value of k from 1 to
 12, and runs the K-nearest neighbors algorithm on each fold. We then
@@ -195,31 +165,54 @@ from the 5 cross-validation folds:
 set.seed(1)
 ks <- 1:12
 res <- sapply(ks, function(k) {
-    # try out each version of k from 1 to 12
-    
-    res.k <- sapply(seq_along(idx), function(i) {
-        # loop over each of the 5 cross-validation folds
-        
-        # predict the held-out samples using k nearest neighbors
-        pred <- knn(train = xsmall[-idx[[i]], ], test = xsmall[idx[[i]], ], 
-            cl = t$Tissue[-idx[[i]]], k = k)
-        
-        # the ratio of misclassified samples
-        mean(t$Tissue[idx[[i]]] != pred)
-    })
-    
-    # average over the 5 folds
-    mean(res.k)
+  # try out each version of k from 1 to 12
+  
+  res.k <- sapply(seq_along(idx), function(i) {
+    # loop over each of the 5 cross-validation folds
+
+    # predict the held-out samples using k nearest neighbors
+    pred <- knn(train = Xsmall[ -idx[[i]], ],
+                test = Xsmall[ idx[[i]], ],
+                cl = y[ -idx[[i]] ], k = k)
+
+    # the ratio of misclassified samples
+    mean(y[ idx[[i]] ] != pred)
+  })
+  
+  # average over the 5 folds
+  mean(res.k)
 })
 ```
-
 
 Now we can plot the mean misclassification rate for each value of k:
 
 
 ```r
-plot(ks, res, type = "o")
+plot(ks, res, type="o")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/crossvalidation-unnamed-chunk-7.png) 
+![plot of chunk unnamed-chunk-7](figure/crossvalidation-unnamed-chunk-7-1.png) 
 
+
+Finally, to show that gene expression can perfectly predict tissue, we use 5 dimensions instead of 2 and note we get perfect prediction
+
+
+```r
+Xsmall <- cmdscale(dist(X),k=5)
+set.seed(1)
+ks <- 1:12
+res <- sapply(ks, function(k) {
+  res.k <- sapply(seq_along(idx), function(i) {
+    pred <- knn(train = Xsmall[ -idx[[i]], ],
+                test = Xsmall[ idx[[i]], ],
+                cl = y[ -idx[[i]] ], k = k)
+    mean(y[ idx[[i]] ] != pred)
+  })
+  mean(res.k)
+})
+plot(ks, res, type="o",ylim=c(0,0.20))
+```
+
+![plot of chunk unnamed-chunk-8](figure/crossvalidation-unnamed-chunk-8-1.png) 
+
+Important note: We applied `cmdscale` to the entire dataset to create a smaller one for illustration purposes. However, in a real machine learning application all transformations of the data must be applied separately on the test and training dataset.
