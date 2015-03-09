@@ -71,7 +71,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 ---
  
-[Mathematical definition of distance][pages/distance.html]
+- [Mathematical definition of distance][pages/distance.html]
 
 ### 4: Introduction to Bioconductor
 
