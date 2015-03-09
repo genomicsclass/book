@@ -69,6 +69,10 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [EDA of high-throughput data](pages/eda_for_highthroughput.html)
 - [Quick introduction to Bioconductor](pages/quick_Bioc_intro.html)
 
+---
+
+[Mathematical definition of distance][pages/distance.html]
+
 ### 4: Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
