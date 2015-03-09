@@ -9,7 +9,7 @@ title: Distance lecture
 
 The concept of distance can be generalized from  physical distance. For example, we cluster animals into groups. When we do this, we put animals that "close" in the same group:
 
-<img src="images/animals.jpg" align="middle" width=300>
+<img src="images/animals.png" align="middle" width=300>
 
 Any time we cluster individuals into separate groups we are, explicitely or implicitely computing a distance. 
 
