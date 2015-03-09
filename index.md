@@ -75,6 +75,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Introduction to the singular value decomposition (SVD)](pages/svd.html)
 - [Dimension reduction with multidimensional scaling (MDS)](pages/mds.html)
 - [Clustering and heatmaps](clustering_and_heatmaps.html)
+
 ### 4: Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
