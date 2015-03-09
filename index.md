@@ -73,7 +73,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
  
 - [Mathematical definition of distance](pages/distance.html)
 - [Introduction to the singular value decomposition (SVD)](pages/svd.html)
-- [Dimension reduction with multidimensional scaling](pages/mds.html)
+- [Dimension reduction with multidimensional scaling (MDS)](pages/mds.html)
 
 ### 4: Introduction to Bioconductor
 
