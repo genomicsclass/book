@@ -70,7 +70,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Quick introduction to Bioconductor](pages/quick_Bioc_intro.html)
 
 ---
-
+ 
 [Mathematical definition of distance][pages/distance.html]
 
 ### 4: Introduction to Bioconductor
