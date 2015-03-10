@@ -58,6 +58,8 @@ hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
 
 ![plot of chunk unnamed-chunk-2](figure/machine_learning-unnamed-chunk-2-2.png) 
 
+<a name="regression"></a>
+
 ## Stratification
 The best guess is still the expectation, but our strata has changed from all the data to only the $$Y$$ with $$X=71$$. So we can stratify and take the average which is the conditional expectations. Out prediction for any $$x$$ is therefore:
 $$
