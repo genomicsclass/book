@@ -18,7 +18,7 @@ Here we introduce the main concepts needed to understand ML along with two speci
 
 Prediction problems can be divided into categorical and continuous outcomes. However, many of the algorithms can be applied to both due to the connection between conditional probabilities and conditional expectations. 
 
-In categorical problems, for example binary outcome, if we know the probability of $$Y$$ being a 1 given that we know the value of the predictors $$X=(X_1,\dots,X_p)^\top$$ then we can optimize our predictions. We write this probability like this$f(x)=\mbox{Pr}(Y=1|X=x)$$. Note that $$Y$$ is a random variable which implies we are not guaranteed perfect prediction (unless these probabilities are 1 or 0). You can think of this probability as the proportion of the population with covariates $$X=x$$ that is a 1.
+In categorical problems, for example binary outcome, if we know the probability of $$Y$$ being a 1 given that we know the value of the predictors $$X=(X_1,\dots,X_p)^\top$$ then we can optimize our predictions. We write this probability like this $$f(x)=\mbox{Pr}(Y=1|X=x)$$. Note that $$Y$$ is a random variable which implies we are not guaranteed perfect prediction (unless these probabilities are 1 or 0). You can think of this probability as the proportion of the population with covariates $$X=x$$ that is a 1.
 
 Now, given that the expectation is the average of all the values of $$Y$$, in this is equivalent to the proportion of 1s which in this case is the probability. So for this case $$f(x) \equiv \mbox{E}(Y|X=x)=\mbox{Pr}(Y=1|X=x)$$. The expected value has another attractive mathematical property and it is that it minimized the expected distance between the predictor $$\hat{Y}$$ and $$Y$$: $$\mbox{E}\{ (\hat{Y} - Y)^2 | X=x \}$$. 
 
@@ -533,7 +533,7 @@ for(k in c(1,200)){
 ## KNN prediction error in train: 0.2825
 ```
 
-![plot of chunk unnamed-chunk-22](figure/machine_learning-unnamed-chunk-22-1.png) 
+<img src="figure/machine_learning-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
 
 ```
 ## KNN prediction error in test: 0.295
