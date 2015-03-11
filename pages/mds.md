@@ -142,7 +142,7 @@ The `cmdscale` makes this computation for us. It is also useful because it only 
 # Variance Explained
 
 Because the columns of $$\mathbf{U}$$ and $$\mathbf{V}$$ are 
-orthogonal we know their sum of squares is 1. So the sum of squares of the columns of $$\mathbf{UD}$$ and $$\mathbf{VD}$$ are determined by $$\mathbf{D}$$. This is a diagonal matrix so all the information is stored in just one vector. 
+orthogonal we know their sum of squares is 1. So the sum of squares of the columns of $$\mathbf{DU}$$ and $$\mathbf{VD}$$ are determined by $$\mathbf{D}$$. This is a diagonal matrix so all the information is stored in just one vector. 
 
 
 ```r
@@ -154,7 +154,7 @@ length(SVD$d)
 ## [1] 99
 ```
 
-The sum of squares of the, say, 11th column of $$\mathbf{UD}$$ is therefore 
+The sum of squares of the, say, 11th column of $$\mathbf{DU}$$ is therefore 
 
 
 ```r
