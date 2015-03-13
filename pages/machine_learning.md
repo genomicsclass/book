@@ -18,9 +18,9 @@ Here we introduce the main concepts needed to understand ML along with two speci
 
 Prediction problems can be divided into categorical and continuous outcomes. However, many of the algorithms can be applied to both due to the connection between conditional probabilities and conditional expectations. 
 
-In categorical problems, for example binary outcome, if we know the probability of $$Y$$ being a 1 given that we know the value of the predictors $$X=(X_1,\dots,X_p)^\top$$ then we can optimize our predictions. We write this probability like this $$f(x)=\mbox{Pr}(Y=1|X=x)$$. Note that $$Y$$ is a random variable which implies we are not guaranteed perfect prediction (unless these probabilities are 1 or 0). You can think of this probability as the proportion of the population with covariates $$X=x$$ that is a 1.
+In categorical problems, for example binary outcome, if we know the probability of $$Y$$ being a 1 given that we know the value of the predictors $$X=(X_1,\dots,X_p)^\top$$ then we can optimize our predictions. We write this probability like this $$f(x)=\mbox{Pr}(Y=1 \mid X=x)$$. Note that $$Y$$ is a random variable which implies we are not guaranteed perfect prediction (unless these probabilities are 1 or 0). You can think of this probability as the proportion of the population with covariates $$X=x$$ that is a 1.
 
-Now, given that the expectation is the average of all the values of $$Y$$, in this is equivalent to the proportion of 1s which in this case is the probability. So for this case $$f(x) \equiv \mbox{E}(Y|X=x)=\mbox{Pr}(Y=1|X=x)$$. The expected value has another attractive mathematical property and it is that it minimized the expected distance between the predictor $$\hat{Y}$$ and $$Y$$: $$\mbox{E}\{ (\hat{Y} - Y)^2 | X=x \}$$. 
+Now, given that the expectation is the average of all the values of $$Y$$, in this is equivalent to the proportion of 1s which in this case is the probability. So for this case $$f(x) \equiv \mbox{E}(Y \mid X=x)=\mbox{Pr}(Y=1 \mid X=x)$$. The expected value has another attractive mathematical property and it is that it minimized the expected distance between the predictor $$\hat{Y}$$ and $$Y$$: $$\mbox{E}\{ (\hat{Y} - Y)^2  \mid  X=x \}$$. 
 
 Here, we start by describing linear regression in the context of prediction. We use the son and father height example to illustrate. In our example we are trying to predict the son's height $$Y$$ based on the father's $$X$$. Note that here we have only on predictor. Note that if we are asked to predict the height of a randomly selected son we would go with the mean:
 
@@ -63,7 +63,7 @@ hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
 ## Stratification
 The best guess is still the expectation, but our strata has changed from all the data to only the $$Y$$ with $$X=71$$. So we can stratify and take the average which is the conditional expectations. Out prediction for any $$x$$ is therefore:
 $$
-f(x) = E(Y|X=x)
+f(x) = E(Y \mid X=x)
 $$
 
 It turns that because this data is approximated by a bivariate normal distribution we can, using calculus, show that 
@@ -98,29 +98,123 @@ The following data are from measurements from replicated RNA. We consider that d
 
 ```r
 library(SpikeIn)
-data(SpikeIn95)
+```
 
+```
+## Error in library(SpikeIn): there is no package called 'SpikeIn'
+```
+
+```r
+data(SpikeIn95)
+```
+
+```
+## Warning in data(SpikeIn95): data set 'SpikeIn95' not found
+```
+
+```r
 ##Example with two columns
 i=10;j=9
 ##remove the spiked in genes and take random sample
 siNames<-colnames(pData(SpikeIn95))
+```
+
+```
+## Error in is.data.frame(x): could not find function "pData"
+```
+
+```r
 ind <- which(!probeNames(SpikeIn95)%in%siNames)
+```
+
+```
+## Error in match(x, table, nomatch = 0L): could not find function "probeNames"
+```
+
+```r
 pms <- pm(SpikeIn95)[ ind ,c(i,j)]
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "pm"
+```
+
+```r
 ##pick a representative sample for A and order A
 Y=log2(pms[,1])-log2(pms[,2])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'pms' not found
+```
+
+```r
 X=(log2(pms[,1])+log2(pms[,2]))/2
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'pms' not found
+```
+
+```r
 set.seed(4)
 ind <- tapply(seq(along=X),round(X*5),function(i)
   if(length(i)>20) return(sample(i,20)) else return(NULL))
+```
+
+```
+## Error in tapply(seq(along = X), round(X * 5), function(i) if (length(i) > : object 'X' not found
+```
+
+```r
 ind <- unlist(ind)
+```
+
+```
+## Error in unlist(ind): object 'ind' not found
+```
+
+```r
 X <- X[ind]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```r
 Y <- Y[ind]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'Y' not found
+```
+
+```r
 o <-order(X)
+```
+
+```
+## Error in order(X): object 'X' not found
+```
+
+```r
 X <- X[o]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```r
 Y <- Y[o]
 ```
 
-In the MA plot we see that there $$Y$$ depends on $$X$$. Note that this this dependence must be a bias because these are based on replicates which means $$Y$$ should be 0 on average regardless of $$X$$. We want to predict $$f(x)=E(Y|X=x)$$ so that we can remove this bias.
+```
+## Error in eval(expr, envir, enclos): object 'Y' not found
+```
+
+In the MA plot we see that there $$Y$$ depends on $$X$$. Note that this this dependence must be a bias because these are based on replicates which means $$Y$$ should be 0 on average regardless of $$X$$. We want to predict $$f(x)=E(Y \mid X=x)$$ so that we can remove this bias.
 
 
 ```r
@@ -129,11 +223,28 @@ mypar2(1,1)
 plot(X,Y)
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+```
+## Error in plot(X, Y): object 'X' not found
+```
 
 Note that linear regression is biased does not capture the apparent curvature in $$f(x)$$:
 
-<img src="figure/machine_learning-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
+
+```
+## Error in plot(X, Y): object 'X' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'Y' not found
+```
+
+```
+## Error in points(X, Y, pch = 21, bg = ifelse(Y > fit$fitted, 1, 3)): object 'X' not found
+```
+
+```
+## Error in abline(fit, col = 2, lwd = 4, lty = 2): object 'fit' not found
+```
 Note for example that points above the fitted line (green) and those below (purple) are not evenly distributed.
 
 ## Bin Smoothing
@@ -144,29 +255,115 @@ Instead of fitting a line, let's go back to the idea of stratifying and computin
 ```r
 mypar2(1,1)
 centers <- seq(min(X),max(X),0.1)
+```
+
+```
+## Error in seq(min(X), max(X), 0.1): object 'X' not found
+```
+
+```r
 plot(X,Y,col="grey",pch=16)
+```
+
+```
+## Error in plot(X, Y, col = "grey", pch = 16): object 'X' not found
+```
+
+```r
 windowSize <- .5
 i <- 25
 center<-centers[i]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
 ind=which(X>center-windowSize & X<center+windowSize)
+```
+
+```
+## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
+```
+
+```r
 fit<-mean(Y)
+```
+
+```
+## Error in mean(Y): object 'Y' not found
+```
+
+```r
 points(X[ind],Y[ind],bg=3,pch=21)
-lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-i <- 60
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-mean(Y[ind])
-points(X[ind],Y[ind],bg=3,pch=21)
+```
+
+```
+## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
+```
+
+```r
 lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+```
+## Error in lines(c(min(X[ind]), max(X[ind])), c(fit, fit), col = 2, lty = 2, : object 'X' not found
+```
+
+```r
+i <- 60
+center<-centers[i]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
+ind=which(X>center-windowSize & X<center+windowSize)
+```
+
+```
+## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
+```
+
+```r
+fit<-mean(Y[ind])
+```
+
+```
+## Error in mean(Y[ind]): object 'Y' not found
+```
+
+```r
+points(X[ind],Y[ind],bg=3,pch=21)
+```
+
+```
+## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
+```
+
+```r
+lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
+```
+
+```
+## Error in lines(c(min(X[ind]), max(X[ind])), c(fit, fit), col = 2, lty = 2, : object 'X' not found
+```
 
 By computing this mean for bins around every point we form an estimate of the underlying curve $$f(x)$$:
 
 ```r
 windowSize<-0.5
 smooth<-rep(NA,length(centers))
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
 mypar2(4,3)
 for(i in seq(along=centers)){
   center<-centers[i]
@@ -182,11 +379,20 @@ for(i in seq(along=centers)){
 }
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+```
+## Error in seq(along = centers): object 'centers' not found
+```
 
 The final result looks like this:
 
-<img src="figure/machine_learning-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
+
+```
+## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
+```
+
+```
+## Error in lines(centers, smooth, col = "black", lwd = 3): object 'centers' not found
+```
 
 
 ##Loess
@@ -196,26 +402,127 @@ Local weighted regression (loess) is similar to bin smoothing. The difference is
 
 ```r
 centers <- seq(min(X),max(X),0.1)
+```
+
+```
+## Error in seq(min(X), max(X), 0.1): object 'X' not found
+```
+
+```r
 mypar2(1,1)
 plot(X,Y,col="darkgrey",pch=16)
+```
+
+```
+## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
+```
+
+```r
 windowSize <- 1
 i <- 25
 center<-centers[i]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
 ind=which(X>center-windowSize & X<center+windowSize)
+```
+
+```
+## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
+```
+
+```r
 fit<-lm(Y~X,subset=ind)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'Y' not found
+```
+
+```r
 points(X[ind],Y[ind],bg=3,pch=21)
+```
+
+```
+## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
+```
+
+```r
 a <- min(X[ind]);b <- max(X[ind])
-lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
-i <- 60
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-lm(Y~X,subset=ind)
-points(X[ind],Y[ind],bg=3,pch=21)
-a <- min(X[ind]);b <- max(X[ind])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```r
 lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
+```
+## Error in lines(c(a, b), fit$coef[1] + fit$coef[2] * c(a, b), col = 2, : object 'a' not found
+```
+
+```r
+i <- 60
+center<-centers[i]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
+ind=which(X>center-windowSize & X<center+windowSize)
+```
+
+```
+## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
+```
+
+```r
+fit<-lm(Y~X,subset=ind)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'Y' not found
+```
+
+```r
+points(X[ind],Y[ind],bg=3,pch=21)
+```
+
+```
+## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
+```
+
+```r
+a <- min(X[ind]);b <- max(X[ind])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+```r
+lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
+```
+
+```
+## Error in lines(c(a, b), fit$coef[1] + fit$coef[2] * c(a, b), col = 2, : object 'a' not found
+```
 
 Here are 12 steps of the process:
 
@@ -223,6 +530,13 @@ Here are 12 steps of the process:
 mypar2(4,3)
 windowSize<-1
 smooth<-rep(NA,length(centers))
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'centers' not found
+```
+
+```r
 for(i in seq(along=centers)){
   center<-centers[i]
   ind=which(X>center-windowSize & X<center+windowSize)
@@ -241,15 +555,24 @@ for(i in seq(along=centers)){
 }
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+```
+## Error in seq(along = centers): object 'centers' not found
+```
 
 This results is a smoother fit since we use larger sample sizes to estimate our local parameters:
 
-<img src="figure/machine_learning-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
+
+```
+## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
+```
+
+```
+## Error in lines(centers, smooth, col = "black", lwd = 3): object 'centers' not found
+```
 
 # Multivariate predictors
 
-Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of $$f(x_1,x_2)=E(Y|X_1=x_1,X_2=x_2)$$ using colors
+Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of $$f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2)$$ using colors
 
 
 ```r
@@ -317,11 +640,11 @@ points(newx,col=colshat,pch=16,cex=0.35)
 
 ![plot of chunk unnamed-chunk-13](figure/machine_learning-unnamed-chunk-13-1.png) 
 
-If we should $$E(Y|X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
+If we should $$E(Y \mid X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
 
 
 ```r
-##Draw contours of E(Y|X) < 0.5
+##Draw contours of E(Y \mid X) < 0.5
 mypar2(1,1)
 colshat[bayesrule>=0.5] <- mycols[2]
 colshat[bayesrule<0.5] <- mycols[1]
@@ -492,7 +815,7 @@ for(k in c(1,200)){
 
 Note that when $$k=1$$ we make no mistakes in the training test since every point is it's closes neighbor and it is equal to itself. Note that the we some islands of blue in the red area that once we move to the test set are more error prone. In the case $$k=100$$ we do not have this problem and we also see that we improve over linear regression
 
-Here is a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mobx{E}(Y|X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_
+Here is a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mobx{E}(Y \mid X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_
 
 ```r
 ###Bayes Rule
