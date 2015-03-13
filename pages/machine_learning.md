@@ -98,54 +98,6 @@ The following data are from measurements from replicated RNA. We consider that d
 
 ```r
 library(SpikeIn)
-```
-
-```
-## Loading required package: affy
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:Hmisc':
-## 
-##     combine
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## 
-## Attaching package: 'Biobase'
-## 
-## The following object is masked from 'package:Hmisc':
-## 
-##     contents
-```
-
-```r
 data(SpikeIn95)
 
 ##Example with two columns
@@ -153,13 +105,6 @@ i=10;j=9
 ##remove the spiked in genes and take random sample
 siNames<-colnames(pData(SpikeIn95))
 ind <- which(!probeNames(SpikeIn95)%in%siNames)
-```
-
-```
-## 
-```
-
-```r
 pms <- pm(SpikeIn95)[ ind ,c(i,j)]
 ##pick a representative sample for A and order A
 Y=log2(pms[,1])-log2(pms[,2])
@@ -198,7 +143,7 @@ Instead of fitting a line, let's go back to the idea of stratifying and computin
 
 ```r
 mypar2(1,1)
-centers <- seq(min(X),max(X),len=12)
+centers <- seq(min(X),max(X),0.1)
 plot(X,Y,col="grey",pch=16)
 windowSize <- .5
 i <- 25
@@ -207,31 +152,12 @@ ind=which(X>center-windowSize & X<center+windowSize)
 fit<-mean(Y)
 points(X[ind],Y[ind],bg=3,pch=21)
 lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-```
-
-```
-## Warning in min(X[ind]): no non-missing arguments to min; returning Inf
-```
-
-```
-## Warning in max(X[ind]): no non-missing arguments to max; returning -Inf
-```
-
-```r
 i <- 60
 center<-centers[i]
 ind=which(X>center-windowSize & X<center+windowSize)
 fit<-mean(Y[ind])
 points(X[ind],Y[ind],bg=3,pch=21)
 lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-```
-
-```
-## Warning in min(X[ind]): no non-missing arguments to min; returning Inf
-```
-
-```
-## Warning in max(X[ind]): no non-missing arguments to max; returning -Inf
 ```
 
 <img src="figure/machine_learning-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
@@ -243,14 +169,16 @@ windowSize<-0.5
 smooth<-rep(NA,length(centers))
 mypar2(4,3)
 for(i in seq(along=centers)){
-  plot(X,Y,col="grey",pch=16)
   center<-centers[i]
   ind=which(X>center-windowSize & X<center+windowSize)
   smooth[i]<-mean(Y[ind])
-  points(X[ind],Y[ind],bg=3,pch=21)
-  lines(c(min(X[ind]),max(X[ind])),c(smooth[i],smooth[i]),col=2,lty=2)
-  lines(centers[1:i],smooth[1:i],col="black")
-  points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
+  if(i%%round(length(centers)/12)==1){ ##we show 12
+    plot(X,Y,col="grey",pch=16)
+    points(X[ind],Y[ind],bg=3,pch=21)
+    lines(c(min(X[ind]),max(X[ind])),c(smooth[i],smooth[i]),col=2,lty=2)
+    lines(centers[1:i],smooth[1:i],col="black")
+    points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
+  }
 }
 ```
 
@@ -291,6 +219,29 @@ lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
 
 Here are 12 steps of the process:
 
+```r
+mypar2(4,3)
+windowSize<-1
+smooth<-rep(NA,length(centers))
+for(i in seq(along=centers)){
+  center<-centers[i]
+  ind=which(X>center-windowSize & X<center+windowSize)
+  fit<-lm(Y~X,subset=ind)
+  smooth[i]<-fit$coef[1]+fit$coef[2]*center
+
+  if(i%%round(length(centers)/12)==1){ ##we show 12
+    plot(X,Y,col="grey",pch=16)
+    points(X[ind],Y[ind],bg=3,pch=21)
+    a <- min(X[ind]);b <- max(X[ind])
+    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2)
+  
+    lines(centers[1:i],smooth[1:i],col="black")
+    points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
+  }
+}
+```
+
+<img src="figure/machine_learning-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
 
 This results is a smoother fit since we use larger sample sizes to estimate our local parameters:
 
