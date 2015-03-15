@@ -97,121 +97,28 @@ The following data are from measurements from replicated RNA. We consider that d
 
 
 ```r
+library(Biobase)
 library(SpikeIn)
-```
-
-```
-## Error in library(SpikeIn): there is no package called 'SpikeIn'
-```
-
-```r
 data(SpikeIn95)
-```
 
-```
-## Warning in data(SpikeIn95): data set 'SpikeIn95' not found
-```
-
-```r
 ##Example with two columns
 i=10;j=9
 ##remove the spiked in genes and take random sample
 siNames<-colnames(pData(SpikeIn95))
-```
-
-```
-## Error in is.data.frame(x): could not find function "pData"
-```
-
-```r
 ind <- which(!probeNames(SpikeIn95)%in%siNames)
-```
-
-```
-## Error in match(x, table, nomatch = 0L): could not find function "probeNames"
-```
-
-```r
 pms <- pm(SpikeIn95)[ ind ,c(i,j)]
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "pm"
-```
-
-```r
 ##pick a representative sample for A and order A
 Y=log2(pms[,1])-log2(pms[,2])
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'pms' not found
-```
-
-```r
 X=(log2(pms[,1])+log2(pms[,2]))/2
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'pms' not found
-```
-
-```r
 set.seed(4)
 ind <- tapply(seq(along=X),round(X*5),function(i)
   if(length(i)>20) return(sample(i,20)) else return(NULL))
-```
-
-```
-## Error in tapply(seq(along = X), round(X * 5), function(i) if (length(i) > : object 'X' not found
-```
-
-```r
 ind <- unlist(ind)
-```
-
-```
-## Error in unlist(ind): object 'ind' not found
-```
-
-```r
 X <- X[ind]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```r
 Y <- Y[ind]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'Y' not found
-```
-
-```r
 o <-order(X)
-```
-
-```
-## Error in order(X): object 'X' not found
-```
-
-```r
 X <- X[o]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```r
 Y <- Y[o]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'Y' not found
 ```
 
 In the MA plot we see that there $$Y$$ depends on $$X$$. Note that this this dependence must be a bias because these are based on replicates which means $$Y$$ should be 0 on average regardless of $$X$$. We want to predict $$f(x)=E(Y \mid X=x)$$ so that we can remove this bias.
@@ -223,28 +130,11 @@ mypar2(1,1)
 plot(X,Y)
 ```
 
-```
-## Error in plot(X, Y): object 'X' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 Note that linear regression is biased does not capture the apparent curvature in $$f(x)$$:
 
-
-```
-## Error in plot(X, Y): object 'X' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'Y' not found
-```
-
-```
-## Error in points(X, Y, pch = 21, bg = ifelse(Y > fit$fitted, 1, 3)): object 'X' not found
-```
-
-```
-## Error in abline(fit, col = 2, lwd = 4, lty = 2): object 'fit' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 Note for example that points above the fitted line (green) and those below (purple) are not evenly distributed.
 
 ## Bin Smoothing
@@ -255,115 +145,29 @@ Instead of fitting a line, let's go back to the idea of stratifying and computin
 ```r
 mypar2(1,1)
 centers <- seq(min(X),max(X),0.1)
-```
-
-```
-## Error in seq(min(X), max(X), 0.1): object 'X' not found
-```
-
-```r
 plot(X,Y,col="grey",pch=16)
-```
-
-```
-## Error in plot(X, Y, col = "grey", pch = 16): object 'X' not found
-```
-
-```r
 windowSize <- .5
 i <- 25
 center<-centers[i]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 ind=which(X>center-windowSize & X<center+windowSize)
-```
-
-```
-## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
-```
-
-```r
 fit<-mean(Y)
-```
-
-```
-## Error in mean(Y): object 'Y' not found
-```
-
-```r
 points(X[ind],Y[ind],bg=3,pch=21)
-```
-
-```
-## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
-```
-
-```r
 lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-```
-
-```
-## Error in lines(c(min(X[ind]), max(X[ind])), c(fit, fit), col = 2, lty = 2, : object 'X' not found
-```
-
-```r
 i <- 60
 center<-centers[i]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 ind=which(X>center-windowSize & X<center+windowSize)
-```
-
-```
-## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
-```
-
-```r
 fit<-mean(Y[ind])
-```
-
-```
-## Error in mean(Y[ind]): object 'Y' not found
-```
-
-```r
 points(X[ind],Y[ind],bg=3,pch=21)
-```
-
-```
-## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
-```
-
-```r
 lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
 ```
 
-```
-## Error in lines(c(min(X[ind]), max(X[ind])), c(fit, fit), col = 2, lty = 2, : object 'X' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 By computing this mean for bins around every point we form an estimate of the underlying curve $$f(x)$$:
 
 ```r
 windowSize<-0.5
 smooth<-rep(NA,length(centers))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 mypar2(4,3)
 for(i in seq(along=centers)){
   center<-centers[i]
@@ -379,20 +183,11 @@ for(i in seq(along=centers)){
 }
 ```
 
-```
-## Error in seq(along = centers): object 'centers' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 The final result looks like this:
 
-
-```
-## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
-```
-
-```
-## Error in lines(centers, smooth, col = "black", lwd = 3): object 'centers' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
 
 
 ##Loess
@@ -402,127 +197,26 @@ Local weighted regression (loess) is similar to bin smoothing. The difference is
 
 ```r
 centers <- seq(min(X),max(X),0.1)
-```
-
-```
-## Error in seq(min(X), max(X), 0.1): object 'X' not found
-```
-
-```r
 mypar2(1,1)
 plot(X,Y,col="darkgrey",pch=16)
-```
-
-```
-## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
-```
-
-```r
 windowSize <- 1
 i <- 25
 center<-centers[i]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 ind=which(X>center-windowSize & X<center+windowSize)
-```
-
-```
-## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
-```
-
-```r
 fit<-lm(Y~X,subset=ind)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'Y' not found
-```
-
-```r
 points(X[ind],Y[ind],bg=3,pch=21)
-```
-
-```
-## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
-```
-
-```r
 a <- min(X[ind]);b <- max(X[ind])
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```r
 lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
-```
-
-```
-## Error in lines(c(a, b), fit$coef[1] + fit$coef[2] * c(a, b), col = 2, : object 'a' not found
-```
-
-```r
 i <- 60
 center<-centers[i]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 ind=which(X>center-windowSize & X<center+windowSize)
-```
-
-```
-## Error in which(X > center - windowSize & X < center + windowSize): object 'X' not found
-```
-
-```r
 fit<-lm(Y~X,subset=ind)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'Y' not found
-```
-
-```r
 points(X[ind],Y[ind],bg=3,pch=21)
-```
-
-```
-## Error in points(X[ind], Y[ind], bg = 3, pch = 21): object 'X' not found
-```
-
-```r
 a <- min(X[ind]);b <- max(X[ind])
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'X' not found
-```
-
-```r
 lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
 ```
 
-```
-## Error in lines(c(a, b), fit$coef[1] + fit$coef[2] * c(a, b), col = 2, : object 'a' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
 Here are 12 steps of the process:
 
@@ -530,13 +224,6 @@ Here are 12 steps of the process:
 mypar2(4,3)
 windowSize<-1
 smooth<-rep(NA,length(centers))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'centers' not found
-```
-
-```r
 for(i in seq(along=centers)){
   center<-centers[i]
   ind=which(X>center-windowSize & X<center+windowSize)
@@ -555,20 +242,28 @@ for(i in seq(along=centers)){
 }
 ```
 
-```
-## Error in seq(along = centers): object 'centers' not found
-```
+<img src="figure/machine_learning-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
 
 This results is a smoother fit since we use larger sample sizes to estimate our local parameters:
 
+<img src="figure/machine_learning-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
 
-```
-## Error in plot(X, Y, col = "darkgrey", pch = 16): object 'X' not found
+The that function `loess` performs this analysis for us:
+
+
+```r
+fit <- loess(Y~X, degree=1, span=1/3)
+
+newx <- seq(min(X),max(X),len=100) 
+smooth <- predict(fit,newdata=data.frame(X=newx))
+
+mypar2(1,1)
+plot(X,Y,col="darkgrey",pch=16)
+lines(newx,smooth,col="black",lwd=3)
 ```
 
-```
-## Error in lines(centers, smooth, col = "black", lwd = 3): object 'centers' not found
-```
+![plot of chunk unnamed-chunk-13](figure/machine_learning-unnamed-chunk-13-1.png) 
+
 
 # Multivariate predictors
 
@@ -638,7 +333,7 @@ plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 points(newx,col=colshat,pch=16,cex=0.35)
 ```
 
-![plot of chunk unnamed-chunk-13](figure/machine_learning-unnamed-chunk-13-1.png) 
+![plot of chunk unnamed-chunk-14](figure/machine_learning-unnamed-chunk-14-1.png) 
 
 If we should $$E(Y \mid X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
 
@@ -653,7 +348,7 @@ points(newx,col=colshat,pch=16,cex=0.35)
 contour(tmpx,tmpy,matrix(round(bayesrule),GS,GS),levels=c(1,2),add=TRUE,drawlabels=FALSE)
 ```
 
-![plot of chunk unnamed-chunk-14](figure/machine_learning-unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-15](figure/machine_learning-unnamed-chunk-15-1.png) 
 
 The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate $$f(x)$$ 
 Now make a plot of training data and test data
@@ -662,7 +357,7 @@ Now make a plot of training data and test data
 plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![plot of chunk unnamed-chunk-15](figure/machine_learning-unnamed-chunk-15-1.png) 
+![plot of chunk unnamed-chunk-16](figure/machine_learning-unnamed-chunk-16-1.png) 
 
 We will review two specif ML techniques. First, we need to review the main concept we use to evaluate the performance of these methods. 
 
@@ -688,7 +383,7 @@ plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 plot(test,pch=21,bg=colstest,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![plot of chunk unnamed-chunk-17](figure/machine_learning-unnamed-chunk-17-1.png) 
+![plot of chunk unnamed-chunk-18](figure/machine_learning-unnamed-chunk-18-1.png) 
 
 The reason for this is to detect over-training  by testing on a different data than the one used to fit  model. We will see how important this is.
 
@@ -754,7 +449,7 @@ points(newx,col=colshat,pch=16,cex=0.35)
 points(test,bg=cols,pch=21)
 ```
 
-![plot of chunk unnamed-chunk-21](figure/machine_learning-unnamed-chunk-21-1.png) 
+![plot of chunk unnamed-chunk-22](figure/machine_learning-unnamed-chunk-22-1.png) 
 
 Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between $$Y$$ and $$X$$. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
 
@@ -807,7 +502,7 @@ for(k in c(1,200)){
 ## KNN prediction error in train: 0.2825
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
+<img src="figure/machine_learning-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
 
 ```
 ## KNN prediction error in test: 0.295
@@ -872,7 +567,7 @@ abline(h=bayes.error,col=6)
 legend("bottomright",c("Train","Test","Bayes"),col=c(4,5,6),lty=c(2,3,1),box.lwd=0)
 ```
 
-![plot of chunk unnamed-chunk-23](figure/machine_learning-unnamed-chunk-23-1.png) 
+![plot of chunk unnamed-chunk-24](figure/machine_learning-unnamed-chunk-24-1.png) 
 
 
 
