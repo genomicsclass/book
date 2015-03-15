@@ -176,7 +176,7 @@ for(i in seq(along=centers)){
   if(i%%round(length(centers)/12)==1){ ##we show 12
     plot(X,Y,col="grey",pch=16)
     points(X[ind],Y[ind],bg=3,pch=21)
-    lines(c(min(X[ind]),max(X[ind])),c(smooth[i],smooth[i]),col=2,lty=2)
+    lines(c(min(X[ind]),max(X[ind])),c(smooth[i],smooth[i]),col=2,lwd=2)
     lines(centers[1:i],smooth[1:i],col="black")
     points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
   }
@@ -234,7 +234,7 @@ for(i in seq(along=centers)){
     plot(X,Y,col="grey",pch=16)
     points(X[ind],Y[ind],bg=3,pch=21)
     a <- min(X[ind]);b <- max(X[ind])
-    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2)
+    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lwd=2)
   
     lines(centers[1:i],smooth[1:i],col="black")
     points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
