@@ -199,7 +199,7 @@ Local weighted regression (loess) is similar to bin smoothing. The difference is
 centers <- seq(min(X),max(X),0.1)
 mypar2(1,1)
 plot(X,Y,col="darkgrey",pch=16)
-windowSize <- 1
+windowSize <- 1.25
 i <- 25
 center<-centers[i]
 ind=which(X>center-windowSize & X<center+windowSize)
@@ -222,7 +222,7 @@ Here are 12 steps of the process:
 
 ```r
 mypar2(4,3)
-windowSize<-1
+windowSize<-1.25
 smooth<-rep(NA,length(centers))
 for(i in seq(along=centers)){
   center<-centers[i]
@@ -234,7 +234,7 @@ for(i in seq(along=centers)){
     plot(X,Y,col="grey",pch=16)
     points(X[ind],Y[ind],bg=3,pch=21)
     a <- min(X[ind]);b <- max(X[ind])
-    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2)
+    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2)
   
     lines(centers[1:i],smooth[1:i],col="black")
     points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
