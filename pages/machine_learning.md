@@ -93,7 +93,7 @@ In this particular case the regression line provides an optimal prediction funct
 
 # Smoothing 
 
-The following data are from measurements from replicated RNA. We consider that data used in an the MA-plot ($$Y$=log ratios and $$A$=averages) and take down-sample in a way that balances the number of points for different strata of $$A$$:
+The following data are from measurements from replicated RNA. We consider that data used in an the MA-plot ( $$Y$=log ratios and $$A$=averages) and take down-sample in a way that balances the number of points for different strata of $$A$$:
 
 
 ```r
