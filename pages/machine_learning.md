@@ -262,7 +262,7 @@ plot(X,Y,col="darkgrey",pch=16)
 lines(newx,smooth,col="black",lwd=3)
 ```
 
-![plot of chunk unnamed-chunk-13](figure/machine_learning-unnamed-chunk-13-1.png) 
+<img src="figure/machine_learning-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
 
 
 # Multivariate predictors
