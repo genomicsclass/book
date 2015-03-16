@@ -54,24 +54,32 @@ library(caret)
 ```
 
 ```
-## Error in library(caret): there is no package called 'caret'
+## Loading required package: lattice
+## Loading required package: ggplot2
+## Loading required package: methods
 ```
 
 ```r
 set.seed(1)
 idx <- createFolds(y, k=10)
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "createFolds"
-```
-
-```r
 sapply(idx, function(i) table(y[i]))
 ```
 
 ```
-## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
+##             Fold01 Fold02 Fold03 Fold04 Fold05 Fold06 Fold07 Fold08 Fold09
+## cerebellum       3      4      4      4      4      4      4      4      4
+## colon            4      3      3      3      4      4      3      3      4
+## endometrium      2      2      1      1      1      2      1      2      2
+## hippocampus      3      3      3      3      3      3      4      3      3
+## kidney           4      4      3      4      4      4      4      4      4
+## liver            2      3      3      2      2      3      3      3      3
+##             Fold10
+## cerebellum       3
+## colon            3
+## endometrium      1
+## hippocampus      3
+## kidney           4
+## liver            2
 ```
 
 
@@ -101,18 +109,18 @@ Now we can try out the K-nearest neighbors method on a single fold:
 library(class)
 i=1
 pred <- knn(train =  Xsmall[ -idx[[i]] , ], test = Xsmall[ idx[[i]], ], cl=  y[ -idx[[i]] ], k=5)
-```
-
-```
-## Error in as.matrix(train): object 'idx' not found
-```
-
-```r
 table(true=y[ idx[[i]] ], pred)
 ```
 
 ```
-## Error in table(true = y[idx[[i]]], pred): object 'idx' not found
+##              pred
+## true          cerebellum colon endometrium hippocampus kidney liver
+##   cerebellum           2     0           0           1      0     0
+##   colon                0     4           0           0      0     0
+##   endometrium          0     0           1           0      1     0
+##   hippocampus          1     0           0           2      0     0
+##   kidney               0     0           0           0      4     0
+##   liver                0     0           0           0      0     2
 ```
 
 ```r
@@ -120,7 +128,7 @@ mean(y[ idx[[i]] ] != pred)
 ```
 
 ```
-## Error in mean(y[idx[[i]]] != pred): object 'idx' not found
+## [1] 0.1666667
 ```
 
 Now we will create a loop, which tries out each value of k from 1 to 12, and runs the K-nearest neighbors algorithm on each fold. We then ask for the proportion of errors for each fold, and report the average from the 5 cross-validation folds:
@@ -149,10 +157,6 @@ res <- sapply(ks, function(k) {
 })
 ```
 
-```
-## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
-```
-
 Now we can plot the mean misclassification rate for each value of k:
 
 
@@ -160,9 +164,7 @@ Now we can plot the mean misclassification rate for each value of k:
 plot(ks, res, type="o")
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): object 'res' not found
-```
+![plot of chunk unnamed-chunk-7](figure/crossvalidation-unnamed-chunk-7-1.png) 
 
 
 Finally, to show that gene expression can perfectly predict tissue, we use 5 dimensions instead of 2 and note we get perfect prediction
@@ -181,18 +183,9 @@ res <- sapply(ks, function(k) {
   })
   mean(res.k)
 })
-```
-
-```
-## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
-```
-
-```r
 plot(ks, res, type="o",ylim=c(0,0.20))
 ```
 
-```
-## Error in xy.coords(x, y, xlabel, ylabel, log): object 'res' not found
-```
+![plot of chunk unnamed-chunk-8](figure/crossvalidation-unnamed-chunk-8-1.png) 
 
 Important note: We applied `cmdscale` to the entire dataset to create a smaller one for illustration purposes. However, in a real machine learning application all transformations of the data must be applied separately on the test and training dataset.
