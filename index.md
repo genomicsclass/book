@@ -78,6 +78,10 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Introduction to Machine Learning](pages/machine_learning.html)
 - [Crossvalidation](pages/crossvalidation.html)
 
+---
+
+- [Confounding](pages/confounding.html)
+
 ### 4: Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
