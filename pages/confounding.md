@@ -1,74 +1,65 @@
 ---
 layout: page
-title: Surrogate variables and batch effects 
+title: Confounding
 ---
 
 
 
+# Introduction
 
-## Confounding
+"Correlation is not causation" is one of the most important lessons you should take from this or any other data analysis course. A common example for why this statement is so often true is confounding. Simply stated confounding occurs when we observe a correlation or association between $$X$$ and $$Y$$ but  this is strictly the result of both $$X$$ and $$Y$$ depending on an extraneous variable $$Z$$. Here we describe Simpson's paradox, perhaps the most famous case of confounding and then show an example of confounding in high throughput biology.
 
-Admission data from Berkeley 1973 showed more men were being admitted than women: 44\% men admitted compared to 30\% women!
+# Simpson's paradox
+
+Admission data from Berkeley 1973 showed more men were being admitted than women: 44\% men admitted compared to 30\% women. This actually led to a ![lawsuit](http://en.wikipedia.org/wiki/Simpson%27s_paradox#Berkeley_gender_bias_case). See: PJ Bickel, EA Hammel, and JW O'Connell. Science (1975)
 
 
-```r
-datadir = "http://www.biostat.jhsph.edu/bstcourse/bio751/data"
-dat = read.csv(file.path(datadir, "admissions.csv"))
-dat$total = dat$Percent * dat$Number/100
-## percent men get in
-sum(dat$total[dat$Gender == 1]/sum(dat$Number[dat$Gender == 1]))
-```
-
-```
-## [1] 0.4452
-```
 
 ```r
-## percent women get in
-sum(dat$total[dat$Gender == 0]/sum(dat$Number[dat$Gender == 0]))
+library(dagdata)
+data(admissions)
+admissions$total=admissions$Percent*admissions$Number/100
+##percent men get in
+sum(admissions$total[admissions$Gender==1]/sum(admissions$Number[admissions$Gender==1]))
 ```
 
 ```
-## [1] 0.3033
+## [1] 0.4451951
 ```
 
+```r
+##percent women get in
+sum(admissions$total[admissions$Gender==0]/sum(admissions$Number[admissions$Gender==0]))
+```
+
+```
+## [1] 0.3033351
+```
 
 A chi-square test clearly rejects they hypothesis that gender and admission are independent:
 
 ```r
-## let's make a 2 x 2
-indexes <- list(1:6, 7:12)
-tab <- matrix(NA, 2, 2, dimnames = list(c("males", "females"), c("accepted", 
-    "rejected")))
-for (i in 1:2) {
-    ind <- indexes[[i]]
-    tab[i, 1] <- sum(dat[ind, 2] * dat[ind, 3]/100)
-    tab[i, 2] <- sum(dat[ind, 2] * (1 - dat[ind, 3]/100))
-}
-tab <- round(tab)
-tab
-```
-
-```
-##         accepted rejected
-## males       1198     1493
-## females      557     1278
-```
-
-```r
+##let's make a 2 x 2
+index = admissions$Gender==1
+men = admissions[index,]
+women = admissions[!index,]
+menYes = sum(men$Number*men$Percent/100)
+menNo = sum(men$Number*(1-men$Percent/100))
+womenYes = sum(women$Number*men$Percent/100)
+womenNo = sum(women$Number*(1-men$Percent/100))
+tab = matrix(c(menYes,womenYes,menNo,womenNo),2,2)
 print(chisq.test(tab)$p.val)
 ```
 
 ```
-## [1] 1.056e-21
+## [1] 8.33652e-22
 ```
-
 
 But closer inspection shows a paradoxical results. Here are the percent admissions by Major:
 
 ```r
-y = cbind(dat[1:6, c(1, 3)], dat[7:12, 3])
-colnames(y)[2:3] = c("Male", "Female")
+y=cbind(admissions[1:6,c(1,3)],admissions[7:12,3])
+colnames(y)[2:3]=c("Male","Female")
 y
 ```
 
@@ -82,14 +73,12 @@ y
 ## 6     F    6      7
 ```
 
-
-#### *Homework*
-1. Run the `chisq.test` in each major.
+**Optional homework**: Run the `chisq.test` in each major.
 
 
 ```r
-y = cbind(dat[1:6, c(1, 2)], dat[7:12, 2])
-colnames(y)[2:3] = c("Male", "Female")
+y=cbind(admissions[1:6,c(1,2)],admissions[7:12,2])
+colnames(y)[2:3]=c("Male","Female")
 y
 ```
 
@@ -103,7 +92,6 @@ y
 ## 6     F  373    341
 ```
 
-
 What's going? 
 
 This is called _Simpson's paradox_ 
@@ -112,21 +100,10 @@ Note that males were much more likely to apply to "easy" majors.
 Male and easy majors are confounded. 
 
 ```r
-y = cbind(dat[1:6, 5], dat[7:12, 5])
-y = sweep(y, 2, colSums(y), "/") * 100
-x = rowMeans(cbind(dat[1:6, 3], dat[7:12, 3]))
-matplot(x, y, xlab = "percent that gets in the major", ylab = "percent that applies to major", 
-    col = c("blue", "red"), cex = 1.5)
-legend("topleft", c("Male", "Female"), col = c("blue", "red"), pch = c("1", 
-    "2"), box.lty = 0)
-```
+y=cbind(admissions[1:6,5],admissions[7:12,5])
+y=sweep(y,2,colSums(y),"/")*100
+x=rowMeans(cbind(admissions[1:6,3],admissions[7:12,3]))
 
-![plot of chunk unnamed-chunk-5](figure/confounding-unnamed-chunk-5.png) 
-
-
-
-```r
-### make data for plot
 library(rafalib)
 ```
 
@@ -135,78 +112,61 @@ library(rafalib)
 ```
 
 ```r
-mypar()
-makematrix <- function(x, m, addx = 0, addy = 0) {
-    n <- ceiling(length(x)/m)
-    expand.grid(1:n + addx, addy + 1:m)[seq(along = x), ]
-}
-males <- sapply(1:6, function(i) {
-    tot = dat[i, 2]
-    p = dat[i, 3]/100
-    x = rep(c(0, 1), round(tot * c(1 - p, p)))
-})
-allmales <- Reduce(c, males)
-females <- sapply(7:12, function(i) {
-    tot = dat[i, 2]
-    p = dat[i, 3]/100
-    rep(c(0, 1), round(tot * c(1 - p, p)))
-})
-allfemales <- Reduce(c, females)
-plot(0, type = "n", xlim = c(0, 50), ylim = c(0, 100), xaxt = "n", yaxt = "n", 
-    xlab = "", ylab = "")
-PCH = LETTERS[rep(1:6, sapply(males, length))]
-o <- order(allmales)
-points(makematrix(allmales, 100), col = 2 - allmales[o], pch = PCH[o], cex = 0.6)
-PCH = LETTERS[rep(1:6, sapply(females, length))]
-o <- order(allfemales)
-points(makematrix(allfemales, 100, 30), col = 2 - allfemales[o], pch = PCH[o], 
-    cex = 0.6)
-abline(v = 29)
+mypar2(1,1)
+matplot(x,y,xlab="percent that gets in the major",ylab="percent that applies to major",col=c("blue","red"),cex=1.5)
+legend("topleft",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/confounding-unnamed-chunk-61.png) 
+![plot of chunk unnamed-chunk-5](figure/confounding-unnamed-chunk-5-1.png) 
 
-```r
-plot(0, type = "n", xlim = c(0, 80), ylim = c(0, 130), xaxt = "n", yaxt = "n", 
-    xlab = "", ylab = "")
-for (i in seq(along = males)) {
-    points(makematrix(males[[i]], 20, 0, 22 * (i - 1)), col = 2 - sort(males[[i]]), 
-        pch = LETTERS[i], cex = 0.6)
-    points(makematrix(females[[i]], 20, 47, 22 * (i - 1)), col = 2 - sort(females[[i]]), 
-        pch = LETTERS[i], cex = 0.6)
-    if (i > 1) 
-        abline(h = 22 * (i - 1) - 0.5)
-}
-abline(v = 45)
-```
 
-![plot of chunk unnamed-chunk-6](figure/confounding-unnamed-chunk-62.png) 
+## Confounding explained graphically
 
+
+In the plots below each letter represents a person. Accepted individuals are denoted with green and not admitted in orange. The letter denotes the major. In this plot we group all the patients together and notice that the proportion of green is larger for men.
+
+
+![plot of chunk unnamed-chunk-6](figure/confounding-unnamed-chunk-6-1.png) 
+
+Now we stratify the data by major. The key point here is that most of the men denoted with green com from majors E and F which are the ones with the highest acceptance rate. 
+
+
+![plot of chunk unnamed-chunk-7](figure/confounding-unnamed-chunk-7-1.png) 
+
+
+
+
+
+
+
+
+
+
+
+## Average after stratifying
 
 So if we condition or stratify by major this goes away. 
 
 ```r
-y = cbind(dat[1:6, 3], dat[7:12, 3])
-matplot(1:6, y, xaxt = "n", xlab = "major", ylab = "percent", col = c("blue", 
-    "red"), cex = 1.5)
-legend("topright", c("Male", "Female"), col = c("blue", "red"), pch = c("1", 
-    "2"), box.lty = 0, cex = 0.75)
+y=cbind(admissions[1:6,3],admissions[7:12,3])
+matplot(1:6,y,xaxt="n",xlab="major",ylab="percent",col=c("blue","red"),cex=1.5)
+legend("topright",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0,cex=0.75)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/confounding-unnamed-chunk-7.png) 
-
+![plot of chunk unnamed-chunk-8](figure/confounding-unnamed-chunk-8-1.png) 
 
 The average difference by Major is 3.5% higher for women.
 
 
 ```r
-mean(y[, 1] - y[, 2])
+mean(y[,1]-y[,2])
 ```
 
 ```
 ## [1] -3.5
 ```
 
+## Simpson's paradox in baseball
 
 We see this in Baseball often:
 
@@ -215,112 +175,82 @@ We see this in Baseball often:
 | Derek Jeter   | 12/48 (.250)   | 183/582 (.314) | 195/630 (.310)  |
 | David Justice | 104/411 (.253) | 45/140 (.321)  | 149/551 (.270)  |
 
-## Confounding in genomics
 
-Here are the p-values from comparing caucasians to asians
+<a name="genomics"></a>
+
+# Confounding in genomics
+
+Here are the p-values from comparing CEU to ASN
 
 ```r
 library(Biobase)
+library(genefilter)
+library(GSE5859)
+data(GSE5859)
+```
+
+Note that this is the original dataset from which we selected the subset used in `GSE5859Subset`. We can extract the gene expression data and sample information table using the Bio conductor functions `exprs` and `pData` like this:
+
+
+```r
+geneExpression = exprs(e)
+sampleInfo = pData(e)
+```
+
+Note that some samples were processed at different times.
+
+
+```r
+head(sampleInfo$dates)
 ```
 
 ```
-## Loading required package: BiocGenerics
-## Loading required package: methods
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## NULL
 ```
+
+This is an extraneous variable and should not affect the values in `geneExpression`. However, as we have seen in previous analyses it does appear to have an effect so we will explore this here.
+
+We can immediately see that year and ethnicity are almost completely confounded:
+
+
+```r
+year = factor( format(sampleInfo$date,"%y") )
+tab = table(year,sampleInfo$ethnicity)
+print(tab)
+```
+
+```
+##     
+## year ASN CEU HAN
+##   02   0  32   0
+##   03   0  54   0
+##   04   0  13   0
+##   05  80   3   0
+##   06   2   0  24
+```
+
+By running a t-test and creating a volcano plot we note that thousands of genes appear to be differential expressed. But when we perform a similar comparison between 2002 and 2003 only on the CEU population we again obtain thousands of deferentially expressed genes:
+
+
 
 ```r
 library(genefilter)
+
+##remove control genes
+out <- grep("AFFX",rownames(geneExpression))
+
+eth <- sampleInfo$ethnicity
+ind<- which(eth%in%c("CEU","ASN"))
+res1 <- rowttests(geneExpression[-out,ind],droplevels(eth[ind]))
+ind <- which(year%in%c("02","03") & eth=="CEU")
+res2 <- rowttests(geneExpression[-out,ind],droplevels(year[ind]))
+
+XLIM <- max(abs(c(res1$dm,res2$dm)))*c(-1,1)
+YLIM <- range(-log10(c(res1$p,res2$p)))
+mypar(1,2)
+plot(res1$dm,-log10(res1$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(p-value)",main="Populations")
+plot(res2$dm,-log10(res2$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(p-value)",main="2003 v 2002")
 ```
 
-```
-## 
-## Attaching package: 'genefilter'
-## 
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
-library(dagdata)
-data(GSE5859)
-eth <- factor(pData(e)$ethnicity == "CEU")
-tt <- rowttests(exprs(e), eth)
-HLIM <- c(0, 6500)
-mypar(1, 2)
-hist(tt$p.value, main = "", xlab = "p-values", nc = 20, ylim = HLIM)
-plot(tt$dm, -log10(tt$p.value), xlab = "Effect size", ylab = "-log10 (p-value)", 
-    xlim = c(-2, 2))
-```
-
-![plot of chunk unnamed-chunk-9](figure/confounding-unnamed-chunk-9.png) 
-
-Is this is really possible?
-
-Note the confounding
-
-```r
-year = format(pData(e)[, 2], "%Y")
-table(year, pData(e)[, 1])
-```
-
-```
-##       
-## year   ASN CEU HAN
-##   2002   0  32   0
-##   2003   0  54   0
-##   2004   0  13   0
-##   2005  80   3   0
-##   2006   2   0  24
-```
-
-
-
-##split by month
-Let's compare the ASN from two June 2005 to October 2005
-
-```r
-batch <- format(pData(e)$date, "%y%m")
-ind <- which(batch %in% c("0506", "0510"))
-tt <- rowttests(exprs(e)[, ind], factor(batch[ind]))
-hist(tt$p.value, main = "", xlab = "p-values", nc = 20, ylim = HLIM)
-```
-
-![plot of chunk unnamed-chunk-11](figure/confounding-unnamed-chunk-111.png) 
-
-```r
-plot(tt$dm, -log10(tt$p.value), xlab = "Effect size", ylab = "-log10 (p-value)", 
-    xlim = c(-2, 2))
-```
-
-![plot of chunk unnamed-chunk-11](figure/confounding-unnamed-chunk-112.png) 
-
+![plot of chunk unnamed-chunk-14](figure/confounding-unnamed-chunk-14-1.png) 
 
