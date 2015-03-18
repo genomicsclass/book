@@ -201,7 +201,7 @@ cat("Number of selected genes on chrX:", sum(chr[index]=="chrX",na.rm=TRUE))
 ## Number of selected genes on chrX: 8
 ```
 
-Note the great improvement in specificity (less false positives) without much loss in sensitivity (we still find many chrY genes)
+Note the great improvement in specificity (less false positives) without much loss in sensitivity (we still find many chrY genes). However, we stil see some bias in the histogram. In the following sections we will see that month does not perfectly account for the batch effect and better estimates are possible.
 
 
 ## A note on computing efficiency
