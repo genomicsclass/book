@@ -5,30 +5,13 @@ title: Cross-validation
 
 
 
-In this lab, we will explore a method for picking parameters in a
-prediction / machine learning task, which is called
-*cross-validation*.
+In this lab, we will explore a method for picking parameters in a prediction / machine learning task, which is called *cross-validation*.
 
-Suppose we have a prediction algorithm which is going to predict the
-class of some observations using a number of features. For example, we
-will use the gene expression values to predict the tissue type in our
-tissues gene expression dataset.
+Suppose we have a prediction algorithm which is going to predict the class of some observations using a number of features. For example, we will use the gene expression values to predict the tissue type in our tissues gene expression dataset.
 
-If this algorithm has a parameter which controls the behavior, we
-might pick the value of this parameter which minimizes the
-classification error. However, trying to classify the same
-observations as we use to *train* the model can be misleading.
-In lecture, we saw that for K-nearest neighbors, using k=1 will always
-give 0 classification error in the training set (because we use the
-single observation to classify itself). Instead, it's better to pick
-the parameter using the algorithms performance on a set of
-observations which the algorithm has never seen, a *test* set.
+If this algorithm has a parameter which controls the behavior, we might pick the value of this parameter which minimizes the classification error. However, trying to classify the same observations as we use to *train* the model can be misleading.  In lecture, we saw that for K-nearest neighbors, using k=1 will always give 0 classification error in the training set (because we use the single observation to classify itself). Instead, it's better to pick the parameter using the algorithms performance on a set of observations which the algorithm has never seen, a *test* set.
 
-Cross-validation is simply a method which splits the data into a
-number of *folds*. If we have N folds, then the algorithm typically
-trains on (N-1) of the folds, and test the algorithms performance on
-the left-out single fold. This is then repeated N times until each
-fold has been used as a *test* set.
+Cross-validation is simply a method which splits the data into a number of *folds*. If we have N folds, then the algorithm typically trains on (N-1) of the folds, and test the algorithms performance on the left-out single fold. This is then repeated N times until each fold has been used as a *test* set.
 
 Let's load in the tissue gene expression dataset:
 
@@ -61,15 +44,7 @@ y <- tissue[ind]
 X <- t( e[,ind] )
 ```
 
-We will use the `createFolds` function from the `caret` 
-package to make 5 folds of the data, which are
-balanced over the tissues. Don't be confused that the 
-`createFolds` function uses the same letter 'k' as the k in 
-K-nearest neighbors. These 'k' are unrelated. 
-The caret function `createFolds` is
-asking for how many folds to create, the 'N' from above. The `knn`
-function is asking how many closest observations to use to classify
-the test observations.
+We will use the `createFolds` function from the `caret` package to make 5 folds of the data, which are balanced over the tissues. Don't be confused that the `createFolds` function uses the same letter 'k' as the k in K-nearest neighbors. These 'k' are unrelated.  The caret function `createFolds` is asking for how many folds to create, the 'N' from above. The `knn` function is asking how many closest observations to use to classify the test observations.
 
 
 ```r
@@ -112,15 +87,16 @@ Because tissues have very different gene expression profiles, predicting tissue 
 
 
 ```r
-Xsmall <- cmdscale(dist(X))
-plot(Xsmall,col=as.fumeric(y))
+library(rafalib)
 ```
 
 ```
-## Error in plot.xy(xy, type, ...): could not find function "as.fumeric"
+## Loading required package: RColorBrewer
 ```
 
 ```r
+Xsmall <- cmdscale(dist(X))
+plot(Xsmall,col=as.fumeric(y))
 legend("topleft",levels(factor(y)),fill=seq_along(levels(factor(y))))
 ```
 
@@ -155,10 +131,7 @@ mean(y[ idx[[i]] ] != pred)
 ## [1] 0.1666667
 ```
 
-Now we will create a loop, which tries out each value of k from 1 to
-12, and runs the K-nearest neighbors algorithm on each fold. We then
-ask for the proportion of errors for each fold, and report the average
-from the 5 cross-validation folds:
+Now we will create a loop, which tries out each value of k from 1 to 12, and runs the K-nearest neighbors algorithm on each fold. We then ask for the proportion of errors for each fold, and report the average from the 5 cross-validation folds:
 
 
 ```r
