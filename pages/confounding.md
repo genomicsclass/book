@@ -45,14 +45,14 @@ men = admissions[index,]
 women = admissions[!index,]
 menYes = sum(men$Number*men$Percent/100)
 menNo = sum(men$Number*(1-men$Percent/100))
-womenYes = sum(women$Number*men$Percent/100)
-womenNo = sum(women$Number*(1-men$Percent/100))
+womenYes = sum(women$Number*women$Percent/100)
+womenNo = sum(women$Number*(1-women$Percent/100))
 tab = matrix(c(menYes,womenYes,menNo,womenNo),2,2)
 print(chisq.test(tab)$p.val)
 ```
 
 ```
-## [1] 8.33652e-22
+## [1] 9.139492e-22
 ```
 
 But closer inspection shows a paradoxical results. Here are the percent admissions by Major:
