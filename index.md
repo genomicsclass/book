@@ -82,6 +82,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 - [Confounding](pages/confounding.html)
 - [Adjusting for batch effects with linear models](pages/adjusting_with_linar_models.html)
+- [Projections](pages/projections.html)
 
 ### 4: Introduction to Bioconductor
 
