@@ -111,7 +111,7 @@ Here are the rotations: $$Z = A^{-1} Y$$
 
 Note that what we have done here is change rotate the data so that the first coordinate of $$Z$$ is the average height while the second is the differences between twin heights. 
 
-In the following sections we will be using the singular value decomposition to find principal components. It is sometimes useful to think of the SVD as a rotation, for example, $$U^\topY$$ that gives us a new coordiante system $$DV^\top$$ in which the dimensions are ordered by how much variance they explain. 
+In the following sections we will be using the singular value decomposition to find principal components. It is sometimes useful to think of the SVD as a rotation, for example, $$U^\top Y$$ that gives us a new coordiante system $$DV^\top$$ in which the dimensions are ordered by how much variance they explain. 
 
 
 
