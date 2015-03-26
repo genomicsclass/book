@@ -87,7 +87,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Rotations](pages/rotations.html)
 - [Principal Component Analysis](pages/PCA.html)
 - [Factor Analysis](pages/factor_analysis.html)
-
+- [EDA with PCA](pages/eda_with_pca.html)
 
 ### 4: Introduction to Bioconductor
 
