@@ -93,6 +93,8 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
 - [Basic Bioconductor infrastructure](pages/basic_Bioconductor_infrastructure.html)
+
+<!--
 - [Reading microarray data](pages/reading_microarray_data.html)
 - [Downloading data from GEO using GEOquery](pages/GEOquery.html)
 - [Background](pages/background.html)
@@ -106,6 +108,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Gene set analysis lecture](pages/gsa.html)
 - [Gene set testing in R](pages/gene_set_testing.html)
 - [Counting NGS reads in features](pages/read_counting.html)
+-->
 
 ### 5: RNA-seq data analysis
 
