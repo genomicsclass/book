@@ -51,7 +51,7 @@ grep("Hsapiens", available.genomes(), value=TRUE)
 ## [7] "BSgenome.Hsapiens.UCSC.hg19.masked"
 ```
 
-# The human reference sequence, build hg19, and the Views concept
+# The human reference sequence, build hg19; gene sequence
 
 
 ```r
@@ -158,20 +158,28 @@ Now we make a structure that has addresses and sequences of genes.
 
 
 ```r
-gs17 = Views(Hsapiens, g17)
-```
-
-```
-## Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'Views' for signature '"BSgenome"'
-```
-
-```r
+gs17 = getSeq(Hsapiens, g17)
 gs17
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'gs17' not found
+##   A DNAStringSet instance of length 1357
+##           width seq                                    names               
+##    [1]      132 CCTCCTACAAAGGCATGT...AACCATCCCACATAGAA 100124536
+##    [2]       98 TTGGGCAAGGTGCGGGGC...CTCAACCTTACTCGGTC 100126313
+##    [3]      111 AGAGTGTTCAAGGACAGC...TTGCAGTGTGCATCGGG 100126356
+##    [4]     2129 TTTTTTAGTTCCTGGTTC...GAGCAAGACTCTGTCTC 100128288
+##    [5]    52158 GCGGCCGCCGAGTCCGTC...ATTAGGGCCCACCCTAA 100128977
+##    ...      ... ...
+## [1353]   174766 ATGCTTTGTGGGGACGTT...CTTTTTAATAATTTGGA 9931
+## [1354]    44987 GTGGCCAGGGCGCGAGAG...ACAGCCCTAGGGTTCTG 9953
+## [1355]   106239 CAGCGGCGGCCCAGGAGG...TAAAAAAATAAATCTTG 9955
+## [1356]    71355 AATCGCTCGGCCTCCCCC...GGATATGGAAAATCCAA 996
+## [1357]   122678 GTTTCTCTCTCTGGTCGG...TATTCATGAAGCCTTCA 9969
 ```
+
+In the next version of Bioconductor this can be accomplished somewhat
+more efficiently using "Views()".
 
 # dbSNP
 
@@ -283,13 +291,16 @@ example(traitsManh)
 
 ```
 ## Loading required package: ggbio
+## Loading required package: ggplot2
+## Need specific help about ggbio? try mailing 
+##  the maintainer or visit http://tengfei.github.com/ggbio/
+## 
+## Attaching package: 'ggbio'
+## 
+## The following objects are masked from 'package:ggplot2':
+## 
+##     geom_bar, geom_rect, geom_segment, ggsave, stat_bin,
+##     stat_identity, xlim
 ```
 
-```
-## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called 'ggbio'
-```
-
-```
-## Error in traitsManh(gwrngs19): could not find function "autoplot"
-```
+![plot of chunk lkg2](figure/chromComp-lkg2-1.png) 
