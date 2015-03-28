@@ -19,9 +19,6 @@ We will consider how to do various very high-level tasks with chromosomes and va
 # BSgenome and available genomes
 
 
-```
-## Warning: multiple methods tables found for 'score'
-```
 
 
 ```r
@@ -50,11 +47,9 @@ grep("Hsapiens", available.genomes(), value=TRUE)
 ## [5] "BSgenome.Hsapiens.UCSC.hg18.masked"
 ## [6] "BSgenome.Hsapiens.UCSC.hg19"       
 ## [7] "BSgenome.Hsapiens.UCSC.hg19.masked"
-## [8] "BSgenome.Hsapiens.UCSC.hg38"       
-## [9] "BSgenome.Hsapiens.UCSC.hg38.masked"
 ```
 
-# The human reference sequence, build hg19, and the Views concept
+# The human reference sequence, build hg19; gene sequences
 
 
 ```r
@@ -63,26 +58,27 @@ Hsapiens
 ```
 
 ```
-## Human genome:
-## # organism: Homo sapiens (Human)
-## # provider: UCSC
-## # provider version: hg19
-## # release date: Feb. 2009
-## # release name: Genome Reference Consortium GRCh37
-## # 93 sequences:
-## #   chr1                  chr2                  chr3                 
-## #   chr4                  chr5                  chr6                 
-## #   chr7                  chr8                  chr9                 
-## #   chr10                 chr11                 chr12                
-## #   chr13                 chr14                 chr15                
-## #   ...                   ...                   ...                  
-## #   chrUn_gl000235        chrUn_gl000236        chrUn_gl000237       
-## #   chrUn_gl000238        chrUn_gl000239        chrUn_gl000240       
-## #   chrUn_gl000241        chrUn_gl000242        chrUn_gl000243       
-## #   chrUn_gl000244        chrUn_gl000245        chrUn_gl000246       
-## #   chrUn_gl000247        chrUn_gl000248        chrUn_gl000249       
-## # (use 'seqnames()' to see all the sequence names, use the '$' or '[['
-## # operator to access a given sequence)
+## Human genome
+## | 
+## | organism: Homo sapiens (Human)
+## | provider: UCSC
+## | provider version: hg19
+## | release date: Feb. 2009
+## | release name: Genome Reference Consortium GRCh37
+## | 93 sequences:
+## |   chr1                  chr2                  chr3                 
+## |   chr4                  chr5                  chr6                 
+## |   chr7                  chr8                  chr9                 
+## |   chr10                 chr11                 chr12                
+## |   chr13                 chr14                 chr15                
+## |   ...                   ...                   ...                  
+## |   chrUn_gl000235        chrUn_gl000236        chrUn_gl000237       
+## |   chrUn_gl000238        chrUn_gl000239        chrUn_gl000240       
+## |   chrUn_gl000241        chrUn_gl000242        chrUn_gl000243       
+## |   chrUn_gl000244        chrUn_gl000245        chrUn_gl000246       
+## |   chrUn_gl000247        chrUn_gl000248        chrUn_gl000249       
+## | (use 'seqnames()' to see all the sequence names, use the '$' or '[['
+## | operator to access a given sequence)
 ```
 
 ```r
@@ -106,24 +102,24 @@ txdb
 
 ```
 ## TxDb object:
-## # Db type: TxDb
-## # Supporting package: GenomicFeatures
-## # Data source: UCSC
-## # Genome: hg19
-## # Organism: Homo sapiens
-## # UCSC Table: knownGene
-## # Resource URL: http://genome.ucsc.edu/
-## # Type of Gene ID: Entrez Gene ID
-## # Full dataset: yes
-## # miRBase build ID: GRCh37
-## # transcript_nrow: 82960
-## # exon_nrow: 289969
-## # cds_nrow: 237533
-## # Db created by: GenomicFeatures package from Bioconductor
-## # Creation time: 2015-03-19 13:55:51 -0700 (Thu, 19 Mar 2015)
-## # GenomicFeatures version at creation time: 1.19.32
-## # RSQLite version at creation time: 1.0.0
-## # DBSCHEMAVERSION: 1.1
+## | Db type: TxDb
+## | Supporting package: GenomicFeatures
+## | Data source: UCSC
+## | Genome: hg19
+## | Organism: Homo sapiens
+## | UCSC Table: knownGene
+## | Resource URL: http://genome.ucsc.edu/
+## | Type of Gene ID: Entrez Gene ID
+## | Full dataset: yes
+## | miRBase build ID: GRCh37
+## | transcript_nrow: 82960
+## | exon_nrow: 289969
+## | cds_nrow: 237533
+## | Db created by: GenomicFeatures package from Bioconductor
+## | Creation time: 2014-09-26 11:16:12 -0700 (Fri, 26 Sep 2014)
+## | GenomicFeatures version at creation time: 1.17.17
+## | RSQLite version at creation time: 0.11.4
+## | DBSCHEMAVERSION: 1.0
 ```
 
 We are only interested in information on chr17 at the moment.  We establish chr17 as the active sequence in this transcript database
@@ -160,41 +156,28 @@ Now we make a structure that has addresses and sequences of genes.
 
 
 ```r
-gs17 = Views(Hsapiens, g17)
+gs17 = getSeq(Hsapiens, g17)
 gs17
 ```
 
 ```
-## BSgenomeViews object with 1357 views and 1 metadata column:
-##             seqnames               ranges strand                       dna
-##                <Rle>            <IRanges>  <Rle>            <DNAStringSet>
-##   100124536    chr17 [65736786, 65736917]      + [CCTCCTACAA...CCACATAGAA]
-##   100126313    chr17 [11985216, 11985313]      + [TTGGGCAAGG...TTACTCGGTC]
-##   100126356    chr17 [29902430, 29902540]      + [AGAGTGTTCA...GTGCATCGGG]
-##   100128288    chr17 [ 8261731,  8263859]      - [TTTTTTAGTT...ACTCTGTCTC]
-##   100128977    chr17 [43920722, 43972879]      - [GCGGCCGCCG...CCCACCCTAA]
-##         ...      ...                  ...    ...                       ...
-##        9931    chr17 [65066554, 65241319]      - [ATGCTTTGTG...ATAATTTGGA]
-##        9953    chr17 [14204506, 14249492]      + [GTGGCCAGGG...TAGGGTTCTG]
-##        9955    chr17 [13399006, 13505244]      - [CAGCGGCGGC...ATAAATCTTG]
-##         996    chr17 [45195311, 45266665]      - [AATCGCTCGG...GAAAATCCAA]
-##        9969    chr17 [60019966, 60142643]      - [GTTTCTCTCT...GAAGCCTTCA]
-##               |     gene_id
-##               | <character>
-##   100124536   |   100124536
-##   100126313   |   100126313
-##   100126356   |   100126356
-##   100128288   |   100128288
-##   100128977   |   100128977
-##         ... ...         ...
-##        9931   |        9931
-##        9953   |        9953
-##        9955   |        9955
-##         996   |         996
-##        9969   |        9969
-##   -------
-##   seqinfo: 93 sequences (1 circular) from hg19 genome
+##   A DNAStringSet instance of length 1357
+##           width seq                                    names               
+##    [1]      132 CCTCCTACAAAGGCATGT...AACCATCCCACATAGAA 100124536
+##    [2]       98 TTGGGCAAGGTGCGGGGC...CTCAACCTTACTCGGTC 100126313
+##    [3]      111 AGAGTGTTCAAGGACAGC...TTGCAGTGTGCATCGGG 100126356
+##    [4]     2129 TTTTTTAGTTCCTGGTTC...GAGCAAGACTCTGTCTC 100128288
+##    [5]    52158 GCGGCCGCCGAGTCCGTC...ATTAGGGCCCACCCTAA 100128977
+##    ...      ... ...
+## [1353]   174766 ATGCTTTGTGGGGACGTT...CTTTTTAATAATTTGGA 9931
+## [1354]    44987 GTGGCCAGGGCGCGAGAG...ACAGCCCTAGGGTTCTG 9953
+## [1355]   106239 CAGCGGCGGCCCAGGAGG...TAAAAAAATAAATCTTG 9955
+## [1356]    71355 AATCGCTCGGCCTCCCCC...GGATATGGAAAATCCAA 996
+## [1357]   122678 GTTTCTCTCTCTGGTCGG...TATTCATGAAGCCTTCA 9969
 ```
+
+In the next version of Bioconductor this can be accomplished somewhat
+more efficiently using "Views()".
 
 # dbSNP
 
@@ -302,20 +285,6 @@ example(traitsManh)
 ## trtsMn> data(gwrngs19)
 ## 
 ## trtsMn> traitsManh(gwrngs19)
-```
-
-```
-## Loading required package: ggbio
-## Loading required package: ggplot2
-## Need specific help about ggbio? try mailing 
-##  the maintainer or visit http://tengfei.github.com/ggbio/
-## 
-## Attaching package: 'ggbio'
-## 
-## The following objects are masked from 'package:ggplot2':
-## 
-##     geom_bar, geom_rect, geom_segment, ggsave, stat_bin,
-##     stat_identity, xlim
 ```
 
 ![plot of chunk lkg2](figure/lkg2-1.png) 
