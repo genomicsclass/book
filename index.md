@@ -88,6 +88,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Principal Component Analysis](pages/PCA.html)
 - [Factor Analysis](pages/factor_analysis.html)
 - [EDA with PCA](pages/eda_with_pca.html)
+- [Adjusting for batch effects with factor analysis](pages/adjusting_with_factor_analysis.html)
 
 ### 4: Introduction to Bioconductor
 
