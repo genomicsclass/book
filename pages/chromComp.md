@@ -8,9 +8,7 @@ layout: page
 
 # Overview
 
-We will consider how to do various very high-level
-tasks with
-chromosomes and variants in Bioconductor.
+We will consider how to do various very high-level tasks with chromosomes and variants in Bioconductor.
 
 - listing packages representing reference builds for humans and model organisms
 - acquiring human reference genome sequence
@@ -21,60 +19,6 @@ chromosomes and variants in Bioconductor.
 # BSgenome and available genomes
 
 
-```
-## Loading required package: methods
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Loading required package: S4Vectors
-## Loading required package: stats4
-## Loading required package: IRanges
-## Loading required package: GenomeInfoDb
-## Loading required package: GenomicRanges
-## Loading required package: Biostrings
-## Loading required package: XVector
-## Loading required package: rtracklayer
-## Loading required package: GenomicFeatures
-## Loading required package: AnnotationDbi
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:BSgenome':
-## 
-##     species
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-```
 
 
 ```r
