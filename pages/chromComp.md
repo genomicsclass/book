@@ -36,11 +36,17 @@ head(available.genomes())  # requires internet access
 ```
 
 ```r
-grep("HSapiens", available.genomes(), value=TRUE)
+grep("Hsapiens", available.genomes(), value=TRUE)
 ```
 
 ```
-## character(0)
+## [1] "BSgenome.Hsapiens.NCBI.GRCh38"     
+## [2] "BSgenome.Hsapiens.UCSC.hg17"       
+## [3] "BSgenome.Hsapiens.UCSC.hg17.masked"
+## [4] "BSgenome.Hsapiens.UCSC.hg18"       
+## [5] "BSgenome.Hsapiens.UCSC.hg18.masked"
+## [6] "BSgenome.Hsapiens.UCSC.hg19"       
+## [7] "BSgenome.Hsapiens.UCSC.hg19.masked"
 ```
 
 # The human reference sequence, build hg19, and the Views concept
@@ -85,14 +91,7 @@ c17
 ## seq: AAGCTTCTCACCCTGTTCCTGCATAGATAATTGC...GGTGTGGGTGTGGTGTGTGGGTGTGGGTGTGGT
 ```
 
-The class of `c17` is DNAString.  This is a full
-in-memory representation of all the bases of the chromosome.
-We can work with substructures of interest without
-duplicating the contents of memory devoted to the sequence.
-
-We'll obtain a view of coding sequences of genes on
-chromosome 17.  To do this we will employ a special
-transcript database structure.
+The class of `c17` is DNAString.  This is a full in-memory representation of all the bases of the chromosome.  We can work with substructures of interest without duplicating the contents of memory devoted to the sequence.  We'll obtain a view of coding sequences of genes on chromosome 17.  To do this we will employ a special transcript database structure.
 
 
 ```r
@@ -123,9 +122,7 @@ txdb
 ## | DBSCHEMAVERSION: 1.0
 ```
 
-We are only interested in information on chr17 at the moment.
-We establish chr17 as
-the active sequence in this transcript database
+We are only interested in information on chr17 at the moment.  We establish chr17 as the active sequence in this transcript database
 
 ```r
 tmp = isActiveSeq(txdb) 
@@ -155,8 +152,7 @@ g17
 ##   seqinfo: 1 sequence from hg19 genome
 ```
 
-Now we make a structure that has addresses and sequences of
-genes.
+Now we make a structure that has addresses and sequences of genes.
 
 
 ```r
@@ -177,9 +173,7 @@ gs17
 
 # dbSNP
 
-We have an image of the dbSNP variant catalog for hg19.  The
-information retained is limited to the dbSNP identifier, 
-chromosome location, and variant content.
+We have an image of the dbSNP variant catalog for hg19.  The information retained is limited to the dbSNP identifier, chromosome location, and variant content.
 
 
 ```r
@@ -235,11 +229,7 @@ IUPAC_CODE_MAP
 
 # GWAS catalog
 
-National Human Genome Research Institute maintains a listing
-of genetic association studies that have found significant
-associations between DNA variants and major phenotypes and diseases.
-Inclusion in the catalog requires
-that the findings be replicated in an independent population.
+National Human Genome Research Institute maintains a listing of genetic association studies that have found significant associations between DNA variants and major phenotypes and diseases.  Inclusion in the catalog requires that the findings be replicated in an independent population.
 
 
 ```r
