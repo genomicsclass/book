@@ -21,11 +21,6 @@ chromosomes and variants in Bioconductor.
 # BSgenome and available genomes
 
 
-
-```r
-library(BSgenome)
-```
-
 ```
 ## Loading required package: methods
 ## Loading required package: BiocGenerics
@@ -60,9 +55,30 @@ library(BSgenome)
 ## Loading required package: Biostrings
 ## Loading required package: XVector
 ## Loading required package: rtracklayer
+## Loading required package: GenomicFeatures
+## Loading required package: AnnotationDbi
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## 
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:BSgenome':
+## 
+##     species
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
 ```
 
+
 ```r
+library(BSgenome)
 head(available.genomes())  # requires internet access
 ```
 
@@ -137,31 +153,6 @@ transcript database structure.
 
 ```r
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-```
-
-```
-## Loading required package: GenomicFeatures
-## Loading required package: AnnotationDbi
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:BSgenome':
-## 
-##     species
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-```
-
-```r
 txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
 txdb
 ```
