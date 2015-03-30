@@ -250,13 +250,13 @@ mcols(ir)  # could be elementMetadata, but falling out of favor
 ## DataFrame with 7 rows and 2 columns
 ##          code     score
 ##   <character> <numeric>
-## 1           A 0.1270245
-## 2           B 0.4672968
-## 3           C 0.3404941
-## 4           D 0.2318309
-## 5           E 0.1680202
-## 6           F 0.1224445
-## 7           G 0.4648833
+## 1           A 0.1441888
+## 2           B 0.4438536
+## 3           C 0.7580821
+## 4           D 0.9923744
+## 5           E 0.2263146
+## 6           F 0.3413485
+## 7           G 0.5606859
 ```
 
 Also useful is a global metadata facility.  This involves
