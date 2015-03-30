@@ -26,7 +26,7 @@ More information on installing and updating Bioconductor packages can be found a
 
 http://bioconductor.org/install/
 
-## Finding help
+## Finding help 
 
 There are many ways to find help directly from within R. Typically, every function will have its own manual page which is accessible by typing a question mark ?, followed by the function name and hitting return.
 
@@ -41,6 +41,8 @@ example(boxplot)
 Simply typing the name of the function, without parentheses, and hitting return will show the source code of the function.
 
 The manual page contains a **description**, example **usage**, explanation of all **arguments**, further **details**, explanation of the returned **value**, **references**, **see also** linking to other functions, and **examples**.
+
+## Package help
 
 To read over all the help files for all functions of a given package, we can launch a clickable index in your default web browser.
 
@@ -58,6 +60,19 @@ help(package="genefilter")
 
 Note that you need to have the package installed in order to access this documentation.
 
+Another quick way to look up functions in a given package is to write out the package name, two ":" symbols and then trying tab-completion to get a list of functions which are exported by that package.
+
+
+```r
+library(geneplotter)
+```
+
+
+```r
+geneplotter::
+```
+
+## Object help
 
 If you have a question about a particular object in R, you might want to look up the help for the "class" of that object, which will tell you how to construct such an object and what methods are available for manipulating such objects. For example, we can find the name of the class of an object and look up help:
 
@@ -73,6 +88,10 @@ Sometimes, the constructor function and the class name will point to the same he
 
 ```r
 library(Biobase)
+```
+
+
+```r
 ?ExpressionSet
 ?"ExpressionSet-class"
 ```
@@ -85,79 +104,54 @@ methods(class="ExpressionSet")
 methods(class="lm")
 ```
 
-A quick way to look up functions in a given package is to write out the package name, two ":" symbols and then trying tab-completion to get a list of functions, exported or not.
+In `rafalib` we have also worked on a function (with help from Gabe Becker) which will provide a list of methods which are available for a given object:
 
 
 ```r
-library(geneplotter)
+library(rafalib)
 ```
 
 ```
-## Loading required package: methods
-## Loading required package: Biobase
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## Loading required package: lattice
-## Loading required package: annotate
-## Loading required package: AnnotationDbi
+## Loading required package: RColorBrewer
+```
+
+```r
+data(sample.ExpressionSet)
+whatMethods(sample.ExpressionSet)
 ```
 
 ```
-## Warning: package 'AnnotationDbi' was built under R version 3.1.3
+## [1] "coerce"          "esApply"         "exprs"           "exprs<-"        
+## [5] "initialize"      "makeDataPackage" "rowMedians"      "rowQ"           
+## [9] "write.exprs"
 ```
 
-```
-## Loading required package: stats4
-## Loading required package: GenomeInfoDb
-## Loading required package: S4Vectors
-## Loading required package: IRanges
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-## 
-## Loading required package: XML
-## 
-## Attaching package: 'annotate'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     organism
-```
+This is unfortunately only a partial list. If we look up `?ExpressionSet` we see that this class of object inherits from another class `eSet`. Knowing this, we can see more methods which are available:
 
 
 ```r
-geneplotter::
+whatMethods("eSet")
+```
+
+```
+##  [1] "["                "[["               "[[<-"            
+##  [4] "$"                "$<-"              "abstract"        
+##  [7] "annotation"       "annotation<-"     "assayData"       
+## [10] "assayData<-"      "coerce"           "combine"         
+## [13] "description"      "description<-"    "dim"             
+## [16] "dimnames"         "dimnames<-"       "dims"            
+## [19] "experimentData"   "experimentData<-" "fData"           
+## [22] "fData<-"          "featureData"      "featureData<-"   
+## [25] "featureNames"     "featureNames<-"   "fvarLabels"      
+## [28] "fvarLabels<-"     "fvarMetadata"     "fvarMetadata<-"  
+## [31] "initialize"       "notes"            "notes<-"         
+## [34] "pData"            "pData<-"          "phenoData"       
+## [37] "phenoData<-"      "preproc"          "preproc<-"       
+## [40] "protocolData"     "protocolData<-"   "pubMedIds"       
+## [43] "pubMedIds<-"      "sampleNames"      "sampleNames<-"   
+## [46] "show"             "storageMode"      "storageMode<-"   
+## [49] "updateObject"     "updateObjectTo"   "varLabels"       
+## [52] "varLabels<-"      "varMetadata"      "varMetadata<-"
 ```
 
 ## Source code
@@ -175,7 +169,7 @@ mad
 ## function (x, center = median(x), constant = 1.4826, na.rm = FALSE, 
 ##     low = FALSE, high = FALSE) 
 ## standardGeneric("mad")
-## <environment: 0x1071358b0>
+## <environment: 0x107373838>
 ## Methods may be defined for arguments: x, center, constant, na.rm, low, high
 ## Use  showMethods("mad")  for currently available ones.
 ```
@@ -194,7 +188,7 @@ plotMA
 ## {
 ##     standardGeneric("plotMA")
 ## }
-## <environment: 0x103b39078>
+## <environment: 0x102ed30e0>
 ## Methods may be defined for arguments: object
 ## Use  showMethods("plotMA")  for currently available ones.
 ```
