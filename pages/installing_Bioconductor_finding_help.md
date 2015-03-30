@@ -13,14 +13,12 @@ source("http://bioconductor.org/biocLite.R")
 biocLite()
 ```
 
-
 This will install the core Bioconductor packages. Further packages can be installed using the `biocLite` function and specifying a character vector of which packages to install. For example, to install the "affy" and "genefilter" libraries you would type:
 
 
 ```r
-biocLite(c("genefilter", "geneplotter"))
+biocLite(c("genefilter","geneplotter"))
 ```
-
 
 Remember, you still need to load the library, e.g., `library(genefilter)`, if you want to use the package.
 
@@ -40,10 +38,26 @@ example(mad)
 example(boxplot)
 ```
 
-
 Simply typing the name of the function, without parentheses, and hitting return will show the source code of the function.
 
 The manual page contains a **description**, example **usage**, explanation of all **arguments**, further **details**, explanation of the returned **value**, **references**, **see also** linking to other functions, and **examples**.
+
+To read over all the help files for all functions of a given package, we can launch a clickable index in your default web browser.
+
+
+```r
+help(package="genefilter", help_type="html")
+```
+
+If you are using RStudio, you can launch the same index within RStudio's help pane with:
+
+
+```r
+help(package="genefilter")
+```
+
+Note that you need to have the package installed in order to access this documentation.
+
 
 If you have a question about a particular object in R, you might want to look up the help for the "class" of that object, which will tell you how to construct such an object and what methods are available for manipulating such objects. For example, we can find the name of the class of an object and look up help:
 
@@ -54,7 +68,6 @@ class(6)
 ?"numeric-class"
 ```
 
-
 Sometimes, the constructor function and the class name will point to the same help page, although this is not necessarily true for all packages.
 
 
@@ -64,15 +77,13 @@ library(Biobase)
 ?"ExpressionSet-class"
 ```
 
-
 A quick way to find out what methods are available for a given class:
 
 
 ```r
-methods(class = "ExpressionSet")
-methods(class = "lm")
+methods(class="ExpressionSet")
+methods(class="lm")
 ```
-
 
 A quick way to look up functions in a given package is to write out the package name, two ":" symbols and then trying tab-completion to get a list of functions, exported or not.
 
@@ -106,7 +117,7 @@ library(geneplotter)
 ##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
 ##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
 ##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
+##     table, tapply, union, unique, unlist, unsplit
 ## 
 ## Welcome to Bioconductor
 ## 
@@ -117,19 +128,41 @@ library(geneplotter)
 ## Loading required package: lattice
 ## Loading required package: annotate
 ## Loading required package: AnnotationDbi
-## Loading required package: GenomeInfoDb
 ```
 
+```
+## Warning: package 'AnnotationDbi' was built under R version 3.1.3
+```
+
+```
+## Loading required package: stats4
+## Loading required package: GenomeInfoDb
+## Loading required package: S4Vectors
+## Loading required package: IRanges
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
+## 
+## Loading required package: XML
+## 
+## Attaching package: 'annotate'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     organism
+```
 
 
 ```r
 geneplotter::
 ```
 
-
 ## Source code
 
-You can find the source code for many functions by typing out the name of the function with () and pressing enter.
+You can find the source code for many functions by typing out the name of the function without () and pressing enter.
 
 
 ```r
@@ -137,24 +170,15 @@ mad
 ```
 
 ```
+## standardGeneric for "mad" defined from package "stats"
+## 
 ## function (x, center = median(x), constant = 1.4826, na.rm = FALSE, 
 ##     low = FALSE, high = FALSE) 
-## {
-##     if (na.rm) 
-##         x <- x[!is.na(x)]
-##     n <- length(x)
-##     constant * if ((low || high) && n%%2 == 0) {
-##         if (low && high) 
-##             stop("'low' and 'high' cannot be both TRUE")
-##         n2 <- n%/%2 + as.integer(high)
-##         sort(abs(x - center), partial = n2)[n2]
-##     }
-##     else median(abs(x - center))
-## }
-## <bytecode: 0x7ff2180673f8>
-## <environment: namespace:stats>
+## standardGeneric("mad")
+## <environment: 0x1071358b0>
+## Methods may be defined for arguments: x, center, constant, na.rm, low, high
+## Use  showMethods("mad")  for currently available ones.
 ```
-
 
 You might have to specify a particular class if you want source code for a method:
 
@@ -170,7 +194,7 @@ plotMA
 ## {
 ##     standardGeneric("plotMA")
 ## }
-## <environment: 0x7ff21493d548>
+## <environment: 0x103b39078>
 ## Methods may be defined for arguments: object
 ## Use  showMethods("plotMA")  for currently available ones.
 ```
@@ -186,7 +210,7 @@ showMethods("plotMA")
 ```
 
 ```r
-getMethod("plotMA", "data.frame")
+getMethod("plotMA","data.frame")
 ```
 
 ```
@@ -226,7 +250,6 @@ getMethod("plotMA", "data.frame")
 ## defined "data.frame"
 ```
 
-
 ## Vignettes
 
 "Vignettes" are documents which accompany R packages and are required for every Bioconductor package. They typically show an example workflow of the functions of the package using "chunks" of code with descriptive text, exactly as the document you are currently reading. 
@@ -235,9 +258,8 @@ You can find Bioconductor vignettes in PDF or R script form on the Bioconductor 
 
 
 ```r
-vignette(package = "Biobase")
+vignette(package="Biobase")
 ```
-
 
 A further call to `vignette` with the name of the vignette will launch a PDF viewer:
 
@@ -246,7 +268,6 @@ A further call to `vignette` with the name of the vignette will launch a PDF vie
 vignette("ExpressionSetIntroduction")
 ```
 
-
 In addition, an HTML browser can be launched with links to the various vignettes of a package:
 
 
@@ -254,5 +275,4 @@ In addition, an HTML browser can be launched with links to the various vignettes
 ```r
 browseVignettes(package="Biobase")
 ```
-
 
