@@ -80,12 +80,29 @@ head(ag)
 
 ## Reference build versions are important
 
+The reference build for an organism is created de novo
+and then refined as algorithms and sequenced data improve.
+For humans, the Genome Research Consortium signed off on
+build 37 in 2009, and on build 38 in 2013.
+
+Once a reference build is completed, it becomes easy to
+perform informative genomic sequence analysis on individuals, because one can
+focus on regions that are known to harbor allelic diversity.
+
 Note that the genome sequence packages have long names
 that include build versions.  It is very important to avoid
 mixing coordinates from different reference builds.
-We will show later how to convert genomic coordinates of
+In the liftOver video we show how to convert genomic coordinates of
 features between different reference builds, using the UCSC
 "liftOver" utility interfaced to R in the `rtracklayer` package.
+
+To help users avoid mixing up data collected on incompatible
+genomic coordinate systems from different reference builds, we
+include a "genome" tag that can be filled out for most objects
+that hold sequence information.  We'll see some examples of
+this shortly.  Software for sequence comparison can check
+for compatible tags on the sequences
+being compared, and thereby help to ensure meaningful results.
 
 # A reference genomic sequence for H. sapiens
 
@@ -126,6 +143,15 @@ Hsapiens
 ## |   chrUn_gl000247        chrUn_gl000248        chrUn_gl000249       
 ## | (use 'seqnames()' to see all the sequence names, use the '$' or '[['
 ## | operator to access a given sequence)
+```
+
+```r
+head(genome(Hsapiens))  # see the tag
+```
+
+```
+##   chr1   chr2   chr3   chr4   chr5   chr6 
+## "hg19" "hg19" "hg19" "hg19" "hg19" "hg19"
 ```
 
 We acquire a chromosome's sequence using the `$` operator.
@@ -292,6 +318,17 @@ imp
 ##   [1873]      <NA>      8.65    17.356  2.013228       496
 ##   -------
 ##   seqinfo: 23 sequences from an unspecified genome; no seqlengths
+```
+
+```r
+genome(imp)  # genome identifier tag not set, but you should set it
+```
+
+```
+##  chrX chr19  chr3 chr17  chr8 chr11 chr16  chr1  chr2  chr6  chr9  chr7 
+##    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA 
+##  chr5 chr12 chr20 chr21 chr22 chr18 chr10 chr14 chr15  chr4 chr13 
+##    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
 ```
 
 We have a GRanges in one stroke.  There are some additional fields
