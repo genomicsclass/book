@@ -13,6 +13,8 @@ toc: yes
 
 ## Executive summary
 
+### Organism-oriented annotation
+
 For biological annotation, generally sequence or gene based, there
 are three key types of package
 
@@ -22,6 +24,19 @@ are three key types of package
 
 wherever brackets are used, you must substitute an appropriate token.
 You can survey all annotation packages at [the annotation page](http://bioconductor.org/packages/release/BiocViews.html#___AnnotationData).
+
+Packages Homo.sapiens, Mus.musculus and Rattus.norvegicus are specialized
+integrative annotation resources with an evolving interface.  We have
+illustrated their use in lectures and labs.
+
+### Systems biology oriented annotation
+
+Packages GO.db, KEGG.db, KEGGREST, and reactome.db are primarily
+intended as organism-independent resources organizing genes into
+groups.  However, there are organism-specific mappings between
+gene-oriented annotation and these resources, that involve specific
+abbreviations and symbol conventions.  These are described
+when these packages are used.
 
 ## Names for organisms and their abbreviations
 
