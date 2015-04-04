@@ -96,6 +96,7 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 - [Annotating phenotypes and molecular function](pages/annoPhen.html)
 - [The ExpressionSet Container](pages/eset.html)
 - [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
+- [IRanges and GRanges](pages/iranges_granges.html)
 
 <!--
 new ones:
