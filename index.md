@@ -93,11 +93,15 @@ The repository of the R markdown files (.Rmd) for the labs shown here is:
 ### 4: Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
-- [Computing with chromosomes and variants](pages/chromComp.html)
+- [Annotating phenotypes and molecular function](pages/annoPhen.html)
+- [The ExpressionSet Container](pages/eset.html)
+- [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
 
 <!--
+new ones:
+- [Computing with chromosomes and variants](pages/chromComp.html)
 
-- [Basic Bioconductor infrastructure](pages/basic_Bioconductor_infrastructure.html)
+old ones:
 - [Reading microarray data](pages/reading_microarray_data.html)
 - [Downloading data from GEO using GEOquery](pages/GEOquery.html)
 - [Background](pages/background.html)
