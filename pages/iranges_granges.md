@@ -325,14 +325,21 @@ Note that this is not a comprehensive list! Check the man pages we listed above,
 
 <a name="granges"></a>
 
-## GRanges and GRangesList
+## GRanges
 
-### GRanges
+*GRanges* are objects which contain *IRanges* and two more important pieces of information:
+
+* the chromosome we are referring to (called `seqnames` in Bioconductor)
+* the strand of DNA we are referring to
+
+With an *IRange*, a chromosome name, and a strand, we can be sure we are uniquely referring to the same region of the DNA molecule as another researcher, given that we are using the same build of *genome*. There are other pieces of information which can be contained within a GRanges object, but the two above are the most important.
 
 
 ```r
 library(GenomicRanges)
 ```
+
+Let's create a set of two ranges on a made-up chromosome, *chrZ*. And we will say that these ranges refer to the genome *hg19*. Because we have not linked our genome to a database, we are allowed to specify a chromosome which does not really exist in *hg19*.
 
 
 ```r
@@ -352,6 +359,47 @@ gr
 ```
 
 ```r
+genome(gr) <- "hg19"
+gr
+```
+
+```
+## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          <Rle> <IRanges>  <Rle>
+##   [1]     chrZ  [ 5, 35]      +
+##   [2]     chrZ  [10, 45]      +
+##   -------
+##   seqinfo: 1 sequence from hg19 genome
+```
+
+Note the seqnames and seqlengths which we defined in the call above:
+
+
+```r
+seqnames(gr)
+```
+
+```
+## factor-Rle of length 2 with 1 run
+##   Lengths:    2
+##   Values : chrZ
+## Levels(1): chrZ
+```
+
+```r
+seqlengths(gr)
+```
+
+```
+## chrZ 
+##  100
+```
+
+We can use the `shift` function as we did with the IRanges. However, notice the warning when we try to shift the range beyond the length of the chromosome:
+
+
+```r
 shift(gr, 10)
 ```
 
@@ -362,7 +410,7 @@ shift(gr, 10)
 ##   [1]     chrZ  [15, 45]      +
 ##   [2]     chrZ  [20, 55]      +
 ##   -------
-##   seqinfo: 1 sequence from an unspecified genome
+##   seqinfo: 1 sequence from hg19 genome
 ```
 
 ```r
@@ -386,8 +434,11 @@ shift(gr, 80)
 ##   [1]     chrZ [85, 115]      +
 ##   [2]     chrZ [90, 125]      +
 ##   -------
-##   seqinfo: 1 sequence from an unspecified genome
+##   seqinfo: 1 sequence from hg19 genome
 ```
+
+If we trim the ranges, we obtain the ranges which are left, disregarding the portion that stretched beyond the length of the chromosome:
+
 
 ```r
 trim(shift(gr, 80))
@@ -400,8 +451,11 @@ trim(shift(gr, 80))
 ##   [1]     chrZ [85, 100]      +
 ##   [2]     chrZ [90, 100]      +
 ##   -------
-##   seqinfo: 1 sequence from an unspecified genome
+##   seqinfo: 1 sequence from hg19 genome
 ```
+
+We can add columns of information to each range using the `mcols` function (stands for *metadata columns*). Note: this is also possible with IRanges. We can remove the columns by assigning `NULL`.
+
 
 ```r
 mcols(gr)
@@ -423,15 +477,20 @@ gr
 ##   [1]     chrZ  [ 5, 35]      + |        -1
 ##   [2]     chrZ  [10, 45]      + |         4
 ##   -------
-##   seqinfo: 1 sequence from an unspecified genome
+##   seqinfo: 1 sequence from hg19 genome
+```
+
+```r
+mcols(gr)$value <- NULL
 ```
 
 ### GRangesList
 
+Especially when referring to genes, it is useful to create a *list* of GRanges. This is useful for representing groupings, for example the [exons](http://en.wikipedia.org/wiki/Exon) which belong to each gene. The elements of the list are the genes, and within each element the exon ranges are defined as GRanges.
+
 
 ```r
 gr2 <- GRanges("chrZ",IRanges(11:13,51:53))
-mcols(gr)$value <- NULL
 grl <- GRangesList(gr,gr2)
 grl
 ```
@@ -453,8 +512,9 @@ grl
 ##   [3]     chrZ [13, 53]      *
 ## 
 ## -------
-## seqinfo: 1 sequence from an unspecified genome
+## seqinfo: 1 sequence from hg19 genome
 ```
+
 
 ```r
 length(grl)
@@ -475,7 +535,7 @@ grl[[1]]
 ##   [1]     chrZ  [ 5, 35]      +
 ##   [2]     chrZ  [10, 45]      +
 ##   -------
-##   seqinfo: 1 sequence from an unspecified genome
+##   seqinfo: 1 sequence from hg19 genome
 ```
 
 ```r
@@ -500,7 +560,7 @@ grl
 ##   [3]     chrZ [13, 53]      *
 ## 
 ## -------
-## seqinfo: 1 sequence from an unspecified genome
+## seqinfo: 1 sequence from hg19 genome
 ```
 
 ```r
