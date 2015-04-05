@@ -321,7 +321,7 @@ disjoin(ir)
 ## [4]    17  20     4
 ```
 
-Note that this is not a comprehensive list! Check the man pages we listed above, and the best way to get the hang of the functions is to try them out on some ranges you construct yourself. Note that most of the functions are defined both for IRanges and for GRanges, which will be described below.
+Note that this is not a comprehensive list. Check the man pages we listed above, and the best way to get the hang of the functions is to try them out on some ranges you construct yourself. Note that most of the functions are defined both for IRanges and for GRanges, which will be described below.
 
 <a name="granges"></a>
 
@@ -332,7 +332,9 @@ Note that this is not a comprehensive list! Check the man pages we listed above,
 * the chromosome we are referring to (called `seqnames` in Bioconductor)
 * the strand of DNA we are referring to
 
-With an *IRange*, a chromosome name, and a strand, we can be sure we are uniquely referring to the same region of the DNA molecule as another researcher, given that we are using the same build of *genome*. There are other pieces of information which can be contained within a GRanges object, but the two above are the most important.
+Strand can be specified as plus "+" or minus "-", or left unspecified with "\*". Plus strand features have the biological direction from left to right on the number line, and minus strand features have the biological direction from right to left. In terms of the *IRanges*, plus strand features go from `start` to `end`, and minus strand features go from `end` to `start`. This may seem a bit confusing at first, but this is required because `width` is defined as `end - start + 1`, and negative width ranges are not allowed. Because DNA has two strands, which have an opposite directionality, strand is necessary for uniquely referring to DNA.
+
+With an *IRange*, a chromosome name, and a strand, we can be sure we are uniquely referring to the same region and strand of the DNA molecule as another researcher, given that we are using the same build of *genome*. There are other pieces of information which can be contained within a GRanges object, but the two above are the most important.
 
 
 ```r
@@ -373,7 +375,7 @@ gr
 ##   seqinfo: 1 sequence from hg19 genome
 ```
 
-Note the seqnames and seqlengths which we defined in the call above:
+Note the `seqnames` and `seqlengths` which we defined in the call above:
 
 
 ```r
@@ -437,7 +439,7 @@ shift(gr, 80)
 ##   seqinfo: 1 sequence from hg19 genome
 ```
 
-If we trim the ranges, we obtain the ranges which are left, disregarding the portion that stretched beyond the length of the chromosome:
+If we `trim` the ranges, we obtain the ranges which are left, disregarding the portion that stretched beyond the length of the chromosome:
 
 
 ```r
@@ -491,7 +493,7 @@ Especially when referring to genes, it is useful to create a *list* of GRanges. 
 
 ```r
 gr2 <- GRanges("chrZ",IRanges(11:13,51:53))
-grl <- GRangesList(gr,gr2)
+grl <- GRangesList(gr, gr2)
 grl
 ```
 
@@ -515,6 +517,8 @@ grl
 ## seqinfo: 1 sequence from hg19 genome
 ```
 
+The length of the *GRangesList* is the number of *GRanges* object within. To get the length of each GRanges we call `elementLengths`. We can index into the list using typical list indexing of two square brackets.
+
 
 ```r
 length(grl)
@@ -522,6 +526,14 @@ length(grl)
 
 ```
 ## [1] 2
+```
+
+```r
+elementLengths(grl)
+```
+
+```
+## [1] 2 3
 ```
 
 ```r
@@ -537,6 +549,30 @@ grl[[1]]
 ##   -------
 ##   seqinfo: 1 sequence from hg19 genome
 ```
+
+If we ask the `width`, the result is an *IntegerList*. If we apply `sum`, we get a numeric vector of the sum of the widths of each GRanges object in the list.
+
+
+```r
+width(grl)
+```
+
+```
+## IntegerList of length 2
+## [[1]] 31 36
+## [[2]] 41 41 41
+```
+
+```r
+sum(width(grl))
+```
+
+```
+## [1]  67 123
+```
+
+We can add metadata columns as before, now one row of metadata for each GRanges object, not for each range. It doesn't show up when we print the GRangesList, but it is still stored and accessible with `mcols`.
+
 
 ```r
 mcols(grl)$value <- c(5,7)
@@ -577,11 +613,11 @@ mcols(grl)
 
 ### findOverlaps and %over%
 
+We will demonstrate two commonly used methods for comparing GRanges objects. First we build two sets of ranges:
+
 
 ```r
-gr1 <- GRanges("chrZ",IRanges(c(1,11,21,31,41),width=5))
-gr2 <- GRanges("chrZ",IRanges(c(19,33),c(38,35)))
-gr1
+(gr1 <- GRanges("chrZ",IRanges(c(1,11,21,31,41),width=5),strand="*"))
 ```
 
 ```
@@ -598,7 +634,7 @@ gr1
 ```
 
 ```r
-gr2
+(gr2 <- GRanges("chrZ",IRanges(c(19,33),c(38,35)),strand="*"))
 ```
 
 ```
@@ -610,6 +646,9 @@ gr2
 ##   -------
 ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
+
+`findOverlaps` returns a *Hits* object which contains the information about which ranges in the query (the first argument) overlapped which ranges in the subject (the second argument). There are many options for specifying what kind of overlaps should be counted.
+
 
 ```r
 fo <- findOverlaps(gr1, gr2)
@@ -643,6 +682,9 @@ subjectHits(fo)
 ## [1] 1 1 2
 ```
 
+Another way of getting at overlap information is to use `%over%` which returns a logical vector of which ranges in the first argument overlapped any ranges in the second.
+
+
 ```r
 gr1 %over% gr2
 ```
@@ -665,12 +707,28 @@ gr1[gr1 %over% gr2]
 ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
 
-### Rle and Views
+Note that both of these are *strand-specific*, although `findOverlaps` has an `ignore.strand` option.
 
 
 ```r
-r <- Rle(c(1,1,1,0,0,-2,-2,-2,rep(-1,20)))
-r
+gr1 <- GRanges("chrZ",IRanges(1,10),strand="+")
+gr2 <- GRanges("chrZ",IRanges(1,10),strand="-")
+gr1 %over% gr2
+```
+
+```
+## [1] FALSE
+```
+
+### Rle and Views
+
+Lastly, we give you a short glimpse into two related classes defined in IRanges, the *Rle* and *Views* classes. *Rle* stands for *run-length encoding*, which is a form of compression for repetitive data. Instead of storing: $$[1,1,1,1]$$, we would store the number 1, and the number of repeats: 4. The more repetitive the data, the greater the compression with *Rle*.
+
+We use `str` to examine the internal structure of the Rle, to show it is only storing the numeric values and the number of repeats
+
+
+```r
+(r <- Rle(c(1,1,1,0,0,-2,-2,-2,rep(-1,20))))
 ```
 
 ```
@@ -700,8 +758,11 @@ as.numeric(r)
 ## [24] -1 -1 -1 -1 -1
 ```
 
+A *Views* object can be thought of as "windows" looking into a sequence. 
+
+
 ```r
-Views(r, start=c(4,2), end=c(7,6))
+(v <- Views(r, start=c(4,2), end=c(7,6)))
 ```
 
 ```
@@ -713,17 +774,49 @@ Views(r, start=c(4,2), end=c(7,6))
 ## [2]     2   6     5 [ 1  1  0  0 -2]
 ```
 
+Note that the internal structure of the Views object is just the original object, and the *IRanges* which specify the windows. The great benefit of Views is when the original object is not stored in memory, in which case the Views object is a lightweight class which helps us reference subsequences, without having to load the entire sequence into memory.
+
+
+```r
+str(v)
+```
+
+```
+## Formal class 'RleViews' [package "IRanges"] with 5 slots
+##   ..@ subject        :Formal class 'Rle' [package "S4Vectors"] with 4 slots
+##   .. .. ..@ values         : num [1:4] 1 0 -2 -1
+##   .. .. ..@ lengths        : int [1:4] 3 2 3 20
+##   .. .. ..@ elementMetadata: NULL
+##   .. .. ..@ metadata       : list()
+##   ..@ ranges         :Formal class 'IRanges' [package "IRanges"] with 6 slots
+##   .. .. ..@ start          : int [1:2] 4 2
+##   .. .. ..@ width          : int [1:2] 4 5
+##   .. .. ..@ NAMES          : NULL
+##   .. .. ..@ elementType    : chr "integer"
+##   .. .. ..@ elementMetadata: NULL
+##   .. .. ..@ metadata       : list()
+##   ..@ elementType    : chr "ANY"
+##   ..@ elementMetadata: NULL
+##   ..@ metadata       : list()
+```
+
 ## Footnotes
 
 For more information about the `GenomicRanges` package, check out the PLOS Comp Bio paper, which the authors of GenomicRanges published:
 
-<http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118>
+http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118
 
-Also the software vignettes have a lot of details about the functionality. Check out "An Introduction to Genomic Ranges Classes":
+Also the software vignettes have a lot of details about the functionality. Check out the "An Introduction to GenomicRanges" vignette. All of the vignette PDFs are available here:
 
-<http://www.bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.pdf>
 
-All of the vignette PDFs are available here:
+```r
+browseVignettes("GenomicRanges")
+```
 
-<http://www.bioconductor.org/packages/release/bioc/html/GenomicRanges.html>
+Or the help pages here:
+
+
+```r
+help(package="GenomicRanges", help_type="html")
+```
 
