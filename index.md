@@ -94,9 +94,19 @@ title: PH525x series - Biomedical Data Science
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
 - [Annotating phenotypes and molecular function](pages/annoPhen.html)
 - [The ExpressionSet Container](pages/eset.html)
-- [Basic Bioconductor infrastructure](pages/basic_Bioconductor_infrastructure.html)
+
+---
+
+- [IRanges and GRanges](pages/iranges_granges.html)
+
+---
+
+- [Cheat sheet for genomic annotation](pages/annoCheat.html)
+- [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
+- [Cheat sheet for GRanges and other Bioconductor objects](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
 
 <!--
+
 new ones:
 - [Computing with chromosomes and variants](pages/chromComp.html)
 
@@ -114,6 +124,7 @@ old ones:
 - [Gene set analysis lecture](pages/gsa.html)
 - [Gene set testing in R](pages/gene_set_testing.html)
 - [Counting NGS reads in features](pages/read_counting.html)
+
 -->
 
 ### 5: RNA-seq data analysis
