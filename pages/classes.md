@@ -5,7 +5,7 @@ title: HarvardX Biomedical Data Science
 
 ## Open Online Training Curriculum 
 
-We recently received funding from the NIH BD2K initiative to develop MOOCs for biomedical data science. Our first offering will be version 2 of my Data Analysis for Genomics course which will launch on January 19. In this version, the course will be turned into an 8 course series and you can get a certificate in each one of them. The motivation for doing this is to go more in-depth into the different topics and to provide different entry points for students with different levels of expertise. We provide four courses on concepts and skills and four case-study based course. We basically broke the original class into the following eight parts:
+We recently received funding from the NIH BD2K initiative to develop MOOCs for biomedical data science. Our first offering will is the eight course series: Data Analysis for Genomics. The series provides different entry points for students with different levels of expertise. We provide four courses on concepts and skills and four case-study based course. 
 
 1. [Statistics and R for the Life Sciences](https://www.edx.org/course/statistics-with-r-for-life-sciences-harvardx-ph525-1x)
 2. [Introduction to Linear Models and Matrix Algebra](https://www.edx.org/course/introduction-to-linear-models-and-matrix-algebra-harvardx-ph525-2x)
