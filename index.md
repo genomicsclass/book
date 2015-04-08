@@ -3,11 +3,10 @@ layout: page
 title: PH525x series - Biomedical Data Science
 ---
 
-- The repository of the R markdown files (.Rmd) for the labs is [here](http://github.com/genomicsclass/labs).
-- A link to the HarvardX class pages are [here](pages/classes.html).
+### Links and resources
 
-### Resources
-
+- [The repository of the R markdown files for the pages below](http://github.com/genomicsclass/labs).
+- [Links to the HarvardX class pages](pages/classes.html).
 - [Online resources and books](pages/resources.html)
 - [Finding more help for data analysis](pages/more_help.html)
 
