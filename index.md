@@ -5,8 +5,8 @@ title: PH525x series - Biomedical Data Science
 
 ### Links and resources
 
-- [The repository of the R markdown files for the pages below](http://github.com/genomicsclass/labs).
-- [Links to the HarvardX class pages](pages/classes.html).
+- [The repository of the R markdown files for the pages below](http://github.com/genomicsclass/labs)
+- [Links to the HarvardX class pages](pages/classes.html)
 - [Online resources and books](pages/resources.html)
 - [Finding more help for data analysis](pages/more_help.html)
 

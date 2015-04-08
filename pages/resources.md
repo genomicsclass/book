@@ -7,7 +7,9 @@ title: Online resources and books
 
 - [swirl](http://swirlstats.com/): "swirl teaches you R programming and data science interactively, at your own pace, and right in the R console"
 
-- The [R programming](http://tryr.codeschool.com/) class on Coursera, taught by Roger Peng, Jeff Leek and Brian Caffo
+- The [R programming](https://www.coursera.org/course/rprog) class on Coursera, taught by Roger Peng, Jeff Leek and Brian Caffo
+
+- The [Data Science Toolbox](https://www.coursera.org/course/datascitoolbox) class on Coursera, taught by the instructors above.
 
 - The [try R](http://tryr.codeschool.com/) interactive class from Code School 
 
