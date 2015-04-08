@@ -18,7 +18,7 @@ We recently received funding from the NIH BD2K initiative to develop MOOCs for b
 
 You can follow the links to enroll. While not required for the first class, some familiarity with R and Rstudio will serve you well so consider the online courses listed on the [resources page](pages/resources.html).
 
-In years 2 and 3 we plan to introduce several other courses covering topics such as python for data analysis, probability, software engineering, and data visualization which will be taught by a collaboration between the departments of Biostatistics, Statistics and Computer Science at Harvard.
+In years 2 and 3 we plan to introduce several other courses covering topics such as python for data analysis, probability, software engineering, and data visualization.
 
 Announcements will be made here and on twitter: [@rafalab](https://twitter.com/rafalab)
 
