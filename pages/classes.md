@@ -18,6 +18,8 @@ We recently received funding from the NIH BD2K initiative to develop MOOCs for b
 
 You can follow the links to enroll. While not required for the first class, some familiarity with R and Rstudio will serve you well so consider the online courses listed on the [resources page](pages/resources.html).
 
+Most of the teaching material is available as an [open online book](http://genomicsclass.github.io/book/) as well as on our [GitHub repo](https://github.com/genomicsclass/labs)
+
 In years 2 and 3 we plan to introduce several other courses covering topics such as python for data analysis, probability, software engineering, and data visualization.
 
 Announcements will be made here and on twitter: [@rafalab](https://twitter.com/rafalab)
