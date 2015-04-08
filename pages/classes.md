@@ -1,4 +1,7 @@
-# HarvardX Biomedical Data Science
+---
+layout: page
+title: HarvardX Biomedical Data Science
+---
 
 ## Open Online Training Curriculum 
 
