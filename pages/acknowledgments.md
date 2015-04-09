@@ -20,6 +20,7 @@ Case study: Variant Discovery and Genotyping
 * Oliver Hofmann
 * Radhika Khetani
 * Shannan Ho Sui
+* Meeta Mistry
 
 ## Slides/images borrowed in lectures
 
