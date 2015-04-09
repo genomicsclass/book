@@ -16,7 +16,7 @@ We recently received funding from the NIH BD2K initiative to develop MOOCs for b
 7. [Case study: ChIP-seq data analysis](https://www.edx.org/course/case-study-chip-seq-data-analysis-harvardx-ph525-7x)
 8. [Case study: DNA methylation data analysis](https://www.edx.org/course/case-study-dna-methylation-data-analysis-harvardx-ph525-8x)
 
-You can follow the links to enroll. While not required for the first class, some familiarity with R and Rstudio will serve you well so consider the online courses listed on the [resources page](pages/resources.html).
+You can follow the links to enroll. While not required for the first class, some familiarity with R and Rstudio will serve you well so consider the online courses listed on the [resources page](resources.html).
 
 Most of the teaching material is available as an [open online book](http://genomicsclass.github.io/book/) as well as on our [GitHub repo](https://github.com/genomicsclass/labs)
 
