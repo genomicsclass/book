@@ -440,7 +440,8 @@ as follows:
 ```r
 library(Rsamtools)
 library(rtracklayer)
-targ = import.bedGraph("bcell.narrowPeak.gz", which=GRanges("chr22", IRanges(1,2e7)))```
+targ = import.bedGraph("bcell.narrowPeak.gz", which=GRanges("chr22", IRanges(1,2e7)))
+```
 This is a targeted import.  We do not import the contents of the entire
 file but just the records that reside in the `which` range.
 
@@ -464,7 +465,7 @@ The diagram that we looked at indicated that the Mbp1 transcription
 factor played a role in regulating expression in the transition
 from G1 to S phases of the cell cycle.  The ChIP-chip data is
 in the `harbChIP` package.
-```
+
 
 ```r
 library(harbChIP)
