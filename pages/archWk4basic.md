@@ -583,79 +583,7 @@ have not entered into the assessment of statistical
 significance, but have focused on how the data
 types are brought together.
 
-
-### Harvesting GEO for families of microarray archives
-
-The NCBI Gene Expression Omnibus is a basic resource for
-integrative bioinformatics.  The Bioconductor GEOmetadb
-package helps with discovery and characterization of
-GEO datasets.
-
-The GEOmetadb database is a 240MB download that decompresses to 3.6 GB
-of SQLite.  Once you have acquired the GEOmetadb.sqlite file using
-the `getSQLiteFile` function, you can create a connection
-and start interrogating the database locally.
-
-
-```r
-library(RSQLite)
-lcon = dbConnect(SQLite(), "GEOmetadb.sqlite")
-dbListTables(lcon)
-```
-
-```
-##  [1] "gds"               "gds_subset"        "geoConvert"       
-##  [4] "geodb_column_desc" "gpl"               "gse"              
-##  [7] "gse_gpl"           "gse_gsm"           "gsm"              
-## [10] "metaInfo"          "sMatrix"
-```
-
-We will build a query that returns all the GEO GSE entries
-that have the phrase "pancreatic cancer" in their titles.
-Because GEO uses uninformative labels for array platforms,
-we will retrieve a field that records the Bioconductor array
-annotation package name so that we know what technology was
-in use.  We'll tabulate the various platforms used.
-
-
-```r
-vbls = "gse.gse, gse.title, gpl.gpl, gpl.bioc_package"
-req1 = " from gse join gse_gpl on gse.gse=gse_gpl.gse"
-req2 = " join gpl on gse_gpl.gpl=gpl.gpl"
-goal = " where gse.title like '%pancreatic%cancer%'"
-quer = paste0("select ", vbls, req1, req2, goal)
-lkpc = dbGetQuery(lcon, quer)
-dim(lkpc)
-```
-
-```
-## [1] 137   4
-```
-
-```r
-table(lkpc$bioc_package)
-```
-
-```
-## 
-##                     hgu133a                    hgu133a2 
-##                           3                           3 
-##                     hgu133b                 hgu133plus2 
-##                           3                          27 
-##                   hgug4110b       HsAgilentDesign026652 
-##                           1                           1 
-## hugene10sttranscriptcluster IlluminaHumanMethylation27k 
-##                           1                           2 
-##             illuminaHumanv4                  mouse430a2 
-##                           7                           7
-```
-
-We won't insist that you take the GEOmetadb.sqlite download/expansion,
-but if you do, variations on the query string constructed above
-can assist you with targeted identification of GEO datasets 
-for analysis and reinterpretation.
-
-### TF binding and genome-wide associations in humans
+### TF binding and genome-wide DNA-phenotype associations in humans
 
 Genetic epidemiology has taken advantage of high-throughput
 genotyping (mostly using genotyping arrays supplemented with
@@ -779,6 +707,77 @@ interferes with ESRRA function and leads to
 arthritis or abnormal cholesterol levels?   Or is this
 observation consistent with the play of chance in our
 work with these data?  We will examine this in the exercises.
+
+### Harvesting GEO for families of microarray archives
+
+The NCBI Gene Expression Omnibus is a basic resource for
+integrative bioinformatics.  The Bioconductor GEOmetadb
+package helps with discovery and characterization of
+GEO datasets.
+
+The GEOmetadb database is a 240MB download that decompresses to 3.6 GB
+of SQLite.  Once you have acquired the GEOmetadb.sqlite file using
+the `getSQLiteFile` function, you can create a connection
+and start interrogating the database locally.
+
+
+```r
+library(RSQLite)
+lcon = dbConnect(SQLite(), "GEOmetadb.sqlite")
+dbListTables(lcon)
+```
+
+```
+##  [1] "gds"               "gds_subset"        "geoConvert"       
+##  [4] "geodb_column_desc" "gpl"               "gse"              
+##  [7] "gse_gpl"           "gse_gsm"           "gsm"              
+## [10] "metaInfo"          "sMatrix"
+```
+
+We will build a query that returns all the GEO GSE entries
+that have the phrase "pancreatic cancer" in their titles.
+Because GEO uses uninformative labels for array platforms,
+we will retrieve a field that records the Bioconductor array
+annotation package name so that we know what technology was
+in use.  We'll tabulate the various platforms used.
+
+
+```r
+vbls = "gse.gse, gse.title, gpl.gpl, gpl.bioc_package"
+req1 = " from gse join gse_gpl on gse.gse=gse_gpl.gse"
+req2 = " join gpl on gse_gpl.gpl=gpl.gpl"
+goal = " where gse.title like '%pancreatic%cancer%'"
+quer = paste0("select ", vbls, req1, req2, goal)
+lkpc = dbGetQuery(lcon, quer)
+dim(lkpc)
+```
+
+```
+## [1] 137   4
+```
+
+```r
+table(lkpc$bioc_package)
+```
+
+```
+## 
+##                     hgu133a                    hgu133a2 
+##                           3                           3 
+##                     hgu133b                 hgu133plus2 
+##                           3                          27 
+##                   hgug4110b       HsAgilentDesign026652 
+##                           1                           1 
+## hugene10sttranscriptcluster IlluminaHumanMethylation27k 
+##                           1                           2 
+##             illuminaHumanv4                  mouse430a2 
+##                           7                           7
+```
+
+We won't insist that you take the GEOmetadb.sqlite download/expansion,
+but if you do, variations on the query string constructed above
+can assist you with targeted identification of GEO datasets 
+for analysis and reinterpretation.
 
 ## Summary of basic architectual considerations
 
