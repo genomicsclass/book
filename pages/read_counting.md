@@ -5,13 +5,12 @@ title: NGS read counting
 
 
 
-
 The following lab will describe how to count NGS reads which fall into genomic features. We want to end up with a count matrix which has rows corresponding to genomic ranges and columns which correspond to different experiments or samples. As an example, we will use an RNA-Seq experiment, with files in the `pasillaBamSubset` Bioconductor data package. However, the same functions can be used for DNA-Seq, ChIP-Seq, etc.
 
 
 ```r
-# biocLite('pasillaBamSubset')
-# biocLite('TxDb.Dmelanogaster.UCSC.dm3.ensGene')
+#biocLite("pasillaBamSubset")
+#biocLite("TxDb.Dmelanogaster.UCSC.dm3.ensGene")
 library(pasillaBamSubset)
 library(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
 ```
@@ -41,11 +40,13 @@ library(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
 ##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
 ##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
 ##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
+##     table, tapply, union, unique, unlist, unsplit
 ## 
+## Loading required package: S4Vectors
+## Loading required package: stats4
 ## Loading required package: IRanges
-## Loading required package: GenomicRanges
 ## Loading required package: GenomeInfoDb
+## Loading required package: GenomicRanges
 ## Loading required package: AnnotationDbi
 ## Loading required package: Biobase
 ## Welcome to Bioconductor
@@ -53,22 +54,28 @@ library(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
 ##     Vignettes contain introductory material; view with
 ##     'browseVignettes()'. To cite Bioconductor, see
 ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## 
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
 ```
-
 
 We load a transcript database object. These are prebuilt in R for various well studied organisms, for example `TxDb.Hsapiens.UCSC.hg19.knownGene`. In addition the `makeTranscriptDbFromGFF` file can be used to import GFF or GTF gene models. We use the `exonsBy` function to get a `GRangesList` object of the exons for each gene.
 
 
 ```r
 txdb <- TxDb.Dmelanogaster.UCSC.dm3.ensGene
-grl <- exonsBy(txdb, by = "gene")
+grl <- exonsBy(txdb, by="gene")
 grl[100]
 ```
 
 ```
-## GRangesList of length 1:
-## $FBgn0000286 
-## GRanges with 8 ranges and 2 metadata columns:
+## GRangesList object of length 1:
+## $$FBgn0000286 
+## GRanges object with 8 ranges and 2 metadata columns:
 ##       seqnames             ranges strand |   exon_id   exon_name
 ##          <Rle>          <IRanges>  <Rle> | <integer> <character>
 ##   [1]    chr2L [4876890, 4879196]      - |      8515        <NA>
@@ -80,10 +87,8 @@ grl[100]
 ##   [7]    chr2L [4882889, 4883113]      - |      8521        <NA>
 ##   [8]    chr2L [4882889, 4883341]      - |      8522        <NA>
 ## 
-## ---
-## seqlengths:
-##      chr2L     chr2R     chr3L     chr3R ...   chrXHet   chrYHet chrUextra
-##   23011544  21146708  24543557  27905053 ...    204112    347038  29004656
+## -------
+## seqinfo: 15 sequences (1 circular) from dm3 genome
 ```
 
 ```r
@@ -91,7 +96,7 @@ grl[[100]]
 ```
 
 ```
-## GRanges with 8 ranges and 2 metadata columns:
+## GRanges object with 8 ranges and 2 metadata columns:
 ##       seqnames             ranges strand |   exon_id   exon_name
 ##          <Rle>          <IRanges>  <Rle> | <integer> <character>
 ##   [1]    chr2L [4876890, 4879196]      - |      8515        <NA>
@@ -102,10 +107,8 @@ grl[[100]]
 ##   [6]    chr2L [4882865, 4883113]      - |      8520        <NA>
 ##   [7]    chr2L [4882889, 4883113]      - |      8521        <NA>
 ##   [8]    chr2L [4882889, 4883341]      - |      8522        <NA>
-##   ---
-##   seqlengths:
-##        chr2L     chr2R     chr3L ...   chrXHet   chrYHet chrUextra
-##     23011544  21146708  24543557 ...    204112    347038  29004656
+##   -------
+##   seqinfo: 15 sequences (1 circular) from dm3 genome
 ```
 
 ```r
@@ -113,16 +116,13 @@ grl[[100]][1]
 ```
 
 ```
-## GRanges with 1 range and 2 metadata columns:
+## GRanges object with 1 range and 2 metadata columns:
 ##       seqnames             ranges strand |   exon_id   exon_name
 ##          <Rle>          <IRanges>  <Rle> | <integer> <character>
 ##   [1]    chr2L [4876890, 4879196]      - |      8515        <NA>
-##   ---
-##   seqlengths:
-##        chr2L     chr2R     chr3L ...   chrXHet   chrYHet chrUextra
-##     23011544  21146708  24543557 ...    204112    347038  29004656
+##   -------
+##   seqinfo: 15 sequences (1 circular) from dm3 genome
 ```
-
 
 These functions in the `pasillaBamSubset` package just point us to the BAM files.
 
@@ -134,9 +134,8 @@ fl1
 ```
 
 ```
-## [1] "/usr/local/Cellar/r/3.1.0/R.framework/Versions/3.1/Resources/library/pasillaBamSubset/extdata/untreated1_chr4.bam"
+## [1] "/usr/local/lib/R/site-library/pasillaBamSubset/extdata/untreated1_chr4.bam"
 ```
-
 
 We need the following libraries for counting BAM files.
 
@@ -152,41 +151,24 @@ library(Rsamtools)
 
 ```r
 library(GenomicRanges)
-```
-
-
-Note: if you are using Bioconductor version 14, paired with R 3.1, you should also load this library. You do not need to load this library, and it will not be available to you, if you are using Bioconductor version 13, paired with R 3.0.x.
-
-
-```r
 library(GenomicAlignments)
 ```
 
-```
-## Loading required package: BSgenome
-## 
-## Attaching package: 'BSgenome'
-## 
-## The following object is masked from 'package:AnnotationDbi':
-## 
-##     species
-```
-
-
-We specify the files using the `BamFileList` function. This allows us to tell the read counting functions how many reads to load at once. For larger files, yield size of 1 million reads might make sense.
+We specify the files using the `BamFileList` function. For more fine grain control, you can tell the read counting functions how many reads to load at once with the `yieldSize` argument.
 
 
 ```r
-fls <- BamFileList(c(fl1, fl2), yieldSize = 50000)
-names(fls) <- c("first", "second")
+fls <- BamFileList(c(fl1, fl2))
+names(fls) <- c("first","second")
 ```
-
 
 The following function counts the overlaps of the reads in the BAM files in the features, which are the genes of Drosophila. We tell the counting function to ignore the strand, i.e., to allow minus strand reads to count in plus strand genes, and vice versa.
 
 
 ```r
-so1 <- summarizeOverlaps(features = grl, reads = fls, ignore.strand = TRUE)
+so1 <- summarizeOverlaps(features=grl,
+                         reads=fls,
+                         ignore.strand=TRUE)
 so1
 ```
 
@@ -201,7 +183,6 @@ so1
 ## colnames(2): first second
 ## colData names(0):
 ```
-
 
 We can examine the count matrix, which is stored in the `assay` slot:
 
@@ -229,8 +210,7 @@ colSums(assay(so1))
 ## 156469 122872
 ```
 
-
-The other parts of a `SummarizedExperiment`, as described in the lab in Week 2: Basic Bioconductor Infrastructure.
+The other parts of a `SummarizedExperiment`.
 
 
 ```r
@@ -238,15 +218,15 @@ rowData(so1)
 ```
 
 ```
-## GRangesList of length 15682:
-## $FBgn0000003 
-## GRanges with 1 range and 2 metadata columns:
+## GRangesList object of length 15682:
+## $$FBgn0000003 
+## GRanges object with 1 range and 2 metadata columns:
 ##       seqnames             ranges strand |   exon_id   exon_name
 ##          <Rle>          <IRanges>  <Rle> | <integer> <character>
 ##   [1]    chr3R [2648220, 2648518]      + |     45123        <NA>
 ## 
-## $FBgn0000008 
-## GRanges with 13 ranges and 2 metadata columns:
+## $$FBgn0000008 
+## GRanges object with 13 ranges and 2 metadata columns:
 ##        seqnames               ranges strand   | exon_id exon_name
 ##    [1]    chr2R [18024494, 18024531]      +   |   20314      <NA>
 ##    [2]    chr2R [18024496, 18024713]      +   |   20315      <NA>
@@ -262,10 +242,8 @@ rowData(so1)
 ## 
 ## ...
 ## <15680 more elements>
-## ---
-## seqlengths:
-##      chr2L     chr2R     chr3L     chr3R ...   chrXHet   chrYHet chrUextra
-##   23011544  21146708  24543557  27905053 ...    204112    347038  29004656
+## -------
+## seqinfo: 15 sequences (1 circular) from dm3 genome
 ```
 
 ```r
@@ -277,7 +255,7 @@ colData(so1)
 ```
 
 ```r
-colData(so1)$sample <- c("one", "two")
+colData(so1)$sample <- c("one","two")
 colData(so1)
 ```
 
@@ -294,94 +272,96 @@ metadata(rowData(so1))
 ```
 
 ```
-## $genomeInfo
-## $genomeInfo$`Db type`
-## [1] "TranscriptDb"
+## $$genomeInfo
+## $$genomeInfo$`Db type`
+## [1] "TxDb"
 ## 
-## $genomeInfo$`Supporting package`
+## $$genomeInfo$`Supporting package`
 ## [1] "GenomicFeatures"
 ## 
-## $genomeInfo$`Data source`
+## $$genomeInfo$`Data source`
 ## [1] "UCSC"
 ## 
-## $genomeInfo$Genome
+## $$genomeInfo$Genome
 ## [1] "dm3"
 ## 
-## $genomeInfo$Organism
+## $$genomeInfo$Organism
 ## [1] "Drosophila melanogaster"
 ## 
-## $genomeInfo$`UCSC Table`
+## $$genomeInfo$`UCSC Table`
 ## [1] "ensGene"
 ## 
-## $genomeInfo$`Resource URL`
+## $$genomeInfo$`Resource URL`
 ## [1] "http://genome.ucsc.edu/"
 ## 
-## $genomeInfo$`Type of Gene ID`
+## $$genomeInfo$`Type of Gene ID`
 ## [1] "Ensembl gene ID"
 ## 
-## $genomeInfo$`Full dataset`
+## $$genomeInfo$`Full dataset`
 ## [1] "yes"
 ## 
-## $genomeInfo$`miRBase build ID`
+## $$genomeInfo$`miRBase build ID`
 ## [1] NA
 ## 
-## $genomeInfo$transcript_nrow
+## $$genomeInfo$transcript_nrow
 ## [1] "29173"
 ## 
-## $genomeInfo$exon_nrow
+## $$genomeInfo$exon_nrow
 ## [1] "76920"
 ## 
-## $genomeInfo$cds_nrow
+## $$genomeInfo$cds_nrow
 ## [1] "62135"
 ## 
-## $genomeInfo$`Db created by`
+## $$genomeInfo$`Db created by`
 ## [1] "GenomicFeatures package from Bioconductor"
 ## 
-## $genomeInfo$`Creation time`
-## [1] "2014-03-17 16:24:54 -0700 (Mon, 17 Mar 2014)"
+## $$genomeInfo$`Creation time`
+## [1] "2014-09-26 11:22:16 -0700 (Fri, 26 Sep 2014)"
 ## 
-## $genomeInfo$`GenomicFeatures version at creation time`
-## [1] "1.15.11"
+## $$genomeInfo$`GenomicFeatures version at creation time`
+## [1] "1.17.17"
 ## 
-## $genomeInfo$`RSQLite version at creation time`
+## $$genomeInfo$`RSQLite version at creation time`
 ## [1] "0.11.4"
 ## 
-## $genomeInfo$DBSCHEMAVERSION
+## $$genomeInfo$DBSCHEMAVERSION
 ## [1] "1.0"
 ```
-
 
 We can do some basic exploratory data analysis of the counts:
 
 
 ```r
-x <- assay(so1)[, 1]
-hist(x[x > 0], col = "grey")
+x <- assay(so1)[,1]
+hist(x[x > 0], col="grey")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/read_counting-unnamed-chunk-101.png) 
+![plot of chunk unnamed-chunk-9](figure/read_counting-unnamed-chunk-9-1.png) 
 
 ```r
-hist(x[x > 0 & x < 10000], col = "grey")
+hist(x[x > 0 & x < 10000], col="grey")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/read_counting-unnamed-chunk-102.png) 
+![plot of chunk unnamed-chunk-9](figure/read_counting-unnamed-chunk-9-2.png) 
 
 ```r
-plot(assay(so1) + 1, log = "xy")
+plot(assay(so1) + 1, log="xy")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/read_counting-unnamed-chunk-103.png) 
-
+![plot of chunk unnamed-chunk-9](figure/read_counting-unnamed-chunk-9-3.png) 
 
 The second file should actually be counted in a special manner, as it contains pairs of reads which come from a single fragment. We do not want to count these twice, so we set `singleEnd = FALSE`. Additionally, we specify `fragments = TRUE` which counts reads if only one of the pair aligns to the features, and the other pair aligns to no feature.
 
 
 ```r
-# ?untreated3_chr4 ?summarizeOverlaps
-fls <- BamFileList(fl2, yieldSize = 50000)
-so2 <- summarizeOverlaps(features = grl, reads = fls, ignore.strand = TRUE, 
-    singleEnd = FALSE, fragments = TRUE)
+# ?untreated3_chr4
+# ?summarizeOverlaps
+fls <- BamFileList(fl2)
+so2 <- summarizeOverlaps(features=grl,
+                         reads=fls,
+                         ignore.strand=TRUE,
+                         singleEnd=FALSE, 
+                         fragments=TRUE)
 colSums(assay(so2))
 ```
 
@@ -400,14 +380,13 @@ colSums(assay(so1))
 ```
 
 ```r
-plot(assay(so1)[, 2], assay(so2)[, 1], xlim = c(0, 5000), ylim = c(0, 5000), 
-    xlab = "single end counting", ylab = "paired end counting")
-abline(0, 1)
-abline(0, 0.5)
+plot(assay(so1)[,2], assay(so2)[,1], xlim=c(0,5000), ylim=c(0,5000),
+     xlab="single end counting", ylab="paired end counting")
+abline(0,1)
+abline(0,.5)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/read_counting-unnamed-chunk-11.png) 
-
+![plot of chunk unnamed-chunk-10](figure/read_counting-unnamed-chunk-10-1.png) 
 
 ## Footnotes
 
@@ -417,19 +396,13 @@ Bioconductor packages:
 
 - `summarizeOverlaps` in the `GenomicAlignments` package
 
-<http://www.bioconductor.org/packages/devel/bioc/html/GenomicAlignments.html>
+http://www.bioconductor.org/packages/release/bioc/html/GenomicAlignments.html
 
 - `featureCounts` in the `Rsubread` package
 
 Liao Y, Smyth GK, Shi W., "featureCounts: an efficient general purpose program for assigning sequence reads to genomic features." Bioinformatics. 2014
-<http://www.ncbi.nlm.nih.gov/pubmed/24227677>
-<http://bioinf.wehi.edu.au/featureCounts/>
-
-- `easyRNAseq` package
-
-Delhomme N1, Padioleau I, Furlong EE, Steinmetz LM. "easyRNASeq: a bioconductor package for processing RNA-Seq data." Bioinformatics. 2012.
-<http://www.ncbi.nlm.nih.gov/pubmed/22847932>
-<http://www.bioconductor.org/packages/release/bioc/html/easyRNASeq.html>
+http://www.ncbi.nlm.nih.gov/pubmed/24227677
+http://bioinf.wehi.edu.au/featureCounts/
 
 Command line tools: 
 
@@ -439,11 +412,9 @@ Simon Anders, Paul Theodor Pyl, Wolfgang Huber.
 HTSeq — A Python framework to work with high-throughput sequencing data
 bioRxiv preprint (2014), doi: [10.1101/002824](http://dx.doi.org/10.1101/002824)
 
-<http://www-huber.embl.de/users/anders/HTSeq/doc/count.html>
+http://www-huber.embl.de/users/anders/HTSeq/doc/count.html
 
 - `bedtools` <https://code.google.com/p/bedtools/>
 
 - `bedops` <https://code.google.com/p/bedops/>
-
-
 
