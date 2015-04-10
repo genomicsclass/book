@@ -105,6 +105,10 @@ title: PH525x series - Biomedical Data Science
 - [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
 - [Cheat sheet for GRanges and other Bioconductor objects](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
 
+---
+
+- [NGS read counting](pages/read_counting.html)
+
 <!--
 
 new ones:
@@ -123,7 +127,7 @@ old ones:
 - [Mapping features to genes](pages/mapping_features.html)
 - [Gene set analysis lecture](pages/gsa.html)
 - [Gene set testing in R](pages/gene_set_testing.html)
-- [Counting NGS reads in features](pages/read_counting.html)
+
 
 -->
 
