@@ -97,6 +97,7 @@ title: PH525x series - Biomedical Data Science
 ---
 
 - [IRanges and GRanges](pages/iranges_granges.html)
+- [Operating on GRanges](pages/operateGRanges.html)
 
 ---
 
