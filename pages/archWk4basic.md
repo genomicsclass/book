@@ -656,6 +656,9 @@ We will now consider the relationship between ESRRA binding
 in B-cells and phenotypes for which GWAS associations
 have been reported.  
 
+It is tempting to proceed as follows.  We simply
+compute overlaps between the binding peak regions
+and the catalog GRanges.
 
 ```r
 library(ERBS)
@@ -696,6 +699,62 @@ sort(table(gwrngs19$Disease.Trait[
 ##                           4                           4 
 ##            Bipolar disorder 
 ##                           3
+```
+The problem with this is that `gwrngs19` is a set of *records* of
+GWAS hits.  There are cases of SNP that are associated
+with multiple phenotypes, and there are cases of multiple studies that find
+the same result for a given SNP.  It is easy to get 
+a sense of the magnitude of the problem using `reduce`.
+
+
+```r
+length(gwrngs19)-length(reduce(gwrngs19))
+```
+
+```
+## [1] 3659
+```
+So our strategy will be to find overlaps with the
+reduced version of `gwrngs19` and then come back
+to enumerate phenotypes at unique SNPs occupying binding sites.
+
+```r
+fo = findOverlaps(GM12878, reduce(gwrngs19))
+fo
+```
+
+```
+## Hits of length 28
+## queryLength: 1873
+## subjectLength: 13595
+##     queryHits subjectHits 
+##      <integer>   <integer> 
+##  1          12        3120 
+##  2          28       12162 
+##  3          39        7588 
+##  4          84        9947 
+##  5         257        7797 
+##  ...       ...         ... 
+##  24       1564       11567 
+##  25       1635        4554 
+##  26       1669       12996 
+##  27       1709        8057 
+##  28       1869          83
+```
+
+```r
+ovrngs = reduce(gwrngs19)[subjectHits(fo)]
+phset = lapply( ovrngs, function(x)
+  unique( gwrngs19[ which(gwrngs19 %over% x) ]$Disease.Trait ) )
+sort(table(unlist(phset)), decreasing=TRUE)[1:5]
+```
+
+```
+## 
+## Rheumatoid arthritis     Bipolar disorder   Cholesterol, total 
+##                    4                    2                    2 
+##      HDL cholesterol      Type 1 diabetes 
+##                    2                    2
 ```
 
 What can explain this observation?  We see that there
