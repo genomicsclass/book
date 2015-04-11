@@ -214,7 +214,7 @@ The other parts of a `SummarizedExperiment`.
 
 
 ```r
-rowData(so1)
+rowData(so1) # rowData will become rowRanges in the next release of Bioc
 ```
 
 ```
@@ -268,7 +268,7 @@ colData(so1)
 ```
 
 ```r
-metadata(rowData(so1))
+metadata(rowData(so1)) 
 ```
 
 ```
