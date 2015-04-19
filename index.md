@@ -113,7 +113,8 @@ title: PH525x series - Biomedical Data Science
 ---
 
 - [Technical versus biological variability](pages/biological_versus_technical_var.html)
-- [Statistical Inference with Bioconductor](pages/
+- [Statistical Inference with Bioconductor](pages/inference_with_bioc.html)
+- [Using limma](pages/)
 <!--
 
 new ones:
