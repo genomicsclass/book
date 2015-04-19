@@ -14,57 +14,7 @@ We download an experiment from the GEO website, using the `getGEO` function from
 
 ```r
 library(GEOquery)
-```
-
-```
-## Loading required package: methods
-## Loading required package: Biobase
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## Setting options('download.file.method.GEOquery'='auto')
-```
-
-```r
 g <- getGEO("GSE34313")
-```
-
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE34nnn/GSE34313/matrix/
-## Found 1 file(s)
-## GSE34313_series_matrix.txt.gz
-## File stored at: 
-## /var/folders/kv/h18_5_qn1hj43r8pq5l0tddw0000gn/T//RtmpRPbd1P/GPL6480.soft
-```
-
-```r
 e <- g[[1]]
 ```
 
@@ -124,18 +74,6 @@ The following lines run the linear model in `limma`. We note that the top genes 
 
 ```r
 library(limma)
-```
-
-```
-## 
-## Attaching package: 'limma'
-## 
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     plotMA
-```
-
-```r
 design <- model.matrix(~ es$condition)
 fit <- lmFit(es, design=design)
 fit <- eBayes(fit)
@@ -193,11 +131,11 @@ r1
 ```
 
 ```
-##          Active.Prop   P.Value
-## Down      0.16269841 0.0120060
-## Up        0.09325397 0.9884942
-## UpOrDown  0.16269841 0.0240000
-## Mixed     0.25595238 0.0100000
+##          Active.Prop    P.Value
+## Down      0.16269841 0.01850925
+## Up        0.09325397 0.98199100
+## UpOrDown  0.16269841 0.03700000
+## Mixed     0.25595238 0.01100000
 ```
 
 
@@ -334,19 +272,19 @@ head(r2)
 
 ```
 ##            NGenes  PropDown     PropUp Direction PValue         FDR
-## GO:0005125    169 0.2662722 0.04733728      Down  0.001 0.009559211
-## GO:0008083    167 0.2874251 0.07784431      Down  0.001 0.009559211
-## GO:0043433     61 0.2786885 0.13114754      Down  0.001 0.009559211
-## GO:0007623     57 0.2105263 0.12280702      Down  0.001 0.009559211
-## GO:0006959     52 0.2500000 0.09615385      Down  0.001 0.009559211
-## GO:0051781     49 0.3265306 0.08163265      Down  0.001 0.009559211
+## GO:0005125    169 0.2662722 0.04733728      Down  0.001 0.009435065
+## GO:0008083    167 0.2874251 0.07784431      Down  0.001 0.009435065
+## GO:0043433     61 0.2786885 0.13114754      Down  0.001 0.009435065
+## GO:0007623     57 0.2105263 0.12280702      Down  0.001 0.009435065
+## GO:0006959     52 0.2500000 0.09615385      Down  0.001 0.009435065
+## GO:0048661     46 0.3043478 0.17391304      Down  0.001 0.009435065
 ##            PValue.Mixed   FDR.Mixed
-## GO:0005125        0.001 0.002549123
-## GO:0008083        0.001 0.002549123
-## GO:0043433        0.001 0.002549123
-## GO:0007623        0.001 0.002549123
-## GO:0006959        0.001 0.002549123
-## GO:0051781        0.001 0.002549123
+## GO:0005125        0.001 0.002531359
+## GO:0008083        0.001 0.002531359
+## GO:0043433        0.001 0.002531359
+## GO:0007623        0.001 0.002531359
+## GO:0006959        0.001 0.002531359
+## GO:0048661        0.001 0.002531359
 ```
 
 ```r
@@ -409,22 +347,22 @@ r2tab[,1:2]
 ## 3  GO:0043433
 ## 4  GO:0007623
 ## 5  GO:0006959
-## 6  GO:0051781
-## 7  GO:0048661
+## 6  GO:0048661
+## 7  GO:0043525
 ## 8  GO:0030593
-## 9  GO:0007595
-## 10 GO:0032755
+## 9  GO:0032755
+## 10 GO:2001244
 ##                                                                                  TERM
 ## 1                                                                   cytokine activity
 ## 2                                                              growth factor activity
 ## 3  negative regulation of sequence-specific DNA binding transcription factor activity
 ## 4                                                                    circadian rhythm
 ## 5                                                             humoral immune response
-## 6                                                positive regulation of cell division
-## 7                             positive regulation of smooth muscle cell proliferation
+## 6                             positive regulation of smooth muscle cell proliferation
+## 7                                     positive regulation of neuron apoptotic process
 ## 8                                                               neutrophil chemotaxis
-## 9                                                                           lactation
-## 10                                    positive regulation of interleukin-6 production
+## 9                                     positive regulation of interleukin-6 production
+## 10                       positive regulation of intrinsic apoptotic signaling pathway
 ```
 
 We can also look for the top results using the standard p-value and in the *up* direction.
@@ -440,23 +378,23 @@ r2tab[,1:2]
 
 ```
 ##          GOID
-## 1  GO:0005912
-## 2  GO:0030032
-## 3  GO:0003950
-## 4  GO:0046847
-## 5  GO:0042813
-## 6  GO:0010942
+## 1  GO:2001244
+## 2  GO:0005912
+## 3  GO:0030032
+## 4  GO:0003950
+## 5  GO:0046847
+## 6  GO:0042813
 ## 7  GO:0008631
 ## 8  GO:0045926
 ## 9  GO:0071889
 ## 10 GO:0008209
 ##                                                                     TERM
-## 1                                                      adherens junction
-## 2                                                 lamellipodium assembly
-## 3                                   NAD+ ADP-ribosyltransferase activity
-## 4                                                    filopodium assembly
-## 5                                        Wnt-activated receptor activity
-## 6                                      positive regulation of cell death
+## 1           positive regulation of intrinsic apoptotic signaling pathway
+## 2                                                      adherens junction
+## 3                                                 lamellipodium assembly
+## 4                                   NAD+ ADP-ribosyltransferase activity
+## 5                                                    filopodium assembly
+## 6                                        Wnt-activated receptor activity
 ## 7  intrinsic apoptotic signaling pathway in response to oxidative stress
 ## 8                                          negative regulation of growth
 ## 9                                                 14-3-3 protein binding
