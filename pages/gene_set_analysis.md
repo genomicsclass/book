@@ -29,77 +29,7 @@ We will need these packages:
 
 ```r
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 library(GSEABase)
-```
-
-```
-## Loading required package: BiocGenerics
-## Loading required package: methods
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## Loading required package: annotate
-## Loading required package: AnnotationDbi
-## Loading required package: stats4
-## Loading required package: GenomeInfoDb
-## Loading required package: S4Vectors
-## Loading required package: IRanges
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-## 
-## Loading required package: XML
-## 
-## Attaching package: 'annotate'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     organism
-## 
-## Loading required package: graph
-## 
-## Attaching package: 'graph'
-## 
-## The following object is masked from 'package:XML':
-## 
-##     addNode
 ```
 
 In previous sections we have used a dataset comparing males and females. 
@@ -118,42 +48,7 @@ correct for them using SVA:
 library(GSE5859Subset)
 data(GSE5859Subset)
 library(sva)
-```
-
-```
-## Loading required package: mgcv
-## Loading required package: nlme
-## 
-## Attaching package: 'nlme'
-## 
-## The following object is masked from 'package:IRanges':
-## 
-##     collapse
-## 
-## This is mgcv 1.8-6. For overview type 'help("mgcv-package")'.
-## Loading required package: genefilter
-## 
-## Attaching package: 'genefilter'
-## 
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
 library(limma)
-```
-
-```
-## 
-## Attaching package: 'limma'
-## 
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     plotMA
-```
-
-```r
 X = sampleInfo$group
 mod<-model.matrix(~X)
 svafit <- sva(geneExpression,mod)
