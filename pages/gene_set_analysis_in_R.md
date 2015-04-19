@@ -5,6 +5,8 @@ title: Gene set testing
 
 
 
+<a name="roast"></a>
+
 # Gene set testing
 
 Here, we will explore software for testing differential expression in a set of genes. These tests differ from the gene-by-gene tests we saw previously. Again, the gene set testing software we will use lives in the `limma` package.
@@ -131,13 +133,14 @@ r1
 ```
 
 ```
-##          Active.Prop   P.Value
-## Down      0.16269841 0.0190095
-## Up        0.09325397 0.9814907
-## UpOrDown  0.16269841 0.0380000
-## Mixed     0.25595238 0.0100000
+##          Active.Prop    P.Value
+## Down      0.16269841 0.01550775
+## Up        0.09325397 0.98499250
+## UpOrDown  0.16269841 0.03100000
+## Mixed     0.25595238 0.00800000
 ```
 
+<a name="mroast"></a>
 
 ## Testing multiple gene sets
 
@@ -272,19 +275,19 @@ head(r2)
 
 ```
 ##            NGenes  PropDown     PropUp Direction PValue         FDR
-## GO:0006954    302 0.2317881 0.09271523      Down  0.001 0.009496732
-## GO:0005125    169 0.2662722 0.04733728      Down  0.001 0.009496732
-## GO:0008083    167 0.2874251 0.07784431      Down  0.001 0.009496732
-## GO:0071222     75 0.2666667 0.17333333      Down  0.001 0.009496732
-## GO:0043433     61 0.2786885 0.13114754      Down  0.001 0.009496732
-## GO:0007623     57 0.2105263 0.12280702      Down  0.001 0.009496732
-##            PValue.Mixed   FDR.Mixed
-## GO:0006954        0.001 0.002513841
-## GO:0005125        0.001 0.002513841
-## GO:0008083        0.001 0.002513841
-## GO:0071222        0.001 0.002513841
-## GO:0043433        0.001 0.002513841
-## GO:0007623        0.001 0.002513841
+## GO:0005125    169 0.2662722 0.04733728      Down  0.001 0.009435065
+## GO:0008083    167 0.2874251 0.07784431      Down  0.001 0.009435065
+## GO:0043433     61 0.2786885 0.13114754      Down  0.001 0.009435065
+## GO:0007623     57 0.2105263 0.12280702      Down  0.001 0.009435065
+## GO:0006959     52 0.2500000 0.09615385      Down  0.001 0.009435065
+## GO:0051781     49 0.3265306 0.08163265      Down  0.001 0.009435065
+##            PValue.Mixed  FDR.Mixed
+## GO:0005125        0.001 0.00256261
+## GO:0008083        0.001 0.00256261
+## GO:0043433        0.001 0.00256261
+## GO:0007623        0.001 0.00256261
+## GO:0006959        0.001 0.00256261
+## GO:0051781        0.001 0.00256261
 ```
 
 ```r
@@ -324,15 +327,13 @@ GOTERM[[rownames(r2)[1]]]
 ```
 
 ```
-## GOID: GO:0006954
-## Term: inflammatory response
-## Ontology: BP
-## Definition: The immediate defensive reaction (by vertebrate
-##     tissue) to infection or injury caused by chemical or physical
-##     agents. The process is characterized by local vasodilation,
-##     extravasation of plasma into intercellular spaces and
-##     accumulation of white blood cells and macrophages.
-## Synonym: Inflammation
+## GOID: GO:0005125
+## Term: cytokine activity
+## Ontology: MF
+## Definition: Functions to control the survival, growth,
+##     differentiation and effector function of tissues and cells.
+## Synonym: autocrine activity
+## Synonym: paracrine activity
 ```
 
 ```r
@@ -344,27 +345,27 @@ r2tab[,1:2]
 
 ```
 ##          GOID
-## 1  GO:0006954
-## 2  GO:0005125
-## 3  GO:0008083
-## 4  GO:0071222
-## 5  GO:0043433
-## 6  GO:0007623
-## 7  GO:0006959
-## 8  GO:0051781
-## 9  GO:0048661
-## 10 GO:0043525
+## 1  GO:0005125
+## 2  GO:0008083
+## 3  GO:0043433
+## 4  GO:0007623
+## 5  GO:0006959
+## 6  GO:0051781
+## 7  GO:0048661
+## 8  GO:0030593
+## 9  GO:0032755
+## 10 GO:0005912
 ##                                                                                  TERM
-## 1                                                               inflammatory response
-## 2                                                                   cytokine activity
-## 3                                                              growth factor activity
-## 4                                             cellular response to lipopolysaccharide
-## 5  negative regulation of sequence-specific DNA binding transcription factor activity
-## 6                                                                    circadian rhythm
-## 7                                                             humoral immune response
-## 8                                                positive regulation of cell division
-## 9                             positive regulation of smooth muscle cell proliferation
-## 10                                    positive regulation of neuron apoptotic process
+## 1                                                                   cytokine activity
+## 2                                                              growth factor activity
+## 3  negative regulation of sequence-specific DNA binding transcription factor activity
+## 4                                                                    circadian rhythm
+## 5                                                             humoral immune response
+## 6                                                positive regulation of cell division
+## 7                             positive regulation of smooth muscle cell proliferation
+## 8                                                               neutrophil chemotaxis
+## 9                                     positive regulation of interleukin-6 production
+## 10                                                                  adherens junction
 ```
 
 We can also look for the top results using the standard p-value and in the *up* direction.
@@ -380,27 +381,27 @@ r2tab[,1:2]
 
 ```
 ##          GOID
-## 1  GO:0009267
-## 2  GO:2001244
-## 3  GO:0005912
-## 4  GO:0030032
+## 1  GO:0005912
+## 2  GO:0030032
+## 3  GO:0017147
+## 4  GO:0048008
 ## 5  GO:0003950
 ## 6  GO:0046847
 ## 7  GO:0042813
-## 8  GO:0008631
-## 9  GO:0045926
-## 10 GO:0071889
+## 8  GO:0010942
+## 9  GO:0008631
+## 10 GO:0045926
 ##                                                                     TERM
-## 1                                        cellular response to starvation
-## 2           positive regulation of intrinsic apoptotic signaling pathway
-## 3                                                      adherens junction
-## 4                                                 lamellipodium assembly
+## 1                                                      adherens junction
+## 2                                                 lamellipodium assembly
+## 3                                                    Wnt-protein binding
+## 4              platelet-derived growth factor receptor signaling pathway
 ## 5                                   NAD+ ADP-ribosyltransferase activity
 ## 6                                                    filopodium assembly
 ## 7                                        Wnt-activated receptor activity
-## 8  intrinsic apoptotic signaling pathway in response to oxidative stress
-## 9                                          negative regulation of growth
-## 10                                                14-3-3 protein binding
+## 8                                      positive regulation of cell death
+## 9  intrinsic apoptotic signaling pathway in response to oxidative stress
+## 10                                         negative regulation of growth
 ```
 
 Again but for the *down* direction.
@@ -415,17 +416,17 @@ r2tab[,1:2]
 
 ```
 ##         GOID
-## 1 GO:0006954
-## 2 GO:0005125
-## 3 GO:0008083
-## 4 GO:0071222
-## 5 GO:0043433
+## 1 GO:0005125
+## 2 GO:0008083
+## 3 GO:0043433
+## 4 GO:0007623
+## 5 GO:0006959
 ##                                                                                 TERM
-## 1                                                              inflammatory response
-## 2                                                                  cytokine activity
-## 3                                                             growth factor activity
-## 4                                            cellular response to lipopolysaccharide
-## 5 negative regulation of sequence-specific DNA binding transcription factor activity
+## 1                                                                  cytokine activity
+## 2                                                             growth factor activity
+## 3 negative regulation of sequence-specific DNA binding transcription factor activity
+## 4                                                                   circadian rhythm
+## 5                                                            humoral immune response
 ```
 
 
