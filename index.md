@@ -110,6 +110,9 @@ title: PH525x series - Biomedical Data Science
 - [Importing NGS data with Bioconductor](pages/import_NGS.html)
 - [NGS read counting](pages/read_counting.html)
 
+---
+
+- [Technical versus biological variability](pages/biological_versus_technical_var.html)
 <!--
 
 new ones:
