@@ -115,8 +115,8 @@ title: PH525x series - Biomedical Data Science
 - [Technical versus biological variability](pages/biological_versus_technical_var.html)
 - [Statistical Inference with Bioconductor](pages/inference_with_bioc.html)
 - [Using limma](pages/using_limma.html)
-- [Gene Sets](pages/gene_set_analysis.html)
-- [Inference on Gene Sets](gene_set_analysis.html)
+- [Gene Sets Analysis](pages/gene_set_analysis.html)
+- [Gene Sets Analysis in R](gene_set_analysis.html)
 
 
 <!--
