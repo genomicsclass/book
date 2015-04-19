@@ -116,7 +116,7 @@ title: PH525x series - Biomedical Data Science
 - [Statistical Inference with Bioconductor](pages/inference_with_bioc.html)
 - [Using limma](pages/using_limma.html)
 - [Gene Sets Analysis](pages/gene_set_analysis.html)
-- [Gene Sets Analysis in R](pages/gene_set_testing.html)
+- [Gene Sets Analysis in R](pages/gene_set_analysis_in_R.html)
 
 
 <!--
