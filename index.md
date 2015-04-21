@@ -143,15 +143,15 @@ old ones:
 
 ### 5: RNA-seq data analysis
 
-- [RNA-seq](pages/RNAseq.html)
+- RNA-seq book page coming soon
 
 ### 6: Variant Discovery and Genotyping
 
-- [Genome variation](pages/SNP.html)
+- [Genome variation](pages/SNP.html) from 2014
 
 ### 7: ChIP-seq data analysis
 
-- [ChIP-seq](pages/ChIPseq.html)
+- [ChIP-seq](pages/ChIPseq.html) from 2014
 
 ### 8: DNA methylation data analysis
 
