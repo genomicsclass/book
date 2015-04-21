@@ -5,6 +5,81 @@ title: "Architecture: Overview of last of the four As"
 
 
 
+```
+## Loading required package: methods
+## Loading required package: stats4
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist, unsplit
+## 
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+## 
+## Loading required package: GenomeInfoDb
+## Loading required package: S4Vectors
+## Loading required package: IRanges
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
+## 
+## Loading required package: ggplot2
+## Need specific help about ggbio? try mailing 
+##  the maintainer or visit http://tengfei.github.com/ggbio/
+## 
+## Attaching package: 'ggbio'
+## 
+## The following objects are masked from 'package:ggplot2':
+## 
+##     geom_bar, geom_rect, geom_segment, ggsave, stat_bin,
+##     stat_identity, xlim
+## 
+## Loading required package: GenomicFeatures
+## Loading required package: tools
+## Loading required package: Biostrings
+## Loading required package: XVector
+## 
+## Attaching package: 'harbChIP'
+## 
+## The following object is masked from 'package:OrganismDbi':
+## 
+##     keys
+## 
+## The following object is masked from 'package:AnnotationDbi':
+## 
+##     keys
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     organism
+```
+
 ## Introduction to architectural concepts for Bioconductor
 
 The basic objective is to support an efficient and reliable flow of experimental
@@ -68,7 +143,8 @@ We can create our own packages using `package.skeleton`.  We'll illustrate that 
 with an enhancement to the ERBS package that was created for the course.
 We'll create a new package that utilizes the peak data, defining
 a function `juxta` that allows us to compare binding peak patterns for the two cell
-types on a selected chromosome.
+types on a selected chromosome.  (I have commented out code that
+uses an alternative graphics engine, for optional exploration.)
 
 Here's a definition of `juxta`.  Add it to your R session.
 
@@ -83,6 +159,14 @@ juxta = function (chrname="chr22", ...)
     ap1 = autoplot(GenomicRanges::subset(HepG2, seqnames==chrname))
     ap2 = autoplot(GenomicRanges::subset(GM12878, seqnames==chrname))
     tracks(HepG2 = ap1, Bcell = ap2, ...)
+# alternative code for Gviz below
+#    require(Gviz)
+#    ap1 = AnnotationTrack(GenomicRanges::subset(HepG2, seqnames==chrname))
+#    names(ap1) = "HepG2"
+#    ap2 = AnnotationTrack(GenomicRanges::subset(GM12878, seqnames==chrname))
+#    names(ap2) = "B-cell"
+#    ax = GenomeAxisTrack()
+#    plotTracks(list(ax, ap1, ap2))
 }
 ```
 
@@ -94,58 +178,14 @@ library(ERBS)
 juxta("chr22", main="ESRRA binding peaks on chr22")
 ```
 
-```
-## Loading required package: ggbio
-## Loading required package: methods
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Loading required package: ggplot2
-## Need specific help about ggbio? try mailing 
-##  the maintainer or visit http://tengfei.github.com/ggbio/
-## 
-## Attaching package: 'ggbio'
-## 
-## The following objects are masked from 'package:ggplot2':
-## 
-##     geom_bar, geom_rect, geom_segment, ggsave, stat_bin,
-##     stat_identity, xlim
-## 
-## Loading required package: GenomicRanges
-## Loading required package: S4Vectors
-## Loading required package: stats4
-## Loading required package: IRanges
-## Loading required package: GenomeInfoDb
-```
-
 ![plot of chunk doj](figure/archWk4basic-doj-1.png) 
 
 In the video we will show how to use `package.skeleton` and the Rstudio
-editor to generate, document, and install this new package!  We will
+editor to generate, document, and install this new package!  We will not
 streamline the code in `juxta` to make use of inter-package
 symbol transfer by properly writing the DESCRIPTION and NAMESPACE
-files for the package.
+files for the package, but leave this for an advanced course in
+software development.
 
 ### A new annotation package with OrganismDbi
 
@@ -159,28 +199,6 @@ a very lightweight integrative package.
 
 ```r
 library(OrganismDbi)
-```
-
-```
-## Loading required package: AnnotationDbi
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-## 
-## Loading required package: GenomicFeatures
-```
-
-```r
 gd = list( join1 = c(GO.db="GOID", org.Sc.sgd.db="GO"),
            join2 = c(org.Sc.sgd.db="ENTREZID",
               TxDb.Scerevisiae.UCSC.sacCer3.sgdGene="GENEID"))
@@ -273,9 +291,164 @@ genes(Sac.cer3)
 ##   seqinfo: 17 sequences (1 circular) from sacCer3 genome
 ```
 
+## Packages that provide access to data external to R
+
+In this subunit we have created two packages.  `erbsViz` was created to provide
+packaged access to an R function `juxta`, that we coded.
+`Sac.cer3` was created to provide access to an instance of the
+`OrganismDb` class, which is an S4 object.
+
+There are many examples of R packages that include or facilitate
+access to entities that are not R functions or data objects.  By far
+the most common examples of this approach are the annotation packages
+that employ relational databases to serve data to R sessions.
+Other examples provide access to other types of data, often
+as illustrations of how R-based infrastructure can be used
+to efficiently interact with non-R data.  We'll now illustrate
+two of these bridging package concepts.
+
+### SQLite as the back end
+
+SQL stands for Structured Query Language.  This is a highly
+regimented language used for working with relational databases.
+Knowledge of SQL permits us to work with databases in Microsoft Access,
+Oracle, Postgres, and other relational data stores.
+The basic idea of relational databases is that data we are interested
+in can be stored in rectangular tables, with rows thought of as records
+and columns thought of as attributes.  Our primary activities with
+a database are choosing attributes of interest (this is carried
+out with the SQL operation called "SELECT"), specifying the tables
+where these attributes should be looked up (with "FROM" or "USING" 
+clauses), and filtering records (with "WHERE" clauses).  We'll
+have an example below.
+
+SQLite is an open-source relational database system that
+requires no special configuration or infrastructure.  We can
+interact with SQLite databases and tables through R's database interface
+package (DBI) and the RSQLite package that implements the
+interface protocol for SQLite.  Here's an example.
+We'll look at the database underlying the GO.db annotation package.
+
+
+```r
+library(GO.db)
+```
+There is a file on disk containing all the annotation data.
+
+```r
+GO.db$conn@dbname
+```
+
+```
+## [1] "/Library/Frameworks/R.framework/Versions/3.1/Resources/library/GO.db/extdata/GO.sqlite"
+```
+We can list the tables present in the database.  We pass
+the connection object to `dbListTables`.
+
+```r
+dbListTables( GO.db$conn )
+```
+
+```
+##  [1] "go_bp_offspring" "go_bp_parents"   "go_cc_offspring"
+##  [4] "go_cc_parents"   "go_mf_offspring" "go_mf_parents"  
+##  [7] "go_obsolete"     "go_ontology"     "go_synonym"     
+## [10] "go_term"         "map_counts"      "map_metadata"   
+## [13] "metadata"        "sqlite_stat1"
+```
+
+Everything else that we are concerned with involves constructing
+SQL queries and executing them in the database.  You can
+have a look at the SQLite web page for background and details
+on valid query syntax.
+
+Here we sample records from the table that manages
+terms corresponding to GO categories using a limit clause.
+
+```r
+dbGetQuery( GO.db$conn, "select * from go_term limit 5")
+```
+
+```
+##   _id      go_id                                        term ontology
+## 1  27 GO:0000001                   mitochondrion inheritance       BP
+## 2  29 GO:0000002            mitochondrial genome maintenance       BP
+## 3  30 GO:0000003                                reproduction       BP
+## 4  34 GO:0042254                         ribosome biogenesis       BP
+## 5  35 GO:0044183 protein binding involved in protein folding       MF
+##                                                                                                                                                                                                           definition
+## 1                            The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton.
+## 2                                                                  The maintenance of the structure and integrity of the mitochondrial genome; includes replication and segregation of the mitochondrial chromosome.
+## 3                                                                                       The production of new individuals that contain some portion of genetic material inherited from one or more parent organisms.
+## 4      A cellular process that results in the biosynthesis of constituent macromolecules, assembly, and arrangement of constituent parts of ribosome subunits; includes transport to the sites of protein synthesis.
+## 5 Interacting selectively and non-covalently with any protein or protein complex (a complex of two or more proteins that may include other nonprotein molecules) that contributes to the process of protein folding.
+```
+
+The `dbGetQuery` function will return a data.frame instance.
+Why don't we just manage the annotation as a data.frame?  There
+are several reasons.  First, for very large data tables, just
+loading the data into an R session can be time consuming and
+interferes with interactivity.  Second, SQLite includes
+considerable infrastructure that optimizes query resolution, particularly
+when multiple tables are being joined.  It is better to capitalize
+on that investment than to add tools for query optimization to the
+R language.
+
+Fortunately, if you are not interested in direct interaction with
+the RDBMS, you can pretend it is not there, and just work with the
+high-level R annotation functions that we have described.
+
+### Tabix-indexed text or BAM as the back end
+
+Our example data for import (narrowPeak files in the ERBS package)
+was low volume and we have no problem importing the entire contents
+of each file into R.  In certain cases, very large quantities
+of data may be provided in narrowPeak or other genomic file formats
+like bed or bigWig, and it will be cumbersome to import the
+entire file.  
+
+The Tabix utilities for compressing and indexing textual files
+presenting data on genomic coordinates can be used through the
+Rsamtools and rtracklayer packages.  Once the records have been
+sorted and compressed, Tabix indexing allows us to make targeted
+queries of the data in the files.  We can traverse a file
+in chunks to keep our memory footprint small; we can even process
+multiple chunks in parallel in certain settings.
+
+We will illustrate some of these ideas in the video.  An important
+bit of knowledge is that you can sort a bed file, on a unix system,
+with the command `sort -k1,1 -k2,2g -o ...`, and this is a necessary
+prelude to Tabix indexing.
+
+Here's how we carried out the activities of the video:
+```
+# check file
+head ENCFF001VEH.narrowPeak
+# sort
+sort -k1,1 -k2,2g -o bcell.narrowPeak ENCFF001VEH.narrowPeak
+# compress
+bgzip bcell.narrowPeak
+# index
+tabix -p bed bcell.narrowPeak.gz
+# generates the bcell.narrowPeak.gz.tbi
+tabix bcell.narrowPeak.gz chr22:1-20000000
+# yields only two records on chr22
+```
+In R we made use of the compressed and indexed version
+as follows:
+
+```r
+library(Rsamtools)
+library(rtracklayer)
+targ = import.bedGraph("bcell.narrowPeak.gz", which=GRanges("chr22", IRanges(1,2e7)))
+```
+This is a targeted import.  We do not import the contents of the entire
+file but just the records that reside in the `which` range.
+
+
 ## Integrative analysis concepts
  
-### TF binding and expression co-regulation
+### TF binding and expression co-regulation in yeast
 
 An example of integrative analysis was given in the introductory
 lecture, in connection with the regulatory program of the yeast 
@@ -296,28 +469,6 @@ in the `harbChIP` package.
 
 ```r
 library(harbChIP)
-```
-
-```
-## Loading required package: tools
-## Loading required package: Biostrings
-## 
-## Attaching package: 'harbChIP'
-## 
-## The following object is masked from 'package:OrganismDbi':
-## 
-##     keys
-## 
-## The following object is masked from 'package:AnnotationDbi':
-## 
-##     keys
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     organism
-```
-
-```r
 data(harbChIP)
 harbChIP
 ```
@@ -364,7 +515,7 @@ mind = which(sampleNames(harbChIP)=="MBP1")
 qqnorm(exprs(harbChIP)[,mind], main="MBP1 binding")
 ```
 
-![plot of chunk lkm](figure/archWk4basic-lkm-1.png) 
+![plot of chunk lkm2](figure/archWk4basic-lkm2-1.png) 
 
 The shape of the qq-normal plot is indicative of
 a strong
@@ -400,7 +551,7 @@ select(org.Sc.sgd.db, keys=topb, keytype="ORF",
 
 Our conjecture is that these genes will exhibit
 similar expression trajectories, peaking well
-within the first half of the 66 minute cell cycle
+within the first half of cell cycle
 for the yeast strain studied.
 
 We will subset the cell cycle expression data from
@@ -432,19 +583,189 @@ have not entered into the assessment of statistical
 significance, but have focused on how the data
 types are brought together.
 
-Consider how the Bioconductor architecture facilitated
-this analysis.
+### TF binding and genome-wide DNA-phenotype associations in humans
 
-- Easily installed and highly self-descriptive packages provide the key experimental data
+Genetic epidemiology has taken advantage of high-throughput
+genotyping (mostly using genotyping arrays supplemented with
+model-based genotype imputation) to develop the concept of
+"genome-wide association study" (GWAS).  Here a cohort is assembled
+and individuals are distinguished in terms of disease status or
+phenotype measurement, and the genome is searched for variants
+exhibiting statistical association with disease status or phenotypic
+class or value.  An example of a GWAS result can be
+seen with the gwascat package, which includes selections from the [NHGRI
+GWAS catalog](https://www.genome.gov/26525384), which has recently
+moved to EBI-EMBL.
 
-- Conventional containers (ExpressionSets) are used
-for assay plus sample-level data (even when the experiment
-does not assess expression) so that it is easy
-to quickly isolate features and samples of interest
 
-- Immediate access to R's visualization and statistical
-analysis functions makes appraisal and inference
-very convenient.
+```r
+library(gwascat)
+data(gwrngs19)
+gwrngs19[100]
+```
+
+```
+## gwasloc instance with 1 records and 35 attributes per record.
+## Extracted:  Mon Sep  8 13:08:13 2014 
+## Genome:  hg19 
+## Excerpt:
+## GRanges object with 1 range and 3 metadata columns:
+##       seqnames                 ranges strand |        Disease.Trait
+##          <Rle>              <IRanges>  <Rle> |          <character>
+##   100    chr11 [118729391, 118729391]      * | Rheumatoid arthritis
+##              SNPs   p.Value
+##       <character> <numeric>
+##   100  rs10790268     1e-15
+##   -------
+##   seqinfo: 23 sequences from hg19 genome
+```
+
+```r
+mcols(gwrngs19[100])[,c(2,7,8,9,10,11)]
+```
+
+```
+## DataFrame with 1 row and 6 columns
+##    PUBMEDID
+##   <integer>
+## 1  24390342
+##                                                                         Study
+##                                                                   <character>
+## 1 Genetics of rheumatoid arthritis contributes to biology and drug discovery.
+##          Disease.Trait
+##            <character>
+## 1 Rheumatoid arthritis
+##                                                                                                                                               Initial.Sample.Size
+##                                                                                                                                                       <character>
+## 1 up to 14,361 European ancestry cases, up to 42,923 European ancestry controls, up to 4,873 East Asian ancestry cases, up to 17,642 East Asian ancestry controls
+##                                                                                                                                        Replication.Sample.Size
+##                                                                                                                                                    <character>
+## 1 up to 3,775 European ancestry cases, up to 5,801 European ancestry controls, up to 6,871 East Asian ancestry cases, up to 6,392 East Asian ancestry controls
+##        Region
+##   <character>
+## 1     11q23.3
+```
+
+This shows the complexity involved in recording information about
+a replicated genome-wide association finding.  There are many
+fields recorded, by the key elements are the name and location of
+the SNP, and the phenotype to which it is apparently linked.
+In this case, we are talking about rheumatoid arthritis.
+
+We will now consider the relationship between ESRRA binding
+in B-cells and phenotypes for which GWAS associations
+have been reported.  
+
+It is tempting to proceed as follows.  We simply
+compute overlaps between the binding peak regions
+and the catalog GRanges.
+
+```r
+library(ERBS)
+data(GM12878)
+fo = findOverlaps(GM12878, gwrngs19)
+fo
+```
+
+```
+## Hits of length 55
+## queryLength: 1873
+## subjectLength: 17254
+##     queryHits subjectHits 
+##      <integer>   <integer> 
+##  1          12        2897 
+##  2          28       11889 
+##  3          28       17104 
+##  4          39        3975 
+##  5          84        9207 
+##  ...       ...         ... 
+##  51       1869       14660 
+##  52       1869       14661 
+##  53       1869       16004 
+##  54       1869       16761 
+##  55       1869       16793
+```
+
+```r
+sort(table(gwrngs19$Disease.Trait[ 
+    subjectHits(fo) ]), decreasing=TRUE)[1:5]
+```
+
+```
+## 
+##        Rheumatoid arthritis             LDL cholesterol 
+##                           7                           6 
+##          Cholesterol, total Lipid metabolism phenotypes 
+##                           4                           4 
+##            Bipolar disorder 
+##                           3
+```
+The problem with this is that `gwrngs19` is a set of *records* of
+GWAS hits.  There are cases of SNP that are associated
+with multiple phenotypes, and there are cases of multiple studies that find
+the same result for a given SNP.  It is easy to get 
+a sense of the magnitude of the problem using `reduce`.
+
+
+```r
+length(gwrngs19)-length(reduce(gwrngs19))
+```
+
+```
+## [1] 3659
+```
+So our strategy will be to find overlaps with the
+reduced version of `gwrngs19` and then come back
+to enumerate phenotypes at unique SNPs occupying binding sites.
+
+```r
+fo = findOverlaps(GM12878, reduce(gwrngs19))
+fo
+```
+
+```
+## Hits of length 28
+## queryLength: 1873
+## subjectLength: 13595
+##     queryHits subjectHits 
+##      <integer>   <integer> 
+##  1          12        3120 
+##  2          28       12162 
+##  3          39        7588 
+##  4          84        9947 
+##  5         257        7797 
+##  ...       ...         ... 
+##  24       1564       11567 
+##  25       1635        4554 
+##  26       1669       12996 
+##  27       1709        8057 
+##  28       1869          83
+```
+
+```r
+ovrngs = reduce(gwrngs19)[subjectHits(fo)]
+phset = lapply( ovrngs, function(x)
+  unique( gwrngs19[ which(gwrngs19 %over% x) ]$Disease.Trait ) )
+sort(table(unlist(phset)), decreasing=TRUE)[1:5]
+```
+
+```
+## 
+## Rheumatoid arthritis     Bipolar disorder   Cholesterol, total 
+##                    4                    2                    2 
+##      HDL cholesterol      Type 1 diabetes 
+##                    2                    2
+```
+
+What can explain this observation?  We see that there
+are commonly observed DNA variants in locations where ESRRA tends
+to bind.  Do individuals with particular genotypes
+of SNPs in these areas have higher risk of disease
+because the presence of the variant allele 
+interferes with ESRRA function and leads to
+arthritis or abnormal cholesterol levels?   Or is this
+observation consistent with the play of chance in our
+work with these data?  We will examine this in the exercises.
 
 ### Harvesting GEO for families of microarray archives
 
@@ -512,3 +833,30 @@ table(lkpc$bioc_package)
 ##                           7                           7
 ```
 
+We won't insist that you take the GEOmetadb.sqlite download/expansion,
+but if you do, variations on the query string constructed above
+can assist you with targeted identification of GEO datasets 
+for analysis and reinterpretation.
+
+## Summary of basic architectual considerations
+
+Let's review the aspects of Bioconductor architecture that facilitated
+the inquiries conducted here.  
+
+- Easily installed and highly self-descriptive packages provide the key experimental and annotation data.
+
+- Conventional containers (ExpressionSets) are used
+for assay plus sample-level data (even when the experiment
+does not assess expression) so that it is easy
+to quickly isolate features and samples of interest.
+
+- GRanges containers for genomic coordinates and arbitrary metadata
+are used to represent findings in genetic epidemiology as well
+as findings of genome-scale TF binding assays, allowing quick
+identification of coincidences of genetic lesions and recently
+assaysed genomic
+features.
+
+- Immediate access to R's visualization and statistical
+analysis functions makes appraisal and inference
+very convenient.

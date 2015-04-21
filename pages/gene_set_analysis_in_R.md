@@ -5,70 +5,20 @@ title: Gene set testing
 
 
 
+<a name="roast"></a>
 
 # Gene set testing
 
-In the following unit, we will explore software for testing differential expression in a set of genes. These tests differ from the gene-by-gene tests we saw previously. Again, the gene set testing software we will use lives in the `limma` package.
+Here, we will explore software for testing differential expression in a set of genes. These tests differ from the gene-by-gene tests we saw previously. Again, the gene set testing software we will use lives in the `limma` package.
 
 We download an experiment from the GEO website, using the `getGEO` function from the `GEOquery` package:
 
 
 ```r
 library(GEOquery)
-```
-
-```
-## Loading required package: methods
-## Loading required package: Biobase
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## Setting options('download.file.method.GEOquery'='auto')
-```
-
-```r
 g <- getGEO("GSE34313")
-```
-
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE34nnn/GSE34313/matrix/
-## Found 1 file(s)
-## GSE34313_series_matrix.txt.gz
-## File stored at: 
-## /var/folders/6d/d_8pbllx7318htlp5wv_rm580000gn/T//RtmpY5CFbp/GPL6480.soft
-```
-
-```r
 e <- g[[1]]
 ```
-
 
 This dataset is hosted by GEO at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE34313>
 
@@ -81,7 +31,7 @@ The groups are defined in the `characteristics_ch1.2` variable:
 
 ```r
 e$condition <- e$characteristics_ch1.2
-levels(e$condition) <- c("dex24", "dex4", "control")
+levels(e$condition) <- c("dex24","dex4","control")
 table(e$condition)
 ```
 
@@ -91,17 +41,16 @@ table(e$condition)
 ##       3       3       4
 ```
 
-
 By examining boxplots, we can guess that the data has already been normalized somehow, and on the GEO site the investigators report that they normalized using Agilent software.
 
 We will subset to the control samples and the samples treated with dexamethasone (the hormone) after 4 hours.
 
 
 ```r
-boxplot(exprs(e), range = 0)
+boxplot(exprs(e), range=0)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/gene_set_testing-unnamed-chunk-3.png) 
+![plot of chunk unnamed-chunk-3](figure/gene_set_analysis_in_R-unnamed-chunk-3-1.png) 
 
 ```r
 names(fData(e))
@@ -118,49 +67,46 @@ names(fData(e))
 
 ```r
 lvls <- c("control", "dex4")
-es <- e[, e$condition %in% lvls]
-es$condition <- factor(es$condition, levels = lvls)
+es <- e[,e$condition %in% lvls]
+es$condition <- factor(es$condition, levels=lvls)
 ```
-
 
 The following lines run the linear model in `limma`. We note that the top genes are common immune-response genes (CSF2, LIF, CCL2, IL6). Also present is FKBP5, a gene which regulates and is regulated by the protein which receives the glucocorticoid hormone.
 
 
 ```r
 library(limma)
-```
-
-```
-## 
-## Attaching package: 'limma'
-## 
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     plotMA
-```
-
-```r
-design <- model.matrix(~es$condition)
-fit <- lmFit(es, design = design)
+design <- model.matrix(~ es$condition)
+fit <- lmFit(es, design=design)
 fit <- eBayes(fit)
-tt <- topTable(fit, coef = 2, genelist = fData(es)$GENE_SYMBOL)
+tt <- topTable(fit, coef=2, genelist=fData(es)$GENE_SYMBOL)
 tt
 ```
 
 ```
-##                    ID  logFC AveExpr      t   P.Value adj.P.Val     B
-## A_23_P133408     CSF2 -4.725   8.188 -69.36 2.382e-12 6.249e-08 15.93
-## A_24_P122137      LIF -6.690  11.053 -67.24 3.048e-12 6.249e-08 15.85
-## A_32_P5276   ARHGEF26  3.411   7.374  54.48 1.619e-11 1.745e-07 15.17
-## A_23_P89431      CCL2 -3.619  13.763 -54.14 1.702e-11 1.745e-07 15.15
-## A_23_P42257      IER3 -4.809  13.417 -48.58 4.018e-11 3.295e-07 14.72
-## A_23_P71037       IL6 -4.568  11.595 -45.79 6.422e-11 4.213e-07 14.47
-## A_24_P20327     KLF15  4.013   6.825  43.91 8.952e-11 4.213e-07 14.28
-## A_24_P38081     FKBP5  3.567   9.310  43.77 9.176e-11 4.213e-07 14.26
-## A_23_P213944    HBEGF -2.902  10.269 -43.73 9.247e-11 4.213e-07 14.26
-## A_24_P250922    PTGS2 -3.518  10.477 -42.53 1.153e-10 4.728e-07 14.13
+##                    ID     logFC   AveExpr         t      P.Value
+## A_23_P133408     CSF2 -4.724965  8.187709 -69.36145 2.381749e-12
+## A_24_P122137      LIF -6.689927 11.052517 -67.23929 3.048075e-12
+## A_32_P5276   ARHGEF26  3.411468  7.373888  54.47705 1.619429e-11
+## A_23_P89431      CCL2 -3.618725 13.762759 -54.13669 1.701965e-11
+## A_23_P42257      IER3 -4.808854 13.417263 -48.57810 4.018095e-11
+## A_23_P71037       IL6 -4.568355 11.595039 -45.78704 6.422142e-11
+## A_24_P20327     KLF15  4.013070  6.824730  43.90736 8.951793e-11
+## A_24_P38081     FKBP5  3.567059  9.310028  43.77025 9.176326e-11
+## A_23_P213944    HBEGF -2.902190 10.269416 -43.72761 9.247448e-11
+## A_24_P250922    PTGS2 -3.518360 10.476972 -42.52588 1.153122e-10
+##                 adj.P.Val        B
+## A_23_P133408 6.248554e-08 15.93230
+## A_24_P122137 6.248554e-08 15.84703
+## A_32_P5276   1.744514e-07 15.16827
+## A_23_P89431  1.744514e-07 15.14523
+## A_23_P42257  3.294838e-07 14.72004
+## A_23_P71037  4.212726e-07 14.46609
+## A_24_P20327  4.212726e-07 14.27685
+## A_24_P38081  4.212726e-07 14.26242
+## A_23_P213944 4.212726e-07 14.25791
+## A_24_P250922 4.727798e-07 14.12733
 ```
-
 
 
 We will use the [ROAST method](#foot) for gene set testing. We can test a single gene set by looking up the genes which contain a certain GO ID, and providing this to the `roast` function. We will show how to get such lists of genes associated with a GO ID in the next chunk.
@@ -187,13 +133,14 @@ r1
 ```
 
 ```
-##       Active.Prop P.Value
-## Down      0.16270   0.016
-## Up        0.09325   0.985
-## Mixed     0.25595   0.009
+##          Active.Prop    P.Value
+## Down      0.16269841 0.01550775
+## Up        0.09325397 0.98499250
+## UpOrDown  0.16269841 0.03100000
+## Mixed     0.25595238 0.00800000
 ```
 
-
+<a name="mroast"></a>
 
 ## Testing multiple gene sets
 
@@ -201,13 +148,23 @@ We can also use the `mroast` function to perform multiple roast tests. First we 
 
 
 ```r
-# biocLite('org.Hs.eg.db')
+# biocLite("org.Hs.eg.db")
 library(org.Hs.eg.db)
 ```
 
 ```
 ## Loading required package: AnnotationDbi
+## Loading required package: stats4
 ## Loading required package: GenomeInfoDb
+## Loading required package: S4Vectors
+## Loading required package: IRanges
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
+## 
 ## Loading required package: DBI
 ```
 
@@ -225,33 +182,32 @@ head(go2eg)
 ```
 
 ```
-## $`GO:0000002`
+## $$`GO:0000002`
 ##     TAS     TAS     ISS     IMP     NAS     IMP     IEA     IMP 
 ##   "291"  "1890"  "4205"  "4358"  "9361" "10000" "80119" "92667" 
 ## 
-## $`GO:0000003`
+## $$`GO:0000003`
 ##    IEP 
 ## "8510" 
 ## 
-## $`GO:0000012`
+## $$`GO:0000012`
 ##         IDA         IDA         IEA         IMP         IDA         IDA 
 ##      "3981"      "7141"      "7515"     "23411"     "54840"     "55775" 
 ##         IMP         IMP         IEA 
 ##     "55775"    "200558" "100133315" 
 ## 
-## $`GO:0000018`
+## $$`GO:0000018`
 ##     TAS     TAS     TAS     IMP     IMP     IEP 
 ##  "3575"  "3836"  "3838"  "9984" "10189" "56916" 
 ## 
-## $`GO:0000019`
+## $$`GO:0000019`
 ##     TAS     IDA 
 ##  "4361" "10111" 
 ## 
-## $`GO:0000022`
+## $$`GO:0000022`
 ##    TAS    TAS 
 ## "9055" "9493"
 ```
-
 
 The following code unlists the list, then gets matches for each Entrez gene ID to the index in the ExpressionSet. Finally, we rebuild the list.
 
@@ -274,7 +230,7 @@ table(is.na(idxvector))
 ```
 ## 
 ##  FALSE   TRUE 
-## 206613   6488
+## 221613   7296
 ```
 
 ```r
@@ -295,7 +251,6 @@ fData(es)$GENE[idx[[1]]]
 ## [1] "291"   "1890"  "4205"  "4358"  "9361"  "10000" "80119" "92667"
 ```
 
-
 We need to clean this list such that there are no `NA` values. We also clean it to remove gene sets which have less than 10 genes.
 
 
@@ -307,9 +262,8 @@ length(idxsub)
 ```
 
 ```
-## [1] 2739
+## [1] 2906
 ```
-
 
 The following line of code runs the multiple ROAST test. This can take about 3 minutes.
 
@@ -320,32 +274,31 @@ head(r2)
 ```
 
 ```
-##            NGenes PropDown  PropUp Direction PValue     FDR PValue.Mixed
-## GO:0006954    297   0.2290 0.09428      Down  0.002 0.01497        0.001
-## GO:0008083    167   0.2874 0.07784      Down  0.002 0.01497        0.001
-## GO:0005125    166   0.2651 0.04819      Down  0.002 0.01497        0.001
-## GO:0043433     61   0.2787 0.11475      Down  0.002 0.01497        0.001
-## GO:0006959     52   0.2500 0.09615      Down  0.002 0.01497        0.001
-## GO:0042102     48   0.1875 0.06250      Down  0.002 0.01497        0.001
-##            FDR.Mixed
-## GO:0006954  0.002365
-## GO:0008083  0.002365
-## GO:0005125  0.002365
-## GO:0043433  0.002365
-## GO:0006959  0.002365
-## GO:0042102  0.002365
+##            NGenes  PropDown     PropUp Direction PValue         FDR
+## GO:0005125    169 0.2662722 0.04733728      Down  0.001 0.009435065
+## GO:0008083    167 0.2874251 0.07784431      Down  0.001 0.009435065
+## GO:0043433     61 0.2786885 0.13114754      Down  0.001 0.009435065
+## GO:0007623     57 0.2105263 0.12280702      Down  0.001 0.009435065
+## GO:0006959     52 0.2500000 0.09615385      Down  0.001 0.009435065
+## GO:0051781     49 0.3265306 0.08163265      Down  0.001 0.009435065
+##            PValue.Mixed  FDR.Mixed
+## GO:0005125        0.001 0.00256261
+## GO:0008083        0.001 0.00256261
+## GO:0043433        0.001 0.00256261
+## GO:0007623        0.001 0.00256261
+## GO:0006959        0.001 0.00256261
+## GO:0051781        0.001 0.00256261
 ```
 
 ```r
-r2 <- r2[order(r2$PValue.Mixed), ]
+r2 <- r2[order(r2$PValue.Mixed),]
 ```
-
 
 We can use the `GO.db` annotation package to extract the GO terms for the top results, by the *mixed* test.
 
 
 ```r
-# biocLite('GO.db')
+# biocLite("GO.db")
 library(GO.db)
 ```
 
@@ -374,108 +327,107 @@ GOTERM[[rownames(r2)[1]]]
 ```
 
 ```
-## GOID: GO:0006954
-## Term: inflammatory response
-## Ontology: BP
-## Definition: The immediate defensive reaction (by vertebrate
-##     tissue) to infection or injury caused by chemical or physical
-##     agents. The process is characterized by local vasodilation,
-##     extravasation of plasma into intercellular spaces and
-##     accumulation of white blood cells and macrophages.
+## GOID: GO:0005125
+## Term: cytokine activity
+## Ontology: MF
+## Definition: Functions to control the survival, growth,
+##     differentiation and effector function of tissues and cells.
+## Synonym: autocrine activity
+## Synonym: paracrine activity
 ```
 
 ```r
-r2tab <- select(GO.db, keys = rownames(r2)[1:10], columns = c("GOID", "TERM", 
-    "DEFINITION"), keytype = "GOID")
-r2tab[, 1:2]
+r2tab <- select(GO.db, keys=rownames(r2)[1:10],
+                columns=c("GOID","TERM","DEFINITION"), 
+                keytype="GOID")
+r2tab[,1:2]
 ```
 
 ```
 ##          GOID
-## 1  GO:0006954
+## 1  GO:0005125
 ## 2  GO:0008083
-## 3  GO:0005125
-## 4  GO:0043433
+## 3  GO:0043433
+## 4  GO:0007623
 ## 5  GO:0006959
-## 6  GO:0042102
-## 7  GO:0051781
-## 8  GO:0007623
-## 9  GO:0048661
-## 10 GO:0043525
+## 6  GO:0051781
+## 7  GO:0048661
+## 8  GO:0030593
+## 9  GO:0032755
+## 10 GO:0005912
 ##                                                                                  TERM
-## 1                                                               inflammatory response
+## 1                                                                   cytokine activity
 ## 2                                                              growth factor activity
-## 3                                                                   cytokine activity
-## 4  negative regulation of sequence-specific DNA binding transcription factor activity
+## 3  negative regulation of sequence-specific DNA binding transcription factor activity
+## 4                                                                    circadian rhythm
 ## 5                                                             humoral immune response
-## 6                                         positive regulation of T cell proliferation
-## 7                                                positive regulation of cell division
-## 8                                                                    circadian rhythm
-## 9                             positive regulation of smooth muscle cell proliferation
-## 10                                    positive regulation of neuron apoptotic process
+## 6                                                positive regulation of cell division
+## 7                             positive regulation of smooth muscle cell proliferation
+## 8                                                               neutrophil chemotaxis
+## 9                                     positive regulation of interleukin-6 production
+## 10                                                                  adherens junction
 ```
-
 
 We can also look for the top results using the standard p-value and in the *up* direction.
 
 
 ```r
-r2 <- r2[order(r2$PValue), ]
-r2tab <- select(GO.db, keys = rownames(r2)[r2$Direction == "Up"][1:10], columns = c("GOID", 
-    "TERM", "DEFINITION"), keytype = "GOID")
-r2tab[, 1:2]
+r2 <- r2[order(r2$PValue),]
+r2tab <- select(GO.db, keys=rownames(r2)[r2$Direction == "Up"][1:10],
+                columns=c("GOID","TERM","DEFINITION"), 
+                keytype="GOID")
+r2tab[,1:2]
 ```
 
 ```
 ##          GOID
-## 1  GO:0042594
+## 1  GO:0005912
 ## 2  GO:0030032
-## 3  GO:0003950
-## 4  GO:0042813
-## 5  GO:0046847
-## 6  GO:0006471
-## 7  GO:0005528
-## 8  GO:0071889
-## 9  GO:0008209
-## 10 GO:0008631
+## 3  GO:0017147
+## 4  GO:0048008
+## 5  GO:0003950
+## 6  GO:0046847
+## 7  GO:0042813
+## 8  GO:0010942
+## 9  GO:0008631
+## 10 GO:0045926
 ##                                                                     TERM
-## 1                                                 response to starvation
+## 1                                                      adherens junction
 ## 2                                                 lamellipodium assembly
-## 3                                   NAD+ ADP-ribosyltransferase activity
-## 4                                        Wnt-activated receptor activity
-## 5                                                    filopodium assembly
-## 6                                               protein ADP-ribosylation
-## 7                                                          FK506 binding
-## 8                                                 14-3-3 protein binding
-## 9                                             androgen metabolic process
-## 10 intrinsic apoptotic signaling pathway in response to oxidative stress
+## 3                                                    Wnt-protein binding
+## 4              platelet-derived growth factor receptor signaling pathway
+## 5                                   NAD+ ADP-ribosyltransferase activity
+## 6                                                    filopodium assembly
+## 7                                        Wnt-activated receptor activity
+## 8                                      positive regulation of cell death
+## 9  intrinsic apoptotic signaling pathway in response to oxidative stress
+## 10                                         negative regulation of growth
 ```
-
 
 Again but for the *down* direction.
 
 
 ```r
-r2tab <- select(GO.db, keys = rownames(r2)[r2$Direction == "Down"][1:5], columns = c("GOID", 
-    "TERM", "DEFINITION"), keytype = "GOID")
-r2tab[, 1:2]
+r2tab <- select(GO.db, keys=rownames(r2)[r2$Direction == "Down"][1:5],
+                columns=c("GOID","TERM","DEFINITION"), 
+                keytype="GOID")
+r2tab[,1:2]
 ```
 
 ```
 ##         GOID
-## 1 GO:0006954
+## 1 GO:0005125
 ## 2 GO:0008083
-## 3 GO:0005125
-## 4 GO:0043433
+## 3 GO:0043433
+## 4 GO:0007623
 ## 5 GO:0006959
 ##                                                                                 TERM
-## 1                                                              inflammatory response
+## 1                                                                  cytokine activity
 ## 2                                                             growth factor activity
-## 3                                                                  cytokine activity
-## 4 negative regulation of sequence-specific DNA binding transcription factor activity
+## 3 negative regulation of sequence-specific DNA binding transcription factor activity
+## 4                                                                   circadian rhythm
 ## 5                                                            humoral immune response
 ```
-
 
 
 ## Footnotes <a name="foot"></a>

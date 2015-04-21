@@ -97,12 +97,27 @@ title: PH525x series - Biomedical Data Science
 ---
 
 - [IRanges and GRanges](pages/iranges_granges.html)
+- [Operating on GRanges](pages/operateGRanges.html)
 
 ---
 
 - [Cheat sheet for genomic annotation](pages/annoCheat.html)
 - [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
 - [Cheat sheet for GRanges and other Bioconductor objects](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
+
+---
+
+- [Importing NGS data with Bioconductor](pages/import_NGS.html)
+- [NGS read counting](pages/read_counting.html)
+
+---
+
+- [Technical versus biological variability](pages/biological_versus_technical_var.html)
+- [Statistical Inference with Bioconductor](pages/inference_with_bioc.html)
+- [Using limma](pages/using_limma.html)
+- [Gene Sets Analysis](pages/gene_set_analysis.html)
+- [Gene Sets Analysis in R](pages/gene_set_analysis_in_R.html)
+
 
 <!--
 
@@ -122,7 +137,7 @@ old ones:
 - [Mapping features to genes](pages/mapping_features.html)
 - [Gene set analysis lecture](pages/gsa.html)
 - [Gene set testing in R](pages/gene_set_testing.html)
-- [Counting NGS reads in features](pages/read_counting.html)
+
 
 -->
 
