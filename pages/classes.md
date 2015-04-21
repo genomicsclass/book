@@ -16,9 +16,9 @@ We recently received funding from the NIH BD2K initiative to develop MOOCs for b
 7. [Case study: ChIP-seq data analysis](https://www.edx.org/course/case-study-chip-seq-data-analysis-harvardx-ph525-7x)
 8. [Case study: DNA methylation data analysis](https://www.edx.org/course/case-study-dna-methylation-data-analysis-harvardx-ph525-8x)
 
-Featuring the stellar instructors:
+Featuring the stellar instructors [course #]:
 
-* [4] Vince Carey of Harvard Medical School and Brigham And Women's Hospital
+* [4] Vincent Carey of Harvard Medical School and Brigham And Women's Hospital
 * [6] Shannan Ho Sui, Radhika Khetani, Oliver Hofmann, Meeta Mistry, Peter Kraft, Constance Chen of Harvard T.H. Chan School of Public Health and University of Glasgow
 * [7] X. Shirley Liu and her lab at the Dana Farber Cancer-Institute and Harvard T.H. Chan School of Public Health
 
