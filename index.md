@@ -143,7 +143,9 @@ old ones:
 
 ### 5: RNA-seq data analysis
 
-- RNA-seq book page coming soon
+- [Downloading and unzipping fastq files](https://github.com/genomicsclass/labs/blob/master/course5/fastq.md)
+- [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/course5/genome_align_STAR.md)
+- [Transcriptome alignment with RSEM](https://github.com/genomicsclass/labs/blob/master/course5/trancsript_align_RSEM.md)
 
 ### 6: Variant Discovery and Genotyping
 
