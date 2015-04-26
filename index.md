@@ -155,7 +155,7 @@ old ones:
 
 ### 8: DNA methylation data analysis
 
-- [DNA Methylation Data Analysis in R ](pages/methylation.html)
+- [DNA Methylation Data Analysis](pages/methylation.html)
 - [Reading 450K idat files with the minfi package](pages/minfi.html)
 - [Interactive visualization of DNA methylation data analysis](pages/epiviz.html)
  
