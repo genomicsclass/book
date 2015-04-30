@@ -1,4 +1,9 @@
-# RNA-seq differential exon usage
+---
+layout: page
+title: RNA-seq differential exon usage
+---
+
+
 
 The [DEXSeq](http://bioconductor.org/packages/release/bioc/html/DEXSeq.html) package offers differential testing of exon usage within each gene. Here we will explore the R code used in a *DEXSeq* analysis. We omit the python calls for preparing the annotation and count tables, but these can be found in the vignette at the above link. The python calls are generally along the lines of:
 
@@ -85,13 +90,13 @@ dxr = DEXSeqResults( dxd )
 plotMA( dxr, cex=0.8 )
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-6](figure/rnaseq_exon_usage-unnamed-chunk-6-1.png) 
 
 ```r
 plotDEXSeq( dxr, "FBgn0010909", legend=TRUE, cex.axis=1.2, cex=1.3, lwd=2 )
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-2.png) 
+![plot of chunk unnamed-chunk-6](figure/rnaseq_exon_usage-unnamed-chunk-6-2.png) 
 
 Again, drawing the expression levels, now showing the annotated transcripts below:
 
@@ -101,7 +106,7 @@ plotDEXSeq( dxr, "FBgn0010909", displayTranscripts=TRUE, legend=TRUE,
               cex.axis=1.2, cex=1.3, lwd=2 )
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-7](figure/rnaseq_exon_usage-unnamed-chunk-7-1.png) 
 
 For more details on the *DEXSeq* software, see the vignette and the paper, which is linked from the vignette page:
 
