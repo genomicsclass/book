@@ -72,7 +72,6 @@ A similar function in the *Rsubread* library can be used to construct a count ma
 
 ```r
 library(Rsubread)
-# just run on the first two samples for demonstration
 fc <- featureCounts(bam.files, annot.ext=gtf.file,
                     isGTFAnnotationFile=TRUE, 
                     isPaired=TRUE)
