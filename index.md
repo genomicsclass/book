@@ -147,6 +147,10 @@ old ones:
 - [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/course5/genome_align_STAR.md)
 - [Transcriptome alignment with RSEM](https://github.com/genomicsclass/labs/blob/master/course5/trancsript_align_RSEM.md)
 
+---
+
+- [EDA and differential expression of gene-level counts](pages/rnaseq_gene_level.html)
+
 ### 6: Variant Discovery and Genotyping
 
 - [Genome variation](pages/SNP.html) from 2014
