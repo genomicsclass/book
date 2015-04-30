@@ -129,20 +129,75 @@ A similar function in the *Rsubread* library can be used to construct a count ma
 
 ```r
 library(Rsubread)
-```
-
-```
-## Error in library(Rsubread): there is no package called 'Rsubread'
-```
-
-```r
-fc <- featureCounts(bam.files, annot.ext=gtf.file,
+# just run on the first two samples for demonstration
+fc <- featureCounts(bam.files[1:2], annot.ext=gtf.file,
                     isGTFAnnotationFile=TRUE, 
                     isPaired=TRUE)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "featureCounts"
+## 
+##         ==========     _____ _    _ ____  _____  ______          _____  
+##         =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ 
+##           =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |
+##             ====      \___ \| |  | |  _ <|  _  /|  __|   / /\ \ | |  | |
+##               ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
+##         ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
+##        Rsubread 1.18.0
+## 
+## //========================== featureCounts setting ===========================\\
+## ||                                                                            ||
+## ||             Input files : 2 BAM files                                      ||
+## ||                           P /usr/local/lib/R/site-library/airway/extda ... ||
+## ||                           P /usr/local/lib/R/site-library/airway/extda ... ||
+## ||                                                                            ||
+## ||             Output file : ./.Rsubread_featureCounts_pid3107                ||
+## ||             Annotations : /usr/local/lib/R/site-library/airway/extdata ... ||
+## ||                                                                            ||
+## ||                 Threads : 1                                                ||
+## ||                   Level : meta-feature level                               ||
+## ||              Paired-end : yes                                              ||
+## ||         Strand specific : no                                               ||
+## ||      Multimapping reads : not counted                                      ||
+## || Multi-overlapping reads : not counted                                      ||
+## ||                                                                            ||
+## ||          Chimeric reads : counted                                          ||
+## ||        Both ends mapped : not required                                     ||
+## ||                                                                            ||
+## \\===================== http://subread.sourceforge.net/ ======================//
+## 
+## //================================= Running ==================================\\
+## ||                                                                            ||
+## || Load annotation file /usr/local/lib/R/site-library/airway/extdata/Homo ... ||
+## ||    Features : 406                                                          ||
+## ||    Meta-features : 20                                                      ||
+## ||    Chromosomes : 1                                                         ||
+## ||                                                                            ||
+## || Process BAM file /usr/local/lib/R/site-library/airway/extdata/SRR10395 ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    2 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 7142                                                  ||
+## ||    Successfully assigned fragments : 6649 (93.1%)                          ||
+## ||    Running time : 0.10 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /usr/local/lib/R/site-library/airway/extdata/SRR10395 ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    1 read has missing mates.                                               ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 7200                                                  ||
+## ||    Successfully assigned fragments : 6712 (93.2%)                          ||
+## ||    Running time : 0.11 minutes                                             ||
+## ||                                                                            ||
+## ||                         Read assignment finished.                          ||
+## ||                                                                            ||
+## \\===================== http://subread.sourceforge.net/ ======================//
 ```
 
 ```r
@@ -150,15 +205,35 @@ names(fc)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'fc' not found
+## [1] "counts"     "annotation" "targets"    "stat"
 ```
 
 ```r
-fc$counts
+unname(fc$counts) # hide the colnames
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'fc' not found
+##       [,1] [,2]
+##  [1,]    0    0
+##  [2,]    0    0
+##  [3,]    0    0
+##  [4,]    0    0
+##  [5,] 2673 2031
+##  [6,]   38   28
+##  [7,]   58   55
+##  [8,] 1004 1253
+##  [9,] 1060 1291
+## [10,]    2    1
+## [11,]    2    0
+## [12,] 1588 1745
+## [13,]    1    0
+## [14,]    1    0
+## [15,]    0    0
+## [16,]    4   50
+## [17,]    0    0
+## [18,]    0    0
+## [19,]  218  257
+## [20,]    0    1
 ```
 
 Plot the first column from each function against each other (after matching the rows of the *featureCounts* matrix to the one returned by *summarizeOverlaps*.
@@ -167,19 +242,10 @@ Plot the first column from each function against each other (after matching the 
 ```r
 plot(assay(se)[,1], 
      fc$counts[match(rownames(se),rownames(fc$counts)),1])
-```
-
-```
-## Error in plot(assay(se)[, 1], fc$counts[match(rownames(se), rownames(fc$counts)), : error in evaluating the argument 'y' in selecting a method for function 'plot': Error: object 'fc' not found
-```
-
-```r
 abline(0,1)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-5](figure/rnaseq_gene_level-unnamed-chunk-5-1.png) 
 
 ## Visualizing sample-sample distances
 
@@ -341,7 +407,7 @@ dds2 <- DESeqDataSetFromMatrix(fc$counts,
 ```
 
 ```
-## Error in as.matrix(countData): error in evaluating the argument 'x' in selecting a method for function 'as.matrix': Error: object 'fc' not found
+## Error in validObject(.Object): invalid class "SummarizedExperiment" object: 'colData' nrow differs from 'assays' ncol
 ```
 
 ### Normalization for sequencing depth
@@ -440,7 +506,7 @@ plot(log.norm.counts[,1:2], cex=.1)
 
 ### Stabilizing count variance
 
-Now we will use a more sophisticated transformation, which is similar to the variance stablizing normalization method taught in Week 3 of Course 4: Introduction to Bioconductor. It uses the variance model for count data to shrink together the log-transformed counts for genes with very low counts. For genes with medium and high counts, the `rlog` is very close to `log2`. For further details, see the section in the [DESeq2 paper](#foot). Another transformation for stabilizing variance in the *DESeq2* package is the appropriately named `varianceStabilizingTransformation`. These two tranformations are similar, although the *rlog* might perform better when the size factors vary widely.
+Now we will use a more sophisticated transformation, which is similar to the variance stablizing normalization method taught in Week 3 of Course 4: Introduction to Bioconductor. It uses the variance model for count data to shrink together the log-transformed counts for genes with very low counts. For genes with medium and high counts, the `rlog` is very close to `log2`. For further details, see the section in the DESeq2 [paper](#foot). Another transformation for stabilizing variance in the *DESeq2* package is the appropriately named `varianceStabilizingTransformation`. These two tranformations are similar, although the *rlog* might perform better when the size factors vary widely.
 
 
 ```r
@@ -554,9 +620,9 @@ where $$K_{ij}$$ is a single raw count in our count table, $$s_{ij}$$ is a size 
 
 Why bother modeling *raw counts*, rather than dividing out the sequencing depth and working with the normalized counts? In other words, why put the $$s_{ij}$$ on the right side of the equation above, rather than dividing out on the left side and modeling $$K_{ij} / s_{ij}$$. The reason is that, with the raw count, we have knowledge about the link between the expected value and its variance. So we prefer the first equation below to the second equation, because with the first equation, we have some additional information about the variance of the quantity on the left hand side.
 
-$$ K_{ij} &\sim \text{NB}(\mu_{ij} = s_{ij} q_{ij} ) $$
+$$ K_{ij} \sim \text{NB}(\mu_{ij} = s_{ij} q_{ij} ) $$
 
-$$ \frac{K_{ij}}{s_{ij}} &\sim \mathcal{L}(\mu_{ij} = q_{ij}) $$
+$$ \frac{K_{ij}}{s_{ij}} \sim \mathcal{L}(\mu_{ij} = q_{ij}) $$
 
 When we sample cDNA fragments from a pool in a sequencing library, we can model the count of cDNA fragments which originated from a given gene with a binomial distribution, with a certain probability of picking a fragment for that gene which relates to factors such as the expression of that gene (the abundance of mRNA in the original population of cells), its length and technical factors in the production of the library. When we have many genes, and the rate for each gene is low, while the total number of fragments is high, we know that the Poisson is a good model for the binomial. And for the binomial and the Poisson, there is an explicit link between on observed count and its expected variance.
 
@@ -1008,7 +1074,27 @@ library(sva)
 ```
 
 ```
-## Error in library(sva): there is no package called 'sva'
+## Loading required package: mgcv
+## Loading required package: nlme
+## 
+## Attaching package: 'nlme'
+## 
+## The following object is masked from 'package:Biostrings':
+## 
+##     collapse
+## 
+## The following object is masked from 'package:IRanges':
+## 
+##     collapse
+## 
+## This is mgcv 1.8-6. For overview type 'help("mgcv-package")'.
+## Loading required package: genefilter
+## 
+## Attaching package: 'genefilter'
+## 
+## The following object is masked from 'package:base':
+## 
+##     anyNA
 ```
 
 ```r
@@ -1020,7 +1106,8 @@ svseq <- svaseq(dat, mod, mod0, n.sv=2)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "svaseq"
+## Number of significant surrogate variables is:  2 
+## Iteration (out of 5 ):1  2  3  4  5
 ```
 
 Do the surrogate variables capture the cell difference?
@@ -1030,9 +1117,7 @@ Do the surrogate variables capture the cell difference?
 plot(svseq$sv[,1], svseq$sv[,2], col=dds$cell, pch=16)
 ```
 
-```
-## Error in plot(svseq$sv[, 1], svseq$sv[, 2], col = dds$cell, pch = 16): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'svseq' not found
-```
+![plot of chunk unnamed-chunk-48](figure/rnaseq_gene_level-unnamed-chunk-48-1.png) 
 
 Using the surrogate variables in a *DESeq2* analysis:
 
@@ -1040,29 +1125,8 @@ Using the surrogate variables in a *DESeq2* analysis:
 ```r
 dds.sva <- dds
 dds.sva$SV1 <- svseq$sv[,1]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'svseq' not found
-```
-
-```r
 dds.sva$SV2 <- svseq$sv[,2]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'svseq' not found
-```
-
-```r
 design(dds.sva) <- ~ SV1 + SV2 + dex
-```
-
-```
-## Error in validObject(object): invalid class "DESeqDataSet" object: all variables in design formula must be columns in colData
-```
-
-```r
 dds.sva <- DESeq(dds.sva)
 ```
 
@@ -1074,6 +1138,74 @@ dds.sva <- DESeq(dds.sva)
 ## mean-dispersion relationship
 ## final dispersion estimates
 ## fitting model and testing
+```
+
+## Session info
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.2.0 (2015-04-16)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 15.04
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats4    parallel  methods   stats     graphics  grDevices utils    
+## [8] datasets  base     
+## 
+## other attached packages:
+##  [1] sva_3.14.0              genefilter_1.50.0      
+##  [3] mgcv_1.8-6              nlme_3.1-120           
+##  [5] org.Hs.eg.db_3.1.2      RSQLite_1.0.0          
+##  [7] DBI_0.3.1               pheatmap_1.0.2         
+##  [9] ggplot2_1.0.1           vsn_3.36.0             
+## [11] DESeq2_1.8.0            RcppArmadillo_0.5.000.0
+## [13] Rcpp_0.11.5             rafalib_0.0.9          
+## [15] RColorBrewer_1.1-2      GenomicFeatures_1.20.0 
+## [17] AnnotationDbi_1.30.1    Biobase_2.28.0         
+## [19] Rsamtools_1.20.1        Biostrings_2.36.0      
+## [21] XVector_0.8.0           airway_1.0.0           
+## [23] GenomicRanges_1.20.3    GenomeInfoDb_1.4.0     
+## [25] IRanges_2.2.1           S4Vectors_0.6.0        
+## [27] BiocGenerics_0.14.0     knitr_1.9              
+## 
+## loaded via a namespace (and not attached):
+##  [1] locfit_1.5-9.1          lattice_0.20-31        
+##  [3] digest_0.6.8            plyr_1.8.2             
+##  [5] futile.options_1.0.0    acepack_1.3-3.3        
+##  [7] evaluate_0.7            BiocInstaller_1.18.1   
+##  [9] zlibbioc_1.14.0         annotate_1.46.0        
+## [11] rpart_4.1-9             Matrix_1.2-0           
+## [13] preprocessCore_1.30.0   proto_0.3-10           
+## [15] labeling_0.3            splines_3.2.0          
+## [17] BiocParallel_1.2.1      geneplotter_1.46.0     
+## [19] stringr_0.6.2           foreign_0.8-63         
+## [21] RCurl_1.95-4.6          biomaRt_2.24.0         
+## [23] munsell_0.4.2           rtracklayer_1.28.2     
+## [25] nnet_7.3-9              gridExtra_0.9.1        
+## [27] Hmisc_3.16-0            XML_3.98-1.1           
+## [29] GenomicAlignments_1.4.1 MASS_7.3-40            
+## [31] bitops_1.0-6            grid_3.2.0             
+## [33] xtable_1.7-4            gtable_0.1.2           
+## [35] affy_1.46.0             formatR_1.2            
+## [37] scales_0.2.4            KernSmooth_2.23-14     
+## [39] reshape2_1.4.1          affyio_1.36.0          
+## [41] limma_3.24.3            latticeExtra_0.6-26    
+## [43] futile.logger_1.4.1     Formula_1.2-1          
+## [45] lambda.r_1.1.7          tools_3.2.0            
+## [47] survival_2.38-1         colorspace_1.2-6       
+## [49] cluster_2.0.1
 ```
 
 ## Footnotes <a name="foot"></a>
@@ -1093,52 +1225,49 @@ http://www.nature.com/nbt/journal/v28/n5/full/nbt.1621.html
 
 Frazee AC, Langmead B, Leek JT. "ReCount: a multi-experiment resource of analysis-ready RNA-seq gene count datasets". BMC Bioinformatics 12:449 http://www.ncbi.nlm.nih.gov/pubmed/22087737
 
-### Negative Binomial methods for differential expression of count data
+The following sections give just a few examples of the many RNA-seq differential expression software packages:
 
-All the following methods are available on Bioconductor:
+### Negative binomial count methods
 
-- `edgeR`
+The following methods are available on Bioconductor:
 
-Mark D. Robinson, Davis J. McCarthy, and Gordon K. Smyth, "edgeR: a Bioconductor package for differential expression analysis of digital gene expression data" Bioinformatics 2010.
-http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/
-
-- `DESeq` of which the latest version is a separate package, `DESeq2`. The paper for the latest version *DESeq2* is from 2014:
+- **DESeq2**
 
 Michael I Love, Simon Anders, Wolfgang Huber, "Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2"
 http://genomebiology.com/2014/15/12/550
 
-The original *DESeq* paper from 2010:
+- **edgeR**
 
-Simon Anders and Wolfgang Huber, "Differential expression analysis for sequence count data", Genome Biology 2010.
-http://genomebiology.com/2010/11/10/r106
+Mark D. Robinson, Davis J. McCarthy, and Gordon K. Smyth, "edgeR: a Bioconductor package for differential expression analysis of digital gene expression data" Bioinformatics 2010.
+http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/
 
-- `DSS`
+- **DSS**
 
 Hao Wu, Chi Wang, Zhijin Wu, "A new shrinkage estimator for dispersion improves differential expression detection in RNA-seq data" Biostatistics 2013.
 http://biostatistics.oxfordjournals.org/content/14/2/232
 
-### Transformation followed by linear model methods
+### Variance-mean modeling followed by linear model
 
-`voom` in the `limma` Bioconductor package. Limma also contains gene-set testing methods (see ROAST for example in the Reference Manual)
+- **voom+limma** in the *limma* Bioconductor package. Limma also contains gene-set testing methods (see ROAST for example in the Reference Manual)
 
 Charity W Law, Yunshun Chen, Wei Shi and Gordon K Smyth, "voom: precision weights unlock linear model analysis tools for RNA-seq read counts", Genome Biology. 2014.
 http://genomebiology.com/2014/15/2/R29
 
 ### Resampling-based methods
 
-`SAMseq` in the `samr` package on CRAN
+- **SAMseq** in the `samr` package on CRAN
 
 Jun Li and Robert Tibshirani, "Finding consistent patterns: A nonparametric approach for identifying differential expression in RNA-seq data", Stat Methods Med Res. 2013.
 http://smm.sagepub.com/content/22/5/519.short
 
 ### Incorporating isoform-abundance
 
-- `Cuffdiff` (the latest version is `Cuffdiff2`) with `cummeRbund` the accompanying Bioconductor visualization package.
+- **Cuffdiff** (the latest version is `Cuffdiff2`) with `cummeRbund` the accompanying Bioconductor visualization package.
 
 Trapnell C, Hendrickson DG, Sauvageau M, Goff L, Rinn JL, Pachter L., "Differential analysis of gene regulation at transcript resolution with RNA-seq" Nat Biotechnol. 2013.
 http://www.ncbi.nlm.nih.gov/pubmed/23222703
 
-- `BitSeq` (Bioconductor)
+- **BitSeq** (Bioconductor)
 
 Peter Glaus, Antti Honkela, and Magnus Rattray, "Identifying differentially expressed transcripts from RNA-seq data with biological variation", Bioinformatics. 2012.
 http://bioinformatics.oxfordjournals.org/content/28/13/1721
