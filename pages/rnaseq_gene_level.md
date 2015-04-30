@@ -34,23 +34,8 @@ Next we create an *Rsamtools* variable which wraps our BAM files, and create a t
 
 ```r
 library(Rsamtools)
-```
-
-```
-## Loading required package: XVector
-## Loading required package: Biostrings
-```
-
-```r
 bam.list <- BamFileList(bam.files)
 library(GenomicFeatures)
-```
-
-```
-## Loading required package: AnnotationDbi
-```
-
-```r
 # for Bioc 3.0 use the commented out line
 # txdb <- makeTranscriptDbFromGFF(gtf.file, format="gtf")
 txdb <- makeTxDbFromGFF(gtf.file, format="gtf")
@@ -87,20 +72,8 @@ A similar function in the *Rsubread* library can be used to construct a count ma
 
 ```r
 library(Rsubread)
-```
-
-```
-## 
-## Attaching package: 'Rsubread'
-## 
-## The following object is masked from 'package:DEXSeq':
-## 
-##     featureCounts
-```
-
-```r
 # just run on the first two samples for demonstration
-fc <- featureCounts(bam.files[1:2], annot.ext=gtf.file,
+fc <- featureCounts(bam.files, annot.ext=gtf.file,
                     isGTFAnnotationFile=TRUE, 
                     isPaired=TRUE)
 ```
@@ -117,7 +90,13 @@ fc <- featureCounts(bam.files[1:2], annot.ext=gtf.file,
 ## 
 ## //========================== featureCounts setting ===========================\\
 ## ||                                                                            ||
-## ||             Input files : 2 BAM files                                      ||
+## ||             Input files : 8 BAM files                                      ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
+## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
 ## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
 ## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
 ## ||                                                                            ||
@@ -163,6 +142,72 @@ fc <- featureCounts(bam.files[1:2], annot.ext=gtf.file,
 ## ||    Input was converted to a format accepted by featureCounts.              ||
 ## ||    Total fragments : 7200                                                  ||
 ## ||    Successfully assigned fragments : 6712 (93.2%)                          ||
+## ||    Running time : 0.14 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    2 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 8536                                                  ||
+## ||    Successfully assigned fragments : 7910 (92.7%)                          ||
+## ||    Running time : 0.14 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    1 read has missing mates.                                               ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 7544                                                  ||
+## ||    Successfully assigned fragments : 7044 (93.4%)                          ||
+## ||    Running time : 0.14 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    2 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 8818                                                  ||
+## ||    Successfully assigned fragments : 8261 (93.7%)                          ||
+## ||    Running time : 0.13 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    6 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 11850                                                 ||
+## ||    Successfully assigned fragments : 11148 (94.1%)                         ||
+## ||    Running time : 0.16 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    6 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 5877                                                  ||
+## ||    Successfully assigned fragments : 5415 (92.1%)                          ||
+## ||    Running time : 0.14 minutes                                             ||
+## ||                                                                            ||
+## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
+## ||    Paired-end reads are included.                                          ||
+## ||    Assign fragments (read pairs) to features...                            ||
+## ||    Found reads that are not properly paired.                               ||
+## ||    (missing mate or the mate is not the next read)                         ||
+## ||    3 reads have missing mates.                                             ||
+## ||    Input was converted to a format accepted by featureCounts.              ||
+## ||    Total fragments : 10208                                                 ||
+## ||    Successfully assigned fragments : 9538 (93.4%)                          ||
 ## ||    Running time : 0.13 minutes                                             ||
 ## ||                                                                            ||
 ## ||                         Read assignment finished.                          ||
@@ -183,27 +228,27 @@ unname(fc$counts) # hide the colnames
 ```
 
 ```
-##       [,1] [,2]
-##  [1,]    0    0
-##  [2,]    0    0
-##  [3,]    0    0
-##  [4,]    0    0
-##  [5,] 2673 2031
-##  [6,]   38   28
-##  [7,]   58   55
-##  [8,] 1004 1253
-##  [9,] 1060 1291
-## [10,]    2    1
-## [11,]    2    0
-## [12,] 1588 1745
-## [13,]    1    0
-## [14,]    1    0
-## [15,]    0    0
-## [16,]    4   50
-## [17,]    0    0
-## [18,]    0    0
-## [19,]  218  257
-## [20,]    0    1
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+##  [1,]    0    0    4    1    0    0    1    0
+##  [2,]    0    0    1    0    0    0    0    0
+##  [3,]    0    0    0    0    0    0    0    0
+##  [4,]    0    0    0    0    0    0    0    0
+##  [5,] 2673 2031 3263 1570 3446 3615 2171 1949
+##  [6,]   38   28   66   24   42   41   47   36
+##  [7,]   58   55   55   42   53   54   50   43
+##  [8,] 1004 1253 1122 1313 1100 1879  745 1534
+##  [9,] 1060 1291 1360 1286 1201 1725  917 1940
+## [10,]    2    1    2    1    2    7    1    4
+## [11,]    2    0    6    7    1    7    1    6
+## [12,] 1588 1745 1778 2007 2146 3349 1262 2561
+## [13,]    1    0    0    1    0    0    0    0
+## [14,]    1    0    0    0    0    0    0    0
+## [15,]    0    0    0    0    0    0    0    0
+## [16,]    4   50   19  543    1   10   14 1067
+## [17,]    0    0    0    1    0    0    0    0
+## [18,]    0    0    0    0    0    0    0    0
+## [19,]  218  257  234  248  267  461  206  398
+## [20,]    0    1    0    0    2    0    0    0
 ```
 
 Plot the first column from each function against each other (after matching the rows of the *featureCounts* matrix to the one returned by *summarizeOverlaps*.
@@ -329,13 +374,6 @@ This code chunk is not necessary, but helps to make nicer plots below with large
 # library(devtools)
 # install_github("ririzarr/rafalib")
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 mypar()
 ```
 
@@ -363,13 +401,9 @@ We can also make a *DESeqDataSet* from a count matrix and column data.
 
 
 ```r
-dds2 <- DESeqDataSetFromMatrix(fc$counts, 
-                               colData=sample.table, 
-                               design=~ cell + dex)
-```
-
-```
-## Error in validObject(.Object): invalid class "SummarizedExperiment" object: 'colData' nrow differs from 'assays' ncol
+dds.fc <- DESeqDataSetFromMatrix(fc$counts, 
+                                 colData=sample.table, 
+                                 design=~ cell + dex)
 ```
 
 ### Normalization for sequencing depth
@@ -893,13 +927,6 @@ A heatmap of the top genes:
 
 ```r
 library(pheatmap)
-```
-
-```
-## Error in library(pheatmap): there is no package called 'pheatmap'
-```
-
-```r
 topgenes <- head(rownames(resSort),20)
 mat <- assay(rld)[topgenes,]
 mat <- mat - rowMeans(mat)
@@ -907,9 +934,7 @@ df <- as.data.frame(colData(dds)[,c("dex","cell")])
 pheatmap(mat, annotation_col=df)
 ```
 
-```
-## Error in eval(expr, envir, enclos): could not find function "pheatmap"
-```
+![plot of chunk unnamed-chunk-44](figure/rnaseq_gene_level-unnamed-chunk-44-1.png) 
 
 ### Getting alternate annotations
 
@@ -918,13 +943,6 @@ We can then check the annotation of these highly significant genes:
 
 ```r
 library(org.Hs.eg.db)
-```
-
-```
-## Loading required package: DBI
-```
-
-```r
 keytypes(org.Hs.eg.db)
 ```
 
@@ -1042,33 +1060,6 @@ If we suppose that we didn't know about the different cell-lines in the experime
 
 ```r
 library(sva)
-```
-
-```
-## Loading required package: mgcv
-## Loading required package: nlme
-## 
-## Attaching package: 'nlme'
-## 
-## The following object is masked from 'package:Biostrings':
-## 
-##     collapse
-## 
-## The following object is masked from 'package:IRanges':
-## 
-##     collapse
-## 
-## This is mgcv 1.8-6. For overview type 'help("mgcv-package")'.
-## Loading required package: genefilter
-## 
-## Attaching package: 'genefilter'
-## 
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
 idx <- rowMeans(counts(dds)) > 1
 dat <- counts(dds)[idx,]
 mod <- model.matrix(~ dex, colData(dds))
@@ -1131,24 +1122,24 @@ sessionInfo()
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] sva_3.14.0              genefilter_1.50.0      
-##  [3] mgcv_1.8-6              nlme_3.1-120           
-##  [5] org.Hs.eg.db_3.1.2      RSQLite_1.0.0          
-##  [7] DBI_0.3.1               ggplot2_1.0.1          
-##  [9] vsn_3.36.0              rafalib_0.0.9          
-## [11] RColorBrewer_1.1-2      Rsubread_1.18.0        
-## [13] GenomicAlignments_1.4.1 GenomicFeatures_1.20.0 
-## [15] AnnotationDbi_1.30.1    Rsamtools_1.20.1       
-## [17] Biostrings_2.36.0       XVector_0.8.0          
-## [19] airway_0.102.0          DEXSeq_1.14.0          
-## [21] DESeq2_1.8.0            RcppArmadillo_0.5.000.0
-## [23] Rcpp_0.11.5             GenomicRanges_1.20.3   
-## [25] GenomeInfoDb_1.4.0      IRanges_2.2.1          
-## [27] S4Vectors_0.6.0         Biobase_2.28.0         
-## [29] BiocGenerics_0.14.0     BiocParallel_1.2.1     
-## [31] pasilla_0.8.0           testthat_0.9.1         
-## [33] devtools_1.7.0          knitr_1.10             
-## [35] BiocInstaller_1.18.1   
+##  [1] pheatmap_1.0.2          sva_3.14.0             
+##  [3] genefilter_1.50.0       mgcv_1.8-6             
+##  [5] nlme_3.1-120            org.Hs.eg.db_3.1.2     
+##  [7] RSQLite_1.0.0           DBI_0.3.1              
+##  [9] ggplot2_1.0.1           vsn_3.36.0             
+## [11] rafalib_0.0.9           RColorBrewer_1.1-2     
+## [13] Rsubread_1.18.0         GenomicAlignments_1.4.1
+## [15] GenomicFeatures_1.20.0  AnnotationDbi_1.30.1   
+## [17] Rsamtools_1.20.1        Biostrings_2.36.0      
+## [19] XVector_0.8.0           airway_0.102.0         
+## [21] DEXSeq_1.14.0           DESeq2_1.8.0           
+## [23] RcppArmadillo_0.5.000.0 Rcpp_0.11.5            
+## [25] GenomicRanges_1.20.3    GenomeInfoDb_1.4.0     
+## [27] IRanges_2.2.1           S4Vectors_0.6.0        
+## [29] Biobase_2.28.0          BiocGenerics_0.14.0    
+## [31] BiocParallel_1.2.1      pasilla_0.8.0          
+## [33] testthat_0.9.1          devtools_1.7.0         
+## [35] knitr_1.10              BiocInstaller_1.18.1   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] splines_3.2.0         Formula_1.2-1         statmod_1.4.21       
