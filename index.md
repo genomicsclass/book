@@ -149,7 +149,8 @@ old ones:
 
 ---
 
-- [EDA and differential expression of gene-level counts](pages/rnaseq_gene_level.html)
+- [EDA, differential expression and SVA for gene-level counts](pages/rnaseq_gene_level.html)
+- [Differential exon usage](pages/rnaseq_exon_usage.html)
 
 ### 6: Variant Discovery and Genotyping
 
