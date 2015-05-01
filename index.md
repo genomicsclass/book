@@ -151,6 +151,7 @@ old ones:
 
 - [EDA, differential expression and SVA for gene-level counts](pages/rnaseq_gene_level.html)
 - [Differential exon usage](pages/rnaseq_exon_usage.html)
+- [Exploring Cufflinks isoform-level expression with cummeRbund](pages/rnaseq_isoform_cummerbund.html)
 
 ### 6: Variant Discovery and Genotyping
 
