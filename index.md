@@ -149,7 +149,7 @@ old ones:
 
 ---
 
-- [EDA, differential expression and SVA for gene-level counts](pages/rnaseq_gene_level.html)
+- [RNA-seq at the gene-level: EDA, DE and SVA](pages/rnaseq_gene_level.html)
 - [Differential exon usage](pages/rnaseq_exon_usage.html)
 - [Exploring plots of isoform-level expression with Cufflinks/cummeRbund](pages/rnaseq_isoform_cummerbund.html)
 
