@@ -167,6 +167,9 @@ old ones:
 - [Reading 450K idat files with the minfi package](pages/minfi.html)
 - [Interactive visualization of DNA methylation data analysis](pages/epiviz.html)
  
+ ---
+ 
+ - [Statistical Inference in the Analysis of DNA methylation Data](inference_for_DNAmeth.html)
 ### Footnotes for all lectures
 
 - [Footnotes](pages/footnotes.html)
