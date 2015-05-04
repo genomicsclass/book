@@ -169,7 +169,10 @@ old ones:
  
  ---
  
- - [Statistical Inference in the Analysis of DNA methylation Data](inference_for_DNAmeth.html)
+ - [Statistical Inference in the Analysis of DNA methylation Data](pages/inference_for_DNAmeth.html)
+
+---
+
 ### Footnotes for all lectures
 
 - [Footnotes](pages/footnotes.html)
