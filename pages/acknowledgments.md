@@ -3,6 +3,10 @@ layout: page
 title: Acknowledgments for Data Analysis for Genomics / Biomedical Data Science series
 ---
 
+## Course development and course management
+
+* Heather Sternshein at HarvardX
+
 ## Course content and assessments
 
 Statistics for the Life Sciences
@@ -29,14 +33,13 @@ Case study: Variant Discovery and Genotyping
 * Ben Langmead
 * Jeffrey Leek 
 
-## Course development and quality assurance
+## Quality assurance
 
 from HarvardX:
 
-* Heather Sternshein
 * Pooja Agarwal
 
-from Harvard School of Public Health
+Harvard School of Public Health
 
 * Bonnie Anderson
 
