@@ -26,6 +26,13 @@ Case study: Variant Discovery and Genotyping
 * Shannan Ho Sui
 * Meeta Mistry
 
+Case study: ChIP-seq
+
+* X. Shirley Liu
+* Tao Liu
+* Chongzhi Zang
+* Eric Severson
+
 ## Slides/images borrowed in lectures
 
 * Héctor Corrada Bravo
