@@ -17,35 +17,14 @@ Admission data from Berkeley 1973 showed more men were being admitted than women
 
 ```r
 library(dagdata)
-```
-
-```
-## Error in library(dagdata): there is no package called 'dagdata'
-```
-
-```r
 data(admissions)
-```
-
-```
-## Warning in data(admissions): data set 'admissions' not found
-```
-
-```r
 admissions$total=admissions$Percent*admissions$Number/100
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
-```
-
-```r
 ##percent men get in
 sum(admissions$total[admissions$Gender==1]/sum(admissions$Number[admissions$Gender==1]))
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
+## [1] 0.4451951
 ```
 
 ```r
@@ -54,7 +33,7 @@ sum(admissions$total[admissions$Gender==0]/sum(admissions$Number[admissions$Gend
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
+## [1] 0.3033351
 ```
 
 A chi-square test clearly rejects they hypothesis that gender and admission are independent:
@@ -62,86 +41,36 @@ A chi-square test clearly rejects they hypothesis that gender and admission are 
 ```r
 ##let's make a 2 x 2
 index = admissions$Gender==1
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
-```
-
-```r
 men = admissions[index,]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
-```
-
-```r
 women = admissions[!index,]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'admissions' not found
-```
-
-```r
 menYes = sum(men$Number*men$Percent/100)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'men' not found
-```
-
-```r
 menNo = sum(men$Number*(1-men$Percent/100))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'men' not found
-```
-
-```r
 womenYes = sum(women$Number*women$Percent/100)
 womenNo = sum(women$Number*(1-women$Percent/100))
 tab = matrix(c(menYes,womenYes,menNo,womenNo),2,2)
-```
-
-```
-## Error in matrix(c(menYes, womenYes, menNo, womenNo), 2, 2): object 'menYes' not found
-```
-
-```r
 print(chisq.test(tab)$p.val)
 ```
 
 ```
-## Error in is.data.frame(x): object 'tab' not found
+## [1] 9.139492e-22
 ```
 
 But closer inspection shows a paradoxical result. Here are the percent admissions by Major:
 
 ```r
 y=cbind(admissions[1:6,c(1,3)],admissions[7:12,3])
-```
-
-```
-## Error in cbind(admissions[1:6, c(1, 3)], admissions[7:12, 3]): object 'admissions' not found
-```
-
-```r
 colnames(y)[2:3]=c("Male","Female")
-```
-
-```
-## Error in colnames(y)[2:3] = c("Male", "Female"): object 'y' not found
-```
-
-```r
 y
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'y' not found
+##   Major Male Female
+## 1     A   62     82
+## 2     B   63     68
+## 3     C   37     34
+## 4     D   33     35
+## 5     E   28     24
+## 6     F    6      7
 ```
 
 **Optional homework**: Run the `chisq.test` in each major.
@@ -150,26 +79,18 @@ Here are the absolute number of admissions by Major:
 
 ```r
 y=cbind(admissions[1:6,c(1,2)],admissions[7:12,2])
-```
-
-```
-## Error in cbind(admissions[1:6, c(1, 2)], admissions[7:12, 2]): object 'admissions' not found
-```
-
-```r
 colnames(y)[2:3]=c("Male","Female")
-```
-
-```
-## Error in colnames(y)[2:3] = c("Male", "Female"): object 'y' not found
-```
-
-```r
 y
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'y' not found
+##   Major Male Female
+## 1     A  825    108
+## 2     B  560     25
+## 3     C  325    593
+## 4     D  417    375
+## 5     E  191    393
+## 6     F  373    341
 ```
 
 The chi-square test we performed above suggests a dependence between admission and gender.  Yet when the data is grouped by Major, this dependence doesn't seem borne out.  What's going on? 
@@ -181,29 +102,9 @@ Male and easy majors are confounded.
 
 ```r
 y=cbind(admissions[1:6,5],admissions[7:12,5])
-```
-
-```
-## Error in cbind(admissions[1:6, 5], admissions[7:12, 5]): object 'admissions' not found
-```
-
-```r
 y=sweep(y,2,colSums(y),"/")*100
-```
-
-```
-## Error in sweep(y, 2, colSums(y), "/"): object 'y' not found
-```
-
-```r
 x=rowMeans(cbind(admissions[1:6,3],admissions[7:12,3]))
-```
 
-```
-## Error in cbind(admissions[1:6, 3], admissions[7:12, 3]): object 'admissions' not found
-```
-
-```r
 library(rafalib)
 ```
 
@@ -214,19 +115,10 @@ library(rafalib)
 ```r
 mypar2(1,1)
 matplot(x,y,xlab="percent that gets in the major",ylab="percent that applies to major",col=c("blue","red"),cex=1.5)
-```
-
-```
-## Error in as.matrix(x): object 'x' not found
-```
-
-```r
 legend("topleft",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0)
 ```
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-5](figure/confounding-unnamed-chunk-5-1.png) 
 
 
 ## Confounding explained graphically
@@ -235,122 +127,12 @@ legend("topleft",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0
 In the plots below each letter represents a person. Accepted individuals are denoted with green and not admitted in orange. The letter denotes the major. In this plot we group all the patients together and notice that the proportion of green is larger for men.
 
 
-
-```
-## Error in is.data.frame(x): object 'tab' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'tmp' not found
-```
-
-```
-## Error in FUN(X[[i]], ...): object 'admissions' not found
-```
-
-```
-## Error in Reduce(c, males): object 'males' not found
-```
-
-```
-## Error in FUN(X[[i]], ...): object 'admissions' not found
-```
-
-```
-## Error in Reduce(c, females): object 'females' not found
-```
-
-```
-## Error in makematrix(allmales, NC): object 'allmales' not found
-```
-
-```
-## Error in makematrix(allfemales, FNC, NC + NC/10): object 'allfemales' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'malepoints' not found
-```
-
-```
-## Error in plot.default(0, type = "n", xlim = c(min(malepoints[, 1]), max(femalepoints[, : object 'malepoints' not found
-```
-
-```
-## Error in lapply(X = X, FUN = FUN, ...): object 'males' not found
-```
-
-```
-## Error in order(-allmales): object 'allmales' not found
-```
-
-```
-## Error in points(malepoints, col = 2 - allmales[o], pch = PCH[o], cex = CEX): object 'malepoints' not found
-```
-
-```
-## Error in lapply(X = X, FUN = FUN, ...): object 'females' not found
-```
-
-```
-## Error in order(-allfemales): object 'allfemales' not found
-```
-
-```
-## Error in points(femalepoints, col = 2 - allfemales[o], pch = PCH[o], cex = CEX): object 'femalepoints' not found
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```
-## Error in axis(side = 3, c(NC/2, NC + NC/2), c("Male", "Female"), tick = FALSE, : plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-6](figure/confounding-unnamed-chunk-6-1.png) 
 
 Now we stratify the data by major. The key point here is that most of the men denoted with green come from majors A and B which are the ones with the highest acceptance rate. 
 
 
-
-```
-## Error in vector("list", length(males)): object 'males' not found
-```
-
-```
-## Error in vector("list", length(males)): object 'males' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'males' not found
-```
-
-```
-## Error in vector("numeric", N + 1): object 'N' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'N' not found
-```
-
-```
-## Error in lapply(X = X, FUN = FUN, ...): object 'malepoints' not found
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'N' not found
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```
-## Error in axis(side = 3, c(NC/2, NC + FNC/2), c("Male", "Female"), tick = FALSE, : object 'FNC' not found
-```
-
-```
-## Error in axis(side = 2, ADDY[-1]/2 + ADDY[-length(ADDY)]/2, LETTERS[1:N], : object 'ADDY' not found
-```
+![plot of chunk unnamed-chunk-7](figure/confounding-unnamed-chunk-7-1.png) 
 
 
 
@@ -368,27 +150,11 @@ So if we condition or stratify by major this goes away.
 
 ```r
 y=cbind(admissions[1:6,3],admissions[7:12,3])
-```
-
-```
-## Error in cbind(admissions[1:6, 3], admissions[7:12, 3]): object 'admissions' not found
-```
-
-```r
 matplot(1:6,y,xaxt="n",xlab="major",ylab="percent",col=c("blue","red"),cex=1.5)
-```
-
-```
-## Error in as.matrix(y): object 'y' not found
-```
-
-```r
 legend("topright",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0,cex=0.75)
 ```
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-8](figure/confounding-unnamed-chunk-8-1.png) 
 
 The average difference by Major is 3.5% higher for women.
 
@@ -398,7 +164,7 @@ mean(y[,1]-y[,2])
 ```
 
 ```
-## Error in mean(y[, 1] - y[, 2]): object 'y' not found
+## [1] -3.5
 ```
 
 ## Simpson's paradox in baseball
@@ -491,7 +257,9 @@ print(tab)
 ```
 
 ```
-## Error in print(tab): object 'tab' not found
+##         [,1]    [,2]
+## [1,] 1198.02 1492.98
+## [2,]  556.62 1278.38
 ```
 
 By running a t-test and creating a volcano plot we note that thousands of genes appear to be differentially expressed. But when we perform a similar comparison between 2002 and 2003 only on the CEU population we again obtain thousands of diferentially expressed genes:
