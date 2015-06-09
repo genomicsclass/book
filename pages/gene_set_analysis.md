@@ -156,12 +156,6 @@ e=ExpressionSet(assay=geneExpression,
 gsids<-mapGMT2Affy(e,gsets) 
 ```
 
-```
-## Loading required package: hgfocus.db
-## Loading required package: org.Hs.eg.db
-## Loading required package: DBI
-```
-
 ## Approaches based on association tests
 
 Now we can now ask if differentially expressed genes are enriched in a given gene set. So how do we do this? The simplest approach is to  apply a chi-square test for independence that we learned in a previous units. Let's do this for one of the Y chromosome gene sets: 
@@ -319,21 +313,22 @@ Note that in the case that genes in a gene set have correlation $$\rho$$ the var
 
 $$
 \begin{eqnarray}
-Var(\bar{t}) &=& \frac{1}{N^2} \mbox{var}((1 \dots 1]) (t_1 \dots
-t_N)' (1 \dots 1)')) \\\\
+Var(\bar{t}) &=& \frac{1}{N^2} \mbox{var}( (1 \dots 1) (t_1 \dots
+t_N)' ) \\
 &=& \frac{1}{N^2}(1 \dots 1)
 \begin{pmatrix}
-1 & \rho & \dots & \rho & \rho \\\\
-\rho & 1 & \rho & \dots  & \rho \\\\
-\dots & \dots & \dots & \dots & \dots \\\\
-\rho &  \rho & \dots & \rho & 1 \\\\
+1 & \rho & \dots & \rho & \rho \\
+\rho & 1 & \rho & \dots  & \rho \\
+\dots & \dots & \dots & \dots & \dots \\
+\rho &  \rho & \dots & \rho & 1 \\
 \end{pmatrix}
-(1 \dots 1) ' \\\\
-&=& \frac{1}{N}\{1 + (N-1) \rho N\}
+(1 \dots 1) ' \\
+&=& \frac{1}{N^2}\{N + (N-1) N \rho \} \\
+&=& \frac{1}{N}\{1 + (N-1) \rho \} \\
 \end{eqnarray}
 $$
 
-Note that when $$\rho$$ is positive, the variance is inflated by $$\{1 + (N-1) \rho N\}$$. Although in general we don't expect all the $$\rho$$ to be the same within a gene set, a correction factor can still be computed for each gene set that depends on the average $$\rho$$ in the gene set. The formula can been seen on page 295 [here] (http://dx.doi.org/10.1214/07-AOAS146). The formula for the correction for the Wald statistic is also included. 
+Note that when $$\rho$$ is positive, the variance is inflated by $$\{1 + (N-1) \rho \}$$. Although in general we don't expect all the $$\rho$$ to be the same within a gene set, a correction factor can still be computed for each gene set that depends on the average $$\rho$$ in the gene set. The formula can been seen on page 295 [here] (http://dx.doi.org/10.1214/07-AOAS146). The formula for the correction for the Wald statistic is also included. 
 
 These correction factor can be used to adapt the simple summary statistics described above. In fact, several methods have been published that are based on the simple mean shift approach but take correlation into account to develop summary statistics and statistical inference based on asymptotic approximations [ROAST](http://www.ncbi.nlm.nih.gov/pubmed/?term=20610611), [CAMERA](http://www.ncbi.nlm.nih.gov/pubmed/22638577). In the computer labs we will demonstrate one of these pieces of software. For simplicity, here we
 create approximation based on $$\sqrt{N} \bar{t}$$ and use the correction factor. Here compare the original $$\sqrt{N} \bar{t}$$ to the corrected version:
