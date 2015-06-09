@@ -158,16 +158,8 @@ gsids<-mapGMT2Affy(e,gsets)
 
 ```
 ## Loading required package: hgfocus.db
-```
-
-```
-## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called 'hgfocus.db'
-```
-
-```
-## Error in select(get(dbname), keys = gns, columns = c("ENTREZID", "PROBEID")): error in evaluating the argument 'x' in selecting a method for function 'select': Error in get(dbname) (from <text>#8) : object 'hgfocus.db' not found
-## Calls: get -> get
+## Loading required package: org.Hs.eg.db
+## Loading required package: DBI
 ```
 
 ## Approaches based on association tests
@@ -177,18 +169,15 @@ Now we can now ask if differentially expressed genes are enriched in a given gen
 
 ```r
 tab <- table(ingenset=1:nrow(e) %in% gsids[["chryq11"]],signif=qval<0.05)
-```
-
-```
-## Error in 1:nrow(e) %in% gsids[["chryq11"]]: error in evaluating the argument 'table' in selecting a method for function '%in%': Error: object 'gsids' not found
-```
-
-```r
 chisq.test(tab)$p.val
 ```
 
 ```
-## Error in is.data.frame(x): object 'tab' not found
+## Warning in chisq.test(tab): Chi-squared approximation may be incorrect
+```
+
+```
+## [1] 5.264033e-121
 ```
 
 Because we are comparing men to women so it is not surprising the genes on the Y chromosome are enriched for differential expression. However, with only 13 reaching significance (4 of the on Y), this method is not practical for finding other gene sets that may be biologically interesting in some way. For example, are X chromosome gene sets of interest? Note that some genes escape X inactivation and thus should have more gene expression in females. 
@@ -218,37 +207,13 @@ Most current approaches to gene sets analysis do not divide genes into different
 
 ```r
 ind <- gsids[["chrxp11"]]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'gsids' not found
-```
-
-```r
 mypar2(1,1)
 plot(density(tt[-ind]),xlim=c(-7,7),main="",xlab="t-stat",sub="",lwd=4)
-```
-
-```
-## Error in plot(density(tt[-ind]), xlim = c(-7, 7), main = "", xlab = "t-stat", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error in density(tt[-ind]) : 
-##   error in evaluating the argument 'x' in selecting a method for function 'density': Error: object 'ind' not found
-```
-
-```r
 lines(density(tt[ind],bw=.7),col=2,lty=2,lwd=4)
-```
-
-```
-## Error in density(tt[ind], bw = 0.7): error in evaluating the argument 'x' in selecting a method for function 'density': Error: object 'ind' not found
-```
-
-```r
 rug(tt[ind],col=2)
 ```
 
-```
-## Error in as.vector(x): object 'ind' not found
-```
+![plot of chunk unnamed-chunk-11](figure/gene_set_analysis-unnamed-chunk-11-1.png) 
 
 Note that the gene set distribution shifts a bit to the left providing evidence that the distribution of the t-statistics in this gene set is different from the distribution for all genes. So how do we quantify this observation? How do we assess uncertainty.
 
@@ -267,65 +232,20 @@ wilcox <- t(sapply(gsids,function(i){
   return(c(z,tmp$p.value))
   } else return(rep(NA,2))  
   }))
-```
-
-```
-## Error in t(sapply(gsids, function(i) {: error in evaluating the argument 'x' in selecting a method for function 't': Error in sapply(gsids, function(i) { : 
-##   error in evaluating the argument 'X' in selecting a method for function 'sapply': Error: object 'gsids' not found
-```
-
-```r
 mypar2(1,1)
 cols <- rep(1,nrow(wilcox))
-```
-
-```
-## Error in nrow(wilcox): error in evaluating the argument 'x' in selecting a method for function 'nrow': Error: object 'wilcox' not found
-```
-
-```r
 cols[grep("chrx",rownames(wilcox))]<-2
-```
-
-```
-## Error in cols[grep("chrx", rownames(wilcox))] <- 2: object 'cols' not found
-```
-
-```r
 cols[grep("chry",rownames(wilcox))]<-3
-```
-
-```
-## Error in cols[grep("chry", rownames(wilcox))] <- 3: object 'cols' not found
-```
-
-```r
 qqnorm(wilcox[,1],col=cols,cex=ifelse(cols==1,1,2),pch=16)
-```
-
-```
-## Error in qqnorm(wilcox[, 1], col = cols, cex = ifelse(cols == 1, 1, 2), : object 'wilcox' not found
-```
-
-```r
 qqline(wilcox[,1])
-```
-
-```
-## Error in quantile(y, probs, names = FALSE, type = qtype, na.rm = TRUE): object 'wilcox' not found
-```
-
-```r
 legend("topleft",c("Autosome","chrX","chrY"),pch=16,col=1:3,box.lwd=0)
 ```
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-12](figure/gene_set_analysis-unnamed-chunk-12-1.png) 
 
 Note that the top ten does not show the X and Y chromosomes as highly expressed as we expected. The logic for using a rank based (robust) test was that we do not want one or two very highly expressed genes to dominate the gene set analysis.  However, although low rank based tests are very useful at protecting us from false positive they come at the cost of low low sensitive (power). Below we consider less robust, yet generally more powerful approaches.
 
-If we are interested in gene sets with distributions that shift to the left (generally more under expressed genes) or the right (generally more over expressed genes) then the simplest test we can construct simply compares the average between the two groups. A very simple summary we can construct to test for mean shits is to average the t-statistic in gene set ((link)[http://www.ncbi.nlm.nih.gov/pubmed/?term=20048385]). Basically for let G be the index of genes in the gene sets and define:
+If we are interested in gene sets with distributions that shift to the left (generally more under expressed genes) or the right (generally more over expressed genes) then the simplest test we can construct simply compares the average between the two groups. A very simple summary we can construct to test for mean shits is to average the t-statistic in gene set <http://www.ncbi.nlm.nih.gov/pubmed/?term=20048385>. Basically for let G be the index of genes in the gene sets and define:
 
 $$
 \bar{t}=\frac{1}{N} \sum_{i \in G} t_i
@@ -341,42 +261,22 @@ Here is a qq-plot of these summary
 
 ```r
 avgt <- sapply(gsids,function(i) sqrt(length(i))*mean(tt[i]))
-```
-
-```
-## Error in sapply(gsids, function(i) sqrt(length(i)) * mean(tt[i])): error in evaluating the argument 'X' in selecting a method for function 'sapply': Error: object 'gsids' not found
-```
-
-```r
 qqnorm(avgt,col=cols,cex=ifelse(cols==1,1,2),pch=16)
-```
-
-```
-## Error in qqnorm(avgt, col = cols, cex = ifelse(cols == 1, 1, 2), pch = 16): object 'avgt' not found
-```
-
-```r
 qqline(avgt)
-```
-
-```
-## Error in quantile(y, probs, names = FALSE, type = qtype, na.rm = TRUE): object 'avgt' not found
-```
-
-```r
 legend("topleft",c("Autosome","chrX","chrY"),pch=16,col=1:3,box.lwd=0)
 ```
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-13](figure/gene_set_analysis-unnamed-chunk-13-1.png) 
 
 ```r
 avgt[order(-abs(avgt))[1:10]]
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'avgt' not found
+##    chryp11    chryq11    chr6p22    chrxq13   chr17p13    chrxp11 
+## -17.749865 -15.287203  -6.680743   6.592806  -4.891679   4.404041 
+##   chr20p13    chr4q35    chr7p22    chrxp22 
+##  -4.241892  -4.033233  -3.642068   3.608926
 ```
 
 Several methods are based on summaries designed to test shifts in means: for example [Tian et al 2005](http://www.ncbi.nlm.nih.gov/pubmed/16174746) , [SAFE](http://www.ncbi.nlm.nih.gov/pubmed/15647293), [ROAST](http://www.ncbi.nlm.nih.gov/pubmed/?term=20610611), [CAMERA](http://www.ncbi.nlm.nih.gov/pubmed/22638577). 
@@ -398,13 +298,6 @@ assumes independence. However, even under the null we may expect gene sets to co
 
 ```r
 N <- sapply(gsids,length)
-```
-
-```
-## Error in sapply(gsids, length): error in evaluating the argument 'X' in selecting a method for function 'sapply': Error: object 'gsids' not found
-```
-
-```r
 ind1<-which(X==0)
 ind2<-which(X==1)
 corrs <- t(sapply(gsids,function(ind){
@@ -415,29 +308,12 @@ corrs <- t(sapply(gsids,function(ind){
     median(cc2[lower.tri(cc2)])))
   } else return(c(NA,NA))
 }))
-```
-
-```
-## Error in t(sapply(gsids, function(ind) {: error in evaluating the argument 'x' in selecting a method for function 't': Error in sapply(gsids, function(ind) { : 
-##   error in evaluating the argument 'X' in selecting a method for function 'sapply': Error: object 'gsids' not found
-```
-
-```r
 mypar2(1,1)
 plot(corrs[N>10,],xlim=c(-1,1),ylim=c(-1,1),xlab="Correlation within females",ylab="Correlation within males")
-```
-
-```
-## Error in plot(corrs[N > 10, ], xlim = c(-1, 1), ylim = c(-1, 1), xlab = "Correlation within females", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'corrs' not found
-```
-
-```r
 abline(h=0,v=0,lty=2)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-14](figure/gene_set_analysis-unnamed-chunk-14-1.png) 
 
 Note that in the case that genes in a gene set have correlation $$\rho$$ the variance is of the average t-statistics can be computed to be:
 
@@ -470,91 +346,19 @@ In the plot below we notice that this correction attenuates (brings values close
 
 ```r
 avgcorrs <- rowMeans(corrs)
-```
-
-```
-## Error in is.data.frame(x): object 'corrs' not found
-```
-
-```r
 cf <- (1+(N-1)*avgcorrs)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'N' not found
-```
-
-```r
 cf[cf<1] <- 1 ## we ignore negative correlations
-```
-
-```
-## Error in cf[cf < 1] <- 1: object 'cf' not found
-```
-
-```r
 correctedavgt <- avgt/sqrt(cf)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'avgt' not found
-```
-
-```r
 parampvaliid <- 2*pnorm(-abs(avgt))
-```
-
-```
-## Error in pnorm(-abs(avgt)): object 'avgt' not found
-```
-
-```r
 parampval<- 2*pnorm(-abs(correctedavgt))
-```
-
-```
-## Error in pnorm(-abs(correctedavgt)): object 'correctedavgt' not found
-```
-
-```r
 plot(avgt,correctedavgt,bg=cols,pch=21,xlab="Original",ylab="With correction factor",xlim=c(-7,20),ylim=c(-7,20),cex=1.5)
-```
-
-```
-## Error in plot(avgt, correctedavgt, bg = cols, pch = 21, xlab = "Original", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'avgt' not found
-```
-
-```r
 abline(0,1)
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```r
 abline(h=0,v=0,lty=2)
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```r
 thirdhighest <- order(-avgt)[3]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'avgt' not found
-```
-
-```r
 arrows(avgt[thirdhighest]+3,correctedavgt[thirdhighest],x1=avgt[thirdhighest]+0.5,lwd=2)
 ```
 
-```
-## Error in arrows(avgt[thirdhighest] + 3, correctedavgt[thirdhighest], x1 = avgt[thirdhighest] + : object 'avgt' not found
-```
+![plot of chunk unnamed-chunk-15](figure/gene_set_analysis-unnamed-chunk-15-1.png) 
 
 Note that the highlighted gene set has relatively high correlation and size, which makes the correction factor large.
 
@@ -563,7 +367,8 @@ avgcorrs[thirdhighest]
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'avgcorrs' not found
+##   chrxp22 
+## 0.0287052
 ```
 
 ```r
@@ -571,7 +376,7 @@ length(gsids[[thirdhighest]])
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'gsids' not found
+## [1] 76
 ```
 
 ```r
@@ -579,7 +384,8 @@ cf[thirdhighest]
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'cf' not found
+## chrxp22 
+## 3.15289
 ```
 
 In this unit we have used the average t-statistic as a simple example of a summary statistic for gene sets for which we can estimate a null-hypothesis. We demonstrated how that a correction factor is needed when the genes in the gene set are not independent. Note that we used the average t-statistic as a simple illustration and that for a more rigorous treatment implementing the testing-for-mean-shifts approach you can see [SAFE](http://www.ncbi.nlm.nih.gov/pubmed/15647293), [ROAST](http://www.ncbi.nlm.nih.gov/pubmed/?term=20610611), [CAMERA](http://www.ncbi.nlm.nih.gov/pubmed/22638577).
@@ -651,7 +457,7 @@ plot(correctedavgt,permavgt,bg=cols,pch=21,xlab="Parametric z-score (with correc
 ```
 
 ```
-## Error in plot(correctedavgt, permavgt, bg = cols, pch = 21, xlab = "Parametric z-score (with correction)", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'correctedavgt' not found
+## Error in plot(correctedavgt, permavgt, bg = cols, pch = 21, xlab = "Parametric z-score (with correction)", : error in evaluating the argument 'y' in selecting a method for function 'plot': Error: object 'permavgt' not found
 ```
 
 ```r
@@ -680,7 +486,7 @@ tab <- data.frame(avgt=p.adjust(signif(2*pnorm(1-abs(avgt)),2),method="BH"),
 ```
 
 ```
-## Error in pnorm(1 - abs(avgt)): object 'avgt' not found
+## Error in p.adjust(permpval, method = "BH"): object 'permpval' not found
 ```
 
 ```r
@@ -689,39 +495,18 @@ tab<-tab[N>=10,]
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'tab' not found
+## Error in tab[N >= 10, ]: (subscript) logical subscript too long
 ```
 
 ```r
 tab <- cbind(signif(tab,2),apply(tab,2,rank))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'tab' not found
-```
-
-```r
 tab<-tab[order(tab[,1]),]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'tab' not found
-```
-
-```r
 tab <- tab[tab[,1]< 0.25,]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'tab' not found
-```
-
-```r
 tab
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'tab' not found
+##      FALSE TRUE FALSE TRUE
 ```
 
 One limitation of the permutation test approach is that to estimate very small p-values we need many permutations. For example, to distinguish between a p-value of $$10^{-5}$$ and $$10^{-6}$$ we would need to run 1,000,000 permutations. For those interested in applying conservative multiple comparison correction (such as the Bonferonni correction), it would be necessary to run many simulations. 
