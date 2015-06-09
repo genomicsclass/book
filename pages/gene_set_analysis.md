@@ -153,7 +153,7 @@ e=ExpressionSet(assay=geneExpression,
                 phenoData=AnnotatedDataFrame(sampleInfo),
                 annotation="hgfocus")
 ##can safely ignore the warning
-gsids<-mapGMT2Affy(e,gsets) 
+gsids <- mapGMT2Affy(e,gsets) 
 ```
 
 ## Approaches based on association tests
@@ -395,25 +395,8 @@ When outcome of interest permits it and enough samples and are available an alte
 
 ```r
 library(matrixStats)
-```
-
-```
-## matrixStats v0.14.0 (2015-02-13) successfully loaded. See ?matrixStats for help.
-## 
-## Attaching package: 'matrixStats'
-## 
-## The following objects are masked from 'package:genefilter':
-## 
-##     rowSds, rowVars
-## 
-## The following objects are masked from 'package:Biobase':
-## 
-##     anyMissing, rowMedians
-```
-
-```r
 set.seed(1)
-B <- 10000 ##takes a few minutes
+B <- 400 ##takes a few minutes
 null <- sapply(1:B,function(b){
  nullX<- sample(X)
  nullsvaX<-model.matrix(~nullX+svafit$sv) ##note that we are not recomupting the surrogate values. 
@@ -422,26 +405,8 @@ null <- sapply(1:B,function(b){
  nullavgt <- sapply(gsids,function(i) sqrt(length(i))*mean(nulltt[i]))
  return(nullavgt)
 })
-```
-
-```
-## Error in sapply(gsids, function(i) sqrt(length(i)) * mean(nulltt[i])): error in evaluating the argument 'X' in selecting a method for function 'sapply': Error: object 'gsids' not found
-```
-
-```r
 permavgt <- avgt/rowSds(null)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'avgt' not found
-```
-
-```r
 permpval<- rowMeans(abs(avgt) < abs(null))
-```
-
-```
-## Error in is.data.frame(x): object 'avgt' not found
 ```
 
 In this case the results using permutations are very similar to the results using the parametric approach that uses the correction factor as can be seen in this comparison.
@@ -449,27 +414,11 @@ In this case the results using permutations are very similar to the results usin
 
 ```r
 plot(correctedavgt,permavgt,bg=cols,pch=21,xlab="Parametric z-score (with correction)",ylab="Permutation z-score",cex=1.5,ylim=c(-5,15),xlim=c(-5,15))
-```
-
-```
-## Error in plot(correctedavgt, permavgt, bg = cols, pch = 21, xlab = "Parametric z-score (with correction)", : error in evaluating the argument 'y' in selecting a method for function 'plot': Error: object 'permavgt' not found
-```
-
-```r
 abline(0,1)
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```r
 abline(h=0,v=0,lty=2)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+![plot of chunk unnamed-chunk-18](figure/gene_set_analysis-unnamed-chunk-18-1.png) 
 
 We can see that the q-values are also comparable
 
@@ -478,22 +427,8 @@ We can see that the q-values are also comparable
 tab <- data.frame(avgt=p.adjust(signif(2*pnorm(1-abs(avgt)),2),method="BH"),
                   correctedavgt=p.adjust(signif(2*pnorm(1-abs(correctedavgt)),2),method="BH"),
                   permutations=p.adjust(permpval,method="BH"))
-```
-
-```
-## Error in p.adjust(permpval, method = "BH"): object 'permpval' not found
-```
-
-```r
 ##include only gene sets with 10 or more genes in comparison
 tab<-tab[N>=10,]
-```
-
-```
-## Error in tab[N >= 10, ]: (subscript) logical subscript too long
-```
-
-```r
 tab <- cbind(signif(tab,2),apply(tab,2,rank))
 tab<-tab[order(tab[,1]),]
 tab <- tab[tab[,1]< 0.25,]
@@ -501,7 +436,24 @@ tab
 ```
 
 ```
-##      FALSE TRUE FALSE TRUE
+##             avgt correctedavgt permutations avgt correctedavgt
+## chryp11  1.9e-60       1.5e-37         0.00    1             1
+## chryq11  4.2e-44       6.3e-02         0.00    2             3
+## chr6p22  1.4e-06       1.0e+00         0.72    3           124
+## chrxq13  1.8e-06       5.3e-03         0.00    4             2
+## chr17p13 6.5e-03       1.0e+00         0.00    5           124
+## chrxp11  3.6e-02       1.0e+00         0.70    6           124
+## chr20p13 5.6e-02       9.7e-02         0.00    7             4
+## chr4q35  9.7e-02       1.0e+00         0.41    8           124
+##          permutations
+## chryp11           4.0
+## chryq11           4.0
+## chr6p22          89.0
+## chrxq13           4.0
+## chr17p13          4.0
+## chrxp11          78.5
+## chr20p13          4.0
+## chr4q35          17.0
 ```
 
 One limitation of the permutation test approach is that to estimate very small p-values we need many permutations. For example, to distinguish between a p-value of $$10^{-5}$$ and $$10^{-6}$$ we would need to run 1,000,000 permutations. For those interested in applying conservative multiple comparison correction (such as the Bonferonni correction), it would be necessary to run many simulations. 
