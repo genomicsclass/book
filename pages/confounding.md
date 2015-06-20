@@ -187,18 +187,7 @@ Here are the p-values from comparing CEU to ASN
 library(Biobase)
 library(genefilter)
 library(GSE5859)
-```
-
-```
-## Error in library(GSE5859): there is no package called 'GSE5859'
-```
-
-```r
 data(GSE5859)
-```
-
-```
-## Warning in data(GSE5859): data set 'GSE5859' not found
 ```
 
 Note that this is the original dataset from which we selected the subset used in `GSE5859Subset`. We can extract the gene expression data and sample information table using the Bio conductor functions `exprs` and `pData` like this:
@@ -206,18 +195,7 @@ Note that this is the original dataset from which we selected the subset used in
 
 ```r
 geneExpression = exprs(e)
-```
-
-```
-## Error in exprs(e): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'e' not found
-```
-
-```r
 sampleInfo = pData(e)
-```
-
-```
-## Error in pData(e): error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
 ```
 
 Note that some samples were processed at different times.
@@ -228,7 +206,8 @@ head(sampleInfo$date)
 ```
 
 ```
-## Error in head(sampleInfo$date): object 'sampleInfo' not found
+## [1] "2003-02-04" "2003-02-04" "2002-12-17" "2003-01-30" "2003-01-03"
+## [6] "2003-01-16"
 ```
 
 This is an extraneous variable and should not affect the values in `geneExpression`. However, as we have seen in previous analyses it does appear to have an effect so we will explore this here.
@@ -238,28 +217,18 @@ We can immediately see that year and ethnicity are almost completely confounded:
 
 ```r
 year = factor( format(sampleInfo$date,"%y") )
-```
-
-```
-## Error in format(sampleInfo$date, "%y"): object 'sampleInfo' not found
-```
-
-```r
 tab = table(year,sampleInfo$ethnicity)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'year' not found
-```
-
-```r
 print(tab)
 ```
 
 ```
-##         [,1]    [,2]
-## [1,] 1198.02 1492.98
-## [2,]  556.62 1278.38
+##     
+## year ASN CEU HAN
+##   02   0  32   0
+##   03   0  54   0
+##   04   0  13   0
+##   05  80   3   0
+##   06   2   0  24
 ```
 
 By running a t-test and creating a volcano plot we note that thousands of genes appear to be differentially expressed. But when we perform a similar comparison between 2002 and 2003 only on the CEU population we again obtain thousands of diferentially expressed genes:
@@ -271,82 +240,19 @@ library(genefilter)
 
 ##remove control genes
 out <- grep("AFFX",rownames(geneExpression))
-```
 
-```
-## Error in rownames(geneExpression): error in evaluating the argument 'x' in selecting a method for function 'rownames': Error: object 'geneExpression' not found
-```
-
-```r
 eth <- sampleInfo$ethnicity
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
-```
-
-```r
 ind<- which(eth%in%c("CEU","ASN"))
-```
-
-```
-## Error in match(x, table, nomatch = 0L): object 'eth' not found
-```
-
-```r
 res1 <- rowttests(geneExpression[-out,ind],droplevels(eth[ind]))
-```
-
-```
-## Error in rowttests(geneExpression[-out, ind], droplevels(eth[ind])): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
-```
-
-```r
 ind <- which(year%in%c("02","03") & eth=="CEU")
-```
-
-```
-## Error in match(x, table, nomatch = 0L): object 'year' not found
-```
-
-```r
 res2 <- rowttests(geneExpression[-out,ind],droplevels(year[ind]))
-```
 
-```
-## Error in rowttests(geneExpression[-out, ind], droplevels(year[ind])): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
-```
-
-```r
 XLIM <- max(abs(c(res1$dm,res2$dm)))*c(-1,1)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'res1' not found
-```
-
-```r
 YLIM <- range(-log10(c(res1$p,res2$p)))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'res1' not found
-```
-
-```r
 mypar(1,2)
 plot(res1$dm,-log10(res1$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(p-value)",main="Populations")
-```
-
-```
-## Error in plot(res1$dm, -log10(res1$p), xlim = XLIM, ylim = YLIM, xlab = "Effect size", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res1' not found
-```
-
-```r
 plot(res2$dm,-log10(res2$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(p-value)",main="2003 v 2002")
 ```
 
-```
-## Error in plot(res2$dm, -log10(res2$p), xlim = XLIM, ylim = YLIM, xlab = "Effect size", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res2' not found
-```
+![plot of chunk unnamed-chunk-14](figure/confounding-unnamed-chunk-14-1.png) 
 
