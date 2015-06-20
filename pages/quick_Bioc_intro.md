@@ -30,14 +30,26 @@ One of the great advantages of using Bioconductor for high throughput data is th
 library(Biobase)
 ##can be installed like this: devtools::install_github("genomicsclass/GSE5859")
 library(GSE5859)
+```
+
+```
+## Error in library(GSE5859): there is no package called 'GSE5859'
+```
+
+```r
 data(GSE5859)
+```
+
+```
+## Warning in data(GSE5859): data set 'GSE5859' not found
+```
+
+```r
 class(e)
 ```
 
 ```
-## [1] "ExpressionSet"
-## attr(,"package")
-## [1] "Biobase"
+## Error in eval(expr, envir, enclos): object 'e' not found
 ```
 
 
@@ -45,11 +57,18 @@ These objects were originally designed for gene expression data so the methods t
 
 ```r
 dat <- exprs(e)
+```
+
+```
+## Error in exprs(e): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'e' not found
+```
+
+```r
 dim(dat)
 ```
 
 ```
-## [1] 8793  208
+## Error in eval(expr, envir, enclos): object 'dat' not found
 ```
 
 The information about samples is also stored in this object and the functions to create it try to guarantee that the columns of `exprs(e)` match the rows of the sample information table. `pData` is use as shorthand for _phenotype_ data. 
@@ -58,11 +77,18 @@ The information about samples is also stored in this object and the functions to
 
 ```r
 sampleInfo <- pData(e)
+```
+
+```
+## Error in pData(e): error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'e' not found
+```
+
+```r
 dim(sampleInfo)
 ```
 
 ```
-## [1] 208   3
+## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
 ```
 
 ```r
@@ -70,13 +96,7 @@ head(sampleInfo)
 ```
 
 ```
-##   ethnicity       date        filename
-## 1       CEU 2003-02-04 GSM25349.CEL.gz
-## 2       CEU 2003-02-04 GSM25350.CEL.gz
-## 3       CEU 2002-12-17 GSM25356.CEL.gz
-## 4       CEU 2003-01-30 GSM25357.CEL.gz
-## 5       CEU 2003-01-03 GSM25358.CEL.gz
-## 6       CEU 2003-01-16 GSM25359.CEL.gz
+## Error in head(sampleInfo): object 'sampleInfo' not found
 ```
 
 A final table, which we will cover in much more detail in the Bioconductor chapter, is a table that describes the rows, in this case genes. Because each product will have a different table, these have already been created in Bioconductor. Because there are certain products that are widely used, Bioconductor makes databases available from which you can extract this information. This every object does not have to carry around this information:
@@ -87,28 +107,15 @@ library(hgfocus.db)
 ```
 
 ```
-## Loading required package: AnnotationDbi
-## Loading required package: stats4
-## Loading required package: GenomeInfoDb
-## Loading required package: S4Vectors
-## Loading required package: IRanges
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species
-## 
-## Loading required package: org.Hs.eg.db
-## Loading required package: DBI
+## Error in library(hgfocus.db): there is no package called 'hgfocus.db'
 ```
 
 ```r
-annot <- elect(hgfocus.db, keys=featureNames(e), keytype="PROBEID", columns=c("CHR", "CHRLOC", "SYMBOL"))
+annot <- select(hgfocus.db, keys=featureNames(e), keytype="PROBEID", columns=c("CHR", "CHRLOC", "SYMBOL"))
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "elect"
+## Error in eval(expr, envir, enclos): could not find function "select"
 ```
 
 ```r
@@ -125,7 +132,7 @@ head(annot)
 ```
 
 ```
-## Error in head(annot): error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'annot' not found
+## Error in head(annot): object 'annot' not found
 ```
 
 ```r
