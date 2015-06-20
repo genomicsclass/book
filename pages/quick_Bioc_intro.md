@@ -87,32 +87,30 @@ library(hgfocus.db)
 ```
 
 ```
-## Error in library(hgfocus.db): there is no package called 'hgfocus.db'
+## Loading required package: AnnotationDbi
+## Loading required package: stats4
+## Loading required package: GenomeInfoDb
+## Loading required package: S4Vectors
+## Loading required package: IRanges
+## Loading required package: org.Hs.eg.db
+## Loading required package: DBI
 ```
 
 ```r
 annot <- select(hgfocus.db, keys=featureNames(e), keytype="PROBEID", columns=c("CHR", "CHRLOC", "SYMBOL"))
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "select"
-```
-
-```r
 ##pick one
 annot <-annot[match(featureNames(e),annot$PROBEID),]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'annot' not found
-```
-
-```r
 head(annot)
 ```
 
 ```
-## Error in head(annot): object 'annot' not found
+##      PROBEID CHR     CHRLOC CHRLOCCHR SYMBOL
+## 1  1007_s_at   6   30852327         6   DDR1
+## 30   1053_at   7  -73645832         7   RFC2
+## 31    117_at   1  161494036         1  HSPA6
+## 32    121_at   2 -113973574         2   PAX8
+## 33 1255_g_at   6   42123144         6 GUCA1A
+## 34   1294_at   3  -49842638         3   UBA7
 ```
 
 ```r
@@ -120,5 +118,5 @@ dim(annot)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'annot' not found
+## [1] 8793    5
 ```
