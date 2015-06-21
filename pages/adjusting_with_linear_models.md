@@ -96,9 +96,9 @@ cat("Number of selected genes on chrX:", sum(chr[index]=="chrX",na.rm=TRUE))
 
 Note that the histogram is not flat. Instead, low p-values are over-represented. More than half of the genes on the final list are autosomal.
 
-# Adjusting with liner models
+# Adjusting with linear models
 
-We have already noted that processing date has an effect on gene expression thus we will try to _adjust_ for thi s by including it a model.  When we perform a t-test comparing the two groups it is equivalent to fitting the following linear model:
+We have already noted that processing date has an effect on gene expression thus we will try to _adjust_ for this by including it in a linear model.  When we perform a t-test comparing the two groups it is equivalent to fitting the following linear model:
 
 $$Y_{ij} = \alpha_j + x_i \beta_{j} + \varepsilon_{ij}$$
 
