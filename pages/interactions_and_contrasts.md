@@ -405,7 +405,7 @@ coefs
 
 We have the push vs pull effect across all leg pairs, and and the L2 vs L1 effect, the L3 vs L1 effect, and the L4 vs L1 effect. What if we want to compare two groups, and one of the groups is not L1? The solution to this question is to use *contrasts*. 
 
-A *contrast* is a combination of coefficients: $$\mathbf{C} \hat{\boldsymbol{\beta}}$$, where $$\mathbf{C}$$ is a row vector with as many columns as the number of coefficients in the linear model. If $$\mathbf{C}$$ has a 0 then the coefficients are not involved in the contrast.
+A *contrast* is a combination of coefficients: $$\mathbf{c^T} \hat{\boldsymbol{\beta}}$$, where $$\mathbf{c}$$ is a column vector with as many rows as the number of coefficients in the linear model. If $$\mathbf{c}$$ has a 0 then the coefficients are not involved in the contrast.
 
 If we want to compare L3 and L2, this is equivalent to contrasting two coefficents from the linear model, because in this contrast, the comparison to the reference level *L1* cancels out:
 
@@ -426,8 +426,8 @@ library(contrast)
 ## Loading required package: grid
 ## Loading required package: lattice
 ## Loading required package: survival
-## Loading required package: splines
 ## Loading required package: Formula
+## Loading required package: ggplot2
 ## 
 ## Attaching package: 'Hmisc'
 ## 
@@ -469,7 +469,7 @@ coefs[4] - coefs[3]
 ```
 
 ```r
-(C <- L3vsL2$X)
+(cT <- L3vsL2$X)
 ```
 
 ```
@@ -486,7 +486,7 @@ coefs[4] - coefs[3]
 ```
 
 ```r
-C %*% beta
+cT %*% beta
 ```
 
 ```
@@ -494,9 +494,9 @@ C %*% beta
 ## 1 -0.01142949
 ```
 
-What about the standard error, and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector $$\mathbf{C}$$ on either side of the estimated covariance matrix, $$\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}})$$:
+What about the standard error, and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector $$\mathbf{c}$$ on either side of the estimated covariance matrix, $$\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}})$$:
 
-$$ \sqrt{\mathbf{C} \mathbf{\Sigma} \mathbf{C}^T} $$
+$$ \sqrt{\mathbf{c^T} \mathbf{\Sigma} \mathbf{c}} $$
 
 where we saw the covariance of the coefficients earlier:
 
@@ -523,7 +523,7 @@ $$ \mathbf{\Sigma} = \hat{\sigma}^2 (\mathbf{X}^T \mathbf{X})^{-1}$$
 ```
 
 ```r
-sqrt(C %*% Sigma %*% t(C))
+sqrt(cT %*% Sigma %*% t(cT))
 ```
 
 ```
