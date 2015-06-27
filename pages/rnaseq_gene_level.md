@@ -22,6 +22,42 @@ First, make variables for the different BAM files and GTF file. Use the `sample.
 
 ```r
 library(airway)
+```
+
+```
+## Loading required package: GenomicRanges
+## Loading required package: methods
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist, unsplit
+## 
+## Loading required package: S4Vectors
+## Loading required package: stats4
+## Loading required package: IRanges
+## Loading required package: GenomeInfoDb
+```
+
+```r
 dir <- system.file("extdata", package="airway", mustWork=TRUE)
 csv.file <- file.path(dir, "sample_table.csv")
 sample.table <- read.csv(csv.file, row.names=1)
@@ -34,8 +70,29 @@ Next we create an *Rsamtools* variable which wraps our BAM files, and create a t
 
 ```r
 library(Rsamtools)
+```
+
+```
+## Loading required package: XVector
+## Loading required package: Biostrings
+```
+
+```r
 bam.list <- BamFileList(bam.files)
 library(GenomicFeatures)
+```
+
+```
+## Loading required package: AnnotationDbi
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+```
+
+```r
 # for Bioc 3.0 use the commented out line
 # txdb <- makeTranscriptDbFromGFF(gtf.file, format="gtf")
 txdb <- makeTxDbFromGFF(gtf.file, format="gtf")
@@ -99,7 +156,7 @@ fc <- featureCounts(bam.files, annot.ext=gtf.file,
 ## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
 ## ||                           P /Users/michael/Library/R/3.2/library/airwa ... ||
 ## ||                                                                            ||
-## ||             Output file : ./.Rsubread_featureCounts_pid40611               ||
+## ||             Output file : ./.Rsubread_featureCounts_pid4785                ||
 ## ||             Annotations : /Users/michael/Library/R/3.2/library/airway/ ... ||
 ## ||                                                                            ||
 ## ||                 Threads : 1                                                ||
@@ -152,7 +209,7 @@ fc <- featureCounts(bam.files, annot.ext=gtf.file,
 ## ||    Input was converted to a format accepted by featureCounts.              ||
 ## ||    Total fragments : 8536                                                  ||
 ## ||    Successfully assigned fragments : 7910 (92.7%)                          ||
-## ||    Running time : 0.14 minutes                                             ||
+## ||    Running time : 0.13 minutes                                             ||
 ## ||                                                                            ||
 ## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
 ## ||    Paired-end reads are included.                                          ||
@@ -163,7 +220,7 @@ fc <- featureCounts(bam.files, annot.ext=gtf.file,
 ## ||    Input was converted to a format accepted by featureCounts.              ||
 ## ||    Total fragments : 7544                                                  ||
 ## ||    Successfully assigned fragments : 7044 (93.4%)                          ||
-## ||    Running time : 0.14 minutes                                             ||
+## ||    Running time : 0.13 minutes                                             ||
 ## ||                                                                            ||
 ## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
 ## ||    Paired-end reads are included.                                          ||
@@ -185,7 +242,7 @@ fc <- featureCounts(bam.files, annot.ext=gtf.file,
 ## ||    Input was converted to a format accepted by featureCounts.              ||
 ## ||    Total fragments : 11850                                                 ||
 ## ||    Successfully assigned fragments : 11148 (94.1%)                         ||
-## ||    Running time : 0.16 minutes                                             ||
+## ||    Running time : 0.12 minutes                                             ||
 ## ||                                                                            ||
 ## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
 ## ||    Paired-end reads are included.                                          ||
@@ -196,7 +253,7 @@ fc <- featureCounts(bam.files, annot.ext=gtf.file,
 ## ||    Input was converted to a format accepted by featureCounts.              ||
 ## ||    Total fragments : 5877                                                  ||
 ## ||    Successfully assigned fragments : 5415 (92.1%)                          ||
-## ||    Running time : 0.14 minutes                                             ||
+## ||    Running time : 0.12 minutes                                             ||
 ## ||                                                                            ||
 ## || Process BAM file /Users/michael/Library/R/3.2/library/airway/extdata/S ... ||
 ## ||    Paired-end reads are included.                                          ||
@@ -883,8 +940,8 @@ head(resSort)
 ##                     <numeric>     <numeric>
 ## ENSG00000152583 2.637881e-138 4.627108e-134
 ## ENSG00000165995 1.597973e-137 1.401503e-133
-## ENSG00000101347 1.195378e-128 6.441181e-125
-## ENSG00000120129 1.468829e-128 6.441181e-125
+## ENSG00000101347 1.195378e-128 6.441180e-125
+## ENSG00000120129 1.468829e-128 6.441180e-125
 ## ENSG00000189221 2.627083e-122 9.216332e-119
 ## ENSG00000211445 1.311440e-110 3.833996e-107
 ```
@@ -1059,8 +1116,9 @@ If we suppose that we didn't know about the different cell-lines in the experime
 
 ```r
 library(sva)
-idx <- rowMeans(counts(dds)) > 1
-dat <- counts(dds)[idx,]
+dat <- counts(dds, normalized=TRUE)
+idx <- rowMeans(dat) > 1
+dat <- dat[idx,]
 mod <- model.matrix(~ dex, colData(dds))
 mod0 <- model.matrix(~ 1, colData(dds))
 svseq <- svaseq(dat, mod, mod0, n.sv=2)
@@ -1109,56 +1167,57 @@ sessionInfo()
 ```
 
 ```
-## R version 3.2.0 Patched (2015-04-26 r68264)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
-## Running under: OS X 10.8.5 (Mountain Lion)
+## R version 3.2.0 (2015-04-16)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
+## Running under: OS X 10.10.3 (Yosemite)
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] stats4    parallel  stats     graphics  grDevices datasets  utils    
-## [8] methods   base     
+## [1] stats4    parallel  methods   stats     graphics  grDevices utils    
+## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] pheatmap_1.0.2          sva_3.14.0             
-##  [3] genefilter_1.50.0       mgcv_1.8-6             
-##  [5] nlme_3.1-120            org.Hs.eg.db_3.1.2     
-##  [7] RSQLite_1.0.0           DBI_0.3.1              
-##  [9] ggplot2_1.0.1           vsn_3.36.0             
-## [11] rafalib_0.0.9           RColorBrewer_1.1-2     
-## [13] Rsubread_1.18.0         GenomicAlignments_1.4.1
-## [15] GenomicFeatures_1.20.0  AnnotationDbi_1.30.1   
-## [17] Rsamtools_1.20.1        Biostrings_2.36.0      
-## [19] XVector_0.8.0           airway_0.102.0         
-## [21] DEXSeq_1.14.0           DESeq2_1.8.0           
-## [23] RcppArmadillo_0.5.000.0 Rcpp_0.11.5            
-## [25] GenomicRanges_1.20.3    GenomeInfoDb_1.4.0     
-## [27] IRanges_2.2.1           S4Vectors_0.6.0        
-## [29] Biobase_2.28.0          BiocGenerics_0.14.0    
-## [31] BiocParallel_1.2.1      pasilla_0.8.0          
-## [33] testthat_0.9.1          devtools_1.7.0         
-## [35] knitr_1.10              BiocInstaller_1.18.1   
+##  [1] pheatmap_1.0.2            sva_3.14.0               
+##  [3] genefilter_1.50.0         mgcv_1.8-6               
+##  [5] nlme_3.1-120              org.Hs.eg.db_3.1.2       
+##  [7] RSQLite_1.0.0             DBI_0.3.1                
+##  [9] ggplot2_1.0.1             vsn_3.36.0               
+## [11] rafalib_0.0.9             RColorBrewer_1.1-2       
+## [13] Rsubread_1.18.0           GenomicAlignments_1.4.1  
+## [15] DEXSeq_1.14.0             DESeq2_1.8.1             
+## [17] RcppArmadillo_0.5.200.1.0 Rcpp_0.11.6              
+## [19] BiocParallel_1.2.3        pasilla_0.8.0            
+## [21] testthat_0.10.0           devtools_1.8.0           
+## [23] BiocInstaller_1.18.3      GenomicFeatures_1.20.1   
+## [25] AnnotationDbi_1.30.1      Biobase_2.28.0           
+## [27] Rsamtools_1.20.4          Biostrings_2.36.1        
+## [29] XVector_0.8.0             airway_0.102.0           
+## [31] GenomicRanges_1.20.5      GenomeInfoDb_1.4.0       
+## [33] IRanges_2.2.4             S4Vectors_0.6.0          
+## [35] BiocGenerics_0.14.0       knitr_1.10.5             
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] splines_3.2.0         Formula_1.2-1         statmod_1.4.21       
-##  [4] affy_1.46.0           latticeExtra_0.6-26   lattice_0.20-31      
-##  [7] limma_3.24.3          digest_0.6.8          colorspace_1.2-6     
-## [10] Matrix_1.2-0          preprocessCore_1.30.0 plyr_1.8.2           
-## [13] XML_3.98-1.1          biomaRt_2.24.0        zlibbioc_1.14.0      
-## [16] xtable_1.7-4          scales_0.2.4          snow_0.3-13          
-## [19] affyio_1.36.0         annotate_1.46.0       nnet_7.3-9           
-## [22] proto_0.3-10          survival_2.38-1       mime_0.3             
-## [25] evaluate_0.7          MASS_7.3-40           hwriter_1.3.2        
-## [28] foreign_0.8-63        tools_3.2.0           formatR_1.2          
-## [31] stringr_0.6.2         munsell_0.4.2         locfit_1.5-9.1       
-## [34] cluster_2.0.1         lambda.r_1.1.7        compiler_3.2.0       
-## [37] futile.logger_1.4.1   grid_3.2.0            RCurl_1.95-4.6       
-## [40] bitops_1.0-6          labeling_0.3          gtable_0.1.2         
-## [43] codetools_0.2-11      markdown_0.7.7        reshape2_1.4.1       
-## [46] rtracklayer_1.28.2    Hmisc_3.15-0          futile.options_1.0.0 
-## [49] KernSmooth_2.23-14    geneplotter_1.46.0    rpart_4.1-9          
-## [52] acepack_1.3-3.3
+##  [4] affy_1.46.1           latticeExtra_0.6-26   lattice_0.20-31      
+##  [7] limma_3.24.10         digest_0.6.8          colorspace_1.2-6     
+## [10] Matrix_1.2-1          preprocessCore_1.30.0 plyr_1.8.2           
+## [13] XML_3.98-1.2          biomaRt_2.24.0        zlibbioc_1.14.0      
+## [16] xtable_1.7-4          scales_0.2.4          affyio_1.36.0        
+## [19] git2r_0.10.1          annotate_1.46.0       nnet_7.3-9           
+## [22] proto_0.3-10          survival_2.38-1       magrittr_1.5         
+## [25] crayon_1.3.0          memoise_0.2.1         evaluate_0.7         
+## [28] MASS_7.3-40           xml2_0.1.1            hwriter_1.3.2        
+## [31] foreign_0.8-63        tools_3.2.0           formatR_1.2          
+## [34] stringr_1.0.0         munsell_0.4.2         locfit_1.5-9.1       
+## [37] cluster_2.0.1         lambda.r_1.1.7        rversions_1.0.1      
+## [40] futile.logger_1.4.1   grid_3.2.0            RCurl_1.95-4.6       
+## [43] labeling_0.3          bitops_1.0-6          codetools_0.2-11     
+## [46] gtable_0.1.2          curl_0.8              reshape2_1.4.1       
+## [49] gridExtra_0.9.1       rtracklayer_1.28.4    Hmisc_3.16-0         
+## [52] futile.options_1.0.0  KernSmooth_2.23-14    stringi_0.4-1        
+## [55] geneplotter_1.46.0    rpart_4.1-9           acepack_1.3-3.3
 ```
 
 ## Footnotes <a name="foot"></a>
