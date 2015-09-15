@@ -35,8 +35,7 @@ title: PH525x series - Biomedical Data Science
 
 ---
 
-- [Exploratory Data Analysis 1](pages/exploratory_data_analysis_1.html)
-- [Exploratory Data Analysis 2](pages/exploratory_data_analysis_2.html)
+- [Exploratory Data Analysis](pages/exploratory_data_analysis.html)
 - [Plots to avoid](pages/plots_to_avoid.html)
 - [dplyr tutorial](pages/dplyr_tutorial.html)
 - [Robust summaries](pages/robust_summaries.html)
