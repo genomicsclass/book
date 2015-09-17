@@ -5,26 +5,31 @@ layout: page
 
 
 
-We will be examining the weights of mice on a control diet and a high fat diet. We read in the data and make a quick stripchart:
+## Linear Models In Practice
+
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
+
+We will demonstrate how to analyze the high fat diet data using linear models instead of directly applying a t-test. We will demonstrate how, ultimately, these two approaches are equivalent. 
+
+We start by reading in the data and creating a quick stripchart:
+
+
 
 
 ```r
-url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
-filename <- "femaleMiceWeights.csv"
-library(downloader)
-if (!file.exists(filename)) download(url, filename)
-dat <- read.csv(filename)
+set.seed(1) #same jitter in stripchart
+dat <- read.csv("femaleMiceWeights.csv") ##previously downloaded
 stripchart(dat$Bodyweight ~ dat$Diet, vertical=TRUE, method="jitter",
            main="Bodyweight over Diet")
 ```
 
-![plot of chunk unnamed-chunk-1](figure/linear_models_in_practice-unnamed-chunk-1-1.png) 
+![Mice bodyweights stratified by diet.](images/R/linear_models_in_practice-tmp-bodyweight_by_diet_stripchart-1.png) 
 
-We can see that the high fat diet group appear to have higher weights on average, although there is overlap between the two samples.
+We can see that the high fat diet group appears to have higher weights on average, although there is overlap between the two samples.
 
-## A linear model with one variable
+#### A linear model with one variable
 
-We will build for demonstration purposes the design matrix $\mathbf{X}$ using the formula `~ Diet`. Note that the group with the 1's in the second column is determined by the level of `Diet` which comes second, that is, the non-reference level. 
+For demonstration purposes, we will build the design matrix {$$}\mathbf{X}{/$$} using the formula `~ Diet`. The group with the 1's in the second column is determined by the level of `Diet` which comes second; that is, the non-reference level. 
 
 
 ```r
@@ -119,27 +124,29 @@ model.matrix(~ Diet, data=dat)
 ## [1] "contr.treatment"
 ```
 
-After trying out the `relevel` function we finally reset `chow` as the reference level, because we want the comparison to be $hf - chow$:
+After trying out the `relevel` function, we finally reset `chow` as the reference level because we want the comparison to be {$$}hf - chow{/$$}:
 
 
 ```r
 dat$Diet <- relevel(dat$Diet, ref="chow")
 ```
 
-## The mathematics behind lm()
+## The Mathematics Behind lm()
 
-Before we use our shortcut for running linear models, `lm`, we just want to remind what will happen internally. Inside of `lm`, we will form the design matrix $\mathbf{X}$, and calculate the $\boldsymbol{\beta}$ which minimizes the sum of squares, as described in a previous lecture. The formula for this solution is:
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
 
-$$ \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathbf{Y} $$
+Before we use our shortcut for running linear models, `lm`, we want to review what will happen internally. Inside of `lm`, we will form the design matrix {$$}\mathbf{X}{/$$}, and calculate the {$$}\boldsymbol{\beta}{/$$} which minimizes the sum of squares, as described in a previous lecture. The formula for this solution is:
+
+{$$} \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathbf{Y} {/$$}
 
 We can calculate this in R using our matrix multiplication operator `%*%`, the inverse function `solve` and the transpose function `t`.
 
 
 
 ```r
-y <- dat$Bodyweight
+Y <- dat$Bodyweight
 X <- model.matrix(~ Diet, data=dat)
-solve(t(X) %*% X) %*% t(X) %*% y
+solve(t(X) %*% X) %*% t(X) %*% Y
 ```
 
 ```
@@ -148,7 +155,7 @@ solve(t(X) %*% X) %*% t(X) %*% y
 ## Diethf       3.020833
 ```
 
-Note that these coefficients are the average of the control group and the difference of the averages:
+These coefficients are the average of the control group and the difference of the averages:
 
 
 
@@ -207,7 +214,7 @@ summary(fit)
 ##   23.813333    3.020833
 ```
 
-## Examining the coefficients
+#### Examining the coefficients
 
 The following large and clunky piece of code allows us to visualize the meaning of the coefficients with colored arrows:
 
@@ -227,13 +234,15 @@ abline(h=coefs[1]+coefs[2],col=cols[2])
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/linear_models_in_practice-unnamed-chunk-7-1.png) 
+![Estimated linear model coefficients for bodyweight data illustrated with arrows.](images/R/linear_models_in_practice-tmp-parameter_estimate_illustration-1.png) 
 
-## Comparing simple two group lm to a t-test
+## Comparing Simple Two Group lm to a t-test
 
-To make a connection with earlier material, this simple linear model is actually giving us the same result (the t-statistic and p-value) for the difference as a specific kind of t-test. This is the t-test between two groups with the assumption that both groups have the same variance. This was encoded into our linear model when we assume that the errors $\boldsymbol{\varepsilon}$ are all equally distributed.
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
 
-Though the linear model in this case is equivalent to a t-test, we will soon explore more complicated designs, where the linear model is a useful extension.
+To make a connection with material presented earlier, this simple linear model is actually giving us the same result (the t-statistic and p-value) for the difference as a specific kind of t-test. This is the t-test between two groups with the assumption that both groups have the same variance. This was encoded into our linear model when we assumed that the errors {$$}\boldsymbol{\varepsilon}{/$$} were all equally distributed.
+
+Though, in this case, the linear model is equivalent to a t-test, we will soon explore more complicated designs, where the linear model is a useful extension.
 
 Our `lm` coefficients were:
 

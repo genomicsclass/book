@@ -1,277 +1,33 @@
 ---
 layout: page
-title: Introduction to Machine Learning
+title: Class Prediction
 ---
 
 
-# Introduction
-Here we give brief introduction to machine learning. Some of the examples we give follows examples from the book The Elements of Statistical Learning: Data Mining, Inference, and Prediction, by Trevor Hastie, Robert Tibshirani and Jerome Friedman. A free PDF of this book can be found at the following URL:
+## Class Prediction
+
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/ml/machine_learning.Rmd).
+
+Here we give a brief introduction to the main machine learning topic:
+class prediction. In fact, many refer to class prediction as machine
+learning and we actually use the two terms interchangeably. Some of
+the examples we give here follow examples from the excellent
+textbook *The Elements of Statistical Learning: Data Mining, Inference, and
+Prediction*, by Trevor Hastie, Robert Tibshirani and Jerome Friedman. A
+free PDF of this book can be found at the following URL: 
 
 <http://statweb.stanford.edu/~tibs/ElemStatLearn/>
 
-Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes $$Y$$ and covariates $$X$$. In ML we call $$X$$ the predictors. The main difference between ML and inference is that in ML we are interested in predicting $$Y$$ using $$X$$. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting $$Y$$. 
+Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes {$$}Y{/$$} and covariates {$$}X{/$$}. In ML we call {$$}X{/$$} the predictors. The main difference between ML and inference is that in ML we are interested in predicting {$$}Y{/$$} using {$$}X{/$$}. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting {$$}Y{/$$}. 
 
 Here we introduce the main concepts needed to understand ML along with two specific algorithms: regression and k nearest neighbors (knn). Note there are dozens of popular algorithms that we do not cover here are some 
 
-
-# Conditional probabilities and expectations
-
-Prediction problems can be divided into categorical and continuous outcomes. However, many of the algorithms can be applied to both due to the connection between conditional probabilities and conditional expectations. 
-
-In categorical problems, for example binary outcome, if we know the probability of $$Y$$ being a 1 given that we know the value of the predictors $$X=(X_1,\dots,X_p)^\top$$ then we can optimize our predictions. We write this probability like this $$f(x)=\mbox{Pr}(Y=1 \mid X=x)$$. Note that $$Y$$ is a random variable which implies we are not guaranteed perfect prediction (unless these probabilities are 1 or 0). You can think of this probability as the proportion of the population with covariates $$X=x$$ that is a 1.
-
-Now, given that the expectation is the average of all the values of $$Y$$, in this is equivalent to the proportion of 1s which in this case is the probability. So for this case $$f(x) \equiv \mbox{E}(Y \mid X=x)=\mbox{Pr}(Y=1 \mid X=x)$$. The expected value has another attractive mathematical property and it is that it minimized the expected distance between the predictor $$\hat{Y}$$ and $$Y$$: $$\mbox{E}\{ (\hat{Y} - Y)^2  \mid  X=x \}$$. 
-
-Here, we start by describing linear regression in the context of prediction. We use the son and father height example to illustrate. In our example we are trying to predict the son's height $$Y$$ based on the father's $$X$$. Note that here we have only on predictor. Note that if we are asked to predict the height of a randomly selected son we would go with the mean:
-
+In a previous section we covered the very simple one-predictor case. Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which {$$}X{/$$} is two dimensional and {$$}Y{/$$} is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of {$$}f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2){/$$} using colors. The following code is used to create a relatively complex conditional probability function. We create the test and train data we use later.
 
 
 ```r
 library(rafalib)
-mypar(1,1)
-library(UsingR)
-data("father.son")
-x=round(father.son$fheight) ##round to nearest inch
-y=round(father.son$sheight)
-hist(y,breaks=seq(min(y),max(y)))
-abline(v=mean(y),col=2)
-```
-
-![plot of chunk unnamed-chunk-1](figure/machine_learning-unnamed-chunk-1-1.png) 
-
-In this case we can also approximate the distribution of $$Y$$ as normal which implies the mean maximizes the probability density. 
-
-Now imagine we are given more information. We are told the the father of this randomly selected son has height 71 inches (1.2 SDs taller than the average) What is our prediction now? 
-
-
-
-```r
-plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
-abline(v=c(-0.35,0.35)+71,col="red")
-```
-
-![plot of chunk unnamed-chunk-2](figure/machine_learning-unnamed-chunk-2-1.png) 
-
-```r
-hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
-```
-
-![plot of chunk unnamed-chunk-2](figure/machine_learning-unnamed-chunk-2-2.png) 
-
-<a name="regression"></a>
-
-## Stratification
-The best guess is still the expectation, but our strata has changed from all the data to only the $$Y$$ with $$X=71$$. So we can stratify and take the average which is the conditional expectations. Out prediction for any $$x$$ is therefore:
-$$
-f(x) = E(Y \mid X=x)
-$$
-
-It turns that because this data is approximated by a bivariate normal distribution we can, using calculus, show that 
-$$
-f(x) = \mu_Y + \rho \frac{\sigma_Y}{\sigma_X} (X-\mu_X)
-$$
-and if we estimate these five parameters from the sample we get the regression line:
-
-
-```r
-plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
-abline(v=c(-0.35,0.35)+71,col="red")
-abline(lm(y~x),col=1)
-```
-
-![plot of chunk unnamed-chunk-3](figure/machine_learning-unnamed-chunk-3-1.png) 
-
-```r
-hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
-```
-
-![plot of chunk unnamed-chunk-3](figure/machine_learning-unnamed-chunk-3-2.png) 
-
-In this particular case the regression line provides an optimal prediction function for $$Y$$. But this is not generally true
-
-<a name="smoothing"></a>
-
-# Smoothing 
-
-The following data are from measurements from replicated RNA. We consider that data used in an the MA-plot ( $$Y$=log ratios and $$A$=averages) and take down-sample in a way that balances the number of points for different strata of $$A$$:
-
-
-```r
-library(Biobase)
-library(SpikeIn)
-data(SpikeIn95)
-
-##Example with two columns
-i=10;j=9
-##remove the spiked in genes and take random sample
-siNames<-colnames(pData(SpikeIn95))
-ind <- which(!probeNames(SpikeIn95)%in%siNames)
-pms <- pm(SpikeIn95)[ ind ,c(i,j)]
-##pick a representative sample for A and order A
-Y=log2(pms[,1])-log2(pms[,2])
-X=(log2(pms[,1])+log2(pms[,2]))/2
-set.seed(4)
-ind <- tapply(seq(along=X),round(X*5),function(i)
-  if(length(i)>20) return(sample(i,20)) else return(NULL))
-ind <- unlist(ind)
-X <- X[ind]
-Y <- Y[ind]
-o <-order(X)
-X <- X[o]
-Y <- Y[o]
-```
-
-In the MA plot we see that there $$Y$$ depends on $$X$$. Note that this this dependence must be a bias because these are based on replicates which means $$Y$$ should be 0 on average regardless of $$X$$. We want to predict $$f(x)=E(Y \mid X=x)$$ so that we can remove this bias.
-
-
-```r
-library(rafalib)
-mypar2(1,1)
-plot(X,Y)
-```
-
-<img src="figure/machine_learning-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
-
-Note that linear regression is biased does not capture the apparent curvature in $$f(x)$$:
-
-<img src="figure/machine_learning-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
-Note for example that points above the fitted line (green) and those below (purple) are not evenly distributed.
-
-## Bin Smoothing
-
-Instead of fitting a line, let's go back to the idea of stratifying and computing the mean. This is referred to as _bin smoothing_. Now, if we stratify by $$x$$ The general idea is that the underlying curve is "smooth" enough that in small bins it is approximately constant which implies all the $$Y$$ in that bin have the same expected value. For example, in the plot below we highlight points in a bin centered at 8.6 as well as the points of a bin centered at 12.1 if we us bins of size 1. We also show  and the fitted mean values for the $$Y$$ in those bin (dashed lines):
-
-
-```r
-mypar2(1,1)
-centers <- seq(min(X),max(X),0.1)
-plot(X,Y,col="grey",pch=16)
-windowSize <- .5
-i <- 25
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-mean(Y)
-points(X[ind],Y[ind],bg=3,pch=21)
-lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-i <- 60
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-mean(Y[ind])
-points(X[ind],Y[ind],bg=3,pch=21)
-lines(c(min(X[ind]),max(X[ind])),c(fit,fit),col=2,lty=2,lwd=4)
-```
-
-<img src="figure/machine_learning-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
-
-By computing this mean for bins around every point we form an estimate of the underlying curve $$f(x)$$:
-
-```r
-windowSize<-0.5
-smooth<-rep(NA,length(centers))
-mypar2(4,3)
-for(i in seq(along=centers)){
-  center<-centers[i]
-  ind=which(X>center-windowSize & X<center+windowSize)
-  smooth[i]<-mean(Y[ind])
-  if(i%%round(length(centers)/12)==1){ ##we show 12
-    plot(X,Y,col="grey",pch=16)
-    points(X[ind],Y[ind],bg=3,pch=21)
-    lines(c(min(X[ind]),max(X[ind])),c(smooth[i],smooth[i]),col=2,lwd=2)
-    lines(centers[1:i],smooth[1:i],col="black")
-    points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
-  }
-}
-```
-
-<img src="figure/machine_learning-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
-
-The final result looks like this:
-
-<img src="figure/machine_learning-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
-
-
-##Loess
- 
-Local weighted regression (loess) is similar to bin smoothing. The difference is that we approximate the local behavior with a line or a parabola. This permits us to expand the bin sizes as seen below:
-
-
-```r
-centers <- seq(min(X),max(X),0.1)
-mypar2(1,1)
-plot(X,Y,col="darkgrey",pch=16)
-windowSize <- 1.25
-i <- 25
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-lm(Y~X,subset=ind)
-points(X[ind],Y[ind],bg=3,pch=21)
-a <- min(X[ind]);b <- max(X[ind])
-lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
-i <- 60
-center<-centers[i]
-ind=which(X>center-windowSize & X<center+windowSize)
-fit<-lm(Y~X,subset=ind)
-points(X[ind],Y[ind],bg=3,pch=21)
-a <- min(X[ind]);b <- max(X[ind])
-lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lty=2,lwd=3)
-```
-
-<img src="figure/machine_learning-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
-
-Here are 12 steps of the process:
-
-```r
-mypar2(4,3)
-windowSize<-1.25
-smooth<-rep(NA,length(centers))
-for(i in seq(along=centers)){
-  center<-centers[i]
-  ind=which(X>center-windowSize & X<center+windowSize)
-  fit<-lm(Y~X,subset=ind)
-  smooth[i]<-fit$coef[1]+fit$coef[2]*center
-
-  if(i%%round(length(centers)/12)==1){ ##we show 12
-    plot(X,Y,col="grey",pch=16)
-    points(X[ind],Y[ind],bg=3,pch=21)
-    a <- min(X[ind]);b <- max(X[ind])
-    lines(c(a,b),fit$coef[1]+fit$coef[2]*c(a,b),col=2,lwd=2)
-  
-    lines(centers[1:i],smooth[1:i],col="black")
-    points(centers[i],smooth[i],col="black",pch=16,cex=1.5)
-  }
-}
-```
-
-<img src="figure/machine_learning-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
-
-This results is a smoother fit since we use larger sample sizes to estimate our local parameters:
-
-<img src="figure/machine_learning-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
-
-The that function `loess` performs this analysis for us:
-
-
-```r
-fit <- loess(Y~X, degree=1, span=1/3)
-
-newx <- seq(min(X),max(X),len=100) 
-smooth <- predict(fit,newdata=data.frame(X=newx))
-
-mypar2(1,1)
-plot(X,Y,col="darkgrey",pch=16)
-lines(newx,smooth,col="black",lwd=3)
-```
-
-<img src="figure/machine_learning-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
-
-
-# Multivariate predictors
-
-Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of $$f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2)$$ using colors
-
-
-```r
-library(rafalib)
+library(RColorBrewer)
 hmcol <- colorRampPalette(rev(brewer.pal(11, "Spectral")))(100)
 mycols=c(hmcol[1],hmcol[100])
 
@@ -279,7 +35,9 @@ set.seed(1)
 ##create covariates and outcomes
 ##outcomes are alwasy 50 0s and 50 1s
 s2=0.15
+
 ##pick means to create a non linear conditional expectation
+library(MASS)
 M0 <- mvrnorm(10,c(1,0),s2*diag(2)) ##generate 10 means
 M1 <- rbind(mvrnorm(3,c(1,1),s2*diag(2)),
             mvrnorm(3,c(0,1),s2*diag(2)),
@@ -300,7 +58,7 @@ x0 <- makeX(M0)##the final values for y=0 (green)
 testx0 <- makeX(M0)
 x1 <- makeX(M1)
 testx1 <-makeX(M1)
-x <- rbind(x0,x1) ## one matrix with everything
+x <- rbind(x0,x1) ##one matrix with everything
 test <- rbind(testx0,testx1)
 y <- c(rep(0,N),rep(1,N)) #the outcomes
 ytest <- c(rep(0,N),rep(1,N))
@@ -328,42 +86,32 @@ colshat <- bayesrule
 
 colshat <- hmcol[floor(bayesrule*100)+1]
 
-mypar2(1,1)
+mypar()
 plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 points(newx,col=colshat,pch=16,cex=0.35)
 ```
 
-![plot of chunk unnamed-chunk-14](figure/machine_learning-unnamed-chunk-14-1.png) 
+![Probability of Y=1 as a function of X1 and X2. Red is close to 1, yellow close 0.5 nad blue close to 0.](images/R/machine_learning-tmp-conditional_prob-1.png) 
 
-If we should $$E(Y \mid X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
+If we should {$$}E(Y \mid X=x)>0.5{/$$} in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
 
+![Bayes rule. The line devides part the space for which probability os larger than 0.5 (red) and lower than 0.5 (blue).](images/R/machine_learning-tmp-bayes_rule-1.png) 
 
-```r
-##Draw contours of E(Y \mid X) < 0.5
-mypar2(1,1)
-colshat[bayesrule>=0.5] <- mycols[2]
-colshat[bayesrule<0.5] <- mycols[1]
-plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
-points(newx,col=colshat,pch=16,cex=0.35)
-contour(tmpx,tmpy,matrix(round(bayesrule),GS,GS),levels=c(1,2),add=TRUE,drawlabels=FALSE)
-```
+The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate {$$}f(x){/$$} 
 
-![plot of chunk unnamed-chunk-15](figure/machine_learning-unnamed-chunk-15-1.png) 
-
-The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate $$f(x)$$ 
 Now make a plot of training data and test data
 
 ```r
 plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/machine_learning-unnamed-chunk-16-1.png) 
+![Data generated using the probability map above.](images/R/machine_learning-tmp-data-1.png) 
 
 We will review two specif ML techniques. First, we need to review the main concept we use to evaluate the performance of these methods. 
 
-# Training and Test sets
+### Training and Test sets
 
-In the code above you will notice that we created two sets data""
+In the code above you will notice that we created two sets data:
 
 
 ```r
@@ -371,24 +119,24 @@ x0 <- makeX(M0)##the final values for y=0 (green)
 testx0 <- makeX(M0)
 x1 <- makeX(M1)
 testx1 <-makeX(M1)
-x <- rbind(x0,x1) ## one matrix with everything
+x <- rbind(x0,x1) ##one matrix with everything
 test <- rbind(testx0,testx1)
 ```
 
 You will notice that the test and train set have similar global properties as they were generated by the same random variables (more blue towards the bottom right) but are, by construction, different. 
 
 ```r
-mypar2(1,2)
+mypar(1,2)
 plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 plot(test,pch=21,bg=colstest,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![plot of chunk unnamed-chunk-18](figure/machine_learning-unnamed-chunk-18-1.png) 
+![Training data (left) and test data (right)](images/R/machine_learning-tmp-test_train-1.png) 
 
 The reason for this is to detect over-training  by testing on a different data than the one used to fit  model. We will see how important this is.
 
 
-## Predicting with regression
+### Predicting with regression
 
 
 A first naive approach to this ML problem is to fit a two variable linear regression model:
@@ -400,7 +148,7 @@ X2 <- x[,2]
 fit1 <- lm(y~X1+X2)
 ```
 
-Once we the fitted values we can estimate $$f(x_1,x_2)$$ with $$\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2$$. When predicting 1s and 0s we simply predict 1 when $$\hat{f}(x_1,x_2)>0.5$$. We now examine the error rates in the test and training sets and also plot the boundary region:
+Once we the fitted values we can estimate {$$}f(x_1,x_2){/$$} with {$$}\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2{/$$}. When predicting 1s and 0s we simply predict 1 when {$$}\hat{f}(x_1,x_2)>0.5{/$$}. We now examine the error rates in the test and training sets and also plot the boundary region:
 
 
 ```r
@@ -449,23 +197,21 @@ points(newx,col=colshat,pch=16,cex=0.35)
 points(test,bg=cols,pch=21)
 ```
 
-![plot of chunk unnamed-chunk-22](figure/machine_learning-unnamed-chunk-22-1.png) 
+![We estimate the probability of 1 with a linear regression model with X1 and X2 as predictors. The resulting prediction map is divided in to parts that are larger than 0.5 (red) and lower than 0.5 (blue).](images/R/machine_learning-tmp-regression_prediction-1.png) 
 
-Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between $$Y$$ and $$X$$. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
+Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between {$$}Y{/$$} and {$$}X{/$$}. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
 
 <a name="knn"></a>
 
-# K-nearest neighbor
+### K-nearest neighbor
 
-K-nearest neighbors (kNN) is similar to bin smoothing but it is easier to adapt to multiple dimensions. Basically for any point $$x$$ for which we want an estimate we look for the k nearest points and then take an average. We can now control flexibility through  $$k$$. Here we compare $$k=1$$ and $$k=100$$.
+K-nearest neighbors (kNN) is similar to bin smoothing, but it is easier to adapt to multiple dimensions. Basically, for any point {$$}x{/$$} for which we want an estimate, we look for the k nearest points and then take an average. We can now control flexibility through  {$$}k{/$$}. Here we compare {$$}k=1{/$$} and {$$}k=100{/$$}.
 
 
 ```r
 library(class)
-mypar2(2,2)
+mypar(2,2)
 for(k in c(1,200)){
-  cat(k,"nearest neighbors\n")
-  
   ##predict on train
   yhat <- knn(x,x,y,k=k)
   cat("KNN prediction error in train:",1-mean((as.numeric(yhat)-1)==y),"\n")
@@ -492,25 +238,25 @@ for(k in c(1,200)){
 ```
 
 ```
-## 1 nearest neighbors
 ## KNN prediction error in train: 0
 ```
 
 ```
 ## KNN prediction error in test: 0.375 
-## 200 nearest neighbors
 ## KNN prediction error in train: 0.2825
 ```
 
-<img src="figure/machine_learning-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
+![Prediction regions obtained with kNN for k=1 (top) and k=200 (bottom). We show both train (left) and test data (right).](images/R/machine_learning-tmp-knn-1.png) 
 
 ```
 ## KNN prediction error in test: 0.295
 ```
 
-Note that when $$k=1$$ we make no mistakes in the training test since every point is it's closes neighbor and it is equal to itself. Note that the we some islands of blue in the red area that once we move to the test set are more error prone. In the case $$k=100$$ we do not have this problem and we also see that we improve over linear regression
+Note that when {$$}k=1{/$$} we make no mistakes in the training test since every point is its closest neighbor and it is equal to itself. However, also note that we see some islands of blue in the red area that once we move to the test set are more error prone. In the case {$$}k=100{/$$} we do not have this problem and we also see that we improve the error rate over linear regression.
 
-Here is a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mobx{E}(Y \mid X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_
+### Bayes Rule
+Here is a comparison of the test and train set errors for various values of {$$}k{/$$}. We also include the error rate that we would make if we actually knew {$$}\mbox{E}(Y \mid X_1=x1,X_2=x_2){/$$} referred to as _Bayes Rule_
+
 
 ```r
 ###Bayes Rule
@@ -527,7 +273,6 @@ bayes.error=1-mean(round(yhat)==y)
 train.error <- rep(0,16)
 test.error <- rep(0,16)
 for(k in seq(along=train.error)){
-  cat(k,"nearest neighbors\n")
   
   ##predict on train
   yhat <- knn(x,x,y,k=2^(k/2))
@@ -536,28 +281,7 @@ for(k in seq(along=train.error)){
   yhat <- knn(x,test,y,k=2^(k/2))
   test.error[k] <- 1-mean((as.numeric(yhat)-1)==y)
 }
-```
 
-```
-## 1 nearest neighbors
-## 2 nearest neighbors
-## 3 nearest neighbors
-## 4 nearest neighbors
-## 5 nearest neighbors
-## 6 nearest neighbors
-## 7 nearest neighbors
-## 8 nearest neighbors
-## 9 nearest neighbors
-## 10 nearest neighbors
-## 11 nearest neighbors
-## 12 nearest neighbors
-## 13 nearest neighbors
-## 14 nearest neighbors
-## 15 nearest neighbors
-## 16 nearest neighbors
-```
-
-```r
 ks <- 2^(seq(along=train.error)/2)
 mypar()
 plot(ks,train.error,type="n",xlab="K",ylab="Prediction Error",log="x",ylim=range(c(test.error,train.error)))
@@ -567,7 +291,7 @@ abline(h=bayes.error,col=6)
 legend("bottomright",c("Train","Test","Bayes"),col=c(4,5,6),lty=c(2,3,1),box.lwd=0)
 ```
 
-![plot of chunk unnamed-chunk-24](figure/machine_learning-unnamed-chunk-24-1.png) 
+![Prediction error in train (pink) and test (green) versus number of neighbors. The yellow line represents what one obtains with Bayes Rule.](images/R/machine_learning-tmp-bayes_rule2-1.png) 
 
 
 

@@ -1,44 +1,43 @@
 ---
-title: "Population, Samples, and Estimates"
 layout: page
+title: Population, Samples, and Estimates
 ---
 
 
 
-# Introduction
+## Populations, Samples and Estimates 
+
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/populations_and_samples.Rmd).
 
 Now that we have introduced the idea of a random variable, a null distribution, and a p-value, we are ready to describe the mathematical theory that permits us to compute p-values in practice. We will also learn about confidence intervals and power calculations. 
 
-# Population parameters
+#### Population parameters
 
-A first step in statistical inference is to understand what population you are interested in. In the mouse weight example, we have two populations; female mice on control diet and female mice on high fat diet, and the outcome of interest was weight. We consider this population to be fixed, and the randomness comes from the sampling. One reason we have been using this dataset as an example is because we happen to have the weights of all the mice of this type. Here we download and read in this dataset:
+A first step in statistical inference is to understand what population
+you are interested in. In the mouse weight example, we have two
+populations: female mice on control diets and female mice on high fat
+diets, with weight being the outcome of interest. We consider this
+population to be fixed, and the randomness comes from the
+sampling. One reason we have been using this dataset as an example is
+because we happen to have the weights of all the mice of this
+type. Here we download and read in this dataset:
 
 
 ```r
 library(downloader)
-```
-
-```
-## 
-## Attaching package: 'downloader'
-## 
-## The following object is masked from 'package:devtools':
-## 
-##     source_url
-```
-
-```r
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
-filename <- tempfile()
+filename <- "mice_pheno.csv"
 download(url,destfile=filename)
 dat <- read.csv(filename)
 ```
 
-We can then access the population values and determine, for example, how many we have. For example here is the control population:
+We can then access the population values and determine, for example, how many we have. Here we compute the size of the control population:
 
 
 ```r
-controlPopulation <- dat[dat$Sex == "F" & dat$Diet == "chow", 3]
+library(dplyr)
+controlPopulation <- filter(dat,Sex == "F" & Diet == "chow") %>% 
+  select(Bodyweight) %>% unlist
 length(controlPopulation)
 ```
 
@@ -46,11 +45,12 @@ length(controlPopulation)
 ## [1] 225
 ```
 
-We usually denote these values as $x_1,\dots,x_m$. In this case $m=225$. Now we can do the same with the high fat diet population
+We usually denote these values as {$$}x_1,\dots,x_m{/$$}. In this case {$$}m{/$$} is the number computed above. We can do the same for the high fat diet population:
 
 
 ```r
-hfPopulation <- dat[dat$Sex == "F" & dat$Diet == "hf", 3]
+hfPopulation <- filter(dat,Sex == "F" & Diet == "hf") %>%  
+  select(Bodyweight) %>% unlist
 length(hfPopulation)
 ```
 
@@ -58,30 +58,48 @@ length(hfPopulation)
 ## [1] 200
 ```
 
-and denote with $y_1,\dots,y_n, n=200$. 
+and denote with {$$}y_1,\dots,y_n{/$$}.
 
+We can then define summaries of interest for these populations, such as the mean and variance. 
 
-We can then define summaries of interest for these population such as the mean and variance. 
+The mean:
 
-the mean:
+{$$}\mu_X = \frac{1}{m}\sum_{i=1}^m x_i \mbox{ and } \mu_Y = \frac{1}{n} \sum_{i=1}^n y_i{/$$}
 
-$$\mu_X = \frac{1}{m}\sum_{i=1}^m x_i \mbox{ and } \mu_Y = \frac{1}{n} \sum_{i=1}^n y_i$$
+The variance:
 
-the variance:
+{$$}\sigma_X^2 = \frac{1}{m}\sum_{i=1}^m (x_i-\mu_X)^2 \mbox{ and } \sigma_Y^2 = \frac{1}{n} \sum_{i=1}^n (y_i-\mu_Y)^2{/$$}
 
-$$\sigma_X^2 = \frac{1}{m}\sum_{i=1}^m (x_i-\mu_x)^2 \mbox{ and } \sigma_Y^2 = \frac{1}{n} \sum_{i=1}^n (y_i-\mu_y)^2$$
+with the standard deviation being the square root of the variance. We refer to such quantities that can be obtained from the population as _population parameters_. The question we started out asking can now be written mathematically: is {$$}\mu_Y - \mu_X = 0{/$$} ? 
 
-with the standard deviation being the square root of the variance. We refer to such quantities, that can be obtained from the population, as _population parameters_.
+Although in our illustration we have all the values and can check if this is true, in practice we do not. For example, in practice it would be prohibitively expensive to buy all mice in a population. Here we learn how taking a _sample_ permits us to answer our questions. This is the essence of statistical inference.
 
-The question we started out asking can now be written mathematically: $\mu_Y - \mu_X = 0$ ? An
-important point is that although in our special case we can easily check if this is true since we actually have
-all the values, in practice we do not. So instead we take a sample and try to answer the questions with
-the sample. This is the essence of statistical inference.
+#### Sample estimates
 
-## Sample estimates
+In the previous chapter, we obtained samples of 12 mice from each
+population. We represent data from samples with capital letters to
+indicate that they are random. This is common practice in statistics,
+although it is not always followed. So the samples are {$$}X_1,\dots,X_M{/$$}
+and {$$}Y_1,\dots,Y_N{/$$} and, in this case, {$$}N=M=12{/$$}. In contrast, as we
+saw above, when we list out the values of the population, which are
+set and not random, we use lower-case letters.
 
-In the previous section, we obtained samples of 12 mice from each population. We represent these with capital letters to indicate that they are random. This is common practice in statistics, although it is not always followed. So the samples are $X_1,\dots,X_M$ and $Y_1,\dots,Y_N$ and in this case $N=M=12$. Since we want to know what $\mu_Y - \mu_X$ is we consider the sample version: $\bar{Y}-\bar{X}$  with 
+Since we want to know if {$$}\mu_Y - \mu_X{/$$} is 0, we consider the sample version: {$$}\bar{Y}-\bar{X}{/$$}  with 
 
-$$\bar{X}=\frac{1}{M} \sum_{i=1}^M X_i \mbox{ and }\bar{Y}=\frac{1}{N} \sum_{i=1}^N Y_i$$
+{$$}
+\bar{X}=\frac{1}{M} \sum_{i=1}^M X_i 
+\mbox{ and }\bar{Y}=\frac{1}{N} \sum_{i=1}^N Y_i.
+{/$$}
 
-which is a random variable. Previously we learned about the behavior of random variables with the exercise that involved sampling over and over from the original distribution. We noted that this is not an exercise that we can execute in practice. In this particular case it would involve buying mice over and over. Here we described the mathematical theory that mathematically relates $\bar{X}$ to $\mu_X$ and $\bar{Y}$ to $\mu_Y$, which will in turn help us understand the relationship between $\bar{Y}-\bar{X}$  and $\mu_Y - \mu_X$.
+Note that this difference of averages is also a random
+variable. Previously we learned about the behavior of random variables
+with an exercise that involved repeatedly sampling from the original
+distribution. Of course, this is not an exercise that we can execute
+in practice. In this particular case it would involve buying 24 mice
+over and over again. Here we described the mathematical theory that
+mathematically relates {$$}\bar{X}{/$$} to {$$}\mu_X{/$$} and {$$}\bar{Y}{/$$} to {$$}\mu_Y{/$$},
+that will in turn help us understand the relationship between
+{$$}\bar{Y}-\bar{X}{/$$}  and {$$}\mu_Y - \mu_X{/$$}. Specifically, we will describe
+how the Central Limit Theorem permits us to use an approximation to
+answer this question as well as motivate the widely used t-distribution.
+

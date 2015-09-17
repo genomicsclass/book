@@ -5,30 +5,50 @@ title: Multidimensional scaling
 
 
 
-# Introduction
+## Multi-Dimensional Scaling Plots
 
-Visualizing data is one of the most, if not the most, important step in the analysis of high throughput data. The right visualization method may reveal problems with the experimental data that can render the results from a standard analysis, that is typically appropriate, completely useless. 
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/highdim/mds.Rmd).
 
-We have shown methods for visualizing global properties of the columns of rows but plots that reveal relationships between columns or between rows is more complicated due to the high dimensionality of data. To compare each of the 189 samples to each other we would have to create, for example, 17,766 MA plots. Creating a scatter plot of the data is impossible since points are very high dimensional. 
-
-Here we describe a powerful technique for exploratory data analysis based on dimension reduction. The general idea is relatively simple, we reduce the dataset to have a few dimensions yet approximately preserve certain properties such as distance between samples. Once we reduce it to, say, two dimensions, we can easily make plots. The technique behind it all, the singular value decomposition, is also useful in other context.  
+We will motivate multi-dimensional scaling (MDS) plots with a gene expression example. To simplify the illustration we will only consider three tissues:
 
 
-# Math for Multidimensional Scaling Plot
+```r
+library(rafalib)
+library(tissuesGeneExpression)
+data(tissuesGeneExpression)
+##show matrix
+colind <- tissue%in%c("kidney","colon","liver")
+mat <- e[,colind]
+group <- factor(tissue[colind])
+dim(mat)
+```
 
-If the sum of squares of the first two columns of $$\mathbf{U^\top Y=DV^\top}$$ is much larger than the rest then:
+```
+## [1] 22215    99
+```
 
-$$\mathbf{Y}\approx [\mathbf{U}_1 \mathbf{U}_2] 
+As an exploratory step, we wish to know if gene expression profiles stored in the columns of `mat` show more similarity between tissues than across tissues. Unfortunately, as mentioned above, we can't plot multi-dimensional points. In general, we prefer two-dimensional plots, but making plots for every pair of genes or every pair of samples is not practical. MDS plots become a powerful tool in this situation.
+
+### The Math Behind MDS
+
+Now that we know about SVD and matrix algebra, understanding MDS is relatively straightforward. For illustrative purposes let's consider the SVD decomposition:
+
+{$$}\mathbf{Y} = \mathbf{UDV}^\top{/$$}
+
+and assume that the sum of squares of the first two columns {$$}\mathbf{U^\top Y=DV^\top}{/$$} is much larger than sum of squares of all other columns. This can be written as: 
+{$$}d_1+ d_2 \gg d_3 +\ dots + d_n{/$$} with {$$}d_i{/$$} the i-th entry of the {$$}\mathbf{D}{/$$} matrix. When this happens then we have 
+
+{$$}\mathbf{Y}\approx [\mathbf{U}_1 \mathbf{U}_2] 
   \begin{pmatrix}
     d_{1}&0\\
     0&d_{2}\\
   \end{pmatrix}
   [\mathbf{V}_1 \mathbf{V}_2]^\top  
-$$
+{/$$}
 
-This implies that column $$i$$ is approximately
+This implies that column {$$}i{/$$} is approximately
 
-$$
+{$$}
 \mathbf{Y}_i \approx
 [\mathbf{U}_1 \mathbf{U}_2] 
   \begin{pmatrix}
@@ -45,171 +65,119 @@ $$
     d_{1} v_{i,1}\\
     d_{2} v_{i,2}
  \end{pmatrix}
-$$
+{/$$}
 
+If we define the following two dimensional vector:
 
-Define the following two dimensional vector:
-
- $$\mathbf{Z}_i=\begin{pmatrix}
+ {$$}\mathbf{Z}_i=\begin{pmatrix}
     d_{1} v_{i,1}\\
     d_{2} v_{i,2}
- \end{pmatrix}$$
+ \end{pmatrix}
+ {/$$}
 
 Then
 
-$$ (\mathbf{Y}_i - \mathbf{Y}_j)^\top(\mathbf{Y}_i - \mathbf{Y}_j) \approx$$
+{$$}
+\begin{align*}
+(\mathbf{Y}_i - \mathbf{Y}_j)^\top(\mathbf{Y}_i - \mathbf{Y}_j) &\approx \left\{ [\mathbf{U}_1 \mathbf{U}_2] (\mathbf{Z}_i-\mathbf{Z}_j) \right\}^\top \left\{[\mathbf{U}_1 \mathbf{U}_2]  (\mathbf{Z}_i-\mathbf{Z}_j)\right\}\\
+&= (\mathbf{Z}_i-\mathbf{Z}_j)^\top [\mathbf{U}_1 \mathbf{U}_2]^\top [\mathbf{U}_1 \mathbf{U}_2] (\mathbf{Z}_i-\mathbf{Z}_j) \\
+&=(\mathbf{Z}_i-\mathbf{Z}_j)^\top(\mathbf{Z}_i-\mathbf{Z}_j)\\
+&=(Z_{i,1}-Z_{j,1})^2 + (Z_{i,2}-Z_{j,2})^2
+\end{align*}
+{/$$}
 
-$$\left\{ [\mathbf{U}_1 \mathbf{U}_2] (\mathbf{Z}_i-\mathbf{Z}_j) \right\}^\top \left\{[\mathbf{U}_1 \mathbf{U}_2]  (\mathbf{Z}_i-\mathbf{Z}_j)\right\} =
-$$
+This derivation tells us that the distance between samples {$$}i{/$$} and {$$}j{/$$} is approximated by the distance between two dimensional points.
 
-$$ (\mathbf{Z}_i-\mathbf{Z}_j)^\top [\mathbf{U}_1 \mathbf{U}_2]^\top [\mathbf{U}_1 \mathbf{U}_2] (\mathbf{Z}_i-\mathbf{Z}_j) =$$
-
-$$(\mathbf{Z}_i-\mathbf{Z}_j)^\top(\mathbf{Z}_i-\mathbf{Z}_j)=
-$$
-
-$$(Z_{i,1}-Z_{j,1})^2 + (Z_{i,2}-Z_{j,2})^2
-$$
-
-This derivation tells us that the distance between samples $$i$$ and $$j$$ is approximated by the distance between two two dimensional points.
-
-
-$$ (\mathbf{Y}_i - \mathbf{Y}_j)^\top(\mathbf{Y}_i - \mathbf{Y}_j) \approx
+{$$} (\mathbf{Y}_i - \mathbf{Y}_j)^\top(\mathbf{Y}_i - \mathbf{Y}_j) \approx
  (Z_{i,1}-Z_{j,1})^2 + (Z_{i,2}-Z_{j,2})^2
-$$
+{/$$}
 
-
-So the distance between $$\mathbf{Y}_i$$ and $$\mathbf{Y}_j$$ is approximated by the distance between two dimensional points. Note because this is a two dimensional vector and we can visualize the distances by plotting $$\mathbf{Z}_1$$ versus $$\mathbf{Z}_2$$. Note also that we may need more than two dimensions to obtain a decent approximation. Here we use only two to be able to make a scatter-plot. However, the same arguments can be made for more dimensions, let $$\mathbf{Z}$$ have more dimensions and then summarize the data with a series of scatterplots.
-
-
-# Example 
-
-Here is an MDS plot for kidney, liver and  colon samples
-
-
-```
-## [1] 22215    99
-```
-
-Suppose we want to explore just two dimensions. Then the calculations above tell us we should look at `z` as defined here:
+Because {$$}Z{/$$} is a two dimensional vector and we can visualize the distances between each sample by plotting {$$}\mathbf{Z}_1{/$$} versus {$$}\mathbf{Z}_2{/$$} and visually inspect the distance between points. Here is this plot for our example dataset:
 
 
 ```r
 s <- svd(mat-rowMeans(mat))
-z <- sweep(s$v[,1:2],2,s$d[1:2],"*")
+PC1 <- s$d[1]*s$v[,1]
+PC2 <- s$d[2]*s$v[,2]
+mypar(1,1)
+plot(PC1,PC2,pch=21,bg=as.numeric(group))
+legend("bottomright",levels(group),col=seq(along=levels(group)),pch=15,cex=1.5)
 ```
 
-As we noted these are 99 two dimensional points:
+![Multi-dimensional scaling (MDS) plot for tissue gene expression data.](images/R/mds-tmp-MDS-1.png) 
+
+Note that the point separate by tissue type as expected. Now, the accuracy of the approximation above depends on the proportion of variance explained by the first two principal components. As we showed above, we can quickly see this by plotting the variance explained plot:
 
 
 ```r
-dim(z)
+plot(s$d^2/sum(s$d^2))
 ```
 
-```
-## [1] 99  2
-```
+![Variance explained for each principal component.](images/R/mds-tmp-variance_explained-1.png) 
 
-And we are approximating the distance between our 99 22215 dimensional points with these 99 two-dimensional points. 
-But now we can plot them:
-
-
-
-```
-## Loading required package: RColorBrewer
-```
-
-<img src="figure/mds-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
-
-We can easily look at other dimensions
+Although the first two PCs explain over 50% of the variability, there is plenty of information that this plot does not show. However, it is an incredibly useful plot for obtaining a general idea of the distance between points. Also note, that we can plot other dimensions as well to search for patterns. Here are the 3rd and 4th PCs
 
 
 ```r
-z <- sweep(s$v[,3:4],2,s$d[3:4],"*")
-mypar2(1,1)
-plot(z[,1],z[,2],bg=as.numeric(ftissue),pch=21,xlab="First dimension",ylab="Second dimension")
+PC3 <- s$d[3]*s$v[,3]
+PC4 <- s$d[4]*s$v[,4]
+mypar(1,1)
+plot(PC3,PC4,pch=21,bg=as.numeric(group))
+legend("bottomright",levels(group),col=seq(along=levels(group)),pch=15,cex=1.5)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/mds-unnamed-chunk-5-1.png) 
+![Third and fourth principal components.](images/R/mds-tmp-PC_3_and_4-1.png) 
 
-Here we note there is separation between the kidneys. 
+Note that the 4th PC shows a strong separation within the kidney samples. Later we will learn about batch effects which might explain this finding. 
 
-# `cmdscale`
 
-The `cmdscale` makes this computation for us. It is also useful because it only computes the number of dimensions we ask for. One does not have to perform the full SVD which can be time consuming. By default it returns a two dimensions but we can change that through the parameter `k`
 
-<img src="figure/mds-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
+### `cmdscale`
 
-# Variance Explained
-
-Because the columns of $$\mathbf{U}$$ and $$\mathbf{V}$$ are 
-orthogonal we know their sum of squares is 1. So the sum of squares of the columns of $$\mathbf{DU}$$ and $$\mathbf{VD}$$ are determined by $$\mathbf{D}$$. This is a diagonal matrix so all the information is stored in just one vector. 
+Although above, we used the `svd` functions, there is a special function that is specifically made for MDS plots. It starts takes a distance object and then uses principal component analysis to provide the best approximation to this distance that can be obtained with {$$}k{/$$} dimensions. This function is more efficient because one does not have to perform the full SVD which can be time consuming. By default it returns a two dimensions but we can change that through the parameter `k`
 
 
 ```r
-SVD <- svd(mat-rowMeans(mat))
-length(SVD$d)
+d <- dist(t(mat))
+mds <- cmdscale(d)
+
+mypar()
+plot(mds[,1],mds[,2],bg=as.numeric(group),pch=21,xlab="First dimension",ylab="Second dimension")
+legend("bottomleft",levels(group),col=seq(along=levels(group)),pch=15)
 ```
 
-```
-## [1] 99
-```
-
-The sum of squares of the, say, 11th column of $$\mathbf{DU}$$ is therefore 
+![MDS computed with cmdscale function.](images/R/mds-tmp-mds2-1.png) 
+Note that these two approaches are equivalent up to an arbitrary sign change.
 
 
 ```r
-i <- 11
-SVD$d[i]^2
+mypar(1,2)
+for(i in 1:2){
+  plot(mds[,i],s$d[i]*s$v[,i],main=paste("PC",i))
+  b = ifelse( cor(mds[,i],s$v[,i]) > 0, 1, -1)
+  abline(0,b) ##b is 1 or -1 depending on the arbitrary sign "flip"
+}
 ```
 
-```
-## [1] 8149.242
-```
-
-We can see how much "variability" is added to the approximation of $$\mathbf{Y}$$ by looking at the percent of variability for each column:
+![Comparison of MDS first two PCs to SVD first two PCs.](images/R/mds-tmp-mds_same_as_svd-1.png) 
 
 
-<img src="figure/mds-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
+### Why the arbitrary sign?
+Note that the SVD is not unique because we can multiply any column of {$$}\mathbf{V}{/$$} by -1 as long as we multiply the sample column of {$$}\mathbf{U}{/$$} by -1. We can see this immediately by noting that
 
-Here we can see that we can get a very good approximation with just the first 20 so, since after that practically nothing is added. We can confirm:
-
-
-```r
-k <- 20
-mathat <- SVD$u[,1:k] %*% diag(SVD$d[1:k]) %*% t(SVD$v[,1:k])
-mean((mat - rowMeans(mat) - mathat)^2)
-```
-
-```
-## [1] 0.05196795
-```
+{$$}
+\mathbf{-1UD(-1)V}^\top = \mathbf{UDV}^\top
+{/$$}
 
 
-# Multidimensional scaling with SVD
+### Why we substract the mean
 
-Note that these two are equivalent
+Note that in all calculations above we subtract the row means before we compute the singular value decomposition. Note that if what we are trying to do is approximate the distance between columns {$$}\mathbf{Y}_i{/$$} and {$$}\mathbf{Y}_j{/$$} is the same as the distance between {$$}\mathbf{Y}_i- \mathbf{\mu}{/$$} and {$$}\mathbf{Y}_j - \mathbf{\mu}{/$$} since the {$$}\mu{/$$} cancels out when computing said distance:
 
+{$$}
+\left\{ ( \mathbf{Y}_i- \mathbf{\mu} ) - ( \mathbf{Y}_j - \mathbf{\mu} ) \right\}^\top \left\{ (\mathbf{Y}_i- \mathbf{\mu}) - (\mathbf{Y}_j - \mathbf{\mu} ) \right\} = \left\{  \mathbf{Y}_i-  \mathbf{Y}_j  \right\}^\top \left\{ \mathbf{Y}_i - \mathbf{Y}_j  \right\}
+{/$$}
 
-```r
-i=2
-plot(mds[,i],SVD$v[,i]*SVD$d[i])
-abline(0,1)
-```
-
-![plot of chunk unnamed-chunk-11](figure/mds-unnamed-chunk-11-1.png) 
-
-```r
-#abline(0,-1)
-```
-
-Also note that the columns of $$\mathbf{Z}$$ are multiplied by scalars $$d_{11}$$ and $$d_{22}$$. Thus the only difference between plotting with MDS and plotting $$\mathbf{V}$$ are these scalars. We can add them back by multiplying by $$\mathbf{D}$$ but we can make quick plots like this
-
-<img src="figure/mds-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
-
-Here are columns 3 and 4
-
-<img src="figure/mds-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" />
-
-
+And because removing the row means reduces the total variation it can only make the SVD approximation better.
 
 

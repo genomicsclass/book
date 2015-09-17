@@ -1,6 +1,6 @@
 ---
 title: "Association tests"
-output: pdf_document
+output: html_document
 layout: page
 ---
 
@@ -8,21 +8,59 @@ layout: page
 
 
 
-# Introduction
+## Association Tests
 
-The statistical tests we have covered up to know leave out a substantial portion of life science projects. Specifically, we are referring to data that is binary, categorical and ordinal. To give a very specific example, consider genetic data where you have two genotypes (AA/Aa or aa) for cases and controls for a given disease. The statistical question is if genotype and disease are associated. Note that as in the examples we have been studying we have two populations: AA/Aa and aa and  numeric data for each. So why can't we perform a t-test? Note that the data is either 0 (control) or 1 (cases). It is pretty clear that this data is not normally distributed so the t-distribution approximation is for sure out of the question. We could use CLT if the sample size is large enough, but instead we can use association tests.
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/association_tests.Rmd).
 
-# Association tests
+The statistical tests we have covered up to now leave out a
+substantial portion of life science projects. Specifically, we are
+referring to data that is binary, categorical and ordinal. To give a
+very specific example, consider genetic data where you have two groups
+of genotypes (AA/Aa or aa) for cases and controls for a given
+disease. The statistical question is if genotype and disease are
+associated. As in the examples we have been studying previously, we have two
+populations (AA/Aa and aa) and then numeric data for each, where disease
+status can be coded as 0 or 1. So why can't we
+perform a t-test? Note that the data is either 0 (control) or 1
+(cases). It is pretty clear that this data is not normally distributed
+so the t-distribution approximation is certainly out of the
+question. We could use CLT if the sample size is large enough;
+otherwise we can use *association tests*. 
 
-One of the most famous examples of hypothesis testing was performed by RA Fisher on a lady that claimed could tell if milk was added before or after the tea was poured. Fisher gave the lady four pairs of cups of tea: one with milk poured first, the other after. The order was randomized. Say the lady picked 3 out 4 correctly, do we believe she has a special ability? Hypothesis testing helps answer this question by quantifying what happens by chance.
+### Lady Tasting Tea
 
-The basic question we ask is: if the lady is just guessing, what are the chances that she gets 3 or more correct? Just as we have done before we can compute a probability under the null that hypothesis that she is just guessing. If we assume the lady is just guessing randomly, we can think of this particular examples as picking 4 balls out of an urn with 4 green (correct answer) and 4 red (incorrect answer) balls. 
+One of the most famous examples of hypothesis testing was performed by
+[R.A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher).
+An acquaintance of Fisher's claimed that she could tell if milk was added
+before or after tea was poured. Fisher gave her four pairs of
+cups of tea: one with milk poured first, the other after. The order
+was randomized. Say she picked 3 out 4 correctly, do we believe
+she has a special ability? Hypothesis testing helps answer this
+question by quantifying what happens by chance. This example is called
+the "Lady tasting tea" experiment (and as it turns out Fisher's friend
+was a scientist herself, [Muriel Bristol](https://en.wikipedia.org/wiki/Muriel_Bristol)).
 
-Under the null hypothesis that the lady is just guessing each ball has the same chance of being picked. We can then use combinatorics to figure out the probability. The probability of picking 3 is $${4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70$$. The probability of picking all correct is $${4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70$$. Thus the chance of observing a 3 or something more extreme, under the null hypothesis, is 0.24. This is called a p-value. This is called Fisher's exact test and it uses the hyper geometric distribution.
+The basic question we ask is: if the tester is actually guessing, what
+are the chances that she gets 3 or more correct? Just as we have done
+before, we can compute a probability under the null hypothesis that she
+is guessing four of each. If we assume this null hypothesis, we can
+think of this particular examples as picking 4 balls out of an urn
+with 4 green (correct answer) and 4 red (incorrect answer) balls.
 
-## Two by two tables
+Under the null hypothesis that she is simply guessing, each ball
+has the same chance of being picked. We can then use combinatorics to
+figure out each probability. The probability of picking 3 is
+{$$}{4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70{/$$}. The probability of
+picking all 4 correct is
+{$$}{4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70{/$$}.
+Thus the chance of observing a 3 or something more extreme,
+under the null hypothesis, is {$$}\approx 0.24{/$$}. This is the p-value. The
+procedure that produced this p-value is called Fisher's exact test and
+it uses the *hypergeometric distribution*. 
 
-Note that the data from the experiment above can be summarized by a 2 by 2 tables:
+### Two By Two Tables
+
+The data from the experiment above can be summarized by a 2 by 2 table:
 
 
 ```r
@@ -59,13 +97,32 @@ fisher.test(tab,alternative="greater")
 ##   6.408309
 ```
 
-## Chi-square test
+### Chi-square Test
 
-Genome-wide association studies (GWAS) have become ubiquitous in Biology. One of the main statistical summaries used in these studies are Manhattan plots. The y-axis of a Manhattan plot typically represents the negative of log (base 10) of the p-values obtained for association tests applied at millions of single nucleotide polymorphisms (SNP). These p-values are obtained in a similar way to the test performed on the tea tasting lady. However in that example the number of green and red balls is experimentally fixed and the number of answers given for each category is also fixed. Another way to say this is that the sum of the rows and the sum of the columns are fixed. This defines constraints on the possible ways we can fill the 2 by 2 table and also permits us to use the hypergeometric distribution. In general, this is not the case. But there is another approach which is the Chi-squared test described here.
+Genome-wide association studies (GWAS) have become ubiquitous in
+biology. One of the main statistical summaries used in these studies
+are Manhattan plots. The y-axis of a Manhattan plot typically
+represents the negative of log (base 10) of the p-values obtained for
+association tests applied at millions of single nucleotide
+polymorphisms (SNP). The x-axis is typically organized by chromosome
+(chromosome 1 to 22, X, Y, etc.).
+These p-values are obtained in a similar way to
+the test performed on the tea taster. However, in that example the
+number of green and red balls is experimentally fixed and the number
+of answers given for each category is also fixed. Another way to say
+this is that the sum of the rows and the sum of the columns are
+fixed. This defines constraints on the possible ways we can fill the 2
+by 2 table and also permits us to use the hypergeometric
+distribution. In general, this is not the case. Nonetheless, there is
+another approach, the Chi-squared test, which is described below. 
 
-Imagine we have 280 individuals, some of them have a given disease others don’t. We observe that a 20% of the individuals that are homozygous for the minor allele (aa) have the disease compared to 10% of the rest. Would we see this again if we picked another 220 individuals?
+Imagine we have 250 individuals, where some of them have a given disease
+and the rest do not. We observe that 20% of the individuals that are
+homozygous for the minor allele (aa) have the disease compared to 10%
+of the rest. Would we see this again if we picked another 250
+individuals? 
 
-Let's create an dataset with these perencentages:
+Let's create an dataset with these percentages:
 
 
 ```r
@@ -74,7 +131,7 @@ disease=factor(c(rep(0,180),rep(1,20),rep(0,40),rep(1,10)),
 genotype=factor(c(rep("AA/Aa",200),rep("aa",50)),
                 levels=c("AA/Aa","aa"))
 dat <- data.frame(disease, genotype)
-dat <- dat[sample(nrow(dat)),]##shuffle them up
+dat <- dat[sample(nrow(dat)),] #shuffle them up
 head(dat)
 ```
 
@@ -88,7 +145,9 @@ head(dat)
 ## 221 control       aa
 ```
 
-To create the appropriate two by two table we will use the function `table`. This function tabulates the frequency of each level in a factor. For exampel:
+To create the appropriate two by two table, we will use the function
+`table`. This function tabulates the frequency of each level in a
+factor. For example: 
 
 
 ```r
@@ -111,7 +170,7 @@ table(disease)
 ##     220      30
 ```
 
-If you you feed the function two factors it will tabulate all possible pairs and thus create the two by two table:
+If you you feed the function two factors, it will tabulate all possible pairs and thus create the two by two table:
 
 
 ```r
@@ -126,9 +185,9 @@ tab
 ##    aa         40    10
 ```
 
-Note that you can feed `table` $$n$$ factors and it will tabulate all $$n$$-tubles.
+Note that you can feed `table` {$$}n{/$$} factors and it will tabulate all {$$}n{/$$}-tables.
 
-The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ration: $$(10/40) / (20/180)$$ 
+The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ratio: {$$}(10/40) / (20/180){/$$} 
 
 
 ```r
@@ -139,7 +198,15 @@ The typical statistics we use to summarize these results is the odds ratio (OR).
 ## [1] 2.25
 ```
 
-Now to compute p-value we don't use the OR directly, we assume that there is no association between genotype and disease and compute what we expect to see in each cell. Note under the null that 200 and 50 individuals in each group were assigned disease with the same probability. If this is the case then the probability of disease is
+To compute a p-value we don't use the OR directly. We instead assume
+that there is no association between genotype and disease, and then
+compute what we expect to see in each *cell* of the table (note: this use of
+the word "cell" refers to elements in a matrix or table and has
+nothing to do with biological cells). 
+Under the null hypothesis,
+the group with 200 individuals and the group with 50 individuals were
+each randomly assigned the disease with the same probability. If this
+is the case, then the probability of disease is: 
 
 
 ```r
@@ -151,7 +218,7 @@ p
 ## [1] 0.12
 ```
 
-The expected table is therefore
+The expected table is therefore:
 
 
 ```r
@@ -168,7 +235,11 @@ expected
 ##    aa         44     6
 ```
 
-The Chi-square test uses an asymptotic result (similar to CLT) about the sums of independent binary outcomes, we can compute an approximate probability of seeing a deviation for the expected table as big as this one. The p-value for this table is 
+The Chi-square test uses an asymptotic result (similar to the CLT)
+related to the sums of independent binary outcomes. Using this
+approximation, we can compute the probability of seeing a deviation
+from the expected table as big as the one we saw. The p-value for this
+table is:
 
 
 ```r
@@ -179,11 +250,23 @@ chisq.test(tab)$p.value
 ## [1] 0.08857435
 ```
 
-## Large samples, small p-values
+### Large Samples, Small p-values
 
-As we mentioned earlier reporting only p-values is not an appropriate way to report the results of your experiment. Many genetic association studies seem to over emphasize p-values. They have large sample sizes, report impressively small p-values, yet when one looks closely at the results, we realize odds ratios are quite modest: barely bigger than 1.
+As mentioned earlier, reporting only p-values is not an appropriate
+way to report the results of your experiment. Many genetic association
+studies seem to over emphasize p-values. They have large sample sizes
+and report impressively small p-values.  Yet when one looks closely at
+the results, we realize odds ratios are quite modest: barely bigger
+than 1. In this case the difference of having genotype AA/Aa or aa
+might not change an individual's risk for a disease in an amount which is
+*practically significant*, in that one might not change one's behavior
+based on the small increase in risk.
 
-We note that there is not a one to one relationship between the odds ratio and the p-value. To demonstrate we re calculate the p-value keeping all the proportions identical but increasing the sample size by 10 which reduces the p-value substantially
+There is not a one-to-one relationship between the odds ratio and the
+p-value. To demonstrate, we recalculate the p-value keeping all the
+proportions identical, but increasing the sample size by 10, which
+reduces the p-value substantially (as we saw with the t-test under the
+alternative hypothesis):
 
 
 ```r
@@ -195,12 +278,22 @@ chisq.test(tab)$p.value
 ## [1] 1.219624e-09
 ```
 
-## Confidence intervals for the odd ratio
+### Confidence Intervals For The Odd Ratio
 
-Computing confidence intervals for the OR is not mathematically straightforward. Unlike other statistics for which we have found approximations for their distributions, the OR is not only a ratio, but a ratio of ratio and there is not simple way of using, for example, the CLT.
- 
- One approach is to use the theory of generalized linear models which provides estimates of the log odds ratio, rather than the OR itself, that can be shown to be asymptotically normal. Here we provide R code without much details of what it is:
+Computing confidence intervals for the OR is not mathematically
+straightforward. Unlike other statistics, for which we can derive
+useful approximations of their distributions, the OR is not only a
+ratio, but a ratio of ratios. Therefore there is no simple way of
+using, for example, the CLT. 
   
+One approach is to use the theory of *generalized linear models* which
+provides estimates of the log odds ratio, rather than the OR itself,
+that can be shown to be asymptotically normal. Here we provide R code
+without presenting the theoretical details (for further details please
+see a reference on generalized linear models such as
+[Wikipedia](https://en.wikipedia.org/wiki/Generalized_linear_model) or
+[McCullagh and Nelder, 1989](https://books.google.com/books?hl=en&lr=&id=h9kFH2_FfBkC)): 
+
 
 ```r
 fit <- glm(disease~genotype,family="binomial",data=dat)
@@ -214,7 +307,7 @@ coeftab
 ## genotypeaa   0.8109302  0.4249074  1.908487 5.632834e-02
 ```
 
-The second row of the table shown above gives you the estimate and SE of the log odds ratio and mathematical theory tells us the this estiamte is approximately normally distributed. We can therefore form a confidence interval and then exponentiate to provide a confidence interval for the OR.
+The second row of the table shown above gives you the estimate and SE of the log odds ratio. Mathematical theory tells us the this estimate is approximately normally distributed. We can therefore form a confidence interval and then exponentiate to provide a confidence interval for the OR.
 
 
 ```r
@@ -226,5 +319,5 @@ exp(ci)
 ## [1] 0.9618616 5.2632310
 ```
 
-Note that the confidence includes 1, which is consistent with the p-value being bigger than 0.05. Also note that the p-value shown here is based on a different approximation to the one used by the Chi-square test which is why they differ.
+The confidence includes 1, which is consistent with the p-value being bigger than 0.05. Note that the p-value shown here is based on a different approximation to the one used by the Chi-square test, which is why they differ.
 

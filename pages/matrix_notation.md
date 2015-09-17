@@ -8,32 +8,36 @@ layout: page
 
 
 
-# Introduction
+## Matrix Notation
 
-Here we introduce the basics of matrix notation. At first this will all seem over-complicated but once we get to the examples you will start to appreciate its power of using this notation to both explain and derive solutions as well as implement them as R code. 
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
 
-# The language of linear models
+Here we introduce the basics of matrix notation. Initially this may seem over-complicated, but once we discuss examples you will appreciate the power of using this notation to both explain and derive solutions, as well as implement them as R code. 
 
-Linear algebra notation actually  simplifies the mathematical descriptions and manipulations of linear models as well are coding in R. We will show you the basics of this notation and then show some example in R.
+#### The language of linear models
 
-The main point of this entire exercise is to show how we can write the models above using matrix notation and then explain how this is useful for solving the least squares equation. We start by simply defining notation and matrix multiplication, but bare with us, we eventually get back to the practical application.
+Linear algebra notation actually simplifies the mathematical descriptions and manipulations of linear models, as well as coding in R. We will discuss the basics of this notation and then show some examples in R.
 
-## Motivation
+The main point of this entire exercise is to show how we can write the models above, using matrix notation and then explain how this is useful for solving the least squares equation. We start by simply defining notation and matrix multiplication, but bear with us since we eventually get back to the practical application.
+
+## Solving System of Equations
+
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
 
 Linear algebra was created by mathematicians to solve systems of linear equations such as this:
 
-$$
-\begin{aligned}
+{$$}
+\begin{align*}
 a + b + c &= 6\\
 3a - 2b + c &= 2\\
 2a + b  - c &= 1
-\end{aligned}
-$$
+\end{align*}
+{/$$}
 
 It provides very useful machinery to solve these problems generally. We will learn how we can write and solve this system using matrix algebra notation:
 
-
-$$
+{$$} 
+\,
 \begin{pmatrix}
 1&1&1\\
 3&-2&1\\
@@ -65,16 +69,15 @@ c
 2\\
 1
 \end{pmatrix}
-$$
+{/$$}
 
 This section explains the notation used above. It turns that we can borrow this notation for linear models in statistics as well.
 
-
-
-
 ## Vectors, Matrices and Scalars
 
-In the examples above the random variables associated with the data were represented by $$ Y_1,\dots,Y_n $$ . We can think of this as a vector. In fact, in R we are already doing this:
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
+
+In the examples above the random variables associated with the data were represented by {$$}Y_1,\dots,Y_n{/$$}. We can think of this as a vector. In fact, in R we are already doing this:
 
 
 ```r
@@ -88,21 +91,22 @@ head(y)
 ```
 In math we can also use just one symbol and we usually use bold to distinguish it from the individual entries:
 
-$$ \mathbf{Y} = \begin{pmatrix}
+{$$} \mathbf{Y} = \begin{pmatrix}
 Y_1\\\
 Y_2\\\
 \vdots\\\
 Y_N
 \end{pmatrix}
-$$
+{/$$}
 
-For reasons that will become clear soon, default representation of data vectors have dimension $$ N\times 1 $$ as opposed to $$ 1 \times N $$ .
 
-Note: we don't always use bold because commonly one can tell what is a matrix from the context.
+For reasons that will soon become clear, default representation of data vectors have dimension {$$}N\times 1{/$$} as opposed to {$$}1 \times N{/$$} .
 
-Similarly we can use math notation to represent the covariates or predictors. In the case of the two, with the second one just being the square of the first.
+Here we don't always use bold because normally one can tell what is a matrix from the context.
 
-$$ 
+Similarly, we can use math notation to represent the covariates or predictors. In the case of the two, the second one is just the square of the first.
+
+{$$} 
 \mathbf{X}_1 = \begin{pmatrix}
 x_{1,1}\\
 \vdots\\
@@ -113,21 +117,21 @@ x_{1,2}\\
 \vdots\\
 x_{N,2}
 \end{pmatrix}
-$$
+{/$$}
 
-Note that, for the object falling example $$ x_{1,1}= t_i $$ and $$ x_{i,1}=t_i^2 $$ with $$ t_i $$ the time of the i-th observation. Also note that vectors can be thought of as $$ N\times 1 $$ matrices 
+Note that for the object falling example {$$}x_{1,1}= t_i{/$$} and {$$}x_{i,1}=t_i^2{/$$} with {$$}t_i{/$$} the time of the i-th observation. Also, keep in mind that vectors can be thought of as {$$}N\times 1{/$$} matrices.
 
-For reasons that will become clear soon, it is convenient to representing  these in matrices:
+For reasons that will soon become apparent, it is convenient to represent these in matrices:
 
-$$ 
+{$$} 
 \mathbf{X} = [ \mathbf{X}_1 \mathbf{X}_2 ] = \begin{pmatrix}
 x_{1,1}&x_{1,2}\\
 \vdots\\
 x_{N,1}&x_{N,2}
 \end{pmatrix}
-$$
+{/$$}
 
-This matrix has dimension $$ N \times 2 $$ . We can create this matrix in R this way
+This matrix has dimension {$$}N \times 2{/$$}. We can create this matrix in R this way:
 
 
 ```r
@@ -155,18 +159,18 @@ dim(X)
 ## [1] 25  2
 ```
 
-Note that we can also use this notation to denote an arbitrary number of covariates with the following $$ N\times p $$ matrix:
+We can also use this notation to denote an arbitrary number of covariates with the following {$$}N\times p{/$$} matrix:
 
-$$
+{$$}
 \mathbf{X} = \begin{pmatrix}
   x_{1,1}&\dots & x_{1,p} \\
   x_{2,1}&\dots & x_{2,p} \\
    & \vdots & \\
   x_{N,1}&\dots & x_{N,p} 
   \end{pmatrix}
-$$
+{/$$}
 
-Just as an example, we show you how to make one in R, now using `matrix` instead of `cbind`:
+Just as an example, we show you how to make one in R now using `matrix` instead of `cbind`:
 
 
 ```r
@@ -193,7 +197,7 @@ dim(X)
 ## [1] 100   5
 ```
 
-Note that the columns are filled by column. The `byrow=TRUE` argument let's us change that:
+The columns are filled by column. The `byrow=TRUE` argument lets us change that:
 
 
 ```r
@@ -212,5 +216,5 @@ head(X)
 ## [6,]   26   27   28   29   30
 ```
 
-Finally, we define a scalar. A scalar is just a number. So why a special name? We want to distinguish it from vectors and matrices. We usually use lower case and don't bold. In the next section we will understand why we make this distinction.
+Finally, we define a scalar. A scalar is just a number. So why the special name? We call it a scalar because we want to distinguish it from vectors and matrices. We usually use lower case and don't bold. In the next section we will understand why we make this distinction.
 

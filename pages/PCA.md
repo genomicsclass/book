@@ -5,48 +5,33 @@ title: Principal Components Analysis
 
 
 
-# Introduction
+## Principal Component Analysis 
 
-Here we give a brief introduction to principal component analysis (PCA). We have already covered the singular value decomposition (SVD) which as we will see is very much related. 
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/highdim/PCA.Rmd).
 
-# Example: Twin Heights
+We have already mentioned principal component analysis (PCA) above and noted its relation to the SVD. Here we provide further mathematical details. 
 
-We used this simulated example to demonstrate a simple rotation. As we will see here this rotation is very much related to PCA.
+### Example: Twin Heights
+
+We started the motivation for dimension reduction with a simulated example and showed a rotation that is very much related to PCA.
 
 
+![Twin heights scatter plot.](images/R/PCA-tmp-simulate_twin_heights_again-1.png) 
 
-```r
-library(rafalib)
-```
+Here we explain specifically what are the principal components (PCs).
 
-```
-## Loading required package: RColorBrewer
-```
+Let {$$}\mathbf{Y}{/$$} be {$$}2 \times N{/$$} matrix representing our data. The analogy is that we measure expression from 2 genes and each column is a sample. Suppose we are given the task of finding a  {$$}2 \times 1{/$$} vector {$$}\mathbf{u}_1{/$$} such that {$$}\mathbf{u}_1^\top \mathbf{v}_1 = 1{/$$}
+and it maximizes {$$}(\mathbf{u}_1^\top\mathbf{Y})^\top (\mathbf{u}_1^\top\mathbf{Y}){/$$}. This can be viewed as a projection of each sample or column of {$$}\mathbf{Y}{/$$} into the subspace spanned by {$$}\mathbf{u}_1{/$$}. So we are looking for a transformation in which the coordinates show high variability.
 
-```r
-library(MASS)
-N = 100
-mypar2(1,1)
-set.seed(2)
-Y=mvrnorm(N,c(0,0),matrix(c(1,0.95,0.95,1),2,2))
-LIM=c(-1,1)*max(abs(Y))
-colnames(Y) <- c("Twin 1 (standardized height)","Twin 2 (standardized height)")
-plot(Y,xlab="Twin 1 (standardized height)",ylab="Twin 2 (standardized height)",xlim=LIM,ylim=LIM)
-```
-
-<img src="figure/PCA-unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
-
-Let  $$\mathbf{Y}$$ be $$N \times 2$$ matrix representing our data. Suppose we are given the task of finding a  $$2 \times 1$$ vector $$\mathbf{v}_1$$ such that $$\mathbf{v}_1^\top \mathbf{v}_1 = 1$$
-and it maximizes $$(\mathbf{Y}\mathbf{v}_1)^\top (\mathbf{Y}\mathbf{v}_1)$$. Note that this can be viewed as a projection of each row of $$\mathbf{Y}$$ into the subspace spanned by $$\mathbf{v}$$. So we are looking for a transformation in which the coordinates show high variability.
-
-Let's try $$\mathbf{v}=(1,0)^\top$$. This projection gives us the height of twin 1 shown in orange below. The sum of squares is shown in the title.
+Let's try {$$}\mathbf{u}=(1,0)^\top{/$$}. This projection simply gives us the height of twin 1 shown in orange below. The sum of squares is shown in the title.
 
 
 ```r
-mypar2(1,1)
-plot(Y,xlim=LIM,ylim=LIM,main=paste("Sum of squares :",round(crossprod(Y[,1]),1)))
+mypar(1,1)
+plot(t(Y), xlim=thelim, ylim=thelim,
+     main=paste("Sum of squares :",round(crossprod(Y[,1]),1)))
 abline(h=0)
-apply(Y,1,function(y) segments(y[1],0,y[1],y[2],lty=2))
+apply(Y,2,function(y) segments(y[1],0,y[1],y[2],lty=2))
 ```
 
 ```
@@ -54,97 +39,142 @@ apply(Y,1,function(y) segments(y[1],0,y[1],y[2],lty=2))
 ```
 
 ```r
-points(Y[,1],rep(0,nrow(Y)),col=2,pch=16,cex=0.75)
+points(Y[1,],rep(0,ncol(Y)),col=2,pch=16,cex=0.75)
 ```
 
-<img src="figure/PCA-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
+<img src="images/R/PCA-tmp-projection_not_PC1-1.png" title="plot of chunk projection_not_PC1" alt="plot of chunk projection_not_PC1"  />
 
+Can we find a direction with higher variability? How about:
 
-Can we find a direction with higher variability? How about
-$$\mathbf{v} =\begin{pmatrix}1&-1\end{pmatrix}'$$ ? This does not satisfy $$\mathbf{v}^\top\mathbf{v}= 1$$ so let's instead try
-$$\mathbf{v} =\begin{pmatrix}1/\sqrt{2}&-1/\sqrt{2}\end{pmatrix}'$$ 
+{$$}\mathbf{u} =\begin{pmatrix}1\\-1\end{pmatrix}{/$$} ? This does not satisfy {$$}\mathbf{u}^\top\mathbf{u}= 1{/$$} so let's instead try
+{$$}\mathbf{u} =\begin{pmatrix}1/\sqrt{2}\\-1/\sqrt{2}\end{pmatrix}{/$$} 
 
 
 ```r
-v <- matrix(c(1,-1)/sqrt(2),ncol=1)
-w=Y%*%v
-mypar2(1,1)
-plot(Y,main=paste("Sum of squares:",round(crossprod(w),1)),xlim=LIM,ylim=LIM)
+u <- matrix(c(1,-1)/sqrt(2),ncol=1)
+w=t(u)%*%Y
+mypar(1,1)
+plot(t(Y),
+     main=paste("Sum of squares:",round(tcrossprod(w),1)),xlim=thelim,ylim=thelim)
 abline(h=0,lty=2)
 abline(v=0,lty=2)
 abline(0,-1,col=2)
-Z = w%*%t(v)
+Z = u%*%w
 for(i in seq(along=w))
-  segments(Z[i,1],Z[i,2],Y[i,1],Y[i,2],lty=2)
-points(Z,col=2,pch=16,cex=0.5)
+  segments(Z[1,i],Z[2,i],Y[1,i],Y[2,i],lty=2)
+points(t(Z), col=2, pch=16, cex=0.5)
 ```
 
-<img src="figure/PCA-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+![Data projected onto space spanned by (1 0).](images/R/PCA-tmp-projection_not_PC1_either-1.png) 
 
 This relates to the difference between twins which we know is small. The sum of squares confirms this.
 
 Finally, let's try:
-$$\mathbf{v} =\begin{pmatrix}1/\sqrt{2}&1/\sqrt{2}\end{pmatrix}'$$ 
+
+{$$}\mathbf{u} =\begin{pmatrix}1/\sqrt{2}\\1/\sqrt{2}\end{pmatrix}{/$$} 
 
 
 ```r
-v <- matrix(c(1,1)/sqrt(2),ncol=1)
-w=Y%*%v
-mypar2(1,1)
-plot(Y,main=paste("Sum of squares:",round(crossprod(w),1)),xlim=c(-3,3),ylim=c(-3,3))
+u <- matrix(c(1,1)/sqrt(2),ncol=1)
+w=t(u)%*%Y
+mypar()
+plot(t(Y), main=paste("Sum of squares:",round(tcrossprod(w),1)),
+     xlim=thelim, ylim=thelim)
 abline(h=0,lty=2)
 abline(v=0,lty=2)
 abline(0,1,col=2)
-points(w%*%t(v),col=2,pch=16,cex=1)
-Z = w%*%t(v)
+points(u%*%w, col=2, pch=16, cex=1)
+Z = u%*%w
 for(i in seq(along=w))
-  segments(Z[i,1],Z[i,2],Y[i,1],Y[i,2],lty=2)
-points(Z,col=2,pch=16,cex=0.5)
+  segments(Z[1,i], Z[2,i], Y[1,i], Y[2,i], lty=2)
+points(t(Z),col=2,pch=16,cex=0.5)
 ```
 
-<img src="figure/PCA-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+![Data projected onto space spanned by first PC.](images/R/PCA-tmp-PC1-1.png) 
 
-This is a re-scaled average height which has higher sum of squares. It 
-turns out that there is mathematical procedure for determining which $$\mathbf{v}$$ maximizes the sum of squares and that the SVD provides it for us.
+This is a re-scaled average height which has higher sum of squares. There is a mathematical procedure for determining which {$$}\mathbf{v}{/$$} maximizes the sum of squares and the SVD provides it for us.
 
-# The Principal Components
+### The Principal Components
 
-The orthogonal vector that maximizes the sum of squares
+The orthogonal vector that maximizes the sum of squares:
 
-$$(\mathbf{Yv}_1)^\top \mathbf{Yv}_1$$ 
+{$$}(\mathbf{u}_1^\top\mathbf{Y})^\top(\mathbf{u}_1^\top\mathbf{Y}){/$$} 
 
-$$\mathbf{v}_1$$ is referred to as the _first principal component_ (PC). Also referred as  _first eigenvector_, $$\mathbf{Yv}_1$$
-are the projections or coordinates or eigenvalues 
+{$$}\mathbf{u}_1^\top\mathbf{Y}{/$$} is referred to as the first PC. The _weights_ {$$}\mathbf{u}{/$$} used to obtain this PC are referred to as the _loadings_. Using  the language of rotations, it is also referred to as the _direction_ of the first PC, which are the new coordinates.
 
-Note that each row of of $$\mathbf{Y}$$ gets a coordinate
+To obtain the second PC, we repeat the exercise above, but for the residuals:
 
+{$$}\mathbf{r} = \mathbf{Y} - \mathbf{u}_1^\top \mathbf{Yv}_1 {/$$}
 
-If we define residuals $$\mathbf{r} = \mathbf{Y} - \mathbf{Yv}_1 \mathbf{v}_1^\top$$
+The second PC is the vector with the following properties: 
 
-The second PC is the vector that 
+{$$} \mathbf{v}_2^\top \mathbf{v}_2=1{/$$}
 
-$$ \mathbf{v}_2^\top \mathbf{v}_2=1$$
+{$$} \mathbf{v}_2^\top \mathbf{v}_1=0{/$$} 
 
-$$ \mathbf{v}_2^\top \mathbf{v}_1=0$$
+and maximizes  {$$}(\mathbf{rv}_2)^\top \mathbf{rv}_2{/$$}.
 
-and maximizes  $$(\mathbf{rv}_2)^\top \mathbf{rv}_2$$ 
+When {$$}Y{/$$} is {$$}N \times m{/$$} we repeat to find 3rd, 4th, ..., m-th PCs
 
-When $$Y$$ is $$N \times m$$ we repeat to find 3rd, 4th, ..., m-th PCs
+### `prcomp`
 
-# Singular Value Decomposition
-
-The SVD $$\mathbf{Y=UDV}^\top$$ gives the PCs in columns of $$\mathbf{V}$$. Note that the first PC is actually close to the last $$\mathbf{v}$$ we considered:
+We have shown how to obtain PCs using the SVD. However, R has a function specifically designed to find the principal components. In this case the data is centered by default. The following function: 
 
 
 ```r
-s = svd(Y)
-round(s$v * sqrt(2),1)
+pc <- prcomp( t(Y) )
+```
+
+produces the same results as the SVD up to arbitrary sign flips
+
+
+```r
+s <- svd( Y - rowMeans(Y) )
+mypar(1,2)
+for(i in 1:nrow(Y) ){
+  plot(pc$x[,i], s$d[i]*s$v[,i])
+}
+```
+
+![Plot showing SVD and prcomp give same results.](images/R/PCA-tmp-pca_svd-1.png) 
+
+The loadings can be found this way:
+
+```r
+pc$rotation
 ```
 
 ```
-##      [,1] [,2]
-## [1,]    1    1
-## [2,]    1   -1
+##            PC1        PC2
+## [1,] 0.7072304  0.7069831
+## [2,] 0.7069831 -0.7072304
 ```
+which are equivalent (up to a sign flip) to:
+
+```r
+s$u
+```
+
+```
+##            [,1]       [,2]
+## [1,] -0.7072304 -0.7069831
+## [2,] -0.7069831  0.7072304
+```
+The equivalent of the variance explained is included in the: 
+
+```r
+pc$sdev
+```
+
+```
+## [1] 1.2542672 0.2141882
+```
+component.
+
+
+
+Note that we take the transpose of `Y` because `prcomp` assumes the previously discussed ordering: units/samples in row and features in columns.
+
+
 
 

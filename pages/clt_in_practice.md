@@ -1,5 +1,5 @@
 ---
-title: "Central Limit Theorem in practice"
+title: "Central Limit Theorem in Practice"
 layout: page
 ---
 
@@ -8,15 +8,17 @@ layout: page
 
 
 
-Let's use our data to see how well the central limit approximates sample averages from our data. We will leverage our entire population dataset to compare the results we obtain by actually sampling from the distribtuion to what the CLT predicts.  
+## Central Limit Theorem in Practice
+
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/clt_in_practice.Rmd).
+
+Let's use our data to see how well the central limit theorem approximates sample averages from our data. We will leverage our entire population dataset to compare the results we obtain by actually sampling from the distribution to what the CLT predicts.
+
+
 
 
 ```r
-library(downloader)
-url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
-filename <- tempfile()
-download(url,destfile=filename)
-dat <- read.csv(filename)
+dat <- read.csv("mice_pheno.csv") #file was previously downloaded
 head(dat)
 ```
 
@@ -30,12 +32,32 @@ head(dat)
 ## 6   F   hf      27.50
 ```
 
-Start by selecting only female mice since males and females have different weights.
+Start by selecting only female mice since males and females have
+different weights. We will select three mice from each population.
 
 
 ```r
-hfPopulation <- dat[dat$Sex=="F" & dat$Diet=="hf",3]
-controlPopulation <- dat[dat$Sex=="F" & dat$Diet=="chow",3]
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+controlPopulation <- filter(dat,Sex == "F" & Diet == "chow") %>%  
+  select(Bodyweight) %>% unlist
+hfPopulation <- filter(dat,Sex == "F" & Diet == "hf") %>%  
+  select(Bodyweight) %>% unlist
 ```
 
 We can compute the population parameters of interest using the mean function.
@@ -51,15 +73,18 @@ print(mu_hf - mu_control)
 ## [1] 2.375517
 ```
 
-Compute the population standard deviations as well. Note that we do not use the R function `sd` because this is to compute the population based estimates that divide by the sample size - 1. 
+Compute the population standard deviations as well. We do not use the
+R function `sd` because this would compute the estimates that divide by the
+sample size - 1, and we want the population estimates.
 
-We can see that with R code
+We can see that with R code:
+
 
 ```r
-x<-controlPopulation
-N<-length(x)
-popvar <- mean((x-mean(x))^2)
-identical(var(x),popvar)
+x <- controlPopulation
+N <- length(x)
+populationvar <- mean((x-mean(x))^2)
+identical(var(x), populationvar)
 ```
 
 ```
@@ -67,92 +92,100 @@ identical(var(x),popvar)
 ```
 
 ```r
-identical(var(x)*(N-1)/N, popvar)
+identical(var(x)*(N-1)/N, populationvar)
 ```
 
 ```
 ## [1] TRUE
 ```
 
-So to be mathematically correct we do not use `sd` or  `var`. I am going to define a function for this:
-
-```r
-popvar <- function(x) mean( (x-mean(x))^2)
-popsd <- function(x) sqrt(popvar(x)) 
-```
-
-Now we can compute the popultion SD:
+So to be mathematically correct we do not use `sd` or  `var`. Instead we use the `popvar` and `popsd` function in `rafalib`:
 
 
 ```r
+library(rafalib)
 sd_hf <- popsd(hfPopulation)
 sd_control <- popsd(controlPopulation)
 ```
 
-Remember, that in practice we do not get to compute these population parameters,
-These are values we do not get to see. In general, we want to estimate them from samples. 
+Remember that in practice we do not get to compute these population parameters.
+These are values we never see. In general, we want to estimate them from samples. 
+
 
 ```r
 N <- 12
-hf <- sample(hfPopulation,12)
-control <- sample(controlPopulation,12)
+hf <- sample(hfPopulation, 12)
+control <- sample(controlPopulation, 12)
 ```
-The CLT tells us that, for large $N$, each of these is approximately normal with average population mean and standard error population variance divided by $N$. We mentioned that a rule of thumb is that $N$ should be 30 or more. But that is just a rule of thumb as the precisness of the approximation depends on the population distribution. Here we can acually check the approximation and we do that for various values of $N$.
 
-Now we use sapply and replicate instead of for loops, which is recommended.
+As we described, the CLT tells us that, for large {$$}N{/$$}, each of these is approximately normal with average population mean and standard error population variance divided by {$$}N{/$$}. We mentioned that a rule of thumb is that {$$}N{/$$} should be 30 or more. But that is just a rule of thumb, as the preciseness of the approximation depends on the population distribution. Here we can actually check the approximation and we do that for various values of {$$}N{/$$}.
+
+Now we use `sapply` and `replicate` instead of `for` loops, which
+makes for cleaner code (we do not have to pre-allocate a vector, R
+takes care of this for us):
+
 
 ```r
 Ns <- c(3,12,25,50)
 B <- 10000 #number of simulations
-res <-  sapply(Ns,function(n){
+res <-  sapply(Ns,function(n) {
   replicate(B,mean(sample(hfPopulation,n))-mean(sample(controlPopulation,n)))
 })
 ```
 
-Now we can use qq-plots to see how well CLT approximations  works for these. If in fact the normal distribution is a good approximation the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation.  We also show, in the title, the average and SD of the observed distribution showing how the SD decreases with $\sqrt{N}$ as predicted. 
+Now we can use qq-plots to see how well CLT approximations works for these. If in fact the normal distribution is a good approximation, the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation. We also show, in the title, the average and SD of the observed distribution which demonstrates how the SD decreases with {$$}\sqrt{N}{/$$} as predicted. 
+
 
 ```r
-library(rafalib)
-mypar2(2,2)
-for(i in seq(along=Ns)){
-  title <- paste("N=",Ns[i],"Avg=",signif(mean(res[,i]),3),"SD=",signif(popsd(res[,i]),3)) ##popsd defined above
+mypar(2,2)
+for (i in seq(along=Ns)) {
+  titleavg <- signif(mean(res[,i]),3)
+  titlesd <- signif(popsd(res[,i]),3)
+  title <- paste0("N=",Ns[i]," Avg=",titleavg," SD=",titlesd)
   qqnorm(res[,i],main=title)
   qqline(res[,i],col=2)
 }
 ```
 
-![plot of chunk unnamed-chunk-10](figure/clt_in_practice-unnamed-chunk-10-1.png) 
+![Quantile versus quantile plot of simulated differences versus theoretical normal distribution for four different sample sizes.](images/R/clt_in_practice-tmp-effect_size_qqplot-1.png) 
 
-Here we see a pretty good fit even for 3. Why is this? Because the population itself is relatively close to normally distributed, the averages are close to normal as well, (the sum of normals is normals). Now in practice we actually calculate a ratio, we divide by the estimate standard deviation. Here is where the sample size starts to matter more.
+Here we see a pretty good fit even for 3. Why is this? Because the
+population itself is relatively close to normally distributed, the
+averages are close to normal as well (the sum of normals is also a
+normal). In practice we actually calculate a ratio: we divide by the
+estimated standard deviation. Here is where the sample size starts to
+matter more. 
 
 
 ```r
 Ns <- c(3,12,25,50)
 B <- 10000 #number of simulations
 ##function to compute a t-stat
-computetstat <- function(n){
-  y<-sample(hfPopulation,n)
-  x<-sample(controlPopulation,n)
+computetstat <- function(n) {
+  y <- sample(hfPopulation,n)
+  x <- sample(controlPopulation,n)
   (mean(y)-mean(x))/sqrt(var(y)/n+var(x)/n)
 }
-res <-  sapply(Ns,function(n){
+res <-  sapply(Ns,function(n) {
   replicate(B,computetstat(n))
 })
-mypar2(2,2)
-for(i in seq(along=Ns)){
+mypar(2,2)
+for (i in seq(along=Ns)) {
   qqnorm(res[,i],main=Ns[i])
   qqline(res[,i],col=2)
 }
 ```
 
-![plot of chunk unnamed-chunk-11](figure/clt_in_practice-unnamed-chunk-11-1.png) 
+![Quantile versus quantile plot of simulated ratios versus theoretical normal distribution for four different sample sizes.](images/R/clt_in_practice-tmp-t_test_qqplot-1.png) 
 
-Now we see that for $N=3$ the CLT does not provide a usable approximation. For $N=12$ their is a slight deviation at the higher values, although the approximation appears useful. For 25 and 50 the appoximation is spot on. 
+So we see that for {$$}N=3{/$$} the CLT does not provide a usable
+approximation. For {$$}N=12{/$$} there is a slight deviation at the higher
+values, although the approximation appears useful. For 25 and 50 the
+approximation is spot on.
 
-Note that this simulation is not meant as proof that $N=12$ is large enough, in general. It only applies to this dataset and, as mentioned above, we will not be able to perform this simulation in most situation. We only use the simulation to illustrate the conecepts behind the CLT. In future sections we will describe approaches we actually use in practice.
-
-
-
-
-
+This simulation only proves that {$$}N=12{/$$} is large enough in this case,
+not in general. As mentioned above, we will not be able to perform
+this simulation in most situations. We only use the simulation to
+illustrate the concepts behind the CLT and its limitations. In future
+sections we will describe the approaches we actually use in practice. 
 

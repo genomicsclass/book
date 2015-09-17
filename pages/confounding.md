@@ -5,13 +5,17 @@ title: Confounding
 
 
 
-# Introduction
+## Confounding
 
-"Correlation is not causation" is one of the most important lessons you should take from this or any other data analysis course. A common example for why this statement is so often true is confounding. Simply stated confounding occurs when we observe a correlation or association between $$X$$ and $$Y$$ but  this is strictly the result of both $$X$$ and $$Y$$ depending on an extraneous variable $$Z$$. Here we describe Simpson's paradox, perhaps the most famous case of confounding and then show an example of confounding in high throughput biology.
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/batch/confounding.Rmd).
 
-# Simpson's paradox
+Batch effects have the most devastating effects when they are _counfounded_ with outcomes of interest. Here we described confounding and how it relates to data interpretation.
 
-Admission data from Berkeley 1973 showed more men were being admitted than women: 44\% men admitted compared to 30\% women. This actually led to a [lawsuit](http://en.wikipedia.org/wiki/Simpson%27s_paradox#Berkeley_gender_bias_case). See: PJ Bickel, EA Hammel, and JW O'Connell. Science (1975)
+"Correlation is not causation" is one of the most important lessons you should take from this or any other data analysis course. A common example for why this statement is so often true is confounding. Simply stated confounding occurs when we observe a correlation or association between {$$}X{/$$} and {$$}Y{/$$}, but  this is strictly the result of both {$$}X{/$$} and {$$}Y{/$$} depending on an extraneous variable {$$}Z{/$$}. Here we describe Simpson's paradox, perhaps the most famous case of confounding, and then show an example of confounding in high-throughput biology.
+
+#### Simpson's Paradox
+
+Admission data from U.C. Berkeley 1973 showed that more men were being admitted than women: 44% men were admitted compared to 30% women. This actually led to a [lawsuit](http://en.wikipedia.org/wiki/Simpson%27s_paradox#Berkeley_gender_bias_case). See: PJ Bickel, EA Hammel, and JW O'Connell. Science (1975)
 
 
 
@@ -36,7 +40,7 @@ sum(admissions$total[admissions$Gender==0]/sum(admissions$Number[admissions$Gend
 ## [1] 0.3033351
 ```
 
-A chi-square test clearly rejects they hypothesis that gender and admission are independent:
+A chi-square test clearly rejects the hypothesis that gender and admission are independent:
 
 ```r
 ##let's make a 2 x 2
@@ -55,7 +59,7 @@ print(chisq.test(tab)$p.val)
 ## [1] 9.139492e-22
 ```
 
-But closer inspection shows a paradoxical result. Here are the percent admissions by Major:
+But closer inspection shows a paradoxical result. Here are the percent admissions by major:
 
 ```r
 y=cbind(admissions[1:6,c(1,3)],admissions[7:12,3])
@@ -73,9 +77,8 @@ y
 ## 6     F    6      7
 ```
 
-**Optional homework**: Run the `chisq.test` in each major.
 
-Here are the absolute number of admissions by Major:
+Here are the absolute numbers of admissions by major:
 
 ```r
 y=cbind(admissions[1:6,c(1,2)],admissions[7:12,2])
@@ -93,12 +96,12 @@ y
 ## 6     F  373    341
 ```
 
-The chi-square test we performed above suggests a dependence between admission and gender.  Yet when the data is grouped by Major, this dependence doesn't seem borne out.  What's going on? 
+The chi-square test we performed above suggests a dependence between admission and gender. Yet when the data is grouped by major, this dependence doesn't seem borne out.  What's going on? 
 
-This is called _Simpson's paradox_ 
+This is called _Simpson's paradox_ .
 As we will see, males were much more likely to apply to "easy" majors. 
 
-Male and easy majors are confounded. 
+Male and "easy"" majors are confounded. 
 
 ```r
 y=cbind(admissions[1:6,5],admissions[7:12,5])
@@ -106,45 +109,28 @@ y=sweep(y,2,colSums(y),"/")*100
 x=rowMeans(cbind(admissions[1:6,3],admissions[7:12,3]))
 
 library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
-mypar2(1,1)
+mypar()
 matplot(x,y,xlab="percent that gets in the major",ylab="percent that applies to major",col=c("blue","red"),cex=1.5)
 legend("topleft",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/confounding-unnamed-chunk-5-1.png) 
+![Percent of students that applied versus percent that were admitted by gender.](images/R/confounding-tmp-hard_major_confounding-1.png) 
 
 
-## Confounding explained graphically
+#### Confounding Explained Graphically
 
 
-In the plots below each letter represents a person. Accepted individuals are denoted with green and not admitted in orange. The letter denotes the major. In this plot we group all the patients together and notice that the proportion of green is larger for men.
+In the plots below each letter represents a person. Accepted individuals are denoted in green and not admitted in orange. The letter indicates the major. In this plot we group all the students together and notice that the proportion of green is larger for men.
 
 
-![plot of chunk unnamed-chunk-6](figure/confounding-unnamed-chunk-6-1.png) 
+![Admitted are in green and majors are denoted with letters. Here we clearly see that more males were admitted.](images/R/confounding-tmp-simpsons_paradox_illustration-1.png) 
 
-Now we stratify the data by major. The key point here is that most of the men denoted with green come from majors A and B which are the ones with the highest acceptance rate. 
-
-
-![plot of chunk unnamed-chunk-7](figure/confounding-unnamed-chunk-7-1.png) 
+Now we stratify the data by major. The key point here is that most of the men denoted with green come from majors A and B, which are the ones with the highest acceptance rate. 
 
 
+![Simpon's Paradox illustrated. Admitted students are in green. Students are now stratified by the major to which they applied.](images/R/confounding-tmp-simpsons_paradox_illustration2-1.png) 
 
-
-
-
-
-
-
-
-
-## Average after stratifying
+#### Average after Stratifying
 
 So if we condition or stratify by major this goes away. 
 
@@ -154,9 +140,9 @@ matplot(1:6,y,xaxt="n",xlab="major",ylab="percent",col=c("blue","red"),cex=1.5)
 legend("topright",c("Male","Female"),col=c("blue","red"),pch=c("1","2"),box.lty=0,cex=0.75)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/confounding-unnamed-chunk-8-1.png) 
+![Admission percentage by major for each gender.](images/R/confounding-tmp-admission_by_major-1.png) 
 
-The average difference by Major is 3.5% higher for women.
+The average difference by major is 3.5% higher for women.
 
 
 ```r
@@ -167,9 +153,9 @@ mean(y[,1]-y[,2])
 ## [1] -3.5
 ```
 
-## Simpson's paradox in baseball
+#### Simpson's Paradox in Baseball
 
-We see this in Baseball often:
+Simpson's Paradox is commonly seen in baseball statistics. Here is a well known example in which David Justice had a higher batting average than Derek Jeter in both 1995 and 1996, but Jeter had a higher overall average:
 
 |               | 1995           | 1996           | Combined        |
 | ------------- | -------------- | -------------- | --------------- |
@@ -179,18 +165,23 @@ We see this in Baseball often:
 
 <a name="genomics"></a>
 
-# Confounding in genomics
+## Confounding: High-throughput Example
 
-Here are the p-values from comparing CEU to ASN
+The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/batch/confounding.Rmd).
+
+To describe the problem of confounding with a real example, we will use a dataset from [this paper](http://www.ncbi.nlm.nih.gov/pubmed/17206142) that claimed that roughly 50% of genes where differentially expressed when comparing blood from two ethnic groups. We include the data in one of our data packages:
+
 
 ```r
-library(Biobase)
-library(genefilter)
-library(GSE5859)
+##Following two libraries are available from Bioconductor
+library(Biobase) ##install from Bioconductor
+library(genefilter) 
+###Following library is available from course repository
+library(GSE5859) 
 data(GSE5859)
 ```
 
-Note that this is the original dataset from which we selected the subset used in `GSE5859Subset`. We can extract the gene expression data and sample information table using the Bio conductor functions `exprs` and `pData` like this:
+We can extract the gene expression data and sample information table using the Bioconductor functions `exprs` and `pData` like this:
 
 
 ```r
@@ -210,7 +201,7 @@ head(sampleInfo$date)
 ## [6] "2003-01-16"
 ```
 
-This is an extraneous variable and should not affect the values in `geneExpression`. However, as we have seen in previous analyses it does appear to have an effect so we will explore this here.
+This is an extraneous variable and should not affect the values in `geneExpression`. However, as we have seen in previous analyses, it does appear to have an effect. We will therefore explore this here.
 
 We can immediately see that year and ethnicity are almost completely confounded:
 
@@ -231,7 +222,7 @@ print(tab)
 ##   06   2   0  24
 ```
 
-By running a t-test and creating a volcano plot we note that thousands of genes appear to be differentially expressed. But when we perform a similar comparison between 2002 and 2003 only on the CEU population we again obtain thousands of diferentially expressed genes:
+By running a t-test and creating a volcano plot, we note that thousands of genes appear to be differentially expressed. Yet when we perform a similar comparison only on the CEU population between the years 2002 and 2003, we again obtain thousands of diferentially expressed genes:
 
 
 
@@ -254,5 +245,5 @@ plot(res1$dm,-log10(res1$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(
 plot(res2$dm,-log10(res2$p),xlim=XLIM,ylim=YLIM,xlab="Effect size",ylab="-log10(p-value)",main="2003 v 2002")
 ```
 
-![plot of chunk unnamed-chunk-14](figure/confounding-unnamed-chunk-14-1.png) 
+![Volcano plots for gene expression data. Comparison by ethnicity (left) and by year within one ethnicity (right).](images/R/confounding-tmp-volcano_plots-1.png) 
 
