@@ -4,23 +4,19 @@
 - [Annotating phenotypes and molecular function](pages/annoPhen.html)
 - [The ExpressionSet Container](pages/eset.html)
 
----
 
 - [IRanges and GRanges](pages/iranges_granges.html)
 - [Operating on GRanges](pages/operateGRanges.html)
 
----
 
 - [Cheat sheet for genomic annotation](pages/annoCheat.html)
 - [Translating addresses between reference builds with liftOver](pages/anno4liftover.html)
 - [Cheat sheet for GRanges and other Bioconductor objects](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
 
----
 
 - [Importing NGS data with Bioconductor](pages/import_NGS.html)
 - [NGS read counting](pages/read_counting.html)
 
----
 
 - [Technical versus biological variability](pages/biological_versus_technical_var.html)
 - [Statistical Inference with Bioconductor](pages/inference_with_bioc.html)
@@ -56,7 +52,6 @@ old ones:
 - [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/course5/genome_align_STAR.md)
 - [Transcriptome alignment with RSEM](https://github.com/genomicsclass/labs/blob/master/course5/trancsript_align_RSEM.md)
 
----
 
 - [RNA-seq at the gene-level: EDA, DE and SVA](pages/rnaseq_gene_level.html)
 - [Differential exon usage](pages/rnaseq_exon_usage.html)
@@ -76,7 +71,6 @@ old ones:
 - [Reading 450K idat files with the minfi package](pages/minfi.html)
 - [Interactive visualization of DNA methylation data analysis](pages/epiviz.html)
  
- ---
  
  - [Statistical Inference in the Analysis of DNA methylation Data](pages/inference_for_DNAmeth.html)
 
