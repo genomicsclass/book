@@ -1,4 +1,4 @@
-### Introduction to Bioconductor
+## Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
 - [Annotating phenotypes and molecular function](pages/annoPhen.html)
@@ -50,7 +50,7 @@ old ones:
 
 -->
 
-### RNA-seq data analysis
+## RNA-seq data analysis
 
 - [Downloading and unzipping fastq files](https://github.com/genomicsclass/labs/blob/master/course5/fastq.md)
 - [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/course5/genome_align_STAR.md)
@@ -62,15 +62,15 @@ old ones:
 - [Differential exon usage](pages/rnaseq_exon_usage.html)
 - [Exploring plots of isoform-level expression with Cufflinks/cummeRbund](pages/rnaseq_isoform_cummerbund.html)
 
-### Variant Discovery and Genotyping
+## Variant Discovery and Genotyping
 
 - [Genome variation](pages/SNP.html) from 2014
 
-### ChIP-seq data analysis
+## ChIP-seq data analysis
 
 - [ChIP-seq](pages/ChIPseq.html) from 2014
 
-### DNA methylation data analysis
+## DNA methylation data analysis
 
 - [DNA Methylation Data Analysis](pages/methylation.html)
 - [Reading 450K idat files with the minfi package](pages/minfi.html)
@@ -82,11 +82,11 @@ old ones:
 
 ---
 
-### Footnotes for all lectures
+## Footnotes for all lectures
 
 - [Footnotes](pages/footnotes.html)
 
-### Acknowledgments
+## Acknowledgments
 
 - [Course acknowledgments](pages/acknowledgments.html)
 
