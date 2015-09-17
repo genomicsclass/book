@@ -127,6 +127,8 @@ title: PH525x series - Biomedical Data Science
 - [Factor analysis exercises](pages/batch_exercises.html)
 - [Adjusting with factor analysis](pages/batch.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/batch/adjusting_with_factor_analysis.Rmd)
 - [Adjusting with factor analysis exercises](pages/batch_exercises.html)
+
+
 ---
 
 
