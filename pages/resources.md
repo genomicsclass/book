@@ -3,6 +3,8 @@ layout: page
 title: Online resources and books
 ---
 
+## Classes
+
 ### Online R classes
 
 - [swirl](http://swirlstats.com/): "swirl teaches you R programming and data science interactively, at your own pace, and right in the R console"
@@ -12,6 +14,14 @@ title: Online resources and books
 - The [Data Science Toolbox](https://www.coursera.org/course/datascitoolbox) class on Coursera, taught by the instructors above.
 
 - The [try R](http://tryr.codeschool.com/) interactive class from Code School 
+
+### Online Bioconductor/Genomics classes
+
+- [Bioconductor for Genomic Data Science](http://kasperdanielhansen.github.io/genbioconductor/) by Kasper Daniel Hansen, Coursera class with online material
+
+- [Statistics for Genomic Data Science](http://jtleek.com/genstats_site/) by Jeff Leek, Coursera class with online material
+
+## Resources
 
 ### Online R resources
 
@@ -25,8 +35,9 @@ title: Online resources and books
 
 - [Bioconductor reference card](https://github.com/mikelove/bioc-refcard)
 
-- [R & Bioconductor manuals](http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual)
-  by Thomas Girke
+- [R & Bioconductor manuals](http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual) by Thomas Girke
+
+## Books
 
 ### R books
 
