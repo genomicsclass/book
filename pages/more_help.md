@@ -51,6 +51,5 @@ In addition to the Posting Guide, there are four **must-do's** for submitting an
 4. **Paste in all of your code**, and any errors or warnings if they
    occurred. 
 
-If you have a general R question, there is the
-[R-help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help). 
-
+If you have a general R question, there is a page for
+[R questions on StackOverflow](http://stackoverflow.com/questions/tagged/r).
