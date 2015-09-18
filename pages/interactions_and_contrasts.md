@@ -7,8 +7,6 @@ layout: page
 
 ## Interactions and Contrasts
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/interactions_and_contrasts.Rmd).
-
 As a running example to learn about more complex linear models, we will be using a dataset which compares the different frictional coefficients on the different legs of a spider. Specifically, we will be determining whether more friction comes from a pushing or pulling motion of the leg. The original paper from which the data was provided is:
 
 Jonas O. Wolff  & Stanislav N. Gorb, [Radial arrangement of Janus-like setae permits friction control in spiders](http://dx.doi.org/10.1038/srep01101), Scientific Reports, 22 January 2013.
@@ -31,7 +29,7 @@ boxplot(spider$friction ~ spider$type * spider$leg,
         main="Comparison of friction coefficients of different leg pairs ")
 ```
 
-![Comparison of friction coefficients of spiders' different leg pairs.](images/R/interactions_and_contrasts-tmp-spide_data-1.png) 
+![Comparison of friction coefficients of spiders' different leg pairs.](figure/interactions_and_contrasts-spide_data-1.png) 
 
 #### Initial visual inspection of the data
 
@@ -40,7 +38,7 @@ What we can immediately see are two trends:
 * The pulling motion has a higher frictional coefficient than the pushing motion.
 * The leg pairs to the back of the spider (L4 being the last) generally have higher pulling frictional coefficients.
 
-Another thing to notice is that the groups have different spread, what we call *within-group variance*. This is somewhat of a problem for the kinds of linear models we will explore below, since we will be assuming that around the fitted values {$$}\hat{Y}_i{/$$}, the errors {$$}\varepsilon_i{/$$} are distributed identically, meaning the same variance within each group. The consequence of ignoring the different variance is that comparisons between the groups with small variances will be overly "conservative" (because the overall estimate of variance is larger than these groups), and comparisons between the groups with large variances will be overly confident.
+Another thing to notice is that the groups have different spread, what we call *within-group variance*. This is somewhat of a problem for the kinds of linear models we will explore below, since we will be assuming that around the fitted values $$\hat{Y}_i$$, the errors $$\varepsilon_i$$ are distributed identically, meaning the same variance within each group. The consequence of ignoring the different variance is that comparisons between the groups with small variances will be overly "conservative" (because the overall estimate of variance is larger than these groups), and comparisons between the groups with large variances will be overly confident.
 
 If the spread is related to the location, such that groups with large values also have larger spread, a possibility is to transform the data with a function such as the `log` or `sqrt`. This looks like it could be useful here, since three of the four push groups (L1, L2, L3) have the smallest values and also the smallest spread.
 
@@ -149,7 +147,7 @@ tail(X)
 ## 68           1        1
 ```
 
-Now we'll make a plot of the `X` matrix by putting a black block for the 1's in the design matrix and a white block for the 0's. This plot will be more interesting for the linear models later on in this script. Along the y-axis is the sample number (the row number of the `data`) and along the x-axis is the column of the design matrix {$$}\mathbf{X}{/$$}. If you have installed the *rafalib* library, you can make this plot with the `imagemat` function:
+Now we'll make a plot of the `X` matrix by putting a black block for the 1's in the design matrix and a white block for the 0's. This plot will be more interesting for the linear models later on in this script. Along the y-axis is the sample number (the row number of the `data`) and along the x-axis is the column of the design matrix $$\mathbf{X}$$. If you have installed the *rafalib* library, you can make this plot with the `imagemat` function:
 
 
 ```r
@@ -157,7 +155,7 @@ library(rafalib)
 imagemat(X, main="Model matrix for linear model with one variable")
 ```
 
-![Model matrix for linear model with one variable.](images/R/interactions_and_contrasts-tmp-model_matrix_image-1.png) 
+![Model matrix for linear model with one variable.](figure/interactions_and_contrasts-model_matrix_image-1.png) 
 
 #### Examining the coefficients
 
@@ -180,7 +178,7 @@ abline(h=coefs[1]+coefs[2],col=cols[2])
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![Diagram of the coefficients in the linear model. The green arrow indicates the Intercept term, which rises from zero to the mean of the reference group (here the 'pull' samples). The orange arrow indicates the difference between the push group and the pull group, which is negative in this example. The circles show the individual samples, jittered horizontally to avoid overplotting.](images/R/interactions_and_contrasts-tmp-spider_main_coef-1.png) 
+![Diagram of the coefficients in the linear model. The green arrow indicates the Intercept term, which rises from zero to the mean of the reference group (here the 'pull' samples). The orange arrow indicates the difference between the push group and the pull group, which is negative in this example. The circles show the individual samples, jittered horizontally to avoid overplotting.](figure/interactions_and_contrasts-spider_main_coef-1.png) 
 
 #### A linear model with two variables
 
@@ -214,7 +212,7 @@ head(X)
 imagemat(X, main="Model matrix for linear model with two factors")
 ```
 
-![Image of more complex model matrix.](images/R/interactions_and_contrasts-tmp-model_matrix_image2-1.png) 
+![Image of more complex model matrix.](figure/interactions_and_contrasts-model_matrix_image2-1.png) 
 
 The first column is the intercept, and so it has 1's for all samples. The second column has 1's for the push samples, and we can see that there are four groups of them. Finally, the third, fourth and fifth columns have 1's for the L2, L3 and L4 samples. The L1 samples do not have a column, because *L1* is the reference level for `leg`, as is *pull* for the `type` variable.
 
@@ -264,7 +262,7 @@ summary(fitTL)
 
 We can do some quick matrix algebra to remind ourselves that the coefficients returned by `lm` are obtained with the following formula:
 
-{$$} \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y} {/$$}
+$$ \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y} $$
 
 
 ```r
@@ -314,7 +312,7 @@ arrows(8+a,coefs[1]+coefs[5],8+a,coefs[1]+coefs[5]+coefs[2],lwd=3,col=cols[2],le
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![Diagram of the coefficients in the linear model. As before, the teal-green arrow represents the Intercept, which fits the mean of the reference group (here, the pull samples for leg L1). The purple, pink, and yellow-green arrows represent differences between the three other leg groups and L1. The orange arrow represents the difference between the push and pull samples for all groups.](images/R/interactions_and_contrasts-tmp-spider_interactions-1.png) 
+![Diagram of the coefficients in the linear model. As before, the teal-green arrow represents the Intercept, which fits the mean of the reference group (here, the pull samples for leg L1). The purple, pink, and yellow-green arrows represent differences between the three other leg groups and L1. The orange arrow represents the difference between the push and pull samples for all groups.](figure/interactions_and_contrasts-spider_interactions-1.png) 
 
 Because we have 8 groups and only 5 coefficients, the fitted means (the tips of the arrows) do not line up exactly with the mean of each group, like they did for the previous example of a two group linear model.
 
@@ -354,7 +352,7 @@ coefs[1] + coefs[2]
 ##   0.2749082
 ```
 
-However, we can demonstrate that the push vs. pull coefficient, `coefs[2]`, is now a weighted mean of the difference of means for each group. Furthermore, the weighting is determined by the sample size of each group. The math works out so simply here because the sample size is equal for the push and pull subgroups within each leg pair. If the sample sizes were not equal for push and pull within each leg pair, the weighting is uniquely determined by a formula involving the sample size of each subgroup, the total sample size, and the number of coefficients. This can be worked out from {$$}(\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top{/$$}.
+However, we can demonstrate that the push vs. pull coefficient, `coefs[2]`, is now a weighted mean of the difference of means for each group. Furthermore, the weighting is determined by the sample size of each group. The math works out so simply here because the sample size is equal for the push and pull subgroups within each leg pair. If the sample sizes were not equal for push and pull within each leg pair, the weighting is uniquely determined by a formula involving the sample size of each subgroup, the total sample size, and the number of coefficients. This can be worked out from $$(\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top$$.
 
 
 ```r
@@ -402,11 +400,11 @@ coefs
 
 We have the push vs. pull effect across all leg pairs, and the L2 vs. L1 effect, the L3 vs. L1 effect, and the L4 vs. L1 effect. What if we want to compare two groups and one of those groups is not L1? The solution to this question is to use *contrasts*. 
 
-A *contrast* is a combination of coefficients: {$$}\mathbf{c^\top} \hat{\boldsymbol{\beta}}{/$$}, where {$$}\mathbf{c}{/$$} is a column vector with as many rows as the number of coefficients in the linear model. If {$$}\mathbf{c}{/$$} has a 0, then the coefficients are not involved in the contrast.
+A *contrast* is a combination of coefficients: $$\mathbf{c^\top} \hat{\boldsymbol{\beta}}$$, where $$\mathbf{c}$$ is a column vector with as many rows as the number of coefficients in the linear model. If $$\mathbf{c}$$ has a 0, then the coefficients are not involved in the contrast.
 
 If we want to compare L3 and L2, this is equivalent to contrasting two coefficients from the linear model because, in this contrast, the comparison to the reference level *L1* cancels out:
 
-{$$} (L3 - L1) - (L2 - L1) = L3 - L2 {/$$}
+$$ (L3 - L1) - (L2 - L1) = L3 - L2 $$
 
 An easy way to make these contrasts of two groups is to use the `contrast` function from the *contrast* package. We just need to specify which groups we want to compare. We have to pick one of *pull* or *push* types, although the answer will not differ, as we see below.
 
@@ -490,13 +488,13 @@ cT %*% beta
 ## 1 -0.01142949
 ```
 
-What about the standard error and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector {$$}\mathbf{c}{/$$} on either side of the estimated covariance matrix, {$$}\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}}){/$$}:
+What about the standard error and t-statistic? As before, the t-statistic is the estimate (`Contrast`) divided by the standard error (`S.E.`). The standard error of the contrast estimate is formed by multiplying the contrast vector $$\mathbf{c}$$ on either side of the estimated covariance matrix, $$\Sigma \equiv \mathrm{Var}(\hat{\boldsymbol{\beta}})$$:
 
-{$$} \sqrt{\mathbf{c^\top} \mathbf{\Sigma} \mathbf{c}} {/$$}
+$$ \sqrt{\mathbf{c^\top} \mathbf{\Sigma} \mathbf{c}} $$
 
 where we saw the covariance of the coefficients earlier:
 
-{$$} \mathbf{\Sigma} = \hat{\sigma}^2 (\mathbf{X}^\top \mathbf{X})^{-1}{/$$}
+$$ \mathbf{\Sigma} = \hat{\sigma}^2 (\mathbf{X}^\top \mathbf{X})^{-1}$$
 
 
 ```r
@@ -558,8 +556,6 @@ L3vsL2.equiv$X
 
 ## A Linear Model with Interactions
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/interactions_and_contrasts.Rmd).
-
 As we saw in the previous linear model, we assumed that the push vs. pull effect was the same for all of the leg pairs (the same orange arrow). You can easily see that this does not capture the data that well; that is, the tips of the arrows did not line up perfectly with the group averages. For the L1 leg pair, the push vs. pull coefficient overshot, and for the L3 leg pair, the push vs. pull coefficient was too small.
 
 *Interaction* terms will help us overcome this problem by introducing additional terms to compensate for differences in the push vs. pull effect across the 4 groups. As we already have a push vs. pull term in the model, we only need to add three more terms to have the freedom to find leg-pair-specific push vs. pull differences. Interaction terms are added to the design matrix simply by multiplying the columns of the design matrix representing existing terms. 
@@ -603,9 +599,9 @@ head(X)
 imagemat(X, main="Model matrix for linear model with interactions")
 ```
 
-![Image of model matrix with interactions.](images/R/interactions_and_contrasts-tmp-model_matrix_with_interaction_image-1.png) 
+![Image of model matrix with interactions.](figure/interactions_and_contrasts-model_matrix_with_interaction_image-1.png) 
 
-Columns 6-8 (`typepush:legL2`, `typepush:legL3`, and `typepush:legL4`) are the product of the 2nd column (`typepush`) and the 3-5 columns (the three `leg` columns). Looking at the last column, for example, the `typepush:legL4` column will give an extra term {$$}\beta_{\textrm{push,L4}}{/$$} to those samples which are both push samples and leg pair L4 samples. This will account for when the mean samples in the L4-push group are not simply the addition of the main push coefficient and the main L4 coefficient.
+Columns 6-8 (`typepush:legL2`, `typepush:legL3`, and `typepush:legL4`) are the product of the 2nd column (`typepush`) and the 3-5 columns (the three `leg` columns). Looking at the last column, for example, the `typepush:legL4` column will give an extra term $$\beta_{\textrm{push,L4}}$$ to those samples which are both push samples and leg pair L4 samples. This will account for when the mean samples in the L4-push group are not simply the addition of the main push coefficient and the main L4 coefficient.
 
 We can run the linear model using the same code as before:
 
@@ -679,7 +675,7 @@ arrows(8+a,coefs[1]+coefs[5]+coefs[2],8+a,coefs[1]+coefs[5]+coefs[2]+coefs[8],lw
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![Diagram of the coefficients in the linear model. In the design with interaction terms, the orange arrow now indicates the push vs pull difference only for the reference group (L1), while three new arrows (yellow, brown and grey) indicate the additionally push vs pull differences in the non-reference groups (L2, L3 and L4) with respect to the reference group.](images/R/interactions_and_contrasts-tmp-spider_interactions2-1.png) 
+![Diagram of the coefficients in the linear model. In the design with interaction terms, the orange arrow now indicates the push vs pull difference only for the reference group (L1), while three new arrows (yellow, brown and grey) indicate the additionally push vs pull differences in the non-reference groups (L2, L3 and L4) with respect to the reference group.](figure/interactions_and_contrasts-spider_interactions2-1.png) 
 
 #### Contrasts
 
@@ -753,9 +749,9 @@ Suppose we want to know if the push vs. pull difference is *different* for the L
 
 If we work out the math for comparing across two non-reference leg pairs, this is:
 
-{$$} (typepush + typepush:legL3) - (typepush + typepush:legL2) {/$$} 
+$$ (typepush + typepush:legL3) - (typepush + typepush:legL2) $$ 
 
-{$$} = typepush:legL3 - typepush:legL2 {/$$}
+$$ = typepush:legL3 - typepush:legL2 $$
 
 We can't make this contrast using the `contrast` function shown before, but we can make this comparison using the `glht` (for "general linear hypothesis test") function from the *multcomp* package. All we need to do is form a 1-row matrix which has a -1 for the `typepush:legL2` effect and a +1 for the `typepush:legL3` effect. We provide this matrix to the `linfct` (linear function) argument, and obtain a summary table for this contrast alone.
 
@@ -856,13 +852,13 @@ The other columns in the ANOVA table show the "degrees of freedom" with each row
 
 Finally, there is a column which lists the *F value*. The F value is the *mean of squares* for the inclusion of the terms of interest (the sum of squares divided by the degrees of freedom) divided by the mean squared residuals (from the bottom row):
 
-{$$} r_i = Y_i - \hat{Y}_i {/$$}
+$$ r_i = Y_i - \hat{Y}_i $$
 
-{$$} \mbox{Mean Sq Residuals} = \frac{1}{N - p} \sum_{i=1}^N r_i^2 {/$$}
+$$ \mbox{Mean Sq Residuals} = \frac{1}{N - p} \sum_{i=1}^N r_i^2 $$
 
-where {$$}p{/$$} is the sum of all the terms in the model (here 8, including the intercept term).
+where $$p$$ is the sum of all the terms in the model (here 8, including the intercept term).
 
-Under the null hypothesis that the true value of the additional terms is 0, we have a theoretical result for what the distribution of the F value will be for each row. As an example let's take the last row: the three interaction terms. Under the null hypothesis that the true value for these three additional terms is actually 0, e.g. {$$}\beta_{\textrm{push,L2}} = 0, \beta_{\textrm{push,L3}} = 0, \beta_{\textrm{push,L4}} = 0{/$$}, then we can calculate the chance of seeing such a large F value for this row of the ANOVA table. Remember that we are only concerned with large values here, because we have a ratio of sum of squares, the F value can only be positive. 
+Under the null hypothesis that the true value of the additional terms is 0, we have a theoretical result for what the distribution of the F value will be for each row. As an example let's take the last row: the three interaction terms. Under the null hypothesis that the true value for these three additional terms is actually 0, e.g. $$\beta_{\textrm{push,L2}} = 0, \beta_{\textrm{push,L3}} = 0, \beta_{\textrm{push,L4}} = 0$$, then we can calculate the chance of seeing such a large F value for this row of the ANOVA table. Remember that we are only concerned with large values here, because we have a ratio of sum of squares, the F value can only be positive. 
 
 The p-value in the last column for the `type:leg` row can be interpreted as following: under the null hypothesis that there are no differences in the push vs. pull difference across leg pair, this is the probability of the interaction terms explaining so much of the observed variance. If this p-value is small, we would consider rejecting the null hypothesis that the push vs. pull difference is the same across leg pairs.
 
@@ -910,7 +906,7 @@ head(X)
 imagemat(X, main="Model matrix for linear model with group variable")
 ```
 
-![Image of model matrix for linear model with group variable.](images/R/interactions_and_contrasts-tmp-matrix_model_image_group_variable-1.png) 
+![Image of model matrix for linear model with group variable.](figure/interactions_and_contrasts-matrix_model_image_group_variable-1.png) 
 
 We can run the linear model with the familiar call:
 
@@ -967,7 +963,7 @@ for (i in 1:8) {
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![Diagram of the coefficients in the linear model, with each term representing the mean of a combination of leg and direction.](images/R/interactions_and_contrasts-tmp-estimated_group_variables-1.png) 
+![Diagram of the coefficients in the linear model, with each term representing the mean of a combination of leg and direction.](figure/interactions_and_contrasts-estimated_group_variables-1.png) 
 
 #### Simple contrasts using the contrast package
 
@@ -1001,9 +997,9 @@ coefs[4] - coefs[3]
 
 We can also make pair-wise comparisons of the push vs. pull difference. For example, if we want to compare the push vs. pull difference in leg pair L3 vs. leg pair L2:
 
-{$$} (\mbox{L3push} - \mbox{L3pull}) - (\mbox{L2push} - \mbox{L2pull}) {/$$}
+$$ (\mbox{L3push} - \mbox{L3pull}) - (\mbox{L2push} - \mbox{L2pull}) $$
 
-{$$} = \mbox{L3 push} + \mbox{L2pull} - \mbox{L3pull} - \mbox{L2push} {/$$}
+$$ = \mbox{L3 push} + \mbox{L2pull} - \mbox{L3pull} - \mbox{L2push} $$
 
 
 ```r
