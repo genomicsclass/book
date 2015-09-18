@@ -7,8 +7,6 @@ layout: page
 
 ## t-tests in Practice
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/t-tests_in_practice.Rmd).
-
 #### Introduction
 
 We will now demonstrate how to obtain a p-value in practice. We begin by loading experimental data and walking you through the steps used to form a t-statistic and compute a p-value. We can perform this task with just a few lines of code (go to end of section to see them). However, to understand the concepts, we will construct a t-statistic from "scratch".
@@ -40,7 +38,7 @@ We are asked to report a p-value. What do we do? We learned that
 `diff`, referred to as the _observed effect size_, is a random
 variable. We also learned that under the null hypothesis, the mean of the distribution of `diff` is 0. What about the standard error? We also learned that the standard error of this random variable is the population standard deviation divided by the square root of the sample size:
 
-{$$} SE(\bar{X}) = \sigma / \sqrt{N}{/$$}
+$$ SE(\bar{X}) = \sigma / \sqrt{N}$$
 
 We use the sample standard deviation as an estimate of the population
 standard deviation. In R, we simply use the `sd` function and the SE is:
@@ -106,8 +104,6 @@ Now there is a problem. CLT works for large samples, but is 12 large enough? A r
 
 ## The t-distribution in Practice
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/t-tests_in_practice.Rmd).
-
 As described earlier, the statistical theory offers another useful
 result. If the distribution of the population is normal, then we can
 work out the exact distribution of the t-statistic without the need
@@ -130,7 +126,7 @@ qqnorm(control)
 qqline(control,col=2)
 ```
 
-![Quantile-quantile plots for sample against theoretical normal distribution.](images/R/t-tests_in_practice-tmp-data_qqplot-1.png) 
+![Quantile-quantile plots for sample against theoretical normal distribution.](figure/t-tests_in_practice-data_qqplot-1.png) 
 
 If we use this approximation, then statistical theory tells us that
 the distribution of the random variable `tstat` follows a
