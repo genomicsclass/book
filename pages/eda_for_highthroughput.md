@@ -12,8 +12,6 @@ library(rafalib)
 
 ## Basic Exploratory Data Analysis 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/eda_for_highthroughput.Rmd).
-
 An under-appreciated advantage of working with high-throughput data is that problems with the data are sometimes more easily exposed than with low-throughput data. The fact that we have thousands of measurements permits us to see problems that are not apparent when only a few measurements are available. A powerful way to detect these problems is with exploratory data analysis (EDA). Here we review some of the plots that allow us to detect quality problems.
 We will use the results obtained from applying t-test to data from a gene expression dataset:
 
@@ -21,10 +19,42 @@ We will use the results obtained from applying t-test to data from a gene expres
 ```r
 library(genefilter)
 library(GSE5859Subset)
+```
+
+```
+## Error in library(GSE5859Subset): there is no package called 'GSE5859Subset'
+```
+
+```r
 data(GSE5859Subset)
+```
+
+```
+## Warning in data(GSE5859Subset): data set 'GSE5859Subset' not found
+```
+
+```r
 g <- factor(sampleInfo$group)
+```
+
+```
+## Error in factor(sampleInfo$group): object 'sampleInfo' not found
+```
+
+```r
 results <- rowttests(geneExpression,g)
+```
+
+```
+## Error in rowttests(geneExpression, g): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
+```
+
+```r
 pvals <- results$p.value
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'results' not found
 ```
 
 And we also generate p-values from a dataset for which we know the null is true:
@@ -32,14 +62,39 @@ And we also generate p-values from a dataset for which we know the null is true:
 
 ```r
 m <- nrow(geneExpression)
+```
+
+```
+## Error in nrow(geneExpression): object 'geneExpression' not found
+```
+
+```r
 n <- ncol(geneExpression)
+```
+
+```
+## Error in ncol(geneExpression): object 'geneExpression' not found
+```
+
+```r
 randomData <- matrix(rnorm(n*m),m,n)
+```
+
+```
+## Error in rnorm(n * m): object 'n' not found
+```
+
+```r
 nullpvals <- rowttests(randomData,g)$p.value
+```
+
+```
+## Error in rowttests(randomData, g): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'randomData' not found
 ```
 
 #### Volcano Plots
 
-As we described above, reporting only p-values is a mistake when we can also report effect sizes. With high-throughput data, we can visualize the results by making a plot. The idea behind a _volcano plot_ is to show these for all features. In the y-axis we plot -log (base 10) p-values and on the x-axis we plot the effect size. By using - log (base 10), the "highly significant" features appear at the top of the plot. Using log also permits us to better distinguish between small and very small p-values, for example 0.01 and {$$}10^6{/$$}.  Here is the volcano plot for our results above:
+As we described above, reporting only p-values is a mistake when we can also report effect sizes. With high-throughput data, we can visualize the results by making a plot. The idea behind a _volcano plot_ is to show these for all features. In the y-axis we plot -log (base 10) p-values and on the x-axis we plot the effect size. By using - log (base 10), the "highly significant" features appear at the top of the plot. Using log also permits us to better distinguish between small and very small p-values, for example 0.01 and $$10^6$$.  Here is the volcano plot for our results above:
 
 
 ```r
@@ -47,7 +102,9 @@ plot(results$dm,-log10(results$p.value),
      xlab="Effect size",ylab="- log (base 10) p-values")
 ```
 
-<img src="images/R/eda_for_highthroughput-tmp-volcano_plot-1.png" title="plot of chunk volcano_plot" alt="plot of chunk volcano_plot"  />
+```
+## Error in plot(results$dm, -log10(results$p.value), xlab = "Effect size", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'results' not found
+```
 
 Many features with very small p-values, but small effect sizes as we see here, are sometimes indicative of problematic data.
 
@@ -59,10 +116,19 @@ Another plot we can create to get an overall idea of the results is to make hist
 ```r
 mypar(1,2)
 hist(nullpvals,ylim=c(0,1400))
+```
+
+```
+## Error in hist(nullpvals, ylim = c(0, 1400)): object 'nullpvals' not found
+```
+
+```r
 hist(pvals,ylim=c(0,1400))
 ```
 
-![P-value histogram. We show a simulated case in which all null hypotheses are true (left) and p-values from the gene expression described above.](images/R/eda_for_highthroughput-tmp-pval-hist-1.png) 
+```
+## Error in hist(pvals, ylim = c(0, 1400)): object 'pvals' not found
+```
 
 When we expect most hypothesis to be null and don't see a uniform p-value distribution, it might be indicative of unexpected properties, such as correlated samples. 
 
@@ -71,11 +137,27 @@ If we permute the outcomes and calculate p-values then, if the samples are indep
 
 ```r
 permg <- sample(g)
+```
+
+```
+## Error in sample(g): object 'g' not found
+```
+
+```r
 permresults <- rowttests(geneExpression,permg)
+```
+
+```
+## Error in rowttests(geneExpression, permg): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
+```
+
+```r
 hist(permresults$p.value)
 ```
 
-![Histogram obtained after permuting labels.](images/R/eda_for_highthroughput-tmp-pval-hist2-1.png) 
+```
+## Error in hist(permresults$p.value): object 'permresults' not found
+```
 
 #### Data Boxplots and Histograms
 
@@ -99,7 +181,7 @@ mypar(1,1)
 boxplot(ge,range=0,names=1:ncol(e),col=ifelse(1:ncol(ge)==49,1,2))
 ```
 
-![Boxplot for log-scale expression for all samples.](images/R/eda_for_highthroughput-tmp-boxplots-1.png) 
+![Boxplot for log-scale expression for all samples.](figure/eda_for_highthroughput-boxplots-1.png) 
 
 Note that the number of samples is a bit too large here making it hard to see the boxes. One can instead simply show the boxplot summaries without (cite Karl Broman):
 
@@ -109,9 +191,9 @@ qs <- t(apply(ge,2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
 matplot(qs,type="l",lty=1)
 ```
 
-![The 0.05, 0.25, 0.5, 0.75, and 0.95 quantiles are plotted for each sample.](images/R/eda_for_highthroughput-tmp-kaboxplot-1.png) 
+![The 0.05, 0.25, 0.5, 0.75, and 0.95 quantiles are plotted for each sample.](figure/eda_for_highthroughput-kaboxplot-1.png) 
 
-We can also plot all the histograms. Because we have so much data we create histograms using small bins, then smooth the heights of the bars and then plot _smooth histograms_. We re-calibrate the height of these smooth curves so that if a bar is made with base of size "unit" and height given by the curve at {$$}x_0{/$$}, the area approximates the number of points in region of size "unit" centered at {$$}x_0{/$$}:
+We can also plot all the histograms. Because we have so much data we create histograms using small bins, then smooth the heights of the bars and then plot _smooth histograms_. We re-calibrate the height of these smooth curves so that if a bar is made with base of size "unit" and height given by the curve at $$x_0$$, the area approximates the number of points in region of size "unit" centered at $$x_0$$:
 
 
 ```r
@@ -119,7 +201,7 @@ mypar(1,1)
 shist(ge,unit=0.5)
 ```
 
-![Smooth histograms for each sample.](images/R/eda_for_highthroughput-tmp-shist-1.png) 
+![Smooth histograms for each sample.](figure/eda_for_highthroughput-shist-1.png) 
 
 #### MA Plot
 
@@ -134,7 +216,7 @@ plot(x,y)
 plot((x+y)/2,x-y)
 ```
 
-![Scatter plot (left) and M versus A plot (right) for the same data.](images/R/eda_for_highthroughput-tmp-maplot-1.png) 
+![Scatter plot (left) and M versus A plot (right) for the same data.](figure/eda_for_highthroughput-maplot-1.png) 
 
 Note that once we rotate the plot, the fact that these data have differences of about:
 
