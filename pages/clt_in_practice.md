@@ -10,8 +10,6 @@ layout: page
 
 ## Central Limit Theorem in Practice
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/clt_in_practice.Rmd).
-
 Let's use our data to see how well the central limit theorem approximates sample averages from our data. We will leverage our entire population dataset to compare the results we obtain by actually sampling from the distribution to what the CLT predicts.
 
 
@@ -44,9 +42,9 @@ library(dplyr)
 ## 
 ## Attaching package: 'dplyr'
 ## 
-## The following object is masked from 'package:stats':
+## The following objects are masked from 'package:stats':
 ## 
-##     filter
+##     filter, lag
 ## 
 ## The following objects are masked from 'package:base':
 ## 
@@ -118,7 +116,7 @@ hf <- sample(hfPopulation, 12)
 control <- sample(controlPopulation, 12)
 ```
 
-As we described, the CLT tells us that, for large {$$}N{/$$}, each of these is approximately normal with average population mean and standard error population variance divided by {$$}N{/$$}. We mentioned that a rule of thumb is that {$$}N{/$$} should be 30 or more. But that is just a rule of thumb, as the preciseness of the approximation depends on the population distribution. Here we can actually check the approximation and we do that for various values of {$$}N{/$$}.
+As we described, the CLT tells us that, for large $$N$$, each of these is approximately normal with average population mean and standard error population variance divided by $$N$$. We mentioned that a rule of thumb is that $$N$$ should be 30 or more. But that is just a rule of thumb, as the preciseness of the approximation depends on the population distribution. Here we can actually check the approximation and we do that for various values of $$N$$.
 
 Now we use `sapply` and `replicate` instead of `for` loops, which
 makes for cleaner code (we do not have to pre-allocate a vector, R
@@ -133,7 +131,7 @@ res <-  sapply(Ns,function(n) {
 })
 ```
 
-Now we can use qq-plots to see how well CLT approximations works for these. If in fact the normal distribution is a good approximation, the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation. We also show, in the title, the average and SD of the observed distribution which demonstrates how the SD decreases with {$$}\sqrt{N}{/$$} as predicted. 
+Now we can use qq-plots to see how well CLT approximations works for these. If in fact the normal distribution is a good approximation, the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation. We also show, in the title, the average and SD of the observed distribution which demonstrates how the SD decreases with $$\sqrt{N}$$ as predicted. 
 
 
 ```r
@@ -147,7 +145,7 @@ for (i in seq(along=Ns)) {
 }
 ```
 
-![Quantile versus quantile plot of simulated differences versus theoretical normal distribution for four different sample sizes.](images/R/clt_in_practice-tmp-effect_size_qqplot-1.png) 
+![Quantile versus quantile plot of simulated differences versus theoretical normal distribution for four different sample sizes.](figure/clt_in_practice-effect_size_qqplot-1.png) 
 
 Here we see a pretty good fit even for 3. Why is this? Because the
 population itself is relatively close to normally distributed, the
@@ -176,14 +174,14 @@ for (i in seq(along=Ns)) {
 }
 ```
 
-![Quantile versus quantile plot of simulated ratios versus theoretical normal distribution for four different sample sizes.](images/R/clt_in_practice-tmp-t_test_qqplot-1.png) 
+![Quantile versus quantile plot of simulated ratios versus theoretical normal distribution for four different sample sizes.](figure/clt_in_practice-t_test_qqplot-1.png) 
 
-So we see that for {$$}N=3{/$$} the CLT does not provide a usable
-approximation. For {$$}N=12{/$$} there is a slight deviation at the higher
+So we see that for $$N=3$$ the CLT does not provide a usable
+approximation. For $$N=12$$ there is a slight deviation at the higher
 values, although the approximation appears useful. For 25 and 50 the
 approximation is spot on.
 
-This simulation only proves that {$$}N=12{/$$} is large enough in this case,
+This simulation only proves that $$N=12$$ is large enough in this case,
 not in general. As mentioned above, we will not be able to perform
 this simulation in most situations. We only use the simulation to
 illustrate the concepts behind the CLT and its limitations. In future
