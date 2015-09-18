@@ -10,8 +10,6 @@ layout: page
 
 ## Plots To Avoid 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/plots_to_avoid.Rmd).
-
 This section is based on a talk by [Karl W. Broman](http://kbroman.org/) titled "How to Display Data Badly" in which he described how the default plots offered by Microsoft Excel "obscure your data and annoy your readers" ([here](http://kbroman.org/pages/talks.html) is a link to a collection of Karl Broman's talks). His lecture was inspired by the 1984 paper by H. Wainer: How to display data badly. American Statistician 38(2): 137--147. Dr. Wainer was the first to elucidate the principles of the bad display of data. However, according to Karl, "The now widespread use of Microsoft Excel has resulted in remarkable advances in the field." Here we show examples of "bad plots" and how to improve them in R.
 
 ### General Principles
@@ -37,7 +35,7 @@ Say we want to report the results from a poll asking about browser preference (t
 pie(browsers,main="Browser Usage (August 2013)")
 ```
 
-![Pie chart of browser usage.](images/R/plots_to_avoid-tmp-piechart-1.png) 
+![Pie chart of browser usage.](figure/plots_to_avoid-piechart-1.png) 
 
 Nonetheless, as stated by the help file for the `pie` function:
 
@@ -69,18 +67,18 @@ abline(h=1:5 * 10)
 barplot(browsers, add=TRUE)
 ```
 
-![Barplot of browser usage.](images/R/plots_to_avoid-tmp-barplot-1.png) 
+![Barplot of browser usage.](figure/plots_to_avoid-barplot-1.png) 
 
 Note that we can now pretty easily determine the percentages by
 following a horizontal line to the x-axis. Do avoid a 3D version since
 it obfuscates the plot, making it more difficult to find the
 percentages by eye.
 
-![3D version](images/downloads/fig2b.png)
+![3D version](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig2b.png)
 
 Even worse than pie charts are donut plots.
 
-![Donut plot](images/downloads/360px-Donut-Chart.svg.png)
+![Donut plot](http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Donut-Chart.svg/360px-Donut-Chart.svg.png)
 
 The reason is that by removing the center, we remove one of the visual cues for determining the different areas: the angles. There is no reason to ever use a donut to display data.
 
@@ -93,7 +91,7 @@ group means; an antenna is added at the top to represent standard
 errors. This plot is simply showing two numbers per group and the
 plot adds nothing: 
 
-![Bad bar plots](images/downloads/fig1c.png)
+![Bad bar plots](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig1c.png)
 
 Much more informative is to summarize with a boxplot. If the number of
 points is small enough, we might as well add them to the plot. When
@@ -123,13 +121,13 @@ boxplot(dat,xlab="Group",ylab="Response",cex=0)
 stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
 ```
 
-![Treatment data and control data shown with a boxplot.](images/R/plots_to_avoid-tmp-unnamed-chunk-5-1.png) 
+![Treatment data and control data shown with a boxplot.](figure/plots_to_avoid-unnamed-chunk-5-1.png) 
 
 Notice how much more we see here: the center, spread, range and the points themselves. In the barplot we only see the mean and the SE, and the SE has more to do with sample size than with the spread of the data.
 
 This problem is magnified when our data has outliers or very large tails. In the plot below there appears to be very large and consistent differences between the two groups:
 
-![Bar plots with outliers](images/downloads/fig3c.png)
+![Bar plots with outliers](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig3c.png)
 
 However, a quick look at the data demonstrates that this difference is mostly driven by just two points. A version showing the data in the log-scale is much more informative. 
 
@@ -159,7 +157,7 @@ boxplot(dat,xlab="Group",ylab="Response",log="y",cex=0)
 stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
 ```
 
-![Data and boxplots for original data (left) and in log scale (right).](images/R/plots_to_avoid-tmp-importance_of_log-1.png) 
+![Data and boxplots for original data (left) and in log scale (right).](figure/plots_to_avoid-importance_of_log-1.png) 
 
 ### Show The Scatter Plot
 
@@ -191,7 +189,7 @@ fit <- lm(y~x)
 abline(fit$coef,lwd=2)
 ```
 
-![The plot on the left shows a regression line that was fitted to the data shown on the right. It is much more informative to show all the data.](images/R/plots_to_avoid-tmp-show-data-1.png) 
+![The plot on the left shows a regression line that was fitted to the data shown on the right. It is much more informative to show all the data.](figure/plots_to_avoid-show-data-1.png) 
 
 When there are very many points, the scatter can be shown by binning
 in two dimensions and coloring the bins by the number of points in the
@@ -204,12 +202,12 @@ When new technologies or laboratory techniques are introduced, we are often show
 
 In the plot on the left, we see the original data which shows very high correlation. Yet the data follows a distribution with very fat tails. Furthermore, 95% of the data is below the green line. The plot on the right is in the log scale:
 
-![Gene expression data from two replicated samples. Left is in original scale and right is in log scale.](images/R/plots_to_avoid-tmp-correlation-not-replication-1.png) 
+![Gene expression data from two replicated samples. Left is in original scale and right is in log scale.](figure/plots_to_avoid-correlation-not-replication-1.png) 
 Note that do not show the code here as it is rather complex but we explain how to make MA plots in a latter chapter. 
 
 Although the correlation is reduced in the log-scale, it is very close to 1 in both cases. Does this mean these data are reproduced? To examine how well the second vector reproduces the first, we need to study the differences. So we should instead plot that. In this plot, we plot the difference (in the log scale) versus the average:
 
-![MA plot of the same data shown above shows that data is not replicated very well despite a high correlation.](images/R/plots_to_avoid-tmp-MAplot-1.png) 
+![MA plot of the same data shown above shows that data is not replicated very well despite a high correlation.](figure/plots_to_avoid-MAplot-1.png) 
 
 These are referred to as Bland-Altman plots, or _MA plots_ in the
 genomics literature, and we will talk more about them later. "MA"
@@ -228,7 +226,7 @@ purposes.
 
 A common task in data analysis is the comparison of two groups. When the dataset is small and data are paired, for example the outcomes before and after a treatment, two color barplots are unfortunately often used to display the results:
 
-![Barplot for two variables](images/downloads/fig6r_e.png)
+![Barplot for two variables](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig6r_e.png)
 
 There are better ways of showing these data to illustrate that there is an increase after treatment. One is to simply make a scatterplot, which shows that most points are above the identity line. Another alternative is to plot the differences against the before values.
 
@@ -250,7 +248,7 @@ plot(before, after-before, xlab="Before", ylim=c(-ymx, ymx),
 abline(h=0, lty=2, col=1)
 ```
 
-![For two variables a scatter plot or a 'rotated' plot similar to an MA plot is much more informative.](images/R/plots_to_avoid-tmp-scatter-plot-for-two-vars-1.png) 
+![For two variables a scatter plot or a 'rotated' plot similar to an MA plot is much more informative.](figure/plots_to_avoid-scatter-plot-for-two-vars-1.png) 
 
 
 Line plots are not a bad choice, although I find them harder to follow than the previous two. Boxplots show you the increase, but lose the paired information.
@@ -268,13 +266,13 @@ segments(rep(0,6), before, rep(1,6), after, col=1)
 boxplot(before,after,names=c("Before","After"),ylab="Response")
 ```
 
-![Another alternative is a line plot. If we don't care about pairings, then the boxplot is appropriate.](images/R/plots_to_avoid-tmp-lines-plot-box-plot-1.png) 
+![Another alternative is a line plot. If we don't care about pairings, then the boxplot is appropriate.](figure/plots_to_avoid-lines-plot-box-plot-1.png) 
 
 ###  Gratuitous 3D
 
 The figure below shows three curves. Pseudo 3D is used, but it is not clear why. Maybe to separate the three curves? Notice how difficult it is to determine the values of the curves at any given point:
 
-![Gratuitous 3-D](images/downloads/fig8b.png)
+![Gratuitous 3-D](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig8b.png)
 
 This plot can be made better by simply using color to distinguish the three lines:
 
@@ -295,7 +293,7 @@ lines(x[,1],x[,4],lwd=2,col=3)
 legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 ```
 
-![This plot demonstrates that using color is more than enough to distinguish the three lines.](images/R/plots_to_avoid-tmp-colors-for-different-lines-1.png) 
+![This plot demonstrates that using color is more than enough to distinguish the three lines.](figure/plots_to_avoid-colors-for-different-lines-1.png) 
 
 ### Ignoring Important Factors
 
@@ -303,7 +301,7 @@ legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 
 In this example we generate data with a simulation. We are studying a dose-response relationship between two groups: treatment and control. We have three groups of measurements for both control and treatment. Comparing treatment and control using the common barplot:
 
-![Ingoring important factors](images/downloads/fig9d.png)
+![Ingoring important factors](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig9d.png)
 
 Instead we should show each curve. We can use color to distinguish treatment and control and dashed and solid lines to distinguish the original data from the mean of the three groups.
 
@@ -317,7 +315,7 @@ lines(x, zm, col=2, lwd=2)
 legend("bottomleft", lwd=2, col=c(1, 2), c("Control", "Treated"))
 ```
 
-![Because dose is an important factor, we show it in this plot.](images/R/plots_to_avoid-tmp-show-important-factors-1.png) 
+![Because dose is an important factor, we show it in this plot.](figure/plots_to_avoid-show-important-factors-1.png) 
 
 
 ### Too Many Significant Digits
@@ -391,43 +389,41 @@ Turning tables into graphs. The American Statistician 56:121-130
 
 ## Misunderstanding Correlation (Advanced)
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/plots_to_avoid.Rmd).
-
 The use of correlation to summarize reproducibility has become widespread in, for example, genomics. Despite its English language definition, mathematically, correlation is not necessarily informative with regards to reproducibility.  Here we briefly describe three major problems.
 
 The most egregious related mistake is to compute correlations of data that is not approximated by bi-variate normal data. As described above, averages, standard deviations and correlations are popular summary statistics for two-dimensional data because, for the bivariate normal distribution, these five parameters fully describe the distribution. However, there are many examples of data that are not well approximated by bivariate normal data. Gene expression data, for example, tends to have a distribution with a very fat right tail.
 
-The standard way to quantify reproducibility between two sets of replicated measurements, say {$$}x_1,\dots,x_n{/$$} and {$$}y_1,\dots,y_n{/$$}, is simply to compute the distance between them:
+The standard way to quantify reproducibility between two sets of replicated measurements, say $$x_1,\dots,x_n$$ and $$y_1,\dots,y_n$$, is simply to compute the distance between them:
 
-{$$}
+$$
 \sqrt{
 \sum_{i=1}^n d_i^2} \mbox{ with } d_i=x_i - y_i
-{/$$}
+$$
 
-This metric decreases as reproducibility improves and it is 0 when the reproducibility is perfect. Another advantage of this metric is that if we divide the sum by N, we can interpret the resulting quantity as the standard deviation of the {$$}d_1,\dots,d_N{/$$} if we assume the {$$}d{/$$} average out to 0. If the {$$}d{/$$} can be considered residuals, then this quantity is equivalent to the root mean squared error (RMSE), a summary statistic that has been around for over a century. Furthermore, this quantity will have the same units as our measurements resulting in a more interpretable metric. 
+This metric decreases as reproducibility improves and it is 0 when the reproducibility is perfect. Another advantage of this metric is that if we divide the sum by N, we can interpret the resulting quantity as the standard deviation of the $$d_1,\dots,d_N$$ if we assume the $$d$$ average out to 0. If the $$d$$ can be considered residuals, then this quantity is equivalent to the root mean squared error (RMSE), a summary statistic that has been around for over a century. Furthermore, this quantity will have the same units as our measurements resulting in a more interpretable metric. 
 
 Another limitation of the correlation is that it does not detect cases that are not reproducible due to average changes. The distance metric does detect these differences. We can rewrite:
 
-{$$}\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = \frac{1}{n} \sum_{i=1}^n [(x_i-\mu_x) - (y_i - \mu_y)^2 + (\mu_x-\mu_y)]^2{/$$}
+$$\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = \frac{1}{n} \sum_{i=1}^n [(x_i-\mu_x) - (y_i - \mu_y)^2 + (\mu_x-\mu_y)]^2$$
 
-with {$$}\mu_x{/$$} and {$$}\mu_y{/$$} the average of each list. Then we have: 
+with $$\mu_x$$ and $$\mu_y$$ the average of each list. Then we have: 
 
-{$$}\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = \frac{1}{n} \sum_{i=1}^n (x_i-\mu_x)^2 +  \frac{1}{n} \sum_{i=1}^n (y_i - \mu_y)^2 + (\mu_x-\mu_y)^2 + \frac{1}{n}\sum_{i=1}^n (x_i-\mu_x)(y_i - \mu_y)
-{/$$}
+$$\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = \frac{1}{n} \sum_{i=1}^n (x_i-\mu_x)^2 +  \frac{1}{n} \sum_{i=1}^n (y_i - \mu_y)^2 + (\mu_x-\mu_y)^2 + \frac{1}{n}\sum_{i=1}^n (x_i-\mu_x)(y_i - \mu_y)
+$$
 
 For simplicity, if we assume that the variance of both lists is 1, then this reduces to: 
 
-{$$}\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = 2 + (\mu_x-\mu_y)^2 - 2\rho{/$$}
+$$\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = 2 + (\mu_x-\mu_y)^2 - 2\rho$$
 
-with {$$}\rho{/$$} the correlation. So we see the direct relationship between distance and correlation. However, an important difference is that the distance contains the term {$$}(\mu_x-\mu_y)^2{/$$} and thus it can detect cases that are not reproducible due to large average changes. 
+with $$\rho$$ the correlation. So we see the direct relationship between distance and correlation. However, an important difference is that the distance contains the term $$(\mu_x-\mu_y)^2$$ and thus it can detect cases that are not reproducible due to large average changes. 
 
-Yet another reason correlation is not an optimal metric for reproducibility is the lack of units. To see this we use a formula that relates the correlation of a variable with that variable plus what is interpreted here as deviation: {$$}x{/$$} and {$$}y=x+d{/$$}. The larger the variance of {$$}d{/$$}, the less {$$}x+d{/$$} reproduces {$$}x{/$$}. Here the distance metric would depend only on the variance of {$$}d{/$$} and would summarize reproducibility. However, correlation depends on the variance of {$$}x{/$$} as well. If {$$}d{/$$} is independent of {$$}x{/$$} then
+Yet another reason correlation is not an optimal metric for reproducibility is the lack of units. To see this we use a formula that relates the correlation of a variable with that variable plus what is interpreted here as deviation: $$x$$ and $$y=x+d$$. The larger the variance of $$d$$, the less $$x+d$$ reproduces $$x$$. Here the distance metric would depend only on the variance of $$d$$ and would summarize reproducibility. However, correlation depends on the variance of $$x$$ as well. If $$d$$ is independent of $$x$$ then
 
-{$$}
+$$
 cor(x,y) = \frac{1}{\sqrt{1+\mbox{var}(d)/\mbox{var}(x)}}
-{/$$}
+$$
 
-This suggests that correlations near 1 do not necessarily imply reproducibility. Specifically, irrespective of the variance of {$$}d{/$$}, we can make the correlation arbitrarily close to 1 by increasing the variance of {$$}x{/$$}.
+This suggests that correlations near 1 do not necessarily imply reproducibility. Specifically, irrespective of the variance of $$d$$, we can make the correlation arbitrarily close to 1 by increasing the variance of $$x$$.
 
 
 
