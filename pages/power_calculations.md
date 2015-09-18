@@ -8,8 +8,6 @@ layout: page
 
 ## Power Calculations 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/power_calculations.Rmd).
-
 ### Introduction
 
 We have used the example of the effects of two different diets on the weight of mice. Because in this illustrative example we have access to the population, we know that in fact there is a substantial (about 10%) difference between the average weights of the two populations:
@@ -103,12 +101,12 @@ Most journals and regulatory agencies frequently insist that results be signific
 Power is the probability of rejecting the null when the null is
 false. Now, "when the null is false" is a complicated statement
 because it can be false in many ways.
-{$$}\Delta \equiv \mu_Y - \mu_X{/$$}
+$$\Delta \equiv \mu_Y - \mu_X$$
 could be anything and the power actually depends on this parameter. It
 also depends on the standard error of your estimates which in turn
 depends on the sample size and the population standard deviations. In
 practice, we don't know these so we usually report power for several
-plausible values of {$$}\Delta{/$$}, {$$}\sigma_X{/$$}, {$$}\sigma_Y{/$$} and various
+plausible values of $$\Delta$$, $$\sigma_X$$, $$\sigma_Y$$ and various
 sample sizes.
 Statistical theory gives us formulas to calculate
 power. The `pwr` package performs these calculations for you. Here we
@@ -135,7 +133,7 @@ What is our power with this particular data? We will compute this probability by
 B <- 2000
 ```
 
-simulations. The simulation is as follows: we take a sample of size {$$}N{/$$} from both control and treatment groups, we perform a t-test comparing these two, and report if the p-value is less than `alpha` or not. We write a function that does this:
+simulations. The simulation is as follows: we take a sample of size $$N$$ from both control and treatment groups, we perform a t-test comparing these two, and report if the p-value is less than `alpha` or not. We write a function that does this:
 
 
 ```r
@@ -164,7 +162,7 @@ Now we can use the `replicate` function to do this `B` times.
 rejections <- replicate(B,reject(N))
 ```
 
-Our power is just the proportion of times we correctly reject. So with  {$$}N=12{/$$} our power is only: 
+Our power is just the proportion of times we correctly reject. So with  $$N=12$$ our power is only: 
 
 
 ```r
@@ -204,13 +202,13 @@ For each of the three simulations the above code returns the proportion of times
 plot(Ns, power, type="b")
 ```
 
-![Power plotted against sample size.](images/R/power_calculations-tmp-power_versus_sample_size-1.png) 
+![Power plotted against sample size.](figure/power_calculations-power_versus_sample_size-1.png) 
 
 Similarly, if we change the level `alpha` at which we reject, power
 changes. The smaller I want the chance of type I error to be, the less
 power I will have. Another way of saying this is that we trade off
 between the two types of error. We can see this by writing similar code, but
-keeping {$$}N{/$$} fixed and considering several values of `alpha`:
+keeping $$N$$ fixed and considering several values of `alpha`:
 
 
 ```r
@@ -223,7 +221,7 @@ power <- sapply(alphas,function(alpha){
 plot(alphas, power, xlab="alpha", type="b", log="x")
 ```
 
-![Power plotted against cut-off.](images/R/power_calculations-tmp-power_versus_alpha-1.png) 
+![Power plotted against cut-off.](figure/power_calculations-power_versus_alpha-1.png) 
 
 Note that the x-axis in this last plot is in the log scale.
 
@@ -247,7 +245,7 @@ population and calculating p-values. This works because in our case,
 we know that the alternative hypothesis is true, because we have
 access to the populations and can calculate the difference in their means.
 
-First write a function that returns a p-value for a given sample size {$$}N{/$$}:
+First write a function that returns a p-value for a given sample size $$N$$:
 
 
 ```r
@@ -261,7 +259,7 @@ calculatePvalue <- function(N) {
 We have a limit here of 200 for the high-fat diet population, but we can
 see the effect well before we get to 200.
 For each sample size, we will calculate a few p-values. We can do
-this by repeating each value of {$$}N{/$$} a few times.
+this by repeating each value of $$N$$ a few times.
 
 
 ```r
@@ -285,10 +283,10 @@ plot(Ns_rep, pvalues, log="y", xlab="sample size",
 abline(h=c(.01, .05), col="red", lwd=2)
 ```
 
-![p-values from random samples at varying sample size. The actual value of the p-values decreases as we increase sample size whenever the alternative hypothesis is true.](images/R/power_calculations-tmp-pvals_decrease-1.png) 
+![p-values from random samples at varying sample size. The actual value of the p-values decreases as we increase sample size whenever the alternative hypothesis is true.](figure/power_calculations-pvals_decrease-1.png) 
 
 Note that the y-axis is log scale, and that the p-values show a
-decreasing trend all the way to {$$}10^{-8}{/$$}
+decreasing trend all the way to $$10^{-8}$$
 as the sample size gets larger. The standard cutoffs
 of 0.01 and 0.05 are indicated with horizontal red lines.
 
@@ -297,13 +295,13 @@ they become very very small. Once we have convinced ourselves to
 reject the null hypothesis at a threshold we find reasonable, having
 an even smaller p-value just means that we sampled more mice than was
 necessary.  Having a larger sample size does help to increase the
-precision of our estimate of the difference {$$}\Delta{/$$}, but the fact
+precision of our estimate of the difference $$\Delta$$, but the fact
 that the p-value becomes very very small is just a natural consequence
 of the mathematics of the test.  The p-values get smaller and smaller
 with increasing sample size because the numerator of the t-statistic
-has {$$}\sqrt{N}{/$$} (for equal sized groups, and a similar effect occurs
-when {$$}M \neq N{/$$}). Therefore, if {$$}\Delta{/$$} is non-zero, the t-statistic
-will increase with {$$}N{/$$}.
+has $$\sqrt{N}$$ (for equal sized groups, and a similar effect occurs
+when $$M \neq N$$). Therefore, if $$\Delta$$ is non-zero, the t-statistic
+will increase with $$N$$.
 
 A better statistic to report is therefore the effect size with
 a confidence interval, or some statistic which gives the reader a
