@@ -9,8 +9,6 @@ layout: page
 
 ## Confidence Intervals
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/confidence_intervals.Rmd).
-
 We have described how to compute p-values which are ubiquitous in the
 life sciences. However, we do not recommend reporting p-values as the
 only statistical summary of your results. The reason is simple:
@@ -49,7 +47,7 @@ dat <- read.csv("mice_pheno.csv")
 chowPopulation <- dat[dat$Sex=="F" & dat$Diet=="chow",3]
 ```
 
-The population average {$$}\mu_X{/$$} is our parameter of interest here:
+The population average $$\mu_X$$ is our parameter of interest here:
 
 
 ```r
@@ -76,7 +74,7 @@ print(mean(chow))
 
 We know this is a random variable, so the sample average will not be a perfect estimate. In fact, because in this illustrative example we know the value of the parameter, we can see that they are not exactly the same. A confidence interval is a statistical way of reporting our finding, the sample average, in a way that explicitly summarizes the variability of our random variable.
 
-With a sample size of 30, we will use the CLT. The CLT tells us that {$$}\bar{X}{/$$} or `mean(chow)` follows a normal distribution with mean {$$}\mu_X{/$$} or `mean(chowPopulation)` and standard error approximately  {$$}s_X/\sqrt{N}{/$$} or:
+With a sample size of 30, we will use the CLT. The CLT tells us that $$\bar{X}$$ or `mean(chow)` follows a normal distribution with mean $$\mu_X$$ or `mean(chowPopulation)` and standard error approximately  $$s_X/\sqrt{N}$$ or:
 
 
 ```r
@@ -98,12 +96,12 @@ are estimating. Note that, saying 95% of random intervals will fall on the
 true value (our definition above) is *not the same* as saying there is
 a 95% chance that the true value falls in our interval. 
 To construct it, we note that the CLT tells us that 
-{$$}\sqrt{N} (\bar{X}-\mu_X) / s_X{/$$} follows a normal distribution with mean 0 and
+$$\sqrt{N} (\bar{X}-\mu_X) / s_X$$ follows a normal distribution with mean 0 and
 SD 1. This implies that the probability of this event:
 
-{$$}
+$$
 -2 \leq \sqrt{N} (\bar{X}-\mu_X)/s_X \leq 2
-{/$$}  
+$$  
 
 which written in R code is:
 
@@ -118,21 +116,21 @@ pnorm(2) - pnorm(-2)
 
 ...is about 95% (to get closer use `qnorm(1-0.05/2)` instead of
 2). Now do some basic algebra to clear out everything and leave
-{$$}\mu_X{/$$} alone in the middle and you get that the following event: 
+$$\mu_X$$ alone in the middle and you get that the following event: 
 
-{$$}
+$$
 \bar{X}-2 s_X/\sqrt{N} \leq \mu_X \leq \bar{X}+2s_X/\sqrt{N}
-{/$$}  
+$$  
 
 has a probability of 95%. 
 
 Be aware that it is the edges of the interval 
-{$$}\bar{X} \pm 2 s_X / \sqrt{N}{/$$} , not {$$}\mu_X{/$$} , 
+$$\bar{X} \pm 2 s_X / \sqrt{N}$$ , not $$\mu_X$$ , 
 that are random. Again, the definition of
 the confidence interval is that 95% of *random intervals* will contain
-the true, fixed value {$$}\mu_X{/$$}. For a specific interval that has been
+the true, fixed value $$\mu_X$$. For a specific interval that has been
 calculated, the probability is either 0 or 1 that it contains the
-fixed population mean {$$}\mu_X{/$$}.
+fixed population mean $$\mu_X$$.
 
 Let's demonstrate this logic through simulation. We can construct this
 interval with R relatively easily: 
@@ -156,7 +154,7 @@ interval[1] < mu_chow & interval[2] > mu_chow
 ## [1] TRUE
 ```
 
-which happens to cover {$$}\mu_X{/$$} or `mean(chowPopulation)`. However, we can take another sample and we might not be as lucky. In fact, the theory tells us that we will cover {$$}\mu_X{/$$} 95% of the time. Because we have access to the population data, we can confirm this by taking several new samples:
+which happens to cover $$\mu_X$$ or `mean(chowPopulation)`. However, we can take another sample and we might not be as lucky. In fact, the theory tells us that we will cover $$\mu_X$$ 95% of the time. Because we have access to the population data, we can confirm this by taking several new samples:
 
 
 ```r
@@ -177,15 +175,15 @@ for (i in 1:B) {
 }
 ```
 
-![We show 250 random realizations of 95% confidence intervals. The color denotes if the interval fell on the parameter or not.](images/R/confidence_intervals-tmp-confidence_interval_n30-1.png) 
+![We show 250 random realizations of 95% confidence intervals. The color denotes if the interval fell on the parameter or not.](figure/confidence_intervals-confidence_interval_n30-1.png) 
 
-You can run this repeatedly to see what happens. You will see that about in about 5% of the cases, we fail to cover {$$}\mu_X{/$$}.
+You can run this repeatedly to see what happens. You will see that about in about 5% of the cases, we fail to cover $$\mu_X$$.
 
 <a name="smallsample"></a>
 
 ### Small Sample Size And The CLT
 
-For {$$}N=30{/$$} the CLT works very well. However, if {$$}N=5{/$$}, do these confidence intervals work as well? We used the CLT to create our intervals, and with {$$}N=5{/$$} it may not be as useful an approximation. We can confirm this with a simulation:
+For $$N=30$$ the CLT works very well. However, if $$N=5$$, do these confidence intervals work as well? We used the CLT to create our intervals, and with $$N=5$$ it may not be as useful an approximation. We can confirm this with a simulation:
 
 
 
@@ -206,14 +204,14 @@ for (i in 1:B) {
 }
 ```
 
-![We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence interval is based on the CLT approximation. The color denotes if the interval fell on the parameter or not.](images/R/confidence_intervals-tmp-confidence_interval_n5-1.png) 
+![We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence interval is based on the CLT approximation. The color denotes if the interval fell on the parameter or not.](figure/confidence_intervals-confidence_interval_n5-1.png) 
 
-Despite the intervals being larger ( we are dividing by {$$}\sqrt{5}{/$$}
-instead of {$$}\sqrt{30}{/$$} ), we see many more intervals not covering
-{$$}\mu_X{/$$}. This is because the CLT is incorrectly telling us that the
+Despite the intervals being larger ( we are dividing by $$\sqrt{5}$$
+instead of $$\sqrt{30}$$ ), we see many more intervals not covering
+$$\mu_X$$. This is because the CLT is incorrectly telling us that the
 distribution of the `mean(chow)` is approximately normal when in fact
 it has a fatter tail (the parts of the distribution going to
-{$$}\pm \infty{/$$}). This mistake affects us in the calculation of `Q`, which
+$$\pm \infty$$). This mistake affects us in the calculation of `Q`, which
 assumes a normal distribution and uses `qnorm`. The t-distribution
 might be more appropriate. All we have to do is re-run the above, but
 change how we calculate `Q` to use `qt` instead of `qnorm`.
@@ -237,7 +235,7 @@ for (i in 1:B) {
 }
 ```
 
-![We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence is now based on the t-distribution approximation. The color denotes if the interval fell on the parameter or not.](images/R/confidence_intervals-tmp-confidence_interval_tdist_n5-1.png) 
+![We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence is now based on the t-distribution approximation. The color denotes if the interval fell on the parameter or not.](figure/confidence_intervals-confidence_interval_tdist_n5-1.png) 
 
 Now the intervals are made bigger. This is because the t-distribution has fatter tails and therefore:
 
@@ -261,26 +259,26 @@ qnorm(1- 0.05/2)
 ## [1] 1.959964
 ```
 
-...which makes the intervals larger and hence cover {$$}\mu_X{/$$} more frequently. In fact, about 95% of the time.
+...which makes the intervals larger and hence cover $$\mu_X$$ more frequently. In fact, about 95% of the time.
 
 ### Connection Between Confidence Intervals and p-values
 
 We recommend that in practice confidence intervals be reported instead of p-values. If for some reason you are required to provide p-values, or required that your results are significant at the 0.05 of 0.01 levels, confidence intervals do provide this information. 
 
 If we are talking about a t-test p-value, we are asking if 
-differences as extreme as the one we observe, {$$}\bar{Y} - \bar{X}{/$$}, are likely when the difference between the population averages is actually equal to
+differences as extreme as the one we observe, $$\bar{Y} - \bar{X}$$, are likely when the difference between the population averages is actually equal to
 zero. So we can form a confidence interval with the observed 
-difference. Instead of writing {$$}\bar{Y} - \bar{X}{/$$} repeatedly, let's
+difference. Instead of writing $$\bar{Y} - \bar{X}$$ repeatedly, let's
 define this difference as a new variable 
-{$$}d \equiv \bar{Y} - \bar{X}{/$$} . 
+$$d \equiv \bar{Y} - \bar{X}$$ . 
 
-Suppose you use CLT and report {$$}d \pm 2 s_d/\sqrt{N}{/$$} as a
+Suppose you use CLT and report $$d \pm 2 s_d/\sqrt{N}$$ as a
 95% confidence interval for the difference and this interval does not
 include 0 (a false positive).
 Because the interval does not include 0, this implies that either
-{$$}D - 2 s_d/\sqrt{N}  > 0{/$$} or {$$}d + 2 s_d/\sqrt{N} < 0{/$$}.
+$$D - 2 s_d/\sqrt{N}  > 0$$ or $$d + 2 s_d/\sqrt{N} < 0$$.
 This suggests that either
-{$$}\sqrt{N}d/s_d > 2{/$$} or {$$}\sqrt{N}d/s_d < 2{/$$}.  This
+$$\sqrt{N}d/s_d > 2$$ or $$\sqrt{N}d/s_d < 2$$.  This
 then implies that the t-statistic is more extreme than 2, which in
 turn suggests that the p-value must be smaller than 0.05
 (approximately, for a more exact calculation use `qnorm(.05/2)` instead of 2).
@@ -289,7 +287,7 @@ CLT (with `qt(.05/2, df=N-2)`).
 In summary, if a 95% or 99% confidence interval does not include
 0, then the p-value must be smaller than 0.05 or 0.01 respectively. 
 
-Note that the confidence interval for the difference {$$}d{/$$} is provided by the `t.test` function:
+Note that the confidence interval for the difference $$d$$ is provided by the `t.test` function:
 
 
 
