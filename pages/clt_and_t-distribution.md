@@ -8,47 +8,45 @@ layout: page
 
 ## Central Limit Theorem and t-distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/clt_and_t-distribution.Rmd).
-
 
 Below we will discuss the Central Limit Theorem (CLT) and the t-distribution, both of which help us make important calculations related to probabilities. Both are frequently used in science to test statistical hypotheses. To use these, we have to make assumptions, different ones for the CLT and the t-distribution. However, if the assumptions are true, then we are able to calculate the exact probabilities of events through the use of mathematical formula.
 
 #### Central Limit Theorem 
 
-The CLT is one of the most frequently used mathematical results in science. It tells us that when the sample size is large, the average {$$}\bar{Y}{/$$} of a random sample follows a normal distribution centered at the population average {$$}\mu_Y{/$$} and with standard deviation equal to the population standard deviation {$$}\sigma_Y{/$$}, divided by the square root of the sample size {$$}N{/$$}. We refer to the standard deviation of the distribution of a random variable as the random variable's _standard error_.
+The CLT is one of the most frequently used mathematical results in science. It tells us that when the sample size is large, the average $$\bar{Y}$$ of a random sample follows a normal distribution centered at the population average $$\mu_Y$$ and with standard deviation equal to the population standard deviation $$\sigma_Y$$, divided by the square root of the sample size $$N$$. We refer to the standard deviation of the distribution of a random variable as the random variable's _standard error_.
 
 Please note that if we subtract a constant from a random variable, the
 mean of the new random variable shifts by that
-constant. Mathematically, if {$$}X{/$$} is a random variable with mean {$$}\mu{/$$}
-and {$$}a{/$$} is a constant, the mean of {$$}X - a{/$$} is {$$}\mu-a{/$$}. A similarly
+constant. Mathematically, if $$X$$ is a random variable with mean $$\mu$$
+and $$a$$ is a constant, the mean of $$X - a$$ is $$\mu-a$$. A similarly
 intuitive result holds for multiplication and the standard deviation (SD).
-If {$$}X{/$$} is a random
-variable with mean {$$}\mu{/$$} and SD {$$}\sigma{/$$}, and {$$}a{/$$} is a constant, then
-the mean and SD of {$$}aX{/$$} are {$$}a \mu{/$$} and {$$}\mid a \mid \sigma{/$$}
+If $$X$$ is a random
+variable with mean $$\mu$$ and SD $$\sigma$$, and $$a$$ is a constant, then
+the mean and SD of $$aX$$ are $$a \mu$$ and $$\mid a \mid \sigma$$
 respectively. To see how intuitive this is, imagine that we subtract
 10 grams from each of the mice weights. The average weight should also
 drop by that much. Similarly, if we change the units from grams to
 milligrams by multiplying by 1000, then the spread of the numbers
 becomes larger. 
 
-This implies that if we take many samples of size {$$}N{/$$}, then the quantity: 
+This implies that if we take many samples of size $$N$$, then the quantity: 
 
-{$$}
+$$
 \frac{\bar{Y} - \mu}{\sigma_Y/\sqrt{N}}
-{/$$}
+$$
 
 is approximated with a normal distribution centered at 0 and with standard deviation 1.
 
-Now we are interested in the difference between two sample averages. Here again a mathematical result helps. If we have two random variables {$$}X{/$$} and {$$}Y{/$$} with means {$$}\mu_X{/$$} and {$$}\mu_Y{/$$} and variance {$$}\sigma_X{/$$} and {$$}\sigma_Y{/$$} respectively, then we have the following result: the mean of the sum {$$}Y + X{/$$} is the sum of the means {$$}\mu_Y + \mu_X{/$$}. Using one of the facts we mentioned earlier, this implies that the mean of {$$}Y - X = Y + aX{/$$} with {$$}a = -1{/$$} which implies that the mean of {$$}Y - X{/$$} is {$$}\mu_Y - \mu_X{/$$}. This is intuitive. However, the next result is perhaps not as intuitive.  If {$$}X{/$$} and {$$}Y{/$$} are independent of each other, as they are in our mouse example, then the variance (SD squared) of {$$}Y + X{/$$} is the sum of the variances {$$}\sigma_Y^2 + \sigma_X^2{/$$}. This implies that variance of the difference {$$}Y - X{/$$} is the variance of {$$}Y + aX{/$$} with {$$}a = -1{/$$} which is {$$}\sigma^2_Y + a^2 \sigma_X^2 = \sigma^2_Y + \sigma_X^2{/$$}. So the variance of the difference is also the sum of the variances. If this seems like a counterintuitive result, remember that if {$$}X{/$$} and {$$}Y{/$$} are independent of each other, the sign does not really matter. It can be considered random: if {$$}X{/$$} is normal with certain variance, for example, so is {$$}-X{/$$}.  Finally, another useful result is that the sum of normal variables is again normal.
+Now we are interested in the difference between two sample averages. Here again a mathematical result helps. If we have two random variables $$X$$ and $$Y$$ with means $$\mu_X$$ and $$\mu_Y$$ and variance $$\sigma_X$$ and $$\sigma_Y$$ respectively, then we have the following result: the mean of the sum $$Y + X$$ is the sum of the means $$\mu_Y + \mu_X$$. Using one of the facts we mentioned earlier, this implies that the mean of $$Y - X = Y + aX$$ with $$a = -1$$ which implies that the mean of $$Y - X$$ is $$\mu_Y - \mu_X$$. This is intuitive. However, the next result is perhaps not as intuitive.  If $$X$$ and $$Y$$ are independent of each other, as they are in our mouse example, then the variance (SD squared) of $$Y + X$$ is the sum of the variances $$\sigma_Y^2 + \sigma_X^2$$. This implies that variance of the difference $$Y - X$$ is the variance of $$Y + aX$$ with $$a = -1$$ which is $$\sigma^2_Y + a^2 \sigma_X^2 = \sigma^2_Y + \sigma_X^2$$. So the variance of the difference is also the sum of the variances. If this seems like a counterintuitive result, remember that if $$X$$ and $$Y$$ are independent of each other, the sign does not really matter. It can be considered random: if $$X$$ is normal with certain variance, for example, so is $$-X$$.  Finally, another useful result is that the sum of normal variables is again normal.
 
 All this math is very helpful for the purposes of our study because we have two sample averages and are interested in the difference. Because both are normal, the difference is normal as well, and the variance (the standard deviation squared) is the sum of the two variances.
-Under the null hypothesis that there is no difference between the population averages, the difference between the sample averages {$$}\bar{Y}-\bar{X}{/$$}, with {$$}\bar{X}{/$$} and {$$}\bar{Y}{/$$} the sample average for the two diets respectively, is approximated by a normal distribution centered at 0 (there is no difference) and with standard deviation {$$}\sqrt{\sigma_X^2 +\sigma_Y^2}/\sqrt{N}{/$$}. 
+Under the null hypothesis that there is no difference between the population averages, the difference between the sample averages $$\bar{Y}-\bar{X}$$, with $$\bar{X}$$ and $$\bar{Y}$$ the sample average for the two diets respectively, is approximated by a normal distribution centered at 0 (there is no difference) and with standard deviation $$\sqrt{\sigma_X^2 +\sigma_Y^2}/\sqrt{N}$$. 
 
 This suggests that this ratio:
 
-{$$}
+$$
 \frac{\bar{Y}-\bar{X}}{\sqrt{\frac{\sigma_X^2}{M} + \frac{\sigma_Y^2}{N}}}
-{/$$}
+$$
 
 is approximated by a normal distribution centered at 0 and standard deviation 1.  Using this approximation makes computing p-values simple because we know the proportion of the distribution under any value. For example, only 5% of these values are larger than 2 (in absolute value):
 
@@ -63,33 +61,33 @@ pnorm(-2) + (1 - pnorm(2))
 
 We don't need to buy more mice, 12 and 12 suffice.
 
-However, we can't claim victory just yet because we don't know the population standard deviations: {$$}\sigma_X{/$$} and {$$}\sigma_Y{/$$}. These are unknown population parameters, but we can get around this by using the sample standard deviations, call them {$$}s_X{/$$} and {$$}s_Y{/$$}. These are defined as: 
+However, we can't claim victory just yet because we don't know the population standard deviations: $$\sigma_X$$ and $$\sigma_Y$$. These are unknown population parameters, but we can get around this by using the sample standard deviations, call them $$s_X$$ and $$s_Y$$. These are defined as: 
 
-{$$} s_X^2 = \frac{1}{M-1} \sum_{i=1}^M (X_i - \bar{X})^2  \mbox{ and }  s_Y^2 = \frac{1}{N-1} \sum_{i=1}^N (Y_i - \bar{Y})^2 {/$$}
+$$ s_X^2 = \frac{1}{M-1} \sum_{i=1}^M (X_i - \bar{X})^2  \mbox{ and }  s_Y^2 = \frac{1}{N-1} \sum_{i=1}^N (Y_i - \bar{Y})^2 $$
 
-Note that we are dividing by {$$}M-1{/$$} and {$$}N-1{/$$}, instead of by {$$}M{/$$} and {$$}N{/$$}. There is a theoretical reason for doing this which we do not explain here. But to get an intuition, think of the case when you just have 2 numbers. The average distance to the mean is basically 1/2 the difference between the two numbers. So you really just have information from one number. This is somewhat of a minor point. The main point is that {$$}s_X{/$$} and {$$}s_Y{/$$} serve as estimates of {$$}\sigma_X{/$$} and {$$}\sigma_Y{/$$}
+Note that we are dividing by $$M-1$$ and $$N-1$$, instead of by $$M$$ and $$N$$. There is a theoretical reason for doing this which we do not explain here. But to get an intuition, think of the case when you just have 2 numbers. The average distance to the mean is basically 1/2 the difference between the two numbers. So you really just have information from one number. This is somewhat of a minor point. The main point is that $$s_X$$ and $$s_Y$$ serve as estimates of $$\sigma_X$$ and $$\sigma_Y$$
 
 So we can redefine our ratio as
 
-{$$}
+$$
 \sqrt{N} \frac{\bar{Y}-\bar{X}}{\sqrt{s_X^2 +s_Y^2}}
-{/$$}
+$$
 
-if {$$}M=N{/$$} or in general,
+if $$M=N$$ or in general,
 
-{$$}
+$$
 \frac{\bar{Y}-\bar{X}}{\sqrt{\frac{s_X^2}{M} + \frac{s_Y^2}{N}}}
-{/$$}
+$$
 
-The CLT tells us that when {$$}M{/$$} and {$$}N{/$$} are large, this random variable is normally distributed with mean 0 and SD 1. Thus we can compute p-values using the function `pnorm`.
+The CLT tells us that when $$M$$ and $$N$$ are large, this random variable is normally distributed with mean 0 and SD 1. Thus we can compute p-values using the function `pnorm`.
 
 #### The t-distribution
 
-The CLT relies on large samples; what we refer to as _asymptotic results_. When the CLT does not apply, there is another option that does not rely on asymptotic results. When the original population from which a random variable, say {$$}Y{/$$}, is sampled is normally distributed with mean 0, then we can calculate the distribution of: 
+The CLT relies on large samples; what we refer to as _asymptotic results_. When the CLT does not apply, there is another option that does not rely on asymptotic results. When the original population from which a random variable, say $$Y$$, is sampled is normally distributed with mean 0, then we can calculate the distribution of: 
 
-{$$}
+$$
 \sqrt{N} \frac{\bar{Y}}{s_Y}
-{/$$}
+$$
 
 Note that this is the ratio of two random variables so it is not
 necessarily normal. The fact that the denominator can be small by
@@ -115,7 +113,7 @@ hfPopulation <- filter(dat,Sex == "F" & Diet == "hf") %>%
   select(Bodyweight) %>% unlist
 ```
 
-It is important to keep in mind that what we are assuming to be normal here is the distribution of {$$}y_1,y_2,\dots,y_n{/$$}, not the random variable {$$}\bar{Y}{/$$}. Although we can't do this in practice, in this illustrative example, we get to see this distribution for both controls and high fat diet mice:
+It is important to keep in mind that what we are assuming to be normal here is the distribution of $$y_1,y_2,\dots,y_n$$, not the random variable $$\bar{Y}$$. Although we can't do this in practice, in this illustrative example, we get to see this distribution for both controls and high fat diet mice:
 
 
 ```r
@@ -125,7 +123,7 @@ hist(hfPopulation)
 hist(controlPopulation)
 ```
 
-![Histograms of all weights for both populations.](images/R/clt_and_t-distribution-tmp-population_histograms-1.png) 
+![Histograms of all weights for both populations.](figure/clt_and_t-distribution-population_histograms-1.png) 
 
 We can use *qq-plots* to confirm that the distributions are relatively
 close to being normally distributed. We will explore these plots in
@@ -143,7 +141,7 @@ qqnorm(controlPopulation)
 qqline(controlPopulation)
 ```
 
-![Quantile-quantile plots of all weights for both populations.](images/R/clt_and_t-distribution-tmp-population_qqplots-1.png) 
+![Quantile-quantile plots of all weights for both populations.](figure/clt_and_t-distribution-population_qqplots-1.png) 
 
 The larger the sample, the more forgiving the result is to the
 weakness of this approximation. In the next section we will see that
