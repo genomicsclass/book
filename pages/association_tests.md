@@ -10,8 +10,6 @@ layout: page
 
 ## Association Tests
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/association_tests.Rmd).
-
 The statistical tests we have covered up to now leave out a
 substantial portion of life science projects. Specifically, we are
 referring to data that is binary, categorical and ordinal. To give a
@@ -50,11 +48,11 @@ with 4 green (correct answer) and 4 red (incorrect answer) balls.
 Under the null hypothesis that she is simply guessing, each ball
 has the same chance of being picked. We can then use combinatorics to
 figure out each probability. The probability of picking 3 is
-{$$}{4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70{/$$}. The probability of
+$${4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70$$. The probability of
 picking all 4 correct is
-{$$}{4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70{/$$}.
+$${4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70$$.
 Thus the chance of observing a 3 or something more extreme,
-under the null hypothesis, is {$$}\approx 0.24{/$$}. This is the p-value. The
+under the null hypothesis, is $$\approx 0.24$$. This is the p-value. The
 procedure that produced this p-value is called Fisher's exact test and
 it uses the *hypergeometric distribution*. 
 
@@ -185,9 +183,9 @@ tab
 ##    aa         40    10
 ```
 
-Note that you can feed `table` {$$}n{/$$} factors and it will tabulate all {$$}n{/$$}-tables.
+Note that you can feed `table` $$n$$ factors and it will tabulate all $$n$$-tables.
 
-The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ratio: {$$}(10/40) / (20/180){/$$} 
+The typical statistics we use to summarize these results is the odds ratio (OR). We compute the odds of having the disease if you are an "aa": 10/40, the odds of having the disease if you are an "AA/Aa": 20/180, and take the ratio: $$(10/40) / (20/180)$$ 
 
 
 ```r
