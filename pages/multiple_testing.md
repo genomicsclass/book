@@ -12,22 +12,18 @@ library(rafalib)
 
 ## Procedures
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/multiple_testing.Rmd).
-
 In the previous section we learned how p-values are no longer a useful quantity to interpret when dealing with high-dimensional data. This is because we are testing many _features_ at the same time. We refer to this as the _multiple comparison_ or _multiple testing_ or _multiplicity_ problem. The definition of a p-value does not provide a useful quantification here. Again, because when we test many hypotheses simultaneously, a list based simply on a small p-values cut-off of, say 0.01, can result in many false positives with high probability. Here we define terms that are more appropriate in the context of high-throughput data.
 
 The most widely used approach to the multiplicity problem is to define a _procedure_ and then estimate an informative _error rate_ for this procedure. The procedures are typically flexible through parameters or cutoffs that let us control specificity and sensitivity. An example of a procedure is: 
 
 * Compute a p-value for each gene.
-* Call significant all genes with p-values smaller than {$$}\alpha{/$$}.
+* Call significant all genes with p-values smaller than $$\alpha$$.
 
-Note that changing the {$$}\alpha{/$$} permits us to adjust specificity and sensitivity. 
+Note that changing the $$\alpha$$ permits us to adjust specificity and sensitivity. 
 
 Next we define the _error rates_  that we will try to estimate and control.
 
 ## Error Rates
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/multiple_testing.Rmd).
 
 Throughout this section we will be using the type I error and type II error terminology. We will also refer to them as false positives and false negatives respectively. Keep in mind that specificity relates to type I errors, while sensitivity relates to type II errors.
 
@@ -35,25 +31,25 @@ In the context of high-throughput data we can make several type I errors and sev
 
 |   | Called significant   | Not called significant   | Total  |  
 |---|---|---|---|
-|Null True   | {$$}V{/$$}   | {$$}m_0-V{/$$}  | {$$}m_0{/$$}  |
-|Alternative True   | {$$}S{/$$}  | {$$}m_1-S{/$$}    | {$$}m_1{/$$}    |   
-|True   | {$$}R{/$$}  |  {$$}m-R{/$$} | {$$}m{/$$}  |
+|Null True   | $$V$$   | $$m_0-V$$  | $$m_0$$  |
+|Alternative True   | $$S$$  | $$m_1-S$$    | $$m_1$$    |   
+|True   | $$R$$  |  $$m-R$$ | $$m$$  |
 
-To describe the entries in the table let's use as an example a dataset representing measurements from 10,000 genes, which means that the total number of tests that we are conducting is: {$$}m=10,000{/$$}. The number of genes for which the null hypothesis is true, which in most cases represent the "non-interesting" genes, is {$$}m_0{/$$}, while the number of genes for which the null hypothesis is false is {$$}m_1{/$$}. In general, we are interested in _detecting_ as many as the cases for which the null hypothesis is false (true positives), without incorrectly detecting cases for which the null hypothesis is true (false positives). For most high-throughput experiments, we assume that {$$}m_0{/$$} is much greater than {$$}m_1{/$$}. For example, we test 10,000 and 100 genes to be _interesting_. This implies {$$}m_1=100{/$$} and {$$}m_0=19,900{/$$}. 
+To describe the entries in the table let's use as an example a dataset representing measurements from 10,000 genes, which means that the total number of tests that we are conducting is: $$m=10,000$$. The number of genes for which the null hypothesis is true, which in most cases represent the "non-interesting" genes, is $$m_0$$, while the number of genes for which the null hypothesis is false is $$m_1$$. In general, we are interested in _detecting_ as many as the cases for which the null hypothesis is false (true positives), without incorrectly detecting cases for which the null hypothesis is true (false positives). For most high-throughput experiments, we assume that $$m_0$$ is much greater than $$m_1$$. For example, we test 10,000 and 100 genes to be _interesting_. This implies $$m_1=100$$ and $$m_0=19,900$$. 
 
-Throughout this chapter we refer to _features_ as the units being tested. In genomics, examples of features are genes, transcripts, binding sites, CpG sites, and SNPs. In the table, {$$}R{/$$} represents the total number of features that we call significant after applying our procedure, while {$$}m-R{/$$} is the total number of genes we don't call significant. The rest of the table contains important quantities that are unknown in practice.
+Throughout this chapter we refer to _features_ as the units being tested. In genomics, examples of features are genes, transcripts, binding sites, CpG sites, and SNPs. In the table, $$R$$ represents the total number of features that we call significant after applying our procedure, while $$m-R$$ is the total number of genes we don't call significant. The rest of the table contains important quantities that are unknown in practice.
 
-* {$$}V{/$$} represents the number of type I errors or false positives. Specifically, {$$}V{/$$} is the number of features for which the null hypothesis is true, that we call significant.
-* {$$}S{/$$} represents the number of true positives. Specifically, {$$}S{/$$} is the number of features for which the null hypothesis is false, that we call significant. 
+* $$V$$ represents the number of type I errors or false positives. Specifically, $$V$$ is the number of features for which the null hypothesis is true, that we call significant.
+* $$S$$ represents the number of true positives. Specifically, $$S$$ is the number of features for which the null hypothesis is false, that we call significant. 
 
-This implies that there are {$$}m_1-S{/$$} type II errors or _false negatives_ and {$$}m_0-V{/$$} true negatives. 
+This implies that there are $$m_1-S$$ type II errors or _false negatives_ and $$m_0-V$$ true negatives. 
 
-Keep in mind that if we only ran one test, a p-value is simply the probability that {$$}V=1{/$$} when {$$}m=m_0=1{/$$}. Power is the probability of {$$}S=1{/$$} when {$$}m=m_1=1{/$$}. In this very simple case, we wouldn't bother making tables. Below we will show how defining the terms in the table helps in practice the high-dimensional context.
+Keep in mind that if we only ran one test, a p-value is simply the probability that $$V=1$$ when $$m=m_0=1$$. Power is the probability of $$S=1$$ when $$m=m_1=1$$. In this very simple case, we wouldn't bother making tables. Below we will show how defining the terms in the table helps in practice the high-dimensional context.
 
   
 #### Data example
 
-Let's compute these quantities with a data example. We will use a Monte Carlo simulation using our mice data to imitate a situation in which we perform tests for 10,000 different fad diets, none of them having an effect on weight. This implies that the null hypothesis is true for diets and thus {$$}m=m_0=10,000{/$$} and {$$}m_1=0{/$$}. Let's run the tests with a sample size of {$$}N=12{/$$} and compute {$$}R{/$$}. Our procedure will declare any diet achieving a p-value smaller than {$$}\alpha=0.05{/$$} as significant. 
+Let's compute these quantities with a data example. We will use a Monte Carlo simulation using our mice data to imitate a situation in which we perform tests for 10,000 different fad diets, none of them having an effect on weight. This implies that the null hypothesis is true for diets and thus $$m=m_0=10,000$$ and $$m_1=0$$. Let's run the tests with a sample size of $$N=12$$ and compute $$R$$. Our procedure will declare any diet achieving a p-value smaller than $$\alpha=0.05$$ as significant. 
 
 
 
@@ -70,7 +66,7 @@ pvals <- replicate(m,{
 })
 ```
 
-Although in practice we do not know the fact that no diet works, in this simulation we do, and therefore we can actually compute {$$}V{/$$} and {$$}S{/$$}. Because all null hypotheses are true, we know {$$}V=R{/$$}. Of course, in practice we can't compute this quantity.
+Although in practice we do not know the fact that no diet works, in this simulation we do, and therefore we can actually compute $$V$$ and $$S$$. Because all null hypotheses are true, we know $$V=R$$. Of course, in practice we can't compute this quantity.
 
 
 ```r
@@ -82,7 +78,7 @@ sum(pvals < 0.05) ##This is R
 ```
 These many false positives are not acceptable in most contexts.
 
-Here is more complicated code showing results where 10% of the diets are effective with an average effect size of {$$}\Delta= 3{/$$} ounces. 
+Here is more complicated code showing results where 10% of the diets are effective with an average effect size of $$\Delta= 3$$ ounces. 
 Studying this code carefully will help understand the meaning of the table above.
 First let's define _the truth_:
 
@@ -125,7 +121,7 @@ table(null_hypothesis,calls)
 ##           FALSE                520                    480
 ```
 
-The first column of the table above shows us {$$}V{/$$} and {$$}S{/$$}. Note that {$$}V{/$$} and {$$}S{/$$} are random variables. If we run the simulation repeatedly, these values change. Here is a quick example:
+The first column of the table above shows us $$V$$ and $$S$$. Note that $$V$$ and $$S$$ are random variables. If we run the simulation repeatedly, these values change. Here is a quick example:
 
 
 ```r
@@ -155,23 +151,21 @@ VandS <- replicate(B,{
 ## V = 405 S = 569
 ```
 
-This motivates the definition of error rates. We can, for example, estimate probability that {$$}V{/$$} is larger than 0. This is interpreted as the probability of making at least one type I error among the 10,000 tests. In the example we made many more than 1 in every single simulation, so we suspect this probability is very practically 1. When {$$}m=1{/$$}, this probability is equivalent to the p-value. When we have a multiple tests situation, we call it the Family Wide Error Rate (FWER) and it relates to a technique that is widely used: The Bonferroni Correction.
+This motivates the definition of error rates. We can, for example, estimate probability that $$V$$ is larger than 0. This is interpreted as the probability of making at least one type I error among the 10,000 tests. In the example we made many more than 1 in every single simulation, so we suspect this probability is very practically 1. When $$m=1$$, this probability is equivalent to the p-value. When we have a multiple tests situation, we call it the Family Wide Error Rate (FWER) and it relates to a technique that is widely used: The Bonferroni Correction.
 
 ## The Bonferroni Correction 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/multiple_testing.Rmd).
+Now that we have learned about the Family Wide Error Rate (FWER), we describe what we can actually do to control it.  In practice we want to choose a _procedure_ that guarantees the FWER is smaller than a predetermined value such as 0.05. We can keep it general and instead of 0.05, use $$\alpha$$ in our derivations.
 
-Now that we have learned about the Family Wide Error Rate (FWER), we describe what we can actually do to control it.  In practice we want to choose a _procedure_ that guarantees the FWER is smaller than a predetermined value such as 0.05. We can keep it general and instead of 0.05, use {$$}\alpha{/$$} in our derivations.
+Since are now describing what we do in practice, we no longer have the advantage of knowing _the truth_. Instead, we pose a procedure and try to estimate the FWER.  Let's consider the naive procedure: "reject all the hypotheses with p-value <0.01". For illustrative purposes we will assume all the tests are independent (in the case of testing diets this is a safe assumption; in the case of genes it is not so safe since genes act together). Let $$p_1,\dots,p_{10000}$$ be the the p-values we get from each test. These are independent random variables so: 
 
-Since are now describing what we do in practice, we no longer have the advantage of knowing _the truth_. Instead, we pose a procedure and try to estimate the FWER.  Let's consider the naive procedure: "reject all the hypotheses with p-value <0.01". For illustrative purposes we will assume all the tests are independent (in the case of testing diets this is a safe assumption; in the case of genes it is not so safe since genes act together). Let {$$}p_1,\dots,p_{10000}{/$$} be the the p-values we get from each test. These are independent random variables so: 
-
-{$$}
+$$
 \begin{align*}
 \mbox{Pr}(\mbox{at least one rejection}) &= 1 -\mbox{Pr}(\mbox{no rejections}) \\
 &= 1 - \prod_{i=1}^{1000} \mbox{Pr}(p_i>0.01) \\
 &= 1-0.95^{1000} \approx 1
 \end{align*}
-{/$$}
+$$
 
 Or if you want to use simulations:
 
@@ -186,34 +180,34 @@ mean(minpval>=1)
 ## [1] 1
 ```
 
-So our FWER is 1! This is not what we were hoping for. If we wanted it to be lower than {$$}\alpha=0.05{/$$}, we failed miserably. 
+So our FWER is 1! This is not what we were hoping for. If we wanted it to be lower than $$\alpha=0.05$$, we failed miserably. 
 
-So what do we do to make the probability of a mistake lower than {$$}\alpha{/$$} ? Using the derivation above we can change the procedure by selecting a more stringent cutoff, previously 0.01, to lower our probability of at least one mistake to be 5%. Namely, by noting that: 
+So what do we do to make the probability of a mistake lower than $$\alpha$$ ? Using the derivation above we can change the procedure by selecting a more stringent cutoff, previously 0.01, to lower our probability of at least one mistake to be 5%. Namely, by noting that: 
 
-{$$}\mbox{Pr}(\mbox{at least one rejection}) =  1-(1-k)^{10000}{/$$}
+$$\mbox{Pr}(\mbox{at least one rejection}) =  1-(1-k)^{10000}$$
 
-and solving for {$$}k{/$$}, we get {$$}1-(1-k)^{10000}=0.05 \implies k = 1-0.95^{1/10000} \approx 0.000005{/$$}
+and solving for $$k$$, we get $$1-(1-k)^{10000}=0.05 \implies k = 1-0.95^{1/10000} \approx 0.000005$$
 
 This now gives a specific example of a _procedure_. This one is actually called Sidak's procedure. Specifically, we define a set of instructions, such as "reject all the null hypothesis for which p-values < 0.000005". Then, knowing the p-values are random variables, we use statistical theory to compute how many mistakes, on average, we are expected to make if we follow this procedure. More precisely, we compute bounds on these rates; that is, we show that they are smaller than some predetermined value. There is a preference in the life sciences to err on the side of being conservative.
 
 A problem with Sidak's procedure is that it assumes the tests are independent. It therefore only controls FWER when this assumption holds. The Bonferroni correction is more general in that it controls FWER even if the tests are not independent. 
 As with Sidak's procedure we start by noting that: 
 
-{$$}FWER = \mbox{Pr}(V>0) \leq \mbox{Pr}(V>0 \mid \mbox{all nulls are true}){/$$}
+$$FWER = \mbox{Pr}(V>0) \leq \mbox{Pr}(V>0 \mid \mbox{all nulls are true})$$
 
 or using the notation from the table above:
 
-{$$}\mbox{Pr}(V>0) \leq \mbox{Pr}(V>0 \mid m_1=0){/$$}
+$$\mbox{Pr}(V>0) \leq \mbox{Pr}(V>0 \mid m_1=0)$$
 
-The Bonferroni procedure sets {$$}k=\alpha/m{/$$} since we can show that:
+The Bonferroni procedure sets $$k=\alpha/m$$ since we can show that:
 
-{$$}
+$$
 \begin{align*}
 \mbox{Pr}(V>0 \,\mid \, m_1=0) &= \mbox{Pr}\left( \min_i \{p_i\} \leq \frac{\alpha}{m} \mid m_1=0 \right)\\
  &\leq \sum_{i=1}^m\leq \left(p_i \leq \frac{\alpha}{m} \right)\\
  &= m \frac{\alpha}{m}=\alpha
 \end{align*}
-{/$$}
+$$
 
 Controlling the FWER at 0.05 is a very conservative approach. Using the p-values computed in the previous section:
 
@@ -262,9 +256,7 @@ sum(pvals < 0.05/10000)
 
 ## False Discovery Rate 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/multiple_testing.Rmd).
-
-There are many situations for which requiring an FWER of 0.05 does not make sense as it is much too strict. For example, consider the very common exercise of running a preliminary small study to determine a handful of candidate genes. This is referred to as a _discovery_ driven project or experiment. We may be in search of an unknown causative gene and more than willing to perform follow up studies with many more samples on just the candidates. If we develop a procedure that produces, for example, a list of 10 genes of which 1 or 2 pan out as important, the experiment is a resounding success. With a small sample size, the only way to achieve a FWER {$$}\leq{/$$} 0.05 is with an empty list of genes. We already saw in the previous section that despite 1,000 diets being effective, we ended up with a list with just 2. Change the sample size to 6 and you very likely get 0:
+There are many situations for which requiring an FWER of 0.05 does not make sense as it is much too strict. For example, consider the very common exercise of running a preliminary small study to determine a handful of candidate genes. This is referred to as a _discovery_ driven project or experiment. We may be in search of an unknown causative gene and more than willing to perform follow up studies with many more samples on just the candidates. If we develop a procedure that produces, for example, a list of 10 genes of which 1 or 2 pan out as important, the experiment is a resounding success. With a small sample size, the only way to achieve a FWER $$\leq$$ 0.05 is with an empty list of genes. We already saw in the previous section that despite 1,000 diets being effective, we ended up with a list with just 2. Change the sample size to 6 and you very likely get 0:
 
 
 ```r
@@ -282,7 +274,7 @@ sum(pvals < 0.05/10000)
 ## [1] 0
 ```
 
-By requiring a FWER {$$}\leq{/$$} 0.05 we are practically assuring 0 power (sensitivity). In many applications, this specificity requirement is over-kill. A widely used alternative to the FWER is the false discover rate (FDR). The idea behind FDR is to consider the random variable {$$}Q \equiv V/R{/$$} with {$$}Q=0{/$$} when {$$}R=0{/$$} and {$$}V=0{/$$}. Note that {$$}R=0{/$$} (nothing called significant) implies {$$}V=0{/$$} (no false positives). So {$$}Q{/$$} is a random variable that can take values between 0 and 1 and we can define a rate by considering the average of {$$}Q{/$$}. To better understand this concept here, we compute {$$}Q{/$$} for the procedure: call everything p-value < 0.05 significant.
+By requiring a FWER $$\leq$$ 0.05 we are practically assuring 0 power (sensitivity). In many applications, this specificity requirement is over-kill. A widely used alternative to the FWER is the false discover rate (FDR). The idea behind FDR is to consider the random variable $$Q \equiv V/R$$ with $$Q=0$$ when $$R=0$$ and $$V=0$$. Note that $$R=0$$ (nothing called significant) implies $$V=0$$ (no false positives). So $$Q$$ is a random variable that can take values between 0 and 1 and we can define a rate by considering the average of $$Q$$. To better understand this concept here, we compute $$Q$$ for the procedure: call everything p-value < 0.05 significant.
 
 Before running the simulation we are going to _vectortize_ the code. This means that instead of using `sapply` to run `m` tests, we will create a matrix with all data in one call to sample. This code runs several times faster than the code above which is necessary here due to the fact that we will be generating several simulations. Understanding this chuNk of code and how it is equivalent to the code above using `sapply` will take a you long way in helping you code efficiently in R.
 
@@ -315,7 +307,7 @@ mypar(1,1)
 hist(Qs) ##Q is a random variable, this is its distribution
 ```
 
-![Q (false positives divided by number of features called significant) is a random variable. Here we generated a distribution with a Monte Carlo simulation.](images/R/multiple_testing-tmp-Q_distribution-1.png) 
+![Q (false positives divided by number of features called significant) is a random variable. Here we generated a distribution with a Monte Carlo simulation.](figure/multiple_testing-Q_distribution-1.png) 
 
 ```r
 FDR=mean(Qs)
@@ -344,7 +336,7 @@ hist(pvals,breaks=seq(0,1,0.05))
 abline(h=m0/20)
 ```
 
-![Histogram of p-values. Monte Carlo simulation was used to generate data with m_1 genes having differences between groups.](images/R/multiple_testing-tmp-pval_hist-1.png) 
+![Histogram of p-values. Monte Carlo simulation was used to generate data with m_1 genes having differences between groups.](figure/multiple_testing-pval_hist-1.png) 
 The first bar on the left represents cases with p-values smaller than 0.05. From the horizontal line we can infer that about 1/2 are false positives. This is in agreement with an FDR of 0.50.  If we look at the bar for 0.01, we can see a lower FDR, as expected, but would call less features significant.
 
 
@@ -353,19 +345,19 @@ hist(pvals,breaks=seq(0,1,0.01))
 abline(h=m0/100)
 ```
 
-![Histogram of p-values with breaks at every 0.01. Monte Carlo simulation was used to generate data with m_1 genes having differences between groups.](images/R/multiple_testing-tmp-pval_hist2-1.png) 
+![Histogram of p-values with breaks at every 0.01. Monte Carlo simulation was used to generate data with m_1 genes having differences between groups.](figure/multiple_testing-pval_hist2-1.png) 
 
-As we consider a lower a lower p-value cut-off, the number of features detected decreases (loss of sensitivity), but our FDR also decreases (gain of specificity). So how do we decide? One approach is to set a desired FDR level {$$}\alpha{/$$}, and then develop procedures that control the error rate: FDR  {$$}\leq \alpha{/$$}.
+As we consider a lower a lower p-value cut-off, the number of features detected decreases (loss of sensitivity), but our FDR also decreases (gain of specificity). So how do we decide? One approach is to set a desired FDR level $$\alpha$$, and then develop procedures that control the error rate: FDR  $$\leq \alpha$$.
 
 #### Benjamini-Hochberg (Advanced)
 
-We want to construct a procedure that guarantees the FDR to be below a certain level {$$}\alpha{/$$}. For any given {$$}\alpha{/$$}, the Benjamini-Hochberg (1995) procedure is very practical because it simply requires that we are able to compute p-values for each of the individual tests and this permits a procedure to be defined.
+We want to construct a procedure that guarantees the FDR to be below a certain level $$\alpha$$. For any given $$\alpha$$, the Benjamini-Hochberg (1995) procedure is very practical because it simply requires that we are able to compute p-values for each of the individual tests and this permits a procedure to be defined.
 
-For the procedure order the p-values in increasing order: {$$}p_{(1)},\dots,p_{(m)}{/$$}. Then define {$$}k{/$$} to be the largest {$$}i{/$$} for which
+For the procedure order the p-values in increasing order: $$p_{(1)},\dots,p_{(m)}$$. Then define $$k$$ to be the largest $$i$$ for which
 
-{$$}p_{(i)} \leq \frac{i}{m}\alpha{/$$}
+$$p_{(i)} \leq \frac{i}{m}\alpha$$
 
-The procedure is to reject tests with p-values larger than {$$}p_{(k)}{/$$}. Here is an example of how we would select the {$$}k{/$$} with code using the p-values computed above:
+The procedure is to reject tests with p-values larger than $$p_{(k)}$$. Here is an example of how we would select the $$k$$ with code using the p-values computed above:
 
 
 ```r
@@ -380,7 +372,7 @@ plot(i[1:15],sort(pvals)[1:15],main="Close-up")
 abline(0,i/m*alpha)
 ```
 
-![Plotting p-values plotted against their rank illustrates the Benjamini-Hochberg procedure. The plot on the right is a close-up of the plot on the left.](images/R/multiple_testing-tmp-pvalue_vs_rank_plot-1.png) 
+![Plotting p-values plotted against their rank illustrates the Benjamini-Hochberg procedure. The plot on the right is a close-up of the plot on the left.](figure/multiple_testing-pvalue_vs_rank_plot-1.png) 
 
 ```r
 k <- max( which( sort(pvals) < i/m*alpha) )
@@ -404,7 +396,7 @@ plot(pvals,fdr,log="xy")
 abline(h=alpha,v=cutoff) ##cutoff was computed above
 ```
 
-![FDR estimates plotted against p-value.](images/R/multiple_testing-tmp-fdr-versus-pval-1.png) 
+![FDR estimates plotted against p-value.](figure/multiple_testing-fdr-versus-pval-1.png) 
 
 We can run a Monte-Carlo simulation to confirm that the FDR is in fact lower than .05. We compute all p-values first, and then use these to decide which get called.
 
@@ -428,7 +420,7 @@ mypar(1,1)
 hist(Qs) ##Q is a random variable, this is its distribution
 ```
 
-![Histogram of Q (false positives divided by number of features called significant) when the alternative hypothesis is true for some features.](images/R/multiple_testing-tmp-Q_distribution2-1.png) 
+![Histogram of Q (false positives divided by number of features called significant) when the alternative hypothesis is true for some features.](figure/multiple_testing-Q_distribution2-1.png) 
 
 ```r
 FDR=mean(Qs)
@@ -439,7 +431,7 @@ print(FDR)
 ## [1] 0.03556253
 ```
 
-The FDR is lower than 0.05. This is to be expected because we need to be conservative to assure the FDR {$$}\leq{/$$} 0.05 for any value of {$$}m_0{/$$}, such as for the extreme case where every hypothesis tested is null: {$$}m=m_0{/$$}. If you re-do the simulation above for this case, you will find that the FDR increases. 
+The FDR is lower than 0.05. This is to be expected because we need to be conservative to assure the FDR $$\leq$$ 0.05 for any value of $$m_0$$, such as for the extreme case where every hypothesis tested is null: $$m=m_0$$. If you re-do the simulation above for this case, you will find that the FDR increases. 
 
 Finally, note that the `p.adjust` function has several options for error rate controlling procedures:
 
@@ -458,31 +450,29 @@ It is important to remember that these options offer not just different approach
 ?p.adjust
 ```
 
-In summary, requiring that FDR {$$}leq{/$$} 0.05 is a much more lenient requirement FWER {$$}leq{/$$} 0.05. Although we will end up with more false positives, FDR gives us much more power. This makes it particularly appropriate for discovery phase experiments where we may accept FDR levels much higher than 0.05.
+In summary, requiring that FDR $$leq$$ 0.05 is a much more lenient requirement FWER $$leq$$ 0.05. Although we will end up with more false positives, FDR gives us much more power. This makes it particularly appropriate for discovery phase experiments where we may accept FDR levels much higher than 0.05.
 
 ## Direct Approach to FDR and q-values (Advanced)
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/multiple_testing.Rmd).
+Here we review the results described by John D. Storey in J. R. Statist. Soc. B (2002). One major distinction between Storey's approach and Benjamini and Hochberg's is that we are no longer going to set a $$\alpha$$ level a priori. Because in many high-throughput experiments we are interested in obtaining some list for validation, we can instead decide beforehand that we will consider all tests with $$p-values$$ smaller than 0.01. We then want to attach an estimate of an error rate. Using this approach, we are guaranteed to have $$R>0$$. Note that in the FDR definition above we assigned $$Q=0$$ in the case that $$R=V=0$$. We are therefore computing: 
 
-Here we review the results described by John D. Storey in J. R. Statist. Soc. B (2002). One major distinction between Storey's approach and Benjamini and Hochberg's is that we are no longer going to set a {$$}\alpha{/$$} level a priori. Because in many high-throughput experiments we are interested in obtaining some list for validation, we can instead decide beforehand that we will consider all tests with {$$}p-values{/$$} smaller than 0.01. We then want to attach an estimate of an error rate. Using this approach, we are guaranteed to have {$$}R>0{/$$}. Note that in the FDR definition above we assigned {$$}Q=0{/$$} in the case that {$$}R=V=0{/$$}. We are therefore computing: 
-
-{$$}
+$$
 \mbox{FDR} = E\left( \frac{V}{R} \mid R>0\right) \mbox{Pr}(R>0)
-{/$$}
+$$
 
-In the approach proposed by Storey we condition on having a non-empty list, which implies {$$}R>0{/$$} , and we instead compute the _positive FDR_ 
+In the approach proposed by Storey we condition on having a non-empty list, which implies $$R>0$$ , and we instead compute the _positive FDR_ 
 
-{$$}
+$$
 \mbox{pFDR} = E\left( \frac{V}{R} \mid R>0\right) 
-{/$$}
+$$
 
-A second distinction is that while Benjamini and Hochberg's procedure controls under the worse case scenario, in which all null hypotheses are true ( {$$}m=m_0{/$$} ), Storey proposes that we actually try to estimate {$$}m_0{/$$} from the data. Because in high-throughput experiments we have so much data, this is certainly possible. The general idea is to pick a relatively high value p-value cut-off, call it {$$}\lambda{/$$}, and assume that tests obtaining p-values > {$$}\lambda{/$$} are mostly from cases in which the null hypothesis hold. We can then estimate {$$}\pi_0 = m_0/m{/$$} as: 
+A second distinction is that while Benjamini and Hochberg's procedure controls under the worse case scenario, in which all null hypotheses are true ( $$m=m_0$$ ), Storey proposes that we actually try to estimate $$m_0$$ from the data. Because in high-throughput experiments we have so much data, this is certainly possible. The general idea is to pick a relatively high value p-value cut-off, call it $$\lambda$$, and assume that tests obtaining p-values > $$\lambda$$ are mostly from cases in which the null hypothesis hold. We can then estimate $$\pi_0 = m_0/m$$ as: 
 
-{$$}
+$$
 \hat{\pi}_0 = \frac{\#\left\{p_i > \lambda \right\} }{ (1-\lambda) m }
-{/$$}
+$$
 
-There are more sophisticated procedures than this, but they follow the same general idea. Here is an example setting {$$}\lambda=0.1{/$$}. Using the p-values computed above we have:
+There are more sophisticated procedures than this, but they follow the same general idea. Here is an example setting $$\lambda=0.1$$. Using the p-values computed above we have:
 
 
 ```r
@@ -492,7 +482,7 @@ pi0=sum(pvals> lambda) /((1-lambda)*m)
 abline(h= pi0)
 ```
 
-![p-value histogram with pi0 estimate.](images/R/multiple_testing-tmp-pi0_estimate-1.png) 
+![p-value histogram with pi0 estimate.](figure/multiple_testing-pi0_estimate-1.png) 
 
 ```r
 print(pi0) ##this is close to the trye pi0=0.9
@@ -502,24 +492,47 @@ print(pi0) ##this is close to the trye pi0=0.9
 ## [1] 0.9311111
 ```
 
-With this estimate in place we can, for example, alter the Benjamini and Hochberg procedures to select the {$$}k{/$$} to be the largest value so that: 
+With this estimate in place we can, for example, alter the Benjamini and Hochberg procedures to select the $$k$$ to be the largest value so that: 
 
-{$$}\hat{\pi}_0 p_{(i)} \leq \frac{i}{m}\alpha{/$$}
+$$\hat{\pi}_0 p_{(i)} \leq \frac{i}{m}\alpha$$
 
-However, instead of doing this we compute a _q-value_ for each test. If a feature resulted in a p-value of {$$}p{/$$}, the q-value is the estimated pFDR for a list of all the features with a p-value at least as small as {$$}p{/$$}.
+However, instead of doing this we compute a _q-value_ for each test. If a feature resulted in a p-value of $$p$$, the q-value is the estimated pFDR for a list of all the features with a p-value at least as small as $$p$$.
 
 In R this can be computed with the `qvalue` function in the `qvalue` package:
 
 
 ```r
 library(qvalue)
+```
+
+```
+## Error in library(qvalue): there is no package called 'qvalue'
+```
+
+```r
 res <- qvalue(pvals)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "qvalue"
+```
+
+```r
 qvals <- res$qvalues
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'res' not found
+```
+
+```r
 plot(pvals,qvals)
 ```
 
-![Q-values versus p-values.](images/R/multiple_testing-tmp-qval_vs_pval-1.png) 
-we also obtain the estimate of {$$}\hat{\pi}_0{/$$}:
+```
+## Error in plot(pvals, qvals): error in evaluating the argument 'y' in selecting a method for function 'plot': Error: object 'qvals' not found
+```
+we also obtain the estimate of $$\hat{\pi}_0$$:
 
 
 ```r
@@ -527,6 +540,6 @@ res$pi0
 ```
 
 ```
-## [1] 0.8813727
+## Error in eval(expr, envir, enclos): object 'res' not found
 ```
-This function uses a more sophisticated approach at estimating {$$}\pi_0{/$$} than what is described above.
+This function uses a more sophisticated approach at estimating $$\pi_0$$ than what is described above.
