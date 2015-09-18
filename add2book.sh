@@ -46,6 +46,5 @@ git add pages/figure/$2*
 fi
 
 git commit -am "adding $2 to book"
-git push origin gh-pages
 
 printf "\n  *** done! *** \n\n"

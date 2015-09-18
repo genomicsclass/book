@@ -10,3 +10,4 @@
 
 ./knit.sh $1 $2
 ./add2book.sh $1 $2
+git push origin gh-pages
