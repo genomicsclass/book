@@ -7,8 +7,6 @@ layout: page
 
 ## Linear Models In Practice
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
-
 We will demonstrate how to analyze the high fat diet data using linear models instead of directly applying a t-test. We will demonstrate how, ultimately, these two approaches are equivalent. 
 
 We start by reading in the data and creating a quick stripchart:
@@ -23,13 +21,13 @@ stripchart(dat$Bodyweight ~ dat$Diet, vertical=TRUE, method="jitter",
            main="Bodyweight over Diet")
 ```
 
-![Mice bodyweights stratified by diet.](images/R/linear_models_in_practice-tmp-bodyweight_by_diet_stripchart-1.png) 
+![Mice bodyweights stratified by diet.](figure/linear_models_in_practice-bodyweight_by_diet_stripchart-1.png) 
 
 We can see that the high fat diet group appears to have higher weights on average, although there is overlap between the two samples.
 
 #### A linear model with one variable
 
-For demonstration purposes, we will build the design matrix {$$}\mathbf{X}{/$$} using the formula `~ Diet`. The group with the 1's in the second column is determined by the level of `Diet` which comes second; that is, the non-reference level. 
+For demonstration purposes, we will build the design matrix $$\mathbf{X}$$ using the formula `~ Diet`. The group with the 1's in the second column is determined by the level of `Diet` which comes second; that is, the non-reference level. 
 
 
 ```r
@@ -124,7 +122,7 @@ model.matrix(~ Diet, data=dat)
 ## [1] "contr.treatment"
 ```
 
-After trying out the `relevel` function, we finally reset `chow` as the reference level because we want the comparison to be {$$}hf - chow{/$$}:
+After trying out the `relevel` function, we finally reset `chow` as the reference level because we want the comparison to be $$hf - chow$$:
 
 
 ```r
@@ -133,11 +131,9 @@ dat$Diet <- relevel(dat$Diet, ref="chow")
 
 ## The Mathematics Behind lm()
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
+Before we use our shortcut for running linear models, `lm`, we want to review what will happen internally. Inside of `lm`, we will form the design matrix $$\mathbf{X}$$, and calculate the $$\boldsymbol{\beta}$$ which minimizes the sum of squares, as described in a previous lecture. The formula for this solution is:
 
-Before we use our shortcut for running linear models, `lm`, we want to review what will happen internally. Inside of `lm`, we will form the design matrix {$$}\mathbf{X}{/$$}, and calculate the {$$}\boldsymbol{\beta}{/$$} which minimizes the sum of squares, as described in a previous lecture. The formula for this solution is:
-
-{$$} \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathbf{Y} {/$$}
+$$ \hat{\boldsymbol{\beta}} = (\mathbf{X}^t \mathbf{X})^{-1} \mathbf{X}^t \mathbf{Y} $$
 
 We can calculate this in R using our matrix multiplication operator `%*%`, the inverse function `solve` and the transpose function `t`.
 
@@ -234,13 +230,11 @@ abline(h=coefs[1]+coefs[2],col=cols[2])
 legend("right",names(coefs),fill=cols,cex=.75,bg="white")
 ```
 
-![Estimated linear model coefficients for bodyweight data illustrated with arrows.](images/R/linear_models_in_practice-tmp-parameter_estimate_illustration-1.png) 
+![Estimated linear model coefficients for bodyweight data illustrated with arrows.](figure/linear_models_in_practice-parameter_estimate_illustration-1.png) 
 
 ## Comparing Simple Two Group lm to a t-test
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/linear_models_in_practice.Rmd).
-
-To make a connection with material presented earlier, this simple linear model is actually giving us the same result (the t-statistic and p-value) for the difference as a specific kind of t-test. This is the t-test between two groups with the assumption that both groups have the same variance. This was encoded into our linear model when we assumed that the errors {$$}\boldsymbol{\varepsilon}{/$$} were all equally distributed.
+To make a connection with material presented earlier, this simple linear model is actually giving us the same result (the t-statistic and p-value) for the difference as a specific kind of t-test. This is the t-test between two groups with the assumption that both groups have the same variance. This was encoded into our linear model when we assumed that the errors $$\boldsymbol{\varepsilon}$$ were all equally distributed.
 
 Though, in this case, the linear model is equivalent to a t-test, we will soon explore more complicated designs, where the linear model is a useful extension.
 
