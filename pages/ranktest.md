@@ -7,8 +7,6 @@ title: Rank tests
 
 ## Wilcoxon Rank Sum Test
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/robust/ranktest.Rmd).
-
 We learned how the sample mean and SD are susceptible to outliers. The
 t-test is based on these measures and is susceptible as well. The
 Wilcox rank test (equivalent to the Mann-Whitney test) provides an
@@ -66,14 +64,14 @@ ws <- sapply(x,function(z) rank(c(z,y))[1]-1)
 text( rep(1.05,length(ws)), xrank, ws, cex=0.8)
 ```
 
-![Data from two populations with two outliers. The left plot shows the original data and the right plot shows their ranks. The numbers are the w values ](images/R/ranktest-tmp-rank-test-illustration-1.png) 
+![Data from two populations with two outliers. The left plot shows the original data and the right plot shows their ranks. The numbers are the w values ](figure/ranktest-rank-test-illustration-1.png) 
 
 ```r
 W <-sum(ws) 
 ```
 
 `W` is the sum of the ranks for the first group relative to the second
-group. We can compute an exact p-value for {$$}W{/$$} based on
+group. We can compute an exact p-value for $$W$$ based on
 combinatorics. But we can also use the CLT, as
 statistical theory tells us that this `W` is approximated by the
 normal distribution. We can construct a z-score as follows: 
