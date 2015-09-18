@@ -7,22 +7,20 @@ title: Expressing design formula in R
 
 ## The Design Matrix
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/expressing_design_formula.Rmd).
-
 Here we will show how to use the two base R functions:
 
 - `formula`
 - `model.matrix`
 
-in order to produce *design matrices* (also known as *model matrices*) for a variety of linear models. The design matrix is the matrix {$$}\mathbf{X}{/$$} that we have seen in previous sections.
+in order to produce *design matrices* (also known as *model matrices*) for a variety of linear models. The design matrix is the matrix $$\mathbf{X}$$ that we have seen in previous sections.
 
-For fitting linear models in R, we will directly provide a *formula* to the `lm` function. In this script, we will use the `model.matrix` function, which is used internally by the `lm` function. This will help us to connect the R *formula* with the matrix {$$}\mathbf{X}{/$$} from the equation {$$}\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}{/$$} that we have seen. It will therefore help us interpret the results from `lm`.
+For fitting linear models in R, we will directly provide a *formula* to the `lm` function. In this script, we will use the `model.matrix` function, which is used internally by the `lm` function. This will help us to connect the R *formula* with the matrix $$\mathbf{X}$$ from the equation $$\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}$$ that we have seen. It will therefore help us interpret the results from `lm`.
 
 #### Choice of design
 
 The choice of design matrix is a critical step in linear modeling as it encodes which coefficients will be fit in the model, as well as the inter-relationship between the samples. 
 
-The very simplest design matrix is a column of 1's, where a single coefficient is fit for all the samples. We refer to this term as _intercept_. For standard linear modeling, this fitted coefficient will simply be the average of the observed values ({$$}\mathbf{Y}{/$$}). However, this is not our typical use of linear models.
+The very simplest design matrix is a column of 1's, where a single coefficient is fit for all the samples. We refer to this term as _intercept_. For standard linear modeling, this fitted coefficient will simply be the average of the observed values ($$\mathbf{Y}$$). However, this is not our typical use of linear models.
 
 We typically use linear models to make comparisons between different groups. Hence, the design matrices that we ultimately work with will have at least two columns: an intercept column, which consists of a column of 1's, and a second column, which specifies which samples are in a second group. In this case, two coefficients are fit in the linear model: the intercept, which captures the average of the first group, and a second coefficient, which captures the difference between the average of the second group and the first group. This is typically the coefficient we are interested in when we are performing statistical tests: we want to know if the difference between the two groups is zero or not.
 
@@ -89,7 +87,7 @@ model.matrix(~ group)
 ## [1] 0 1
 ```
 
-This is **not** the design matrix we wanted, and the reason is that we provided a numeric variable to the `formula` and `model.matrix` functions, without saying that these numbers actually referred to different groups. If the groups did not happen to have a difference of 1 (and by luck they do in this case), the linear model coefficient {$$}\beta_1{/$$} for the difference between groups would be wrong. We want the second column to have only 0 and 1, indicating group membership.
+This is **not** the design matrix we wanted, and the reason is that we provided a numeric variable to the `formula` and `model.matrix` functions, without saying that these numbers actually referred to different groups. If the groups did not happen to have a difference of 1 (and by luck they do in this case), the linear model coefficient $$\beta_1$$ for the difference between groups would be wrong. We want the second column to have only 0 and 1, indicating group membership.
 
 Also, a note about factors: the names of the levels are irrelevant to `model.matrix` and `lm`. All that matters is the order. For example:
 
@@ -256,8 +254,6 @@ model.matrix(~ group*condition)
 
 ## Releveling
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/expressing_design_formula.Rmd).
-
 The level which is chosen for the *reference level* or *base level* is the level which is contrasted against and, by default, this is simply the first level alphabetically. We can specify that we want group 2 to be the base level by either using the `relevel` function or by providing the levels explicitly in the `factor` call:
 
 
@@ -351,8 +347,6 @@ model.matrix(~ group, data=data.frame(group=5:8))
 
 
 ## Continuous Variables
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/linear/expressing_design_formula.Rmd).
 
 In the beginning of this lab, we assumed that we didn't want to encode the variable as a numeric, but in certain designs we might be interested in using numeric variables in the design formula, as opposed to converting them to a factor first. For example, we could be interested in testing various dosages of a treatment, where we expect a specific relationship between a measured quantity and the dosage, e.g. 0 mg, 10mg, 20mg. 
 
