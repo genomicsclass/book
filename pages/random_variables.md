@@ -12,8 +12,6 @@ title: Introduction to Random Variables
 
 ## Introduction 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
-
 
 
 This course introduces the statistical concepts necessary to understand p-values and confidence intervals. These terms are ubiquitous in the life science literature. Let's use [this paper](http://diabetes.diabetesjournals.org/content/53/suppl_3/S215.full]) as an example. 
@@ -24,9 +22,9 @@ Note that the abstract has this statement:
 
 To support this claim they provide the following in the results section:
 
-> "Already during the first week after introduction of high-fat diet, body weight increased significantly more in the high-fat diet-fed mice ({$$}+{/$$} 1.6 {$$}\pm{/$$} 0.1 g) than in the normal diet-fed mice ({$$}+{/$$} 0.2 {$$}\pm{/$$} 0.1 g; P < 0.001)."
+> "Already during the first week after introduction of high-fat diet, body weight increased significantly more in the high-fat diet-fed mice ($$+$$ 1.6 $$\pm$$ 0.1 g) than in the normal diet-fed mice ($$+$$ 0.2 $$\pm$$ 0.1 g; P < 0.001)."
 
-What does P < 0.001 mean? What are the {$$}\pm{/$$} included? In this class,
+What does P < 0.001 mean? What are the $$\pm$$ included? In this class,
 we will learn what this means and learn to compute these values in
 R. The first step is to understand what a random variable is. To do
 this, we will use data from a mouse database (provided by Karen
@@ -39,6 +37,15 @@ If you already downloaded the `femaleMiceWeights` file and into your working dir
 
 ```r
 dat <- read.csv("femaleMiceWeights.csv")
+```
+
+```
+## Warning in file(file, "rt"): cannot open file 'femaleMiceWeights.csv': No
+## such file or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 #### Our first look at data
@@ -55,13 +62,7 @@ head(dat)
 ```
 
 ```
-##   Diet Bodyweight
-## 1 chow      21.51
-## 2 chow      28.14
-## 3 chow      24.04
-## 4 chow      23.45
-## 5 chow      23.68
-## 6 chow      19.79
+## Error in head(dat): object 'dat' not found
 ```
 
 In RStudio, you can view the entire dataset with
@@ -81,12 +82,26 @@ averages. So let's look at the average of each group:
 ```r
 library(dplyr)
 control <- filter(dat,Diet=="chow") %>% select(Bodyweight) %>% unlist
+```
+
+```
+## Error in filter_(.data, .dots = lazyeval::lazy_dots(...)): object 'dat' not found
+```
+
+```r
 treatment <- filter(dat,Diet=="hf") %>% select(Bodyweight) %>% unlist
+```
+
+```
+## Error in filter_(.data, .dots = lazyeval::lazy_dots(...)): object 'dat' not found
+```
+
+```r
 print( mean(treatment) )
 ```
 
 ```
-## [1] 26.83417
+## Error in mean(treatment): object 'treatment' not found
 ```
 
 ```r
@@ -94,16 +109,23 @@ print( mean(control) )
 ```
 
 ```
-## [1] 23.81333
+## Error in mean(control): object 'control' not found
 ```
 
 ```r
 obsdiff <- mean(treatment) - mean(control)
+```
+
+```
+## Error in mean(treatment): object 'treatment' not found
+```
+
+```r
 print(obsdiff)
 ```
 
 ```
-## [1] 3.020833
+## Error in print(obsdiff): object 'obsdiff' not found
 ```
 
 So the hf diet mice are about 10% heavier. Are we done? Why do we need p-values and confidence intervals? The reason is that these averages are random variables. They can take many values. 
@@ -113,8 +135,6 @@ If we repeat the experiment, we obtain 24 new mice from The Jackson Laboratory a
 <a name="random_variable"></a>
 
 ## Random Variables
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
 
 Let's see what a random variable is. Imagine we actually have the weight of all control female mice and can upload them to R. In Statistics, we refer to this as *the population*. These are all the control mice available from which we sampled 24. Note that in practice we do not have access to the population. We have a special data set that we are using here to illustrate concepts. 
 
@@ -165,8 +185,6 @@ Note how the average varies. We can continue to do this repeatedly and start lea
 <a name="null_distribution"></a>
 
 ## The Null Hypothesis
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
 
 Now let's go back to our average difference of `obsdiff`. As
 scientists we need to be skeptics. How do we know that this `obsdiff`
@@ -220,7 +238,7 @@ mean(null >= obsdiff)
 ```
 
 ```
-## [1] 0.0138
+## Error in mean(null >= obsdiff): object 'obsdiff' not found
 ```
 
 Only a small percent of the 10,000 simulations. So as skeptics what do
@@ -231,8 +249,6 @@ a p-value, which we will define more formally later in the book.
 <a name="distributions"></a>
 
 ## Distributions
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
 
 We have explained what we mean by *null* in the context of null hypothesis, but what exactly is a distribution?
 The simplest way to think of a *distribution* is as a compact description of many numbers. For example, suppose you have measured the heights of all men in a population. Imagine you need to describe these numbers to someone that has no idea what these heights are, such as an alien that has never visited Earth. Suppose all these heights are contained in the following dataset:
@@ -256,11 +272,11 @@ round(sample(x,10),1)
 
 #### Cumulative Distribution Function
 
-Scanning through these numbers, we start to get a rough idea of what the entire list looks like, but it is certainly inefficient. We can quickly improve on this approach by defining and visualizing a _distribution_. To define a distribution we compute, for all possible values of {$$}a{/$$}, the proportion of numbers in our list that are below {$$}a{/$$}. We use the following notation:
+Scanning through these numbers, we start to get a rough idea of what the entire list looks like, but it is certainly inefficient. We can quickly improve on this approach by defining and visualizing a _distribution_. To define a distribution we compute, for all possible values of $$a$$, the proportion of numbers in our list that are below $$a$$. We use the following notation:
 
-{$$} F(a) \equiv \mbox{Pr}(x \leq a) {/$$}
+$$ F(a) \equiv \mbox{Pr}(x \leq a) $$
 
-This is called the cumulative distribution function (CDF). When the CDF is derived from data, as opposed to theoretically, we also call it the empirical CDF (ECDF). We can plot {$$}F(a){/$$} versus {$$}a{/$$} like this:
+This is called the cumulative distribution function (CDF). When the CDF is derived from data, as opposed to theoretically, we also call it the empirical CDF (ECDF). We can plot $$F(a)$$ versus $$a$$ like this:
 
 
 ```r
@@ -272,7 +288,7 @@ plot(values, heightecdf(values), type="l",
      xlab="a (Height in inches)",ylab="Pr(x <= a)")
 ```
 
-![Empirical cummulative distribution function for height.](images/R/random_variables-tmp-ecdf-1.png) 
+![Empirical cummulative distribution function for height.](figure/random_variables-ecdf-1.png) 
 
 #### Histograms
 
@@ -282,7 +298,7 @@ it further here. Furthermore, the `ecdf` is actually not as popular as
 histograms, which give us the same information, but show us the
 proportion of values in intervals: 
 
-{$$} \mbox{Pr}(a \leq x \leq b) = F(b) - F(a) {/$$}
+$$ \mbox{Pr}(a \leq x \leq b) = F(b) - F(a) $$
 
 Plotting these heights as bars is what we call a _histogram_. It is a
 more useful plot because we are usually more interested in intervals:
@@ -303,24 +319,22 @@ bins <- seq(smallest, largest)
 hist(x,breaks=bins,xlab="Height (in inches)",main="Adult men heights")
 ```
 
-![Histogram for heights.](images/R/random_variables-tmp-histogram-1.png) 
+![Histogram for heights.](figure/random_variables-histogram-1.png) 
 
 Showing this plot to the alien is much more informative than showing numbers. With this simple plot we can approximate the number of individuals in any given interval. For example, there are about 70 individuals over six feet (72 inches) tall. 
 
 
 ## Probability Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
-
 Summarizing lists of numbers is one powerful use of distribution. An
 even more important use is describing the possible outcomes of a
 random variable. Unlike a fixed list of numbers, we don't actually observe all possible outcomes of random variables, so instead of describing proportions, we describe
 probabilities. For instance, if we pick a random height for our list,
-then the probability of it falling between {$$}a{/$$} and {$$}b{/$$} is denoted with: 
+then the probability of it falling between $$a$$ and $$b$$ is denoted with: 
 
-{$$} \mbox{Pr}(a \leq X \leq b) = F(b) - F(a) {/$$}
+$$ \mbox{Pr}(a \leq X \leq b) = F(b) - F(a) $$
 
-Note that the {$$}X{/$$} is now capitalized to distinguish it as a random
+Note that the $$X$$ is now capitalized to distinguish it as a random
 variable and that the equation above defines the probability
 distribution of the random variable. Knowing this distribution is
 incredibly useful in science. For example, in the case above, if we
@@ -353,7 +367,7 @@ for (i in 1:n) {
   }
 ```
 
-![Illustration of the null distribution.](images/R/random_variables-tmp-null_distribution_illustration-1.png) 
+![Illustration of the null distribution.](figure/random_variables-null_distribution_illustration-1.png) 
 
 The figure above amounts to a histogram. From a histogram of the
 `null` vector we calculated earlier, we can see that values as large
@@ -362,30 +376,35 @@ as `obsdiff` are relatively rare:
 
 ```r
 hist(null, freq=TRUE)
+```
+
+![Null distribution with observed difference marked with vertical red line.](figure/random_variables-null_and_obs-1.png) 
+
+```r
 abline(v=obsdiff, col="red", lwd=2)
 ```
 
-![Null distribution with observed difference marked with vertical red line.](images/R/random_variables-tmp-null_and_obs-1.png) 
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'obsdiff' not found
+```
 
-An important point to keep in mind here is that while we defined {$$}\mbox{Pr}(a){/$$} by counting cases, we will learn that, in some circumstances, mathematics gives us formulas for {$$}\mbox{Pr}(a){/$$} that save us the trouble of computing them as we did here. One example of this powerful approach uses the normal distribution approximation:
+An important point to keep in mind here is that while we defined $$\mbox{Pr}(a)$$ by counting cases, we will learn that, in some circumstances, mathematics gives us formulas for $$\mbox{Pr}(a)$$ that save us the trouble of computing them as we did here. One example of this powerful approach uses the normal distribution approximation:
 
 <a name="normal_distribution"></a>
 
 ## Normal Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/random_variables.Rmd).
-
 The probability distribution we see above approximates one that is very common in nature: the bell curve, also known as the normal distribution or Gaussian distribution. When the histogram of a list of numbers approximates the normal distribution, we can use a convenient mathematical formula to approximate the proportion of values or outcomes in any given interval:
 
-{$$}
+$$
 \mbox{Pr}(a < x < b) = \int_a^b \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left( \frac{-(x-\mu)^2}{2 \sigma^2} \right)} \, dx
-{/$$}
+$$
 
 While the formula may look intimidating, don't worry, you will never
 actually have to type it out, as it is stored in a more convenient
-form (as `pnorm` in R which sets *a* to {$$}-\infty{/$$}, and takes *b* as an argument). 
+form (as `pnorm` in R which sets *a* to $$-\infty$$, and takes *b* as an argument). 
 
-Here {$$}\mu{/$$} and {$$}\sigma{/$$} are referred to as the mean and standard
+Here $$\mu$$ and $$\sigma$$ are referred to as the mean and standard
 deviation of the population (we explain these in more detail in
 another section). If this *normal approximation* holds for our list, then the
 population mean and variance of our list can be used in the formula
@@ -401,10 +420,10 @@ approximation works very well here:
 ```
 
 ```
-## [1] 0.01391929
+## Error in pnorm(obsdiff, mean(null), sd(null)): object 'obsdiff' not found
 ```
 
-Later we will learn that there is a mathematical explanation for this. A very useful characteristic of this approximation is that one only needs to know {$$}\mu{/$$} and {$$}\sigma{/$$} to describe the entire distribution. From this, we can compute the proportion of values in any interval. 
+Later we will learn that there is a mathematical explanation for this. A very useful characteristic of this approximation is that one only needs to know $$\mu$$ and $$\sigma$$ to describe the entire distribution. From this, we can compute the proportion of values in any interval. 
 
 
 #### Summary
