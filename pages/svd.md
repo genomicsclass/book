@@ -7,30 +7,28 @@ title: Singular Value Decomposition
 
 ## Singular Value Decomposition
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/highdim/svd.Rmd).
-
 In the previous section we motivated dimension reduction and showed a transformation that permitted us to approximate the distance between two dimensional points with the distance betwee points with just one dimension. The singular value decomposition (SVD) is a generalization of the algorithm we used in the motivational section. As in the example, the SVD provides a transformation of the original data. As we will see, this transformation has some very useful properties. 
 
-The main result SVD provides is that we can write an {$$}m \times n{/$$}, matrix {$$}\mathbf{Y}{/$$} as
+The main result SVD provides is that we can write an $$m \times n$$, matrix $$\mathbf{Y}$$ as
 
-{$$}\mathbf{U}^\top\mathbf{Y} = \mathbf{DV}^\top{/$$}
+$$\mathbf{U}^\top\mathbf{Y} = \mathbf{DV}^\top$$
 
 With:
 
-* {$$}\mathbf{U}{/$$} is an {$$}m \times p{/$$} orthogonal matrix
-* {$$}\mathbf{V}{/$$} is an {$$}p \times p{/$$} orthogonal matrix
-* {$$}\mathbf{D}{/$$} is an {$$}n \times p{/$$} diagonal matrix 
+* $$\mathbf{U}$$ is an $$m \times p$$ orthogonal matrix
+* $$\mathbf{V}$$ is an $$p \times p$$ orthogonal matrix
+* $$\mathbf{D}$$ is an $$n \times p$$ diagonal matrix 
 
-with {$$}p=\mbox{min}(m,n){/$$}. Note that {$$}\mathbf{U}^\top{/$$} provide the rotation of our data {$$}\mathbf{Y}{/$$} that turns out to be very useful because the variability (sum of squares to be precise) of the columns of {$$}\mathbf{VD}{/$$} are decreasing.
-Also note that because {$$}\mathbf{U}{/$$} is orthogonal, we can wrtie the SVD like this: 
+with $$p=\mbox{min}(m,n)$$. Note that $$\mathbf{U}^\top$$ provide the rotation of our data $$\mathbf{Y}$$ that turns out to be very useful because the variability (sum of squares to be precise) of the columns of $$\mathbf{VD}$$ are decreasing.
+Also note that because $$\mathbf{U}$$ is orthogonal, we can wrtie the SVD like this: 
 
-{$$}\mathbf{Y} = \mathbf{UDV}^\top{/$$}
+$$\mathbf{Y} = \mathbf{UDV}^\top$$
 
 In fact, the formula above is much more commonly used. Also note that we can write the transformation like this:
 
-{$$}\mathbf{YV} = \mathbf{UD}{/$$}
+$$\mathbf{YV} = \mathbf{UD}$$
 
-This transformaton of {$$}Y{/$$} also results in a matrix with column of decreasing sum of squares.
+This transformaton of $$Y$$ also results in a matrix with column of decreasing sum of squares.
 
 
 Applying the SVD to the motivating example we have:
@@ -49,7 +47,7 @@ round(sqrt(2) * s$u , 3)
 ## [2,] -0.999  1.001
 ```
 
-The plot we showed after the rotation, was showing what we call the _principal components_: the second plotted againts the first. To obtain the principal components from the SVD we simply need the columns of the rotation {$$}\mathbf{U}^\top\mathbf{Y}{/$$} :
+The plot we showed after the rotation, was showing what we call the _principal components_: the second plotted againts the first. To obtain the principal components from the SVD we simply need the columns of the rotation $$\mathbf{U}^\top\mathbf{Y}$$ :
 
 
 ```r
@@ -58,12 +56,12 @@ PC2 = s$d[2]*s$v[,2]
 plot(PC1,PC2,xlim=c(-3,3),ylim=c(-3,3))
 ```
 
-![Second PC plotted against first PC for the twins height data](images/R/svd-tmp-PCAplot-1.png) 
+![Second PC plotted against first PC for the twins height data](figure/svd-PCAplot-1.png) 
 
 
 ### How is this useful?
 
-It is not immediately obvious how incredibly useful the SVD can be so let's consider some examples. In this example we will try to reduce dimension of {$$}V{/$$} and still be able to reconstruct {$$}Y{/$$}.
+It is not immediately obvious how incredibly useful the SVD can be so let's consider some examples. In this example we will try to reduce dimension of $$V$$ and still be able to reconstruct $$Y$$.
 
 Let's compute the SVD on the gene expression table we have been working with. We will take a subset of 100 genes so that computations are faster.
 
@@ -75,7 +73,7 @@ ind <- sample(nrow(e),500)
 Y <- t(apply(e[ind,],1,scale)) #standardize data for illustration
 ```
 
-The `svd` command returns the three matrices (only the diagonal entries are returned for {$$}D{/$$})
+The `svd` command returns the three matrices (only the diagonal entries are returned for $$D$$)
 
 ```r
 s <- svd(Y)
@@ -97,16 +95,16 @@ max(abs(resid))
 ## [1] 3.508305e-14
 ```
 
-If we look at the sum of squares of {$$}\mathbf{UD}{/$$} we see that the last few are quite close to 0.  
+If we look at the sum of squares of $$\mathbf{UD}$$ we see that the last few are quite close to 0.  
 
 
 ```r
 plot(s$d)
 ```
 
-![Entries of the diagonal of D for gene expression data.](images/R/svd-tmp-D_entries-1.png) 
+![Entries of the diagonal of D for gene expression data.](figure/svd-D_entries-1.png) 
 
-This implies that the last columns of `V` have a very small effect on the reconstruction of `Y`. To see this consider the extreme example in which the last entry of {$$}V{/$$} is 0. In this case the last column of {$$}V{/$$} is not needed at all. Because of the way the SVD is created, the columns of {$$}V{/$$}, have less and less influence on the reconstruction of {$$}Y{/$$}. You commonly see this described as "explaining less varinace". This implies that for a large matrix, by the time you get to the last columns it is possible that there is not much left to "explain" As an example, we will look at what happens if we remove the four last column?
+This implies that the last columns of `V` have a very small effect on the reconstruction of `Y`. To see this consider the extreme example in which the last entry of $$V$$ is 0. In this case the last column of $$V$$ is not needed at all. Because of the way the SVD is created, the columns of $$V$$, have less and less influence on the reconstruction of $$Y$$. You commonly see this described as "explaining less varinace". This implies that for a large matrix, by the time you get to the last columns it is possible that there is not much left to "explain" As an example, we will look at what happens if we remove the four last column?
 
 
 ```r
@@ -122,14 +120,14 @@ max(abs(resid))
 
 The larges residual is practically 0, meaning that we `Yhat` is practically the same as `Y`, yet we need 4 less dimensions to transmit the information.
 
-By looking at {$$}d{/$$}, we can see that in this particular dataset we can obtain a good approximation keeping only 94 columns. The following plots are useful for seeing how much of the variability is explained by each column:
+By looking at $$d$$, we can see that in this particular dataset we can obtain a good approximation keeping only 94 columns. The following plots are useful for seeing how much of the variability is explained by each column:
 
 
 ```r
 plot(s$d^2/sum(s$d^2)*100,ylab="Percent variability explained")
 ```
 
-![Percent variance explained by each principal component of gene expression data.](images/R/svd-tmp-percent_var_explained-1.png) 
+![Percent variance explained by each principal component of gene expression data.](figure/svd-percent_var_explained-1.png) 
 
 We can also make cumulative plot
 
@@ -138,9 +136,9 @@ We can also make cumulative plot
 plot(cumsum(s$d^2)/sum(s$d^2)*100,ylab="Percent variability explained",ylim=c(0,100),type="l")
 ```
 
-![Cumulative variance explained by principal components of gene expression data.](images/R/svd-tmp-cum_variance_explained-1.png) 
+![Cumulative variance explained by principal components of gene expression data.](figure/svd-cum_variance_explained-1.png) 
 
-We see that although we start with just 125 dimensions we can approximate {$$}Y{/$$}:
+We see that although we start with just 125 dimensions we can approximate $$Y$$:
 
 
 ```r
@@ -150,7 +148,7 @@ resid <- Y - Yhat
 boxplot(resid,ylim=quantile(Y,c(0.01,0.99)),range=0)
 ```
 
-![Residuals from comparing a reconstructed gene expression table using 95 PCs to the original data with 189 dimensions.](images/R/svd-tmp-reconstruction_with_less_dimensions-1.png) 
+![Residuals from comparing a reconstructed gene expression table using 95 PCs to the original data with 189 dimensions.](figure/svd-reconstruction_with_less_dimensions-1.png) 
 
 Therefore, by using only half as many dimensions we retain most of the variability in our data:
 
@@ -165,7 +163,7 @@ var(as.vector(resid))/var(as.vector(Y))
 
 We say that we explain 96% of the variability.
 
-Note that we can compute this proportionfrom {$$}D{/$$}:
+Note that we can compute this proportionfrom $$D$$:
 
 ```r
 1-sum(s$d[1:k]^2)/sum(s$d^2)
@@ -174,7 +172,7 @@ Note that we can compute this proportionfrom {$$}D{/$$}:
 ```
 ## [1] 0.04076899
 ```
-Thus the entries of {$$}D{/$$} tell us how much each
+Thus the entries of $$D$$ tell us how much each
 
 ### Highly correlated data
 
@@ -197,7 +195,7 @@ cor(Y)
 ## x 1.0000000 0.9998873
 ## x 0.9998873 1.0000000
 ```
-In this case, the second column adds very little "information" since all the entries of `Y[,1]-Y[,2]` are close to 0. Reporting `rowMeans(Y)` is even more efficient since `Y[,1]-rowMeans(Y)` and `Y[,2]-rowMeans(Y)` are even closer to 0. `rowMeans(Y)`  turns out to be the information represented in the first column on {$$}U{/$$}. The SVD helps us notice that we explain almost all the variability with just this first column:
+In this case, the second column adds very little "information" since all the entries of `Y[,1]-Y[,2]` are close to 0. Reporting `rowMeans(Y)` is even more efficient since `Y[,1]-rowMeans(Y)` and `Y[,2]-rowMeans(Y)` are even closer to 0. `rowMeans(Y)`  turns out to be the information represented in the first column on $$U$$. The SVD helps us notice that we explain almost all the variability with just this first column:
 
 
 ```r
