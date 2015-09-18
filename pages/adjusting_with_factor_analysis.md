@@ -7,14 +7,23 @@ title: Modeling Batch Effects with Factor Analysis
 
 ##  Modeling Batch Effects with Factor Analysis
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/batch/adjusting_with_factor_analysis.Rmd).
-
 To illustrate how we can adjust for batch effects using statistical methods, we continue to use our subset example with sex as the outcome of interest, and with months purposely somewhat confounded with sex. 
 
 
 ```r
 library(GSE5859Subset)
+```
+
+```
+## Error in library(GSE5859Subset): there is no package called 'GSE5859Subset'
+```
+
+```r
 data(GSE5859Subset)
+```
+
+```
+## Warning in data(GSE5859Subset): data set 'GSE5859Subset' not found
 ```
 
 Below is an image we showed earlier with a subset of genes showing both the sex effect and the time effects, along with sample to sample correlations (computed on all genes) showing the complex structure of the data:
@@ -28,33 +37,128 @@ library(genefilter)
 
 
 sex <- sampleInfo$group
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
+```
+
+```r
 batch <- factor(format(sampleInfo$date,"%m"))
+```
 
+```
+## Error in format(sampleInfo$date, "%m"): object 'sampleInfo' not found
+```
+
+```r
 chr <- geneAnnotation$CHR
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'geneAnnotation' not found
+```
+
+```r
 tt<-rowttests(geneExpression,batch)
+```
 
+```
+## Error in rowttests(geneExpression, batch): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
+```
+
+```r
 ind1 <- which(chr=="chrY") #real differences
-ind2 <- setdiff(c(order(tt$dm)[1:25],order(-tt$dm)[1:25]),ind1)
+```
 
+```
+## Error in which(chr == "chrY"): object 'chr' not found
+```
+
+```r
+ind2 <- setdiff(c(order(tt$dm)[1:25],order(-tt$dm)[1:25]),ind1)
+```
+
+```
+## Error in order(tt$dm): object 'tt' not found
+```
+
+```r
 set.seed(1)
 ind0 <- setdiff(sample(seq(along=tt$dm),50),c(ind2,ind1))
+```
+
+```
+## Error in seq(along = tt$dm): object 'tt' not found
+```
+
+```r
 geneindex<-c(ind2,ind0,ind1)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'ind2' not found
+```
+
+```r
 mat<-geneExpression[geneindex,]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'geneExpression' not found
+```
+
+```r
 mat <- mat -rowMeans(mat)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'mat' not found
+```
+
+```r
 icolors <- colorRampPalette(rev(brewer.pal(11,"RdYlBu")))(100)
 
 mypar(1,2)
 image(t(mat),xaxt="n",yaxt="n",col=icolors)
+```
+
+```
+## Error in t(mat): object 'mat' not found
+```
+
+```r
 y <- geneExpression - rowMeans(geneExpression)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'geneExpression' not found
+```
+
+```r
 image(1:ncol(y),1:ncol(y),cor(y),col=icolors,zlim=c(-1,1),
        xaxt="n",xlab="",yaxt="n",ylab="")
+```
+
+```
+## Error in ncol(y): object 'y' not found
+```
+
+```r
 axis(2,1:ncol(y),sex,las=2)
+```
+
+```
+## Error in ncol(y): object 'y' not found
+```
+
+```r
 axis(1,1:ncol(y),sex,las=2)
 ```
 
-![Image of subset gene expression data (left) and image of correlations for this dataset (right).](images/R/adjusting_with_factor_analysis-tmp-correlation_image-1.png) 
+```
+## Error in ncol(y): object 'y' not found
+```
 
 
 
@@ -67,14 +171,44 @@ Here is a plot of dates for each sample, with color representing month:
 
 ```r
 times <-sampleInfo$date 
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
+```
+
+```r
 mypar(1,1)
 o=order(times)
-plot(times[o],pch=21,bg=as.numeric(batch)[o],ylab="date")
-o=order(times)
+```
+
+```
+## Error in order(times): object 'times' not found
+```
+
+```r
 plot(times[o],pch=21,bg=as.numeric(batch)[o],ylab="date")
 ```
 
-![Dates with color denoting month.](images/R/adjusting_with_factor_analysis-tmp-what_is_batch-1.png) 
+```
+## Error in plot(times[o], pch = 21, bg = as.numeric(batch)[o], ylab = "date"): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'times' not found
+```
+
+```r
+o=order(times)
+```
+
+```
+## Error in order(times): object 'times' not found
+```
+
+```r
+plot(times[o],pch=21,bg=as.numeric(batch)[o],ylab="date")
+```
+
+```
+## Error in plot(times[o], pch = 21, bg = as.numeric(batch)[o], ylab = "date"): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'times' not found
+```
 There is more than one day per month. Could day have an effect as well?
 
 
@@ -84,14 +218,44 @@ Here is a plot of the first principal component ordered by date:
 
 ```r
 s <- svd(y)
+```
+
+```
+## Error in as.matrix(x): object 'y' not found
+```
+
+```r
 mypar(1,1)
 o<-order(times)
+```
+
+```
+## Error in order(times): object 'times' not found
+```
+
+```r
 cols <- as.numeric( batch)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'batch' not found
+```
+
+```r
 plot(s$v[o,1],pch=21,cex=1.25,bg=cols[o],ylab="First PC",xaxt="n",xlab="")
+```
+
+```
+## Error in plot(s$v[o, 1], pch = 21, cex = 1.25, bg = cols[o], ylab = "First PC", : error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 's' not found
+```
+
+```r
 legend("topleft",c("Month 1","Month 2"),col=1:2,pch=16,box.lwd=0)
 ```
 
-![First PC plotted against ordered by date with colors representing month.](images/R/adjusting_with_factor_analysis-tmp-PC1_versus_time-1.png) 
+```
+## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+```
 
 Day seems to be highly correlated and explained a high percentage of the variability:
 
@@ -101,7 +265,9 @@ mypar(1,1)
 plot(s$d^2/sum(s$d^2),ylab="% variance explained",xlab="Principal component")
 ```
 
-![Variance explained.](images/R/adjusting_with_factor_analysis-tmp-variance_explained-1.png) 
+```
+## Error in plot(s$d^2/sum(s$d^2), ylab = "% variance explained", xlab = "Principal component"): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 's' not found
+```
 
 In fact, the first six or so PC seem to be at least partially driven by date:
 
@@ -113,7 +279,9 @@ for(i in 1:12){
 }
 ```
 
-![First 12 PCs stratified by dates.](images/R/adjusting_with_factor_analysis-tmp-PCs_stratified_by_time-1.png) 
+```
+## Error in gsub("2005-", "", times): object 'times' not found
+```
 
 
 What happens if we simply remove the top six PC from the data and then perform a t-test? 
@@ -121,8 +289,30 @@ What happens if we simply remove the top six PC from the data and then perform a
 
 ```r
 D <- s$d; D[1:4]<-0 #take out first 2
+```
+
+```
+## Error in eval(expr, envir, enclos): object 's' not found
+```
+
+```
+## Error in D[1:4] <- 0: object of type 'closure' is not subsettable
+```
+
+```r
 cleandat <- sweep(s$u,2,D,"*")%*%t(s$v)
+```
+
+```
+## Error in sweep(s$u, 2, D, "*"): object 's' not found
+```
+
+```r
 res <-rowttests(cleandat,factor(sex))
+```
+
+```
+## Error in rowttests(cleandat, factor(sex)): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'cleandat' not found
 ```
 
 This does remove the batch effect, but it seems we have also removed much of the biological effect we are interested in. In fact, no genes have q-value <0.1 anymore.
@@ -132,14 +322,43 @@ This does remove the batch effect, but it seems we have also removed much of the
 ```r
 mypar(1,2)
 hist(res$p.value[which(!chr%in%c("chrX","chrY") )],main="",ylim=c(0,1300))
+```
 
+```
+## Error in hist(res$p.value[which(!chr %in% c("chrX", "chrY"))], main = "", : object 'res' not found
+```
+
+```r
 plot(res$dm,-log10(res$p.value))
+```
+
+```
+## Error in plot(res$dm, -log10(res$p.value)): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res' not found
+```
+
+```r
 points(res$dm[which(chr=="chrX")],-log10(res$p.value[which(chr=="chrX")]),col=1,pch=16)
+```
+
+```
+## Error in points(res$dm[which(chr == "chrX")], -log10(res$p.value[which(chr == : object 'res' not found
+```
+
+```r
 points(res$dm[which(chr=="chrY")],-log10(res$p.value[which(chr=="chrY")]),col=2,pch=16,xlab="Effect size",ylab="-log10(p-value)")
+```
+
+```
+## Error in points(res$dm[which(chr == "chrY")], -log10(res$p.value[which(chr == : object 'res' not found
+```
+
+```r
 legend("bottomright",c("chrX","chrY"),col=1:2,pch=16)
 ```
 
-![p-value histogram and volcano plot after blindly removing the first two PCs.](images/R/adjusting_with_factor_analysis-tmp-pval_hist_and_volcano_after_removing_PCs-1.png) 
+```
+## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+```
 
 <a name="sva"></a>
 #### Surrogate Variable Analysis
@@ -157,15 +376,43 @@ library(sva)
 ```
 ## Loading required package: mgcv
 ## Loading required package: nlme
-## This is mgcv 1.8-6. For overview type 'help("mgcv-package")'.
+## This is mgcv 1.8-7. For overview type 'help("mgcv-package")'.
 ```
 
 ```r
 library(limma)
 mod <- model.matrix(~sex)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sex' not found
+```
+
+```r
 cind <- order( as.Date(sampleInfo$date) )
+```
+
+```
+## Error in as.Date(sampleInfo$date): object 'sampleInfo' not found
+```
+
+```r
 dates <- gsub("2005-","",sampleInfo$date)
+```
+
+```
+## Error in gsub("2005-", "", sampleInfo$date): object 'sampleInfo' not found
+```
+
+```r
 weights=rep(1,nrow(y))
+```
+
+```
+## Error in nrow(y): object 'y' not found
+```
+
+```r
 par(mar = c(4.1, 2.1, 3.5, 2.1), 
     mgp = c(1.5, 0.5, 0))
 layout(matrix(c(1:6),nrow=2,byrow=TRUE),widths=c(5,1.5,5))
@@ -190,16 +437,8 @@ for(b in 1:2){
 ```
 
 ```
-## Number of significant surrogate variables is:  5 
-## Iteration (out of 1 ):1
+## Error in ncol(mat): object 'mat' not found
 ```
-
-```
-## Number of significant surrogate variables is:  5 
-## Iteration (out of 2 ):1  2
-```
-
-![Illustration of iterative procedure used by SVA. Only two iterations are shown.](images/R/adjusting_with_factor_analysis-tmp-illustration_of_sva-1.png) 
 
 
 The above is an illustration of the algorithm. To actually run SVA, we follow the code. In this case, SVA picks the number of surrogate values or factors for us.
@@ -212,14 +451,31 @@ svafit <- sva(geneExpression,mod)
 ```
 
 ```
-## Number of significant surrogate variables is:  5 
-## Iteration (out of 5 ):1  2  3  4  5
+## Error in ncol(dat): object 'geneExpression' not found
 ```
 
 ```r
 svaX<-model.matrix(~sex+svafit$sv)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sex' not found
+```
+
+```r
 lmfit <- lmFit(geneExpression,svaX)
+```
+
+```
+## Error in is(object, "list"): object 'geneExpression' not found
+```
+
+```r
 tt<- lmfit$coef[,2]*sqrt(lmfit$df.residual)/(2*lmfit$sigma)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'lmfit' not found
 ```
 
 There is an observable improvement over all other approaches:
@@ -228,16 +484,52 @@ There is an observable improvement over all other approaches:
 ```r
 res <- data.frame(dm= -lmfit$coef[,2],
                   p.value=2*(1-pt(abs(tt),lmfit$df.residual[1]) ) )
+```
+
+```
+## Error in data.frame(dm = -lmfit$coef[, 2], p.value = 2 * (1 - pt(abs(tt), : object 'lmfit' not found
+```
+
+```r
 mypar(1,2)
 hist(res$p.value[which(!chr%in%c("chrX","chrY") )],main="",ylim=c(0,1300))
+```
 
+```
+## Error in hist(res$p.value[which(!chr %in% c("chrX", "chrY"))], main = "", : object 'res' not found
+```
+
+```r
 plot(res$dm,-log10(res$p.value))
+```
+
+```
+## Error in plot(res$dm, -log10(res$p.value)): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res' not found
+```
+
+```r
 points(res$dm[which(chr=="chrX")],-log10(res$p.value[which(chr=="chrX")]),col=1,pch=16)
+```
+
+```
+## Error in points(res$dm[which(chr == "chrX")], -log10(res$p.value[which(chr == : object 'res' not found
+```
+
+```r
 points(res$dm[which(chr=="chrY")],-log10(res$p.value[which(chr=="chrY")]),col=2,pch=16,xlab="Effect size",ylab="-log10(p-value)")
+```
+
+```
+## Error in points(res$dm[which(chr == "chrY")], -log10(res$p.value[which(chr == : object 'res' not found
+```
+
+```r
 legend("bottomright",c("chrX","chrY"),col=1:2,pch=16)
 ```
 
-![p-value histogram and volcano plot obtained with SVA.](images/R/adjusting_with_factor_analysis-tmp-pval_hist_and_volcano_sva-1.png) 
+```
+## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+```
 
 
 And here is a decompose of the data into sex effects, surrogate variables, and independent noise:
@@ -245,18 +537,76 @@ And here is a decompose of the data into sex effects, surrogate variables, and i
 
 ```r
 Batch<- lmfit$coef[geneindex,3:7]%*%t(svaX[,3:7])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'lmfit' not found
+```
+
+```r
 Signal<-lmfit$coef[geneindex,1:2]%*%t(svaX[,1:2])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'lmfit' not found
+```
+
+```r
 error <- geneExpression[geneindex,]-Signal-Batch
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'geneExpression' not found
+```
+
+```r
 ##demean for plot
 Signal <-Signal-rowMeans(Signal)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'Signal' not found
+```
+
+```r
 mat <- geneExpression[geneindex,]-rowMeans(geneExpression[geneindex,])
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'geneExpression' not found
+```
+
+```r
 mypar(1,4,mar = c(2.75, 4.5, 2.6, 1.1))
 image(t(mat),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+```
+
+```
+## Error in t(mat): object 'mat' not found
+```
+
+```r
 image(t(Signal),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+```
+
+```
+## Error in t(Signal): object 'Signal' not found
+```
+
+```r
 image(t(Batch),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
+```
+
+```
+## Error in t(Batch): object 'Batch' not found
+```
+
+```r
 image(t(error),col=icolors,zlim=c(-5,5),xaxt="n",yaxt="n")
 ```
 
-![Original data split into three sources of variability estimated by SVA: sex-related signal, surrogate-variable induced structure and indepedent error.](images/R/adjusting_with_factor_analysis-tmp-different_sources_of_var-1.png) 
+```
+## Error in t(error): object 'error' not found
+```
 
 
