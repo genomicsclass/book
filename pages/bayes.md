@@ -8,40 +8,38 @@ title: Bayesian Statistics
 
 ## Bayesian Statistics
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/bayes.Rmd).
-
 One distinguishing characteristic of high-throughput data is that we make many measures of related outcomes. For example, we measure the expression of thousands of genes, or the height of thousands of peaks representing protein binding, or the methylation levels across several CpGs. However, most of the statistical inference approaches we have shown here treat each feature independently and pretty much ignores data from other features. We will learn how using statistical models we can gain power by modeling features jointly. The most successful of these models are what we refer to as hierarchical models, which are best explained in the context of Bayesian statistics.
 
 #### Bayes theorem
 
 We start by reviewing Bayes theorem. We do this using a hypothetical Cystic Fibrosis test as an example. Suppose a test for cystic fibrosis has an accuracy of 99%. We will use the following notation:
 
-{$$}
+$$
 \mbox{Prob}(+ \mid D=1)=0.99, \mbox{Prob}(- \mid D=0)=0.99 
-{/$$}
+$$
 
-with {$$}+{/$$} meaning a positive test and {$$}D{/$$} representing if you actually have (1) the disease or not (0).
+with $$+$$ meaning a positive test and $$D$$ representing if you actually have (1) the disease or not (0).
 
-Suppose we select a random person and they test positive, what is the probability that they have the disease?  We write this as {$$}\mbox{Prob}(D=1 \mid +)?{/$$}. The cystic fibrosis rate is 1 in 3,900 which implies that  {$$}\mbox{Prob}(D=1)=0.0025{/$$}. To answer this question we will use Bayes Theorem, which in general tells us that:
+Suppose we select a random person and they test positive, what is the probability that they have the disease?  We write this as $$\mbox{Prob}(D=1 \mid +)?$$. The cystic fibrosis rate is 1 in 3,900 which implies that  $$\mbox{Prob}(D=1)=0.0025$$. To answer this question we will use Bayes Theorem, which in general tells us that:
 
-{$$}
+$$
 \mbox{Pr}(A \mid B)  =  \frac{\mbox{Pr}(B \mid A)\mbox{Pr}(A)}{\mbox{Pr}(B)} 
-{/$$}
+$$
 
 This equation applied to our problem becomes:
 
-{$$}
+$$
 \begin{align*}
 \mbox{Prob}(D=1 \mid +) & =  \frac{ P(+ \mid D=1) \cdot P(D=1)} {\mbox{Prob}(+)} \\
 & =  \frac{\mbox{Prob}(+ \mid D=1)\cdot P(D=1)} {\mbox{Prob}(+ \mid D=1) \cdot P(D=1) + \mbox{Prob}(+ \mid D=0) \mbox{Prob}( D=0)} 
 \end{align*}
-{/$$}
+$$
 
 Plugging in the numbers we get:
 
-{$$}
+$$
 \frac{0.99 \cdot 0.0025}{0.99 \cdot 0.0025 + 0.01 \cdot (.9975)}  =  0.02 
-{/$$}
+$$
 
 This says that despite the test having 0.99 accuracy, the probability of having disease given a positive test in 0.02. This may appear counterintuitive to some. The reason this is the case is because we have to factor in the very rare probability that a person, chosen at random, has the disease. To see the 
 
@@ -95,15 +93,15 @@ plot(people,col=positivecols,pch=16,xaxt="n",yaxt="n",xlab="",ylab="",main=paste
 plot(people,col=negativecols,pch=16,xaxt="n",yaxt="n",xlab="",ylab="",main=paste("Tested Negative:",round(mean(d[test==0])*100,1),"% are red"))
 ```
 
-![Simulation demonstrating Bayes theorem. Top plot shows every individual with red denoting cases. Each one takes a test and with 90% gives correct answer. Those called positive (either correctly or incorrectly) are put in the bottom left pane. Those called negative in the bottom right.](images/R/bayes-tmp-simulation-1.png) 
+![Simulation demonstrating Bayes theorem. Top plot shows every individual with red denoting cases. Each one takes a test and with 90% gives correct answer. Those called positive (either correctly or incorrectly) are put in the bottom left pane. Those called negative in the bottom right.](figure/bayes-simulation-1.png) 
 
-The proportions of red in the top plot shows {$$}\mbox{Pr}(D=1){/$$}. The bottom left shows {$$}\mbox{Pr}(D=1 \mid +){/$$} and the bottom right shows {$$}\mbox{Pr}(D=0 \mid +){/$$}.
+The proportions of red in the top plot shows $$\mbox{Pr}(D=1)$$. The bottom left shows $$\mbox{Pr}(D=1 \mid +)$$ and the bottom right shows $$\mbox{Pr}(D=0 \mid +)$$.
 
 
 #### Bayes in practice
 
 
-<!-- ![iglesias](images/downloads/902px-Jos%C3%A9_Iglesias_on_September_28%2C_2012.jpg) -->
+<!-- ![iglesias](http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Jos%C3%A9_Iglesias_on_September_28%2C_2012.jpg/902px-Jos%C3%A9_Iglesias_on_September_28%2C_2012.jpg) -->
 
 
 José Iglesias 2013
@@ -126,7 +124,7 @@ This is for all players (>500 AB) 2010, 2011, 2012
 
 
 
-![Batting average histograms for 2010, 2011, and 2012.](images/R/bayes-tmp-batting_averages-1.png) 
+![Batting average histograms for 2010, 2011, and 2012.](figure/bayes-batting_averages-1.png) 
 
 Average is .275 and SD is 0.027
 
@@ -137,9 +135,9 @@ Should we trade him?
 
 What is the SE of our estimate?
 
-{$$}
+$$
 \sqrt{\frac{.450 (1-.450)}{20}}=.111
-{/$$}
+$$
 
 Confidence interval? .450-.222 to .450+.222 = .228 to .672
 
@@ -147,45 +145,45 @@ Hierarchical Model
 
 Pick a random player, then what is their batting average?
 
-{$$}
+$$
 \begin{align*}
 \theta &\sim N(\mu, \tau^2) \mbox{ is called a prior}\\
 Y \mid \theta &\sim N(\theta, \sigma^2) \mbox{ is called a sampling distribution}
 \end{align*}
-{/$$}
+$$
 
 Two levels of variability: 1) Player to player variability and 2) variability due to luck when batting
 
 Hierarchical Model
 
-{$$}
+$$
 \begin{align*}
 \theta &\sim N(\mu, \tau^2) \mbox{ is called a prior}\\
 Y \mid \theta &\sim N(\theta, \sigma^2) \mbox{ is called a sampling distribution}
 \end{align*}
-{/$$}
+$$
 
-Here {$$}\theta{/$$} is our players "intrinsic" average value, {$$}\mu{/$$} is the average of all players, {$$}\tau{/$$} is the SD of all players, {$$}Y{/$$} is the observed average, and 
-{$$}\sigma{/$$} is the variability due to luck at each AB.
+Here $$\theta$$ is our players "intrinsic" average value, $$\mu$$ is the average of all players, $$\tau$$ is the SD of all players, $$Y$$ is the observed average, and 
+$$\sigma$$ is the variability due to luck at each AB.
 
 
 Hierarchical Model
 
 Here are the equations with our data:
 
-{$$}
+$$
 \begin{align*}
 \theta &\sim N(.275, .027^2) \\
 Y \mid \theta &\sim N(\theta, .110^2) 
 \end{align*}
-{/$$}
+$$
 
 
 Posterior Distribution
 
 The continuous version of Bayes rule can be used here:
 
-{$$}
+$$
 \begin{align*}
 f_{ \theta \mid Y} (\theta\mid Y) &=
 \frac{f_{Y\mid \theta}(Y\mid \theta) f_{\theta}(\theta)
@@ -193,47 +191,47 @@ f_{ \theta \mid Y} (\theta\mid Y) &=
 &= \frac{f_{Y\mid \theta}(Y\mid \theta) f_{\theta}(\theta)}
 {\int_{\theta}f_{Y\mid \theta}(Y\mid \theta)f_{\theta}(\theta)}
 \end{align*}
-{/$$}
+$$
 
-We are particularly interested in the {$$}\theta{/$$} that maximizes {$$}f_{\theta\mid Y}(\theta\mid Y){/$$}.
+We are particularly interested in the $$\theta$$ that maximizes $$f_{\theta\mid Y}(\theta\mid Y)$$.
 
-In our case, these can be shown to be normal so we want the average {$$}\mbox{E}(\theta\mid y){/$$}
+In our case, these can be shown to be normal so we want the average $$\mbox{E}(\theta\mid y)$$
 
 
 Posterior Distribution
 
 We can show the average of this distribution is the following:
 
-{$$}
+$$
 \begin{align*}
 \mbox{E}(\theta\mid y) &= B \mu + (1-B) Y\\
 &= \mu + (1-B)(Y-\mu)\\
 B &= \frac{\sigma^2}{\sigma^2+\tau^2}
 \end{align*}
-{/$$}
+$$
 
 
 Posterior Distribution
 
 In the case of José Iglesias, we have:
 
-{$$}
+$$
 \begin{align*}
 \mbox{E}(\theta \mid Y=.450) &= B \times .275 + (1 - B) \times .450 \\
 &= .275 + (1 - B)(.450 - .260) \\
 B &=\frac{.110^2}{.110^2 + .027^2} = 0.943\\
 \mbox{E}(\theta \mid Y=450) &\approx .285
 \end{align*}
-{/$$}
+$$
 
 Posterior Distribution
 
 The variance can be shown to be:
 
-{$$}
+$$
 \mbox{var}(\theta\mid y) = \frac{1}{1/\sigma^2+1/\tau^2}
 = \frac{1}{1/.110^2 + 1/.027^2}
-{/$$}
+$$
 
 In our example the SD is 0.026
 
@@ -251,8 +249,8 @@ Final Results:
 |September|50|10|.200|
 |Total w/o April|330|97|.293|
 
-Frequentist confidence interval = .450 {$$}\pm{/$$} 0.220
+Frequentist confidence interval = .450 $$\pm$$ 0.220
 
-Empirical Bayes credible interval = .285 {$$}\pm{/$$} 0.052
+Empirical Bayes credible interval = .285 $$\pm$$ 0.052
 
 Actual = .293
