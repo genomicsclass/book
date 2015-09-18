@@ -7,8 +7,6 @@ title: Population, Samples, and Estimates
 
 ## Populations, Samples and Estimates 
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/populations_and_samples.Rmd).
-
 Now that we have introduced the idea of a random variable, a null distribution, and a p-value, we are ready to describe the mathematical theory that permits us to compute p-values in practice. We will also learn about confidence intervals and power calculations. 
 
 #### Population parameters
@@ -45,7 +43,7 @@ length(controlPopulation)
 ## [1] 225
 ```
 
-We usually denote these values as {$$}x_1,\dots,x_m{/$$}. In this case {$$}m{/$$} is the number computed above. We can do the same for the high fat diet population:
+We usually denote these values as $$x_1,\dots,x_m$$. In this case $$m$$ is the number computed above. We can do the same for the high fat diet population:
 
 
 ```r
@@ -58,19 +56,19 @@ length(hfPopulation)
 ## [1] 200
 ```
 
-and denote with {$$}y_1,\dots,y_n{/$$}.
+and denote with $$y_1,\dots,y_n$$.
 
 We can then define summaries of interest for these populations, such as the mean and variance. 
 
 The mean:
 
-{$$}\mu_X = \frac{1}{m}\sum_{i=1}^m x_i \mbox{ and } \mu_Y = \frac{1}{n} \sum_{i=1}^n y_i{/$$}
+$$\mu_X = \frac{1}{m}\sum_{i=1}^m x_i \mbox{ and } \mu_Y = \frac{1}{n} \sum_{i=1}^n y_i$$
 
 The variance:
 
-{$$}\sigma_X^2 = \frac{1}{m}\sum_{i=1}^m (x_i-\mu_X)^2 \mbox{ and } \sigma_Y^2 = \frac{1}{n} \sum_{i=1}^n (y_i-\mu_Y)^2{/$$}
+$$\sigma_X^2 = \frac{1}{m}\sum_{i=1}^m (x_i-\mu_X)^2 \mbox{ and } \sigma_Y^2 = \frac{1}{n} \sum_{i=1}^n (y_i-\mu_Y)^2$$
 
-with the standard deviation being the square root of the variance. We refer to such quantities that can be obtained from the population as _population parameters_. The question we started out asking can now be written mathematically: is {$$}\mu_Y - \mu_X = 0{/$$} ? 
+with the standard deviation being the square root of the variance. We refer to such quantities that can be obtained from the population as _population parameters_. The question we started out asking can now be written mathematically: is $$\mu_Y - \mu_X = 0$$ ? 
 
 Although in our illustration we have all the values and can check if this is true, in practice we do not. For example, in practice it would be prohibitively expensive to buy all mice in a population. Here we learn how taking a _sample_ permits us to answer our questions. This is the essence of statistical inference.
 
@@ -79,17 +77,17 @@ Although in our illustration we have all the values and can check if this is tru
 In the previous chapter, we obtained samples of 12 mice from each
 population. We represent data from samples with capital letters to
 indicate that they are random. This is common practice in statistics,
-although it is not always followed. So the samples are {$$}X_1,\dots,X_M{/$$}
-and {$$}Y_1,\dots,Y_N{/$$} and, in this case, {$$}N=M=12{/$$}. In contrast, as we
+although it is not always followed. So the samples are $$X_1,\dots,X_M$$
+and $$Y_1,\dots,Y_N$$ and, in this case, $$N=M=12$$. In contrast, as we
 saw above, when we list out the values of the population, which are
 set and not random, we use lower-case letters.
 
-Since we want to know if {$$}\mu_Y - \mu_X{/$$} is 0, we consider the sample version: {$$}\bar{Y}-\bar{X}{/$$}  with 
+Since we want to know if $$\mu_Y - \mu_X$$ is 0, we consider the sample version: $$\bar{Y}-\bar{X}$$  with 
 
-{$$}
+$$
 \bar{X}=\frac{1}{M} \sum_{i=1}^M X_i 
 \mbox{ and }\bar{Y}=\frac{1}{N} \sum_{i=1}^N Y_i.
-{/$$}
+$$
 
 Note that this difference of averages is also a random
 variable. Previously we learned about the behavior of random variables
@@ -97,9 +95,9 @@ with an exercise that involved repeatedly sampling from the original
 distribution. Of course, this is not an exercise that we can execute
 in practice. In this particular case it would involve buying 24 mice
 over and over again. Here we described the mathematical theory that
-mathematically relates {$$}\bar{X}{/$$} to {$$}\mu_X{/$$} and {$$}\bar{Y}{/$$} to {$$}\mu_Y{/$$},
+mathematically relates $$\bar{X}$$ to $$\mu_X$$ and $$\bar{Y}$$ to $$\mu_Y$$,
 that will in turn help us understand the relationship between
-{$$}\bar{Y}-\bar{X}{/$$}  and {$$}\mu_Y - \mu_X{/$$}. Specifically, we will describe
+$$\bar{Y}-\bar{X}$$  and $$\mu_Y - \mu_X$$. Specifically, we will describe
 how the Central Limit Theorem permits us to use an approximation to
 answer this question as well as motivate the widely used t-distribution.
 
