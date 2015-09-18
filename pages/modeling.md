@@ -17,21 +17,17 @@ But this does not imply that every dataset we collect will follow a normal distr
 
 ## The Binomial Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/modeling.Rmd).
+A distribution that one should be familiar is the binomial distribution. It describes the probability of the total number of observed heads $$S=k$$ heads when tossing $$N$$ heads as
 
-A distribution that one should be familiar is the binomial distribution. It describes the probability of the total number of observed heads {$$}S=k{/$$} heads when tossing {$$}N{/$$} heads as
-
-{$$}
+$$
 \mbox{Pr}(S=k) = {N \choose k}p^k (1-p)^{N-k}
-{/$$}
+$$
 
-with {$$}p{/$$} the probability of observing a head in one coin toss.  {$$}S/N{/$$} is the average of independent random variables and thus the CLT tells us that {$$}S{/$$} is approximately normal. This distribution is used by some of the variant callers and genotypers based on NGS to decide if the data is consistent 
+with $$p$$ the probability of observing a head in one coin toss.  $$S/N$$ is the average of independent random variables and thus the CLT tells us that $$S$$ is approximately normal. This distribution is used by some of the variant callers and genotypers based on NGS to decide if the data is consistent 
 
 ## The Poisson Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/modeling.Rmd).
-
-The number of people that win the lottery follows a binomial distribution (we assume each person buys one ticket). The number of "tosses" {$$}N{/$$} is the number of people that buy tickets and very large. However, the number of people that win the lottery oscillates between 0 and 3. So why does CLT not hold? One can explain this mathematically, but the intuition is that with most of the average so close to and also constrained to be larger than 0, it is impossible for the distribution to be normal. Here is a quick simulation:
+The number of people that win the lottery follows a binomial distribution (we assume each person buys one ticket). The number of "tosses" $$N$$ is the number of people that buy tickets and very large. However, the number of people that win the lottery oscillates between 0 and 3. So why does CLT not hold? One can explain this mathematically, but the intuition is that with most of the average so close to and also constrained to be larger than 0, it is impossible for the distribution to be normal. Here is a quick simulation:
 
 
 ```r
@@ -42,7 +38,7 @@ tab=table(winners)
 plot(tab)
 ```
 
-![Number of people that win the lottery obtained from Monte Carlo simulation.](images/R/modeling-tmp-lottery_winners_outcomes-1.png) 
+![Number of people that win the lottery obtained from Monte Carlo simulation.](figure/modeling-lottery_winners_outcomes-1.png) 
 
 ```r
 prop.table(tab)
@@ -50,20 +46,20 @@ prop.table(tab)
 
 ```
 ## winners
-##     0     1     2     3 
-## 0.582 0.314 0.091 0.013
+##     0     1     2     3     4 
+## 0.590 0.314 0.080 0.013 0.003
 ```
 
-For cases like this, where {$$}N{/$$} is very large, but {$$}p{/$$} is small enough to make {$$}N \times p{/$$} (call it {$$}\lambda{/$$}) a number between 0 and 10, then {$$}S{/$$} can be shown to follow a Poisson distribution which has a simple parametric form:
+For cases like this, where $$N$$ is very large, but $$p$$ is small enough to make $$N \times p$$ (call it $$\lambda$$) a number between 0 and 10, then $$S$$ can be shown to follow a Poisson distribution which has a simple parametric form:
 
-{$$}
+$$
 \mbox{Pr}(S=k)=\frac{\lambda^k \exp{-\lambda}}{k!}
-{/$$}
+$$
 
 The Poisson distribution is commonly used in RNAseq analyses. Because we are sampling thousands molecules and for some genes represent are a very small proportion of the totality of molecules, the Poisson distribution seems appropriate. 
 
 Homework
-1- Do you expect a Poisson distribution with {$$}\lambda=100{/$$} to be approximately normal? Why or why not? 
+1- Do you expect a Poisson distribution with $$\lambda=100$$ to be approximately normal? Why or why not? 
 
 
 So how does this help us? One way is that it informs us of the statistical properties of important summaries. For example, say we only have one sample from each of a case and control RNAseq experiment and we want to report the genes with larges fold-changes. Under the null, there are no differences; the statistical variability of this quantity depends on the total abundance of the gene. We can show this mathematically, but here is a quick simulation to demonstrate the point:
@@ -80,19 +76,29 @@ library(rafalib)
 splot(log2(lambdas),log2(y/x),subset=ind)
 ```
 
-![MA plot of simulated RNAseq data. Replicated measurements follow a Poisson distribution.](images/R/modeling-tmp-rna_seq_simulation-1.png) 
+![MA plot of simulated RNAseq data. Replicated measurements follow a Poisson distribution.](figure/modeling-rna_seq_simulation-1.png) 
 
 Note that for lower values of lambda there is much more variability and if we were to report anything with a fold change of 2 or more, the number of false positives would be quite high for low.
 
 
 ## NGS Experiments and the Poisson Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/modeling.Rmd).
-
 
 ```r
 library(parathyroidSE)
+```
+
+```
+## Error in library(parathyroidSE): there is no package called 'parathyroidSE'
+```
+
+```r
 data(parathyroidGenesSE)
+```
+
+```
+## Warning in data(parathyroidGenesSE): data set 'parathyroidGenesSE' not
+## found
 ```
 
 This library contains `SummarizedExperiment` data, which will be discussed in a later lab. The important thing to know is that the `SummarizedExperiment` has a matrix of data, similar to the `ExpressionSet`, where each row is a genomic feature, and each column is a sample. For this dataset, the value in single cell in the matrix is count of reads which aligned to a given gene for a given sample.
@@ -102,19 +108,37 @@ This library contains `SummarizedExperiment` data, which will be discussed in a 
 se <- parathyroidGenesSE
 ```
 
+```
+## Error in eval(expr, envir, enclos): object 'parathyroidGenesSE' not found
+```
+
 A similar plot of technical replicates reveals that the behavior predicted by the model is present in real data:
 
 
 ```r
 x <- assay(se)[,23]
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "assay"
+```
+
+```r
 y <- assay(se)[,24]
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "assay"
+```
+
+```r
 ind=which(y>0 & x>0)##make sure no 0s due to ratio and log
 splot((log2(x)+log2(y))/2,log(x/y),subset=ind)
 ```
 
-![MA plot of replicated RNAseq data.](images/R/modeling-tmp-RNAseq_MAplot-1.png) 
+![MA plot of replicated RNAseq data.](figure/modeling-RNAseq_MAplot-1.png) 
 
-When it comes to modeling, one limitation of the Poisson model is that it lacks flexibility when it comes to scale. The Poisson only has one parameter which determines its mean {$$}\lambda{/$$}, which is also its variance (standard deviation squared).
+When it comes to modeling, one limitation of the Poisson model is that it lacks flexibility when it comes to scale. The Poisson only has one parameter which determines its mean $$\lambda$$, which is also its variance (standard deviation squared).
 
 If we compute the standard deviations across four individuals, it is quite a bit higher than what is predicted by a Poisson model. Assuming most genes are differentially expressed across individuals, then if the Poisson model is appropriate there should be a linear relationship in this plot:
 
@@ -124,20 +148,40 @@ library(rafalib)
 library(matrixStats)
 
 vars=rowVars(assay(se)[,c(2,8,16,21)]) ##we now these four are 4
-means=rowMeans(assay(se)[,c(2,8,16,21)]) ##different individulsa
+```
 
+```
+## Error in rowVars(assay(se)[, c(2, 8, 16, 21)]): could not find function "assay"
+```
+
+```r
+means=rowMeans(assay(se)[,c(2,8,16,21)]) ##different individulsa
+```
+
+```
+## Error in is.data.frame(x): could not find function "assay"
+```
+
+```r
 splot(means,vars,log="xy",subset=which(means>0&vars>0)) ##plot a subset of data
+```
+
+```
+## Error in which(means > 0 & vars > 0): object 'means' not found
+```
+
+```r
 abline(0,1,col=2,lwd=2)
 ```
 
-![Variance versus mean plot. Summaries were obtained from the RNAseq data.](images/R/modeling-tmp-var_vs_mean-1.png) 
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
 
 The variability plotted here includes biological variability, which the motivation for the Poisson does not include. In a later module we learn about the negative binomial distribution which combines the sampling variability of a Poisson and biological variability. The negative binomial has two parameters and permits more flexibility for count data. The Poisson is a special case of the negative binomial distribution.
 
 
 ## Maximum Likelihood Estimation
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/modeling.Rmd).
 
 We use palindrome locations in the HMCV genome as example. We read in the locations of the palindrome and then count the number of palindromes in each 4,000 basepair segments.
 
@@ -155,19 +199,19 @@ mypar(1,1)
 hist(counts)
 ```
 
-![Palindrome count histogram.](images/R/modeling-tmp-palindrome_count_histogram-1.png) 
+![Palindrome count histogram.](figure/modeling-palindrome_count_histogram-1.png) 
 
-The counts do appear to follow a Poisson distribution. But what is the rate {$$}\lambda{/$$} ? The most common approach to estimating this rate is _maximum likelihood estimation_. To find the maximum likelihood estimate (MLE) we note that these data are independent and the probability of observing the values we observed is:
+The counts do appear to follow a Poisson distribution. But what is the rate $$\lambda$$ ? The most common approach to estimating this rate is _maximum likelihood estimation_. To find the maximum likelihood estimate (MLE) we note that these data are independent and the probability of observing the values we observed is:
 
-{$$}
+$$
 \Pr(X_1=k_1,\dots,X_n=k_n;\lambda) = \prod_{i=1}^n \lambda^{k_i} / k_i! \exp ( -\lambda)
-{/$$}
+$$
 
-The MLE is the value of {$$}\lambda{/$$} that maximizes the likeihlood:. 
+The MLE is the value of $$\lambda$$ that maximizes the likeihlood:. 
 
-{$$}
+$$
 \mbox{L}(\lambda; X_1=k_1,\dots,X_n=k_1)=\exp\left\{\sum_{i=1}^n \log \Pr(X_i=k_i;\lambda)\right\}
-{/$$}
+$$
 
 In practice it is more convenient to maximize the log-likelihood
 
@@ -184,7 +228,7 @@ mle=optimize(l,c(0,10),maximum=TRUE)
 abline(v=mle$maximum)
 ```
 
-![Likelihood versus lambda.](images/R/modeling-tmp-mle-1.png) 
+![Likelihood versus lambda.](figure/modeling-mle-1.png) 
 
 If you work out the math and do a bit of calculus, you realize that this is a particularly simple example for which the MLE is the average.
 
@@ -204,12 +248,10 @@ qqplot(theoretical,counts)
 abline(0,1)
 ```
 
-![Observed counts versus theoretical Poisson counts.](images/R/modeling-tmp-obs_versus_theoretical_Poisson_count-1.png) 
+![Observed counts versus theoretical Poisson counts.](figure/modeling-obs_versus_theoretical_Poisson_count-1.png) 
 
 
 ## Distributions for Positive Continuous Values
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/modeling/modeling.Rmd).
 
 In a previous module we learned that different genes vary differently across biological replicates. In a latter module [advanced inference/differential expression] we will demonstrate that knowing this distribution can help improve downstream analysis. 
 
@@ -219,73 +261,170 @@ So can we model the distribution of these standard errors? Are they normal? Note
 ```r
 library(Biobase)
 library(maPooling) ##available from course github repo
+```
 
+```
+## Error in library(maPooling): there is no package called 'maPooling'
+```
+
+```r
 data(maPooling)
+```
+
+```
+## Warning in data(maPooling): data set 'maPooling' not found
+```
+
+```r
 pd=pData(maPooling)
+```
 
+```
+## Error in pData(maPooling): error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'maPooling' not found
+```
+
+```r
 strain=factor(as.numeric(grepl("b",rownames(pd))))
-pooled=which(rowSums(pd)==12 & strain==1)
-techreps=exprs(maPooling[,pooled])
-individuals=which(rowSums(pd)==1 & strain==1)
+```
 
+```
+## Error in rownames(pd): error in evaluating the argument 'x' in selecting a method for function 'rownames': Error: object 'pd' not found
+```
+
+```r
+pooled=which(rowSums(pd)==12 & strain==1)
+```
+
+```
+## Error in is.data.frame(x): object 'pd' not found
+```
+
+```r
+techreps=exprs(maPooling[,pooled])
+```
+
+```
+## Error in exprs(maPooling[, pooled]): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'maPooling' not found
+```
+
+```r
+individuals=which(rowSums(pd)==1 & strain==1)
+```
+
+```
+## Error in is.data.frame(x): object 'pd' not found
+```
+
+```r
 ##remove replicates
 individuals=individuals[-grep("tr",names(individuals))]
-bioreps=exprs(maPooling)[,individuals]
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'individuals' not found
+```
+
+```r
+bioreps=exprs(maPooling)[,individuals]
+```
+
+```
+## Error in exprs(maPooling): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'maPooling' not found
+```
+
+```r
 ###now compute the gene specific standard deviations
 library(matrixStats)
 techsds=rowSds(techreps)
-biosds=rowSds(bioreps)
+```
 
+```
+## Error in rowVars(x, ...): object 'techreps' not found
+```
+
+```r
+biosds=rowSds(bioreps)
+```
+
+```
+## Error in rowVars(x, ...): object 'bioreps' not found
+```
+
+```r
 ###now plot
 library(rafalib)
 mypar()
 shist(biosds,unit=0.1,col=1,xlim=c(0,1.5))
+```
+
+```
+## Error in is.data.frame(z): object 'biosds' not found
+```
+
+```r
 shist(techsds,unit=0.1,col=2,add=TRUE)
+```
+
+```
+## Error in is.data.frame(z): object 'techsds' not found
+```
+
+```r
 legend("topright",c("Biological","Technical"), col=c(1,2))
 ```
 
-![Histograms of biological variance and technical variance.](images/R/modeling-tmp-bio_sd_versus_tech_sd-1.png) 
+```
+## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+```
 
 First notice that the normal distribution is not appropriate here since the right tail is rather large. Also, because SDs are strictly positive, there is a limitation to how symmetric this distribution can be.
 A qqplot shows this very clearly:
 
 ```r
 qqnorm(biosds)
+```
+
+```
+## Error in qqnorm(biosds): object 'biosds' not found
+```
+
+```r
 qqline(biosds)
 ```
 
-![Normal qq-plot for sample standard deviations.](images/R/modeling-tmp-sd_qqplot-1.png) 
+```
+## Error in quantile(y, probs, names = FALSE, type = qtype, na.rm = TRUE): object 'biosds' not found
+```
 
 There are parametric distributions that posses these properties (strictly positive and _heavy_ right tails). Two examples are the _gamma_ and _F_ distributions. The density of the gamma distribution is defined by: 
 
-{$$}
+$$
 f(x;\alpha,\beta)=\frac{\beta^\alpha x^{\alpha-1}\exp{-\beta x}}{\Gamma(\alpha)}
-{/$$}
+$$
 
-It is defined by two parameters {$$}\alpha{/$$} and {$$}\beta{/$$} that can, indirectly, control location and scale. They also control the shape of the distribution. For more on this distribution please refer to [this book](https://www.stat.berkeley.edu/~rice/Book3ed/index.html). 
+It is defined by two parameters $$\alpha$$ and $$\beta$$ that can, indirectly, control location and scale. They also control the shape of the distribution. For more on this distribution please refer to [this book](https://www.stat.berkeley.edu/~rice/Book3ed/index.html). 
 
-Two special cases of the gamma distribution are the chi-squared distribution, which we used earlier to analyze a 2x2 table and the exponential distribution, which we will use later in this section. For chi-square we {$$}\alpha=\nu/2{/$$} and {$$}\beta=2{/$$} with {$$}\nu{/$$} the degrees of freedom. For exponential we have {$$}\alpha=1{/$$} and {$$}\beta=\lambda{/$$} the rate.
+Two special cases of the gamma distribution are the chi-squared distribution, which we used earlier to analyze a 2x2 table and the exponential distribution, which we will use later in this section. For chi-square we $$\alpha=\nu/2$$ and $$\beta=2$$ with $$\nu$$ the degrees of freedom. For exponential we have $$\alpha=1$$ and $$\beta=\lambda$$ the rate.
 
 The F-distribution comes up in analysis of variance (ANOVA). It is also always positive and has large right tails. Two parameters control its shape:
 
-{$$}
+$$
 f(x,d_1,d_2)=\frac{1}{B\left( \frac{d_1}{2},\frac{d_2}{2}\right)}
   \left(\frac{d_1}{d_2}\right)^{\frac{d_1}{2}}  
   x^{\frac{d_1}{2}-1}\left(1+\frac{d1}{d2}x\right)^{-\frac{d_1+d_2}{2}}
-{/$$}  
+$$  
 
-with {$$}B{/$$} the _beta function_ and {$$}d_1{/$$} and {$$}d_2{/$$} are called the degrees of freedom for reasons having to do with how it arises in ANOVA. A third parameter is sometimes used with the F-distribution, which is a scale parameter.
+with $$B$$ the _beta function_ and $$d_1$$ and $$d_2$$ are called the degrees of freedom for reasons having to do with how it arises in ANOVA. A third parameter is sometimes used with the F-distribution, which is a scale parameter.
 
 #### Modeling the Variance
 
-In a later module we will learn about empirical Bayes approaches to improve estimates of variance. In these cases it is mathematically convenient (see Bayesian book) to model the distribution of the variance {$$}\sigma^2{/$$}. The hierarchical model (described here [Smyth 2004]) to the mean and variance implies (see paper for details) that the sample standard deviation of genes follows scaled F-statistics:
+In a later module we will learn about empirical Bayes approaches to improve estimates of variance. In these cases it is mathematically convenient (see Bayesian book) to model the distribution of the variance $$\sigma^2$$. The hierarchical model (described here [Smyth 2004]) to the mean and variance implies (see paper for details) that the sample standard deviation of genes follows scaled F-statistics:
 
-{$$}
+$$
 s^2 \sim s_0^2 F_{d,d_0}
-{/$$}
+$$
 
-with {$$}d{/$$} the degrees of freedom involved in computing {$$}s^2{/$$} . For example, in a case comparing 3 versus 3, the degrees of freedom would be 4. This leaves two free parameters to adjust to the data. Here {$$}d{/$$} will control the location and {$$}s_0{/$$} will control the scale. Here are some examples plotted on top of the histogram from the real data:
+with $$d$$ the degrees of freedom involved in computing $$s^2$$ . For example, in a case comparing 3 versus 3, the degrees of freedom would be 4. This leaves two free parameters to adjust to the data. Here $$d$$ will control the location and $$s_0$$ will control the scale. Here are some examples plotted on top of the histogram from the real data:
 
 
 ```r
@@ -303,26 +442,84 @@ for(d in c(1,5,10)){
 }
 ```
 
-![Histograms of sample standard deviations and densities of estimated distributions.](images/R/modeling-tmp-modeling_variance-1.png) 
+```
+## Error in hist(biosds, main = paste("s_0 =", s0, "d =", d), xlab = "sd", : object 'biosds' not found
+```
 
-Now which {$$}s_0{/$$} and {$$}d{/$$} fit our data best? This is a rather advanced topic as the MLE does not perform well for this particular distribution (we refer to Smyth (2004)). The Bioconductor limma package provides a function to estimate these parameters:
+Now which $$s_0$$ and $$d$$ fit our data best? This is a rather advanced topic as the MLE does not perform well for this particular distribution (we refer to Smyth (2004)). The Bioconductor limma package provides a function to estimate these parameters:
 
 
 ```r
 library(limma)
 estimates=fitFDist(biosds^2,11)
+```
 
+```
+## Error in fitFDist(biosds^2, 11): object 'biosds' not found
+```
+
+```r
 theoretical<- sqrt(qf((seq(0,999)+0.5)/1000, 11, estimates$df2)*estimates$scale)
-observed <- biosds
+```
 
+```
+## Error in qf((seq(0, 999) + 0.5)/1000, 11, estimates$df2): object 'estimates' not found
+```
+
+```r
+observed <- biosds
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'biosds' not found
+```
+
+```r
 mypar(1,2)
 qqplot(theoretical,observed)
+```
+
+```
+## Error in sort(y): object 'observed' not found
+```
+
+```r
 abline(0,1)
+```
+
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
+
+```r
 tmp=hist(biosds,main=paste("s_0 =", signif(estimates[[1]],2), "d =", signif(estimates[[2]],2)), xlab="sd", ylab="density", freq=FALSE, nc=100, xlim=c(0,1), ylim=c(0,9))
+```
+
+```
+## Error in hist(biosds, main = paste("s_0 =", signif(estimates[[1]], 2), : object 'biosds' not found
+```
+
+```r
 dd=df(sds^2/estimates$scale,11,estimates$df2)
+```
+
+```
+## Error in df(sds^2/estimates$scale, 11, estimates$df2): object 'estimates' not found
+```
+
+```r
 k=sum(tmp$density)/sum(dd) ##a normalizing constant to assure same area in plot
+```
+
+```
+## Error in tmp$density: $$ operator is invalid for atomic vectors
+```
+
+```r
 lines(sds, dd*k, type="l", col=2, lwd=2)
 ```
 
-![qq-plot (left) and density (right) demonstrate that model fits data well.](images/R/modeling-tmp-variance_model_fit-1.png) 
+```
+## Error in xy.coords(x, y): object 'dd' not found
+```
 Apart from one outlier, this is not a bad fit at all. This approximation will come in very handy when we learn about empirical Bayes.
