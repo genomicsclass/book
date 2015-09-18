@@ -6,8 +6,6 @@ title: Class Prediction
 
 ## Class Prediction
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/ml/machine_learning.Rmd).
-
 Here we give a brief introduction to the main machine learning topic:
 class prediction. In fact, many refer to class prediction as machine
 learning and we actually use the two terms interchangeably. Some of
@@ -18,11 +16,11 @@ free PDF of this book can be found at the following URL:
 
 <http://statweb.stanford.edu/~tibs/ElemStatLearn/>
 
-Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes {$$}Y{/$$} and covariates {$$}X{/$$}. In ML we call {$$}X{/$$} the predictors. The main difference between ML and inference is that in ML we are interested in predicting {$$}Y{/$$} using {$$}X{/$$}. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting {$$}Y{/$$}. 
+Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes $$Y$$ and covariates $$X$$. In ML we call $$X$$ the predictors. The main difference between ML and inference is that in ML we are interested in predicting $$Y$$ using $$X$$. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting $$Y$$. 
 
 Here we introduce the main concepts needed to understand ML along with two specific algorithms: regression and k nearest neighbors (knn). Note there are dozens of popular algorithms that we do not cover here are some 
 
-In a previous section we covered the very simple one-predictor case. Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which {$$}X{/$$} is two dimensional and {$$}Y{/$$} is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of {$$}f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2){/$$} using colors. The following code is used to create a relatively complex conditional probability function. We create the test and train data we use later.
+In a previous section we covered the very simple one-predictor case. Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of $$f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2)$$ using colors. The following code is used to create a relatively complex conditional probability function. We create the test and train data we use later.
 
 
 ```r
@@ -91,13 +89,13 @@ plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 points(newx,col=colshat,pch=16,cex=0.35)
 ```
 
-![Probability of Y=1 as a function of X1 and X2. Red is close to 1, yellow close 0.5 nad blue close to 0.](images/R/machine_learning-tmp-conditional_prob-1.png) 
+![Probability of Y=1 as a function of X1 and X2. Red is close to 1, yellow close 0.5 nad blue close to 0.](figure/machine_learning-conditional_prob-1.png) 
 
-If we should {$$}E(Y \mid X=x)>0.5{/$$} in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
+If we should $$E(Y \mid X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
 
-![Bayes rule. The line devides part the space for which probability os larger than 0.5 (red) and lower than 0.5 (blue).](images/R/machine_learning-tmp-bayes_rule-1.png) 
+![Bayes rule. The line devides part the space for which probability os larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-bayes_rule-1.png) 
 
-The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate {$$}f(x){/$$} 
+The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate $$f(x)$$ 
 
 Now make a plot of training data and test data
 
@@ -105,7 +103,7 @@ Now make a plot of training data and test data
 plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![Data generated using the probability map above.](images/R/machine_learning-tmp-data-1.png) 
+![Data generated using the probability map above.](figure/machine_learning-data-1.png) 
 
 We will review two specif ML techniques. First, we need to review the main concept we use to evaluate the performance of these methods. 
 
@@ -131,7 +129,7 @@ plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 plot(test,pch=21,bg=colstest,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 ```
 
-![Training data (left) and test data (right)](images/R/machine_learning-tmp-test_train-1.png) 
+![Training data (left) and test data (right)](figure/machine_learning-test_train-1.png) 
 
 The reason for this is to detect over-training  by testing on a different data than the one used to fit  model. We will see how important this is.
 
@@ -148,7 +146,7 @@ X2 <- x[,2]
 fit1 <- lm(y~X1+X2)
 ```
 
-Once we the fitted values we can estimate {$$}f(x_1,x_2){/$$} with {$$}\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2{/$$}. When predicting 1s and 0s we simply predict 1 when {$$}\hat{f}(x_1,x_2)>0.5{/$$}. We now examine the error rates in the test and training sets and also plot the boundary region:
+Once we the fitted values we can estimate $$f(x_1,x_2)$$ with $$\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2$$. When predicting 1s and 0s we simply predict 1 when $$\hat{f}(x_1,x_2)>0.5$$. We now examine the error rates in the test and training sets and also plot the boundary region:
 
 
 ```r
@@ -197,15 +195,15 @@ points(newx,col=colshat,pch=16,cex=0.35)
 points(test,bg=cols,pch=21)
 ```
 
-![We estimate the probability of 1 with a linear regression model with X1 and X2 as predictors. The resulting prediction map is divided in to parts that are larger than 0.5 (red) and lower than 0.5 (blue).](images/R/machine_learning-tmp-regression_prediction-1.png) 
+![We estimate the probability of 1 with a linear regression model with X1 and X2 as predictors. The resulting prediction map is divided in to parts that are larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-regression_prediction-1.png) 
 
-Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between {$$}Y{/$$} and {$$}X{/$$}. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
+Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between $$Y$$ and $$X$$. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
 
 <a name="knn"></a>
 
 ### K-nearest neighbor
 
-K-nearest neighbors (kNN) is similar to bin smoothing, but it is easier to adapt to multiple dimensions. Basically, for any point {$$}x{/$$} for which we want an estimate, we look for the k nearest points and then take an average. We can now control flexibility through  {$$}k{/$$}. Here we compare {$$}k=1{/$$} and {$$}k=100{/$$}.
+K-nearest neighbors (kNN) is similar to bin smoothing, but it is easier to adapt to multiple dimensions. Basically, for any point $$x$$ for which we want an estimate, we look for the k nearest points and then take an average. We can now control flexibility through  $$k$$. Here we compare $$k=1$$ and $$k=100$$.
 
 
 ```r
@@ -246,16 +244,16 @@ for(k in c(1,200)){
 ## KNN prediction error in train: 0.2825
 ```
 
-![Prediction regions obtained with kNN for k=1 (top) and k=200 (bottom). We show both train (left) and test data (right).](images/R/machine_learning-tmp-knn-1.png) 
+![Prediction regions obtained with kNN for k=1 (top) and k=200 (bottom). We show both train (left) and test data (right).](figure/machine_learning-knn-1.png) 
 
 ```
 ## KNN prediction error in test: 0.295
 ```
 
-Note that when {$$}k=1{/$$} we make no mistakes in the training test since every point is its closest neighbor and it is equal to itself. However, also note that we see some islands of blue in the red area that once we move to the test set are more error prone. In the case {$$}k=100{/$$} we do not have this problem and we also see that we improve the error rate over linear regression.
+Note that when $$k=1$$ we make no mistakes in the training test since every point is its closest neighbor and it is equal to itself. However, also note that we see some islands of blue in the red area that once we move to the test set are more error prone. In the case $$k=100$$ we do not have this problem and we also see that we improve the error rate over linear regression.
 
 ### Bayes Rule
-Here is a comparison of the test and train set errors for various values of {$$}k{/$$}. We also include the error rate that we would make if we actually knew {$$}\mbox{E}(Y \mid X_1=x1,X_2=x_2){/$$} referred to as _Bayes Rule_
+Here is a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mbox{E}(Y \mid X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_
 
 
 ```r
@@ -291,7 +289,7 @@ abline(h=bayes.error,col=6)
 legend("bottomright",c("Train","Test","Bayes"),col=c(4,5,6),lty=c(2,3,1),box.lwd=0)
 ```
 
-![Prediction error in train (pink) and test (green) versus number of neighbors. The yellow line represents what one obtains with Bayes Rule.](images/R/machine_learning-tmp-bayes_rule2-1.png) 
+![Prediction error in train (pink) and test (green) versus number of neighbors. The yellow line represents what one obtains with Bayes Rule.](figure/machine_learning-bayes_rule2-1.png) 
 
 
 
