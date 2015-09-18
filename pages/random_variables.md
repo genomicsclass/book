@@ -35,17 +35,10 @@ and null distributions using R programming.
 If you already downloaded the `femaleMiceWeights` file and into your working directory, you can read it into R with just one line:
 
 
+
+
 ```r
 dat <- read.csv("femaleMiceWeights.csv")
-```
-
-```
-## Warning in file(file, "rt"): cannot open file 'femaleMiceWeights.csv': No
-## such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
 ```
 
 #### Our first look at data
@@ -62,7 +55,13 @@ head(dat)
 ```
 
 ```
-## Error in head(dat): object 'dat' not found
+##   Diet Bodyweight
+## 1 chow      21.51
+## 2 chow      28.14
+## 3 chow      24.04
+## 4 chow      23.45
+## 5 chow      23.68
+## 6 chow      19.79
 ```
 
 In RStudio, you can view the entire dataset with
@@ -82,26 +81,12 @@ averages. So let's look at the average of each group:
 ```r
 library(dplyr)
 control <- filter(dat,Diet=="chow") %>% select(Bodyweight) %>% unlist
-```
-
-```
-## Error in filter_(.data, .dots = lazyeval::lazy_dots(...)): object 'dat' not found
-```
-
-```r
 treatment <- filter(dat,Diet=="hf") %>% select(Bodyweight) %>% unlist
-```
-
-```
-## Error in filter_(.data, .dots = lazyeval::lazy_dots(...)): object 'dat' not found
-```
-
-```r
 print( mean(treatment) )
 ```
 
 ```
-## Error in mean(treatment): object 'treatment' not found
+## [1] 26.83417
 ```
 
 ```r
@@ -109,23 +94,16 @@ print( mean(control) )
 ```
 
 ```
-## Error in mean(control): object 'control' not found
+## [1] 23.81333
 ```
 
 ```r
 obsdiff <- mean(treatment) - mean(control)
-```
-
-```
-## Error in mean(treatment): object 'treatment' not found
-```
-
-```r
 print(obsdiff)
 ```
 
 ```
-## Error in print(obsdiff): object 'obsdiff' not found
+## [1] 3.020833
 ```
 
 So the hf diet mice are about 10% heavier. Are we done? Why do we need p-values and confidence intervals? The reason is that these averages are random variables. They can take many values. 
@@ -238,7 +216,7 @@ mean(null >= obsdiff)
 ```
 
 ```
-## Error in mean(null >= obsdiff): object 'obsdiff' not found
+## [1] 0.0138
 ```
 
 Only a small percent of the 10,000 simulations. So as skeptics what do
@@ -376,17 +354,10 @@ as `obsdiff` are relatively rare:
 
 ```r
 hist(null, freq=TRUE)
-```
-
-![Null distribution with observed difference marked with vertical red line.](figure/random_variables-null_and_obs-1.png) 
-
-```r
 abline(v=obsdiff, col="red", lwd=2)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'obsdiff' not found
-```
+![Null distribution with observed difference marked with vertical red line.](figure/random_variables-null_and_obs-1.png) 
 
 An important point to keep in mind here is that while we defined $$\mbox{Pr}(a)$$ by counting cases, we will learn that, in some circumstances, mathematics gives us formulas for $$\mbox{Pr}(a)$$ that save us the trouble of computing them as we did here. One example of this powerful approach uses the normal distribution approximation:
 
@@ -420,7 +391,7 @@ approximation works very well here:
 ```
 
 ```
-## Error in pnorm(obsdiff, mean(null), sd(null)): object 'obsdiff' not found
+## [1] 0.01391929
 ```
 
 Later we will learn that there is a mathematical explanation for this. A very useful characteristic of this approximation is that one only needs to know $$\mu$$ and $$\sigma$$ to describe the entire distribution. From this, we can compute the proportion of values in any interval. 
