@@ -6,8 +6,6 @@ title: Cross-validation
 
 ## Cross-validation
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/ml/crossvalidation.Rmd).
-
 Here we describe *cross-validation*: one of the fundamental methods in machine learning for picking parameters in a prediction / machine learning task.
 
 Suppose we have a prediction algorithm which is going to predict the class of some observations using a number of features. For example, we will use the gene expression values to predict the tissue type in our tissues gene expression dataset.
@@ -54,32 +52,24 @@ library(caret)
 ```
 
 ```
-## Loading required package: lattice
-## Loading required package: ggplot2
-## Loading required package: methods
+## Error in library(caret): there is no package called 'caret'
 ```
 
 ```r
 set.seed(1)
 idx <- createFolds(y, k=10)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "createFolds"
+```
+
+```r
 sapply(idx, function(i) table(y[i]))
 ```
 
 ```
-##             Fold01 Fold02 Fold03 Fold04 Fold05 Fold06 Fold07 Fold08 Fold09
-## cerebellum       3      4      4      4      4      4      4      4      4
-## colon            4      3      3      3      4      4      3      3      4
-## endometrium      2      2      1      1      1      2      1      2      2
-## hippocampus      3      3      3      3      3      3      4      3      3
-## kidney           4      4      3      4      4      4      4      4      4
-## liver            2      3      3      2      2      3      3      3      3
-##             Fold10
-## cerebellum       3
-## colon            3
-## endometrium      1
-## hippocampus      3
-## kidney           4
-## liver            2
+## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
 ```
 
 
@@ -94,7 +84,7 @@ plot(Xsmall,col=as.fumeric(y))
 legend("topleft",levels(factor(y)),fill=seq_along(levels(factor(y))))
 ```
 
-![First two PCs of the tissue gene expression data with color representing tissue. We use these two PCs as our two predictors throughout.](images/R/crossvalidation-tmp-mds-1.png) 
+![First two PCs of the tissue gene expression data with color representing tissue. We use these two PCs as our two predictors throughout.](figure/crossvalidation-mds-1.png) 
 
 Now we can try out the K-nearest neighbors method on a single fold:
 
@@ -103,18 +93,18 @@ Now we can try out the K-nearest neighbors method on a single fold:
 library(class)
 i=1
 pred <- knn(train =  Xsmall[ -idx[[i]] , ], test = Xsmall[ idx[[i]], ], cl=  y[ -idx[[i]] ], k=5)
+```
+
+```
+## Error in as.matrix(train): object 'idx' not found
+```
+
+```r
 table(true=y[ idx[[i]] ], pred)
 ```
 
 ```
-##              pred
-## true          cerebellum colon endometrium hippocampus kidney liver
-##   cerebellum           2     0           0           1      0     0
-##   colon                0     4           0           0      0     0
-##   endometrium          0     0           1           0      1     0
-##   hippocampus          1     0           0           2      0     0
-##   kidney               0     0           0           0      4     0
-##   liver                0     0           0           0      0     2
+## Error in table(true = y[idx[[i]]], pred): object 'idx' not found
 ```
 
 ```r
@@ -122,7 +112,7 @@ mean(y[ idx[[i]] ] != pred)
 ```
 
 ```
-## [1] 0.1666667
+## Error in mean(y[idx[[i]]] != pred): object 'idx' not found
 ```
 
 Now we will create a loop, which tries out each value of k from 1 to 12, and runs the K-nearest neighbors algorithm on each fold. We then ask for the proportion of errors for each fold, and report the average from the 5 cross-validation folds:
@@ -151,6 +141,10 @@ res <- sapply(ks, function(k) {
 })
 ```
 
+```
+## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
+```
+
 Now we can plot the mean misclassification rate for each value of k:
 
 
@@ -158,7 +152,9 @@ Now we can plot the mean misclassification rate for each value of k:
 plot(ks, res, type="o")
 ```
 
-![Misclassification error versus number of neighbors.](images/R/crossvalidation-tmp-misclassification_error-1.png) 
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): object 'res' not found
+```
 
 
 Finally, to show that gene expression can perfectly predict tissue, we use 5 dimensions instead of 2, which results in perfect prediction:
@@ -177,10 +173,19 @@ res <- sapply(ks, function(k) {
   })
   mean(res.k)
 })
+```
+
+```
+## Error in lapply(X = X, FUN = FUN, ...): object 'idx' not found
+```
+
+```r
 plot(ks, res, type="o",ylim=c(0,0.20))
 ```
 
-![Misclassification error versus number of neighbors when we use five dimensions instead of 2.](images/R/crossvalidation-tmp-misclassification_error2-1.png) 
+```
+## Error in xy.coords(x, y, xlabel, ylabel, log): object 'res' not found
+```
 
 Important note: we applied `cmdscale` to the entire dataset to create
 a smaller one for illustration purposes. However, in a real machine
