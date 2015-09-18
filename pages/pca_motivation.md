@@ -7,8 +7,6 @@ title: Dimension Reduction Motivation
 
 ## Dimension Reduction Motivation
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/highdim/pca_motivation.Rmd).
-
 Visualizing data is one of the most, if not the most, important step in the analysis of high throughput data. The right visualization method may reveal problems with the experimental data that can render the results from a standard analysis, although typically appropriate, completely useless. 
 
 We have shown methods for visualizing global properties of the columns of rows, but plots that reveal relationships between columns or between rows are more complicated due to the high dimensionality of data. For example, to compare each of the 189 samples to each other we would have to create, for example, 17,766 MA-plots. Creating one single scatterplot of the data is impossible since points are very high dimensional. 
@@ -19,9 +17,9 @@ We will describe powerful techniques for exploratory data analysis based on _dim
 
 We consider an example with twin heights. Here we simulate 100 two dimensional points that represent the number of standard deviations each individual is from the mean height. Each pair of points is a pair of twins:
 
-![Simulated twin pair heights.](images/R/pca_motivation-tmp-simulate twin heights-1.png) 
+![Simulated twin pair heights.](figure/pca_motivation-simulate twin heights-1.png) 
 
-To help with the illustration, if this where high-throughput gene expression data, the twin pairs are the {$$}N{/$$} samples and the two heights would represent gene expression from 2 genes. Note that we can compute the distance between any two samples. For example, here is the distance between the two orange points above:
+To help with the illustration, if this where high-throughput gene expression data, the twin pairs are the $$N$$ samples and the two heights would represent gene expression from 2 genes. Note that we can compute the distance between any two samples. For example, here is the distance between the two orange points above:
 
 
 ```r
@@ -55,12 +53,12 @@ plot(z[1,],z[2,],xlim=thelim,ylim=thelim,xlab="Average height",ylab="Differnece 
 points(z[1,1:2],z[2,1:2],col=2,pch=16)
 ```
 
-![Twin height scatterplot (left) and MA-plot (right).](images/R/pca_motivation-tmp-rotation-1.png) 
+![Twin height scatterplot (left) and MA-plot (right).](figure/pca_motivation-rotation-1.png) 
 
 
 Later we will start using linear algebra to represent transformation of the data such as this. Here we can see that to get `z` we multiplied `y` by the matrix:
 
-{$$}
+$$
 A = \,
 \begin{pmatrix}
 1/2&1/2\\
@@ -68,11 +66,11 @@ A = \,
 \end{pmatrix}
 \implies
 z = A y
-{/$$}
+$$
 
-Also note that we can transform back by simply multiplying by {$$}A^{-1}{/$$} as follows:
+Also note that we can transform back by simply multiplying by $$A^{-1}$$ as follows:
 
-{$$}
+$$
 A^{-1} = \,
 \begin{pmatrix}
 1&1/2\\
@@ -80,27 +78,27 @@ A^{-1} = \,
 \end{pmatrix}
 \implies
 y = A^{-1} z
-{/$$}
+$$
 
 ### Rotations 
 
-In the plot above the distance between the two orange points remains roughly the same, relative to the other points. This is true for all pairs of points. A simple re-scaling of the transformation we performed above will actually make the distances exactly the same. What we will do is multiply by a scalar so that the standard deviations of each point is preserved. If you think of the columns of `y` as independent random variables with standard deviation {$$}\sigma{/$$}, then note that the standard deviations of {$$}M{/$$} and {$$}A{/$$} are:
+In the plot above the distance between the two orange points remains roughly the same, relative to the other points. This is true for all pairs of points. A simple re-scaling of the transformation we performed above will actually make the distances exactly the same. What we will do is multiply by a scalar so that the standard deviations of each point is preserved. If you think of the columns of `y` as independent random variables with standard deviation $$\sigma$$, then note that the standard deviations of $$M$$ and $$A$$ are:
 
-{$$}
+$$
 \mbox{sd}[ Z_1 ] = \mbox{sd}[ (Y_1 + Y_2) / 2 ] = \frac{1}{\sqrt{2}} \sigma \mbox{ and } \mbox{sd}[ Z_2] = \mbox{sd}[ Y_1 - Y_2  ] = {\sqrt{2}} \sigma 
-{/$$}
+$$
 
 This implies that if we change the transformation above to:
 
-{$$}
+$$
 A = \frac{1}{\sqrt{2}}
 \begin{pmatrix}
 1&1\\
 1&-1\\
 \end{pmatrix}
-{/$$}
+$$
 
-then the SD of the columns of {$$}Y{/$$} are the same as the variance of the columns {$$}Z{/$$}. Note that {$$}A^{-1}A=I{/$$} making {$$}A{/$$}. We call matrices with this properties _orthogonal_ and it guarantees the SD-preserving properties described above. The distances are now exactly preserved:
+then the SD of the columns of $$Y$$ are the same as the variance of the columns $$Z$$. Note that $$A^{-1}A=I$$ making $$A$$. We call matrices with this properties _orthogonal_ and it guarantees the SD-preserving properties described above. The distances are now exactly preserved:
 
 
 ```r
@@ -113,7 +111,7 @@ plot(as.numeric(d),as.numeric(d2)) #as.numeric turns distnaces into long vector
 abline(0,1,col=2)
 ```
 
-![Distance computed from original data and after rotation is the same.](images/R/pca_motivation-tmp-rotation_preserves_dist-1.png) 
+![Distance computed from original data and after rotation is the same.](figure/pca_motivation-rotation_preserves_dist-1.png) 
 
 We call this particular transformation a _rotation_ of `y`. 
 
@@ -129,7 +127,7 @@ plot(z[1,],z[2,],xlim=thelim,ylim=thelim,xlab="Average height",ylab="Differnece 
 points(z[1,1:2],z[2,1:2],col=2,pch=16)
 ```
 
-![Twin height scatterplot (left) and after rotation (right).](images/R/pca_motivation-tmp-rotation2-1.png) 
+![Twin height scatterplot (left) and after rotation (right).](figure/pca_motivation-rotation2-1.png) 
 
 The reason we applied this transformation in the first place was because we noticed that to compute the distances between points, we followed a direction along the diagonal in the original plot which after the rotation falls on the horizontal, or the the first dimension of `z`. So this rotation actually achieves what we originally wanted: we can preserve the distances between points with just one dimension. Let's remove the second dimension of `z` and recompute distances:
 
@@ -142,14 +140,14 @@ plot(as.numeric(d),as.numeric(d3))
 abline(0,1)
 ```
 
-![Distance computed with just one dimension after rotation versus actual distance.](images/R/pca_motivation-tmp-approx dist-1.png) 
+![Distance computed with just one dimension after rotation versus actual distance.](figure/pca_motivation-approx dist-1.png) 
 
 The distance computed with just the one dimensions provides a very good approximation to the actual distance and provides a very useful dimension reduction: from 2 dimensions to 1. This first dimension of the transformed data is actually the first _principal component_. This idea motivates the use of principal component analysis (PCA) and the singular value decomposition (SVD) to achieve dimension reduction more generally. 
 
 ### Important Note on a Difference to Other Explanations
 
-If you search the web for descriptions of PCA, you will notice a difference in notation to how we describe it here. This mainly stems from the fact that it is more common to have rows represent units; hence,  in the example shown here {$$}Y{/$$} would be transposed to be an {$$}N \times 2{/$$} matrix. In statistics this is also the most common way to represent the data: individuals in the rows. However, for practical reasons, in genomics it is more common to represent units in the columns; for example, genes are rows and samples are columns. For this reason, in this book we explain PCA and all the math that goes with it in a slightly different way than it is usually done. As a result, many of the explanations you find for PCA start out with the sample covariance matrix usually denoted with
-{$$}\mathbf{X}^\top\mathbf{X}{/$$} and having cells representing covariance between two units. However, for this to be the case we need the rows of {$$}\mathbf{X}{/$$} to represents units. So in our notation above you would have to compute, after scaling, {$$}\mathbf{Y}\mathbf{Y}^\top{/$$} instead.
+If you search the web for descriptions of PCA, you will notice a difference in notation to how we describe it here. This mainly stems from the fact that it is more common to have rows represent units; hence,  in the example shown here $$Y$$ would be transposed to be an $$N \times 2$$ matrix. In statistics this is also the most common way to represent the data: individuals in the rows. However, for practical reasons, in genomics it is more common to represent units in the columns; for example, genes are rows and samples are columns. For this reason, in this book we explain PCA and all the math that goes with it in a slightly different way than it is usually done. As a result, many of the explanations you find for PCA start out with the sample covariance matrix usually denoted with
+$$\mathbf{X}^\top\mathbf{X}$$ and having cells representing covariance between two units. However, for this to be the case we need the rows of $$\mathbf{X}$$ to represents units. So in our notation above you would have to compute, after scaling, $$\mathbf{Y}\mathbf{Y}^\top$$ instead.
 
 Basically, if you want our explanations to match others you have to transpose the matrices we show here.
 
