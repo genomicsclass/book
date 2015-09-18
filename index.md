@@ -17,7 +17,7 @@ title: PH525x series - Biomedical Data Science
 - [Getting started exercises](pages/getting_started_exercises.html)
 - [dplyr introduction](pages/dplyr_intro.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/intro/dplyr_intro.Rmd)
 - [dplyr introduction exercises](pages/dplyr_intro_exercises.html)
-- [mathematical notation](pages/math_notation.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/intro/math_notation.Rmd)
+- [Mathematical notation](pages/math_notation.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/intro/math_notation.Rmd)
 
 ## Chapter 1 - Inference
 - [Random variables](pages/random_variables.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/inference/random_variables.Rmd)
