@@ -9,8 +9,6 @@ title: Permutation tests
 
 ## Permutation Tests
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/inference/permutation_tests.Rmd).
-
 Suppose we have a situation in which none of the standard mathematical statistical approximations apply. We have computed a summary statistic, such as the difference in mean, but do not have a useful approximation, such as that provided by the CLT. In practice, we do not have access to all values in the population so we can't perform a simulation as done above. Permutation tests can be useful in these scenarios. 
 
 We are back to the scenario were we only have 10 measurements for each group.
@@ -41,7 +39,7 @@ hist(avgdiff)
 abline(v=obsdiff, col="red", lwd=2)
 ```
 
-![Histogram of difference between averages from permutations. Vertical line shows the observed difference.](images/R/permutation_tests-tmp-diff_hist-1.png) 
+![Histogram of difference between averages from permutations. Vertical line shows the observed difference.](figure/permutation_tests-diff_hist-1.png) 
 
 How many of the null means are bigger than the observed value? That
 proportion would be the p-value for the null. We add a 1 to the
@@ -83,7 +81,7 @@ hist(avgdiff)
 abline(v=obsdiff, col="red", lwd=2)
 ```
 
-![Histogram of difference between averages from permutations for smaller sample size. Vertical line shows the observed difference.](images/R/permutation_tests-tmp-diff_hist_N50-1.png) 
+![Histogram of difference between averages from permutations for smaller sample size. Vertical line shows the observed difference.](figure/permutation_tests-diff_hist_N50-1.png) 
 
 Now the observed difference is not significant using this approach. Keep in mind that there is no theoretical guarantee that the null distribution estimated from permutations approximates the actual null distribution. For example, if there is a real difference between the populations, some of the permutations will be unbalanced and will contain some samples that explain this difference. This implies that the null distribution created with permutations will have larger tails than the actual null distribution. This is why permutations result in conservative p-values. For this reason, when we have few samples, we can't do permutations. 
 
