@@ -5,8 +5,6 @@ title: Brief Introduction to `dplyr`
 
 ## Brief Introduction to `dplyr`
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/dplyr_intro.Rmd).
-
 The learning curve for R syntax is slow. One of the harder aspects that requires getting used to is subsetting data tables. The `dplyr` packages brings these tasks closer to English and we are therefore going to introduce two simple functions: one is used to subset and the other to select columns.
 
 Take a look at the dataset we read in:
