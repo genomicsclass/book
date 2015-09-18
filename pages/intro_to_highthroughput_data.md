@@ -12,8 +12,6 @@ layout: page
 
 ## Introduction
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/advinference/intro_to_highthroughput_data.Rmd).
-
 High-throughput technologies have changed basic biology and the biomedical sciences from data poor disciplines to data intensive ones. A specific example comes from research fields interested in understanding gene expression. Gene expression is the process in which DNA, the blueprint for life, is copied into RNA, the templates for the synthesis of proteins, the building blocks for life. In the 1990s, the analysis of gene expression data amounted to spotting black dots on a piece of paper or extracting a few numbers from standard curves. With high-throughput technologies, such as microarrays, this suddenly changed to sifting through tens of thousands of numbers. More recently, RNA-Sequencing has further increased data complexity. Biologists went from using their eyes or simple summaries to categorize results to having thousands (and now millions) of measurements per sample to analyze. In this chapter we will focus on statistical inference. Specifically, we focus on the problem of detecting differences in groups using statistical tests and quantifying uncertainty in a meaningful way. In later chapters we will study the statistics behind clustering, machine learning, factor analysis and multi-level modeling. 
 
 Since there is a vast number of available public datasets, we use several gene expression examples. Nonetheless, the statistical techniques you will learn have also proven useful in other fields that make use of high-throughput technologies. Technologies such as microarrays, next generation sequencing, fRMI, and mass spectrometry all produce data to answer questions for which what we learn here will be indispensable. The specific topics we will focus on are inference in the context of high-throughput data, distance and clustering, dimension reduction, machine learning, modeling including Bayesian/hierarchical models and advanced exploratory data analysis. Because there is an interplay between these topics, we will cover each separately. 
@@ -44,7 +42,7 @@ A specific study will typically use one product to make measurements on several 
 
 So a high-throughput experiment is usually defined by three tables: one with the high-throughput measurements and two tables with information about the columns and rows of this first table respectively.
 
-Because a dataset is typically defined by a set of experimental units and a product defines a fixed set of features, the high-throughput measurements can be stored in an {$$}n \times m{/$$} matrix with {$$}n{/$$} the number of units and {$$}m{/$$} the number of features. In R the convention has been to store the transpose of these matrices. 
+Because a dataset is typically defined by a set of experimental units and a product defines a fixed set of features, the high-throughput measurements can be stored in an $$n \times m$$ matrix with $$n$$ the number of units and $$m$$ the number of features. In R the convention has been to store the transpose of these matrices. 
 
 Here is an example from a gene expression dataset:
 
@@ -52,12 +50,26 @@ Here is an example from a gene expression dataset:
 ```r
 ##can be installed with:
 library(GSE5859Subset)
+```
+
+```
+## Error in library(GSE5859Subset): there is no package called 'GSE5859Subset'
+```
+
+```r
 data(GSE5859Subset) ##this loads the three tables
+```
+
+```
+## Warning in data(GSE5859Subset): data set 'GSE5859Subset' not found
+```
+
+```r
 dim(geneExpression)
 ```
 
 ```
-## [1] 8793   24
+## Error in eval(expr, envir, enclos): object 'geneExpression' not found
 ```
 
 We have RNA expression measurements for 8793 genes from blood taken from 24 individuals (the experimental units). For most statistical analysis we will also need information about the individuals. For example, in this case the data was originally collected to compare gene expression across ethnic groups. However, we have created a subset of this dataset for illustration and separated the data into two groups:
@@ -69,7 +81,7 @@ dim(sampleInfo)
 ```
 
 ```
-## [1] 24  4
+## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
 ```
 
 ```r
@@ -77,13 +89,7 @@ head(sampleInfo)
 ```
 
 ```
-##     ethnicity       date         filename group
-## 107       ASN 2005-06-23 GSM136508.CEL.gz     1
-## 122       ASN 2005-06-27 GSM136530.CEL.gz     1
-## 113       ASN 2005-06-27 GSM136517.CEL.gz     1
-## 163       ASN 2005-10-28 GSM136576.CEL.gz     1
-## 153       ASN 2005-10-07 GSM136566.CEL.gz     1
-## 161       ASN 2005-10-07 GSM136574.CEL.gz     1
+## Error in head(sampleInfo): object 'sampleInfo' not found
 ```
 
 ```r
@@ -91,7 +97,7 @@ sampleInfo$group
 ```
 
 ```
-##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
 ```
 
 One of the columns, filenames, permits us to connect the rows of this table to the columns of the measurement table.
@@ -102,8 +108,7 @@ match(sampleInfo$filename,colnames(geneExpression))
 ```
 
 ```
-##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-## [24] 24
+## Error in match(sampleInfo$filename, colnames(geneExpression)): object 'sampleInfo' not found
 ```
 
 
@@ -115,7 +120,7 @@ dim(geneAnnotation)
 ```
 
 ```
-## [1] 8793    4
+## Error in eval(expr, envir, enclos): object 'geneAnnotation' not found
 ```
 
 ```r
@@ -123,13 +128,7 @@ head(geneAnnotation)
 ```
 
 ```
-##      PROBEID  CHR     CHRLOC SYMBOL
-## 1  1007_s_at chr6   30852327   DDR1
-## 30   1053_at chr7  -73645832   RFC2
-## 31    117_at chr1  161494036  HSPA6
-## 32    121_at chr2 -113973574   PAX8
-## 33 1255_g_at chr6   42123144 GUCA1A
-## 34   1294_at chr3  -49842638   UBA7
+## Error in head(geneAnnotation): object 'geneAnnotation' not found
 ```
 
 The table includes an ID that permits us to connect the rows of this table with the rows of the measurement table:
@@ -139,7 +138,7 @@ head(match(geneAnnotation$PROBEID,rownames(geneExpression)))
 ```
 
 ```
-## [1] 1 2 3 4 5 6
+## Error in match(geneAnnotation$PROBEID, rownames(geneExpression)): object 'geneAnnotation' not found
 ```
 The table also includes biological information about the features; namely chromosome location and the gene "name" used by biologists.
 
