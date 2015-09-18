@@ -16,8 +16,6 @@ get set up to follow along.
 
 ## Installing R
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/getting_started.Rmd).
-
 The first step is to install R. You can download and install R from
 the [Comprehensive R Archive Network](https://cran.r-project.org/)
 (CRAN). It is relatively straightforward, but if you need further help
@@ -29,8 +27,6 @@ you can try the following resources:
 
 ## Installing RStudio
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/getting_started.Rmd).
-
 The next step is to install RStudio, a program for viewing and running
 R scripts. Technically you can run all the code shown here without
 installing RStudio, but we highly recommend this integrated
@@ -40,8 +36,6 @@ Windows we have special
 [instructions](https://github.com/genomicsclass/windows). 
 
 ## Learn R Basics
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/getting_started.Rmd).
 
 The first homework assignment is to complete an R tutorial to
 familiarize yourself with the basics of programming and R syntax. 
@@ -81,8 +75,6 @@ character is interpreted:
 
 ## Installing Packages
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/getting_started.Rmd).
-
 The first R command we will run is `install.packages`. If you took the
 `swirl` tutorial you already did this. R only includes a basic set of
 functions. It can do much more than this, but not everybody needs
@@ -115,8 +107,6 @@ try to load a package and get an error, it probably means you need to
 install it first.
 
 ## Importing Data into R
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/intro/getting_started.Rmd).
 
 The first step when getting ready to analyze data is to read in the data into R. There are several ways to do this and we will discuss three of them. But you only need to learn one to follow along. 
 
