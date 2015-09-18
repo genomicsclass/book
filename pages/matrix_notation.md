@@ -10,8 +10,6 @@ layout: page
 
 ## Matrix Notation
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
-
 Here we introduce the basics of matrix notation. Initially this may seem over-complicated, but once we discuss examples you will appreciate the power of using this notation to both explain and derive solutions, as well as implement them as R code. 
 
 #### The language of linear models
@@ -22,21 +20,19 @@ The main point of this entire exercise is to show how we can write the models ab
 
 ## Solving System of Equations
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
-
 Linear algebra was created by mathematicians to solve systems of linear equations such as this:
 
-{$$}
+$$
 \begin{align*}
 a + b + c &= 6\\
 3a - 2b + c &= 2\\
 2a + b  - c &= 1
 \end{align*}
-{/$$}
+$$
 
 It provides very useful machinery to solve these problems generally. We will learn how we can write and solve this system using matrix algebra notation:
 
-{$$} 
+$$ 
 \,
 \begin{pmatrix}
 1&1&1\\
@@ -69,15 +65,13 @@ c
 2\\
 1
 \end{pmatrix}
-{/$$}
+$$
 
 This section explains the notation used above. It turns that we can borrow this notation for linear models in statistics as well.
 
 ## Vectors, Matrices and Scalars
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/matrixalg/matrix_notation.Rmd).
-
-In the examples above the random variables associated with the data were represented by {$$}Y_1,\dots,Y_n{/$$}. We can think of this as a vector. In fact, in R we are already doing this:
+In the falling object, father-son heights, and mouse weight examples the random variables associated with the data were represented by $$Y_1,\dots,Y_n$$. We can think of this as a vector. In fact, in R we are already doing this:
 
 
 ```r
@@ -91,22 +85,22 @@ head(y)
 ```
 In math we can also use just one symbol and we usually use bold to distinguish it from the individual entries:
 
-{$$} \mathbf{Y} = \begin{pmatrix}
+$$ \mathbf{Y} = \begin{pmatrix}
 Y_1\\\
 Y_2\\\
 \vdots\\\
 Y_N
 \end{pmatrix}
-{/$$}
+$$
 
 
-For reasons that will soon become clear, default representation of data vectors have dimension {$$}N\times 1{/$$} as opposed to {$$}1 \times N{/$$} .
+For reasons that will soon become clear, default representation of data vectors have dimension $$N\times 1$$ as opposed to $$1 \times N$$ .
 
 Here we don't always use bold because normally one can tell what is a matrix from the context.
 
-Similarly, we can use math notation to represent the covariates or predictors. In the case of the two, the second one is just the square of the first.
+Similarly, we can use math notation to represent the covariates or predictors. In a case with two predictors we can represent them like this:
 
-{$$} 
+$$ 
 \mathbf{X}_1 = \begin{pmatrix}
 x_{1,1}\\
 \vdots\\
@@ -117,32 +111,32 @@ x_{1,2}\\
 \vdots\\
 x_{N,2}
 \end{pmatrix}
-{/$$}
+$$
 
-Note that for the object falling example {$$}x_{1,1}= t_i{/$$} and {$$}x_{i,1}=t_i^2{/$$} with {$$}t_i{/$$} the time of the i-th observation. Also, keep in mind that vectors can be thought of as {$$}N\times 1{/$$} matrices.
+Note that for the falling objectexample $$x_{1,1}= t_i$$ and $$x_{i,1}=t_i^2$$ with $$t_i$$ the time of the i-th observation. Also, keep in mind that vectors can be thought of as $$N\times 1$$ matrices.
 
 For reasons that will soon become apparent, it is convenient to represent these in matrices:
 
-{$$} 
+$$ 
 \mathbf{X} = [ \mathbf{X}_1 \mathbf{X}_2 ] = \begin{pmatrix}
 x_{1,1}&x_{1,2}\\
 \vdots\\
 x_{N,1}&x_{N,2}
 \end{pmatrix}
-{/$$}
+$$
 
-This matrix has dimension {$$}N \times 2{/$$}. We can create this matrix in R this way:
+This matrix has dimension $$N \times 2$$. We can create this matrix in R this way:
 
 
 ```r
 n <- 25
 tt <- seq(0,3.4,len=n) ##time in secs, t is a base function
-X <- cbind(x1=tt,x2=tt^2)
+X <- cbind(X1=tt,X2=tt^2)
 head(X)
 ```
 
 ```
-##             x1         x2
+##             X1         X2
 ## [1,] 0.0000000 0.00000000
 ## [2,] 0.1416667 0.02006944
 ## [3,] 0.2833333 0.08027778
@@ -159,16 +153,16 @@ dim(X)
 ## [1] 25  2
 ```
 
-We can also use this notation to denote an arbitrary number of covariates with the following {$$}N\times p{/$$} matrix:
+We can also use this notation to denote an arbitrary number of covariates with the following $$N\times p$$ matrix:
 
-{$$}
+$$
 \mathbf{X} = \begin{pmatrix}
   x_{1,1}&\dots & x_{1,p} \\
   x_{2,1}&\dots & x_{2,p} \\
    & \vdots & \\
   x_{N,1}&\dots & x_{N,p} 
   \end{pmatrix}
-{/$$}
+$$
 
 Just as an example, we show you how to make one in R now using `matrix` instead of `cbind`:
 
