@@ -38,8 +38,6 @@ demonstration of commonly used figures that we recommend against.
 
 ## Quantile Quantile Plots
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/exploratory_data_analysis.Rmd).
-
 To corroborate that a theoretical distribution, for example the normal distribution, is in fact a good
 approximation, we can use quantile-quantile plots
 (QQ-plots). Quantiles are best understood by considering the special
@@ -67,7 +65,7 @@ plot(normalqs,qs,xlab="Normal percentiles",ylab="Height percentiles")
 abline(0,1) ##identity line
 ```
 
-![First example of qqplot. Here we compute the theoretical quantiles ourselves.](images/R/exploratory_data_analysis-tmp-qqplot_example1-1.png) 
+![First example of qqplot. Here we compute the theoretical quantiles ourselves.](figure/exploratory_data_analysis-qqplot_example1-1.png) 
 
 Note how close these values are. Also, note that we can see these
 QQ-plots with less code (this plot has more points than the one we
@@ -79,7 +77,7 @@ qqnorm(x)
 qqline(x) 
 ```
 
-![Second example of qqplot. Here we use the function qqnorm which computes the theoretical normal quantiles automatically.](images/R/exploratory_data_analysis-tmp-qqplot_example2-1.png) 
+![Second example of qqplot. Here we use the function qqnorm which computes the theoretical normal quantiles automatically.](figure/exploratory_data_analysis-qqplot_example2-1.png) 
 
 However, the `qqnorm` function plots against a standard normal distribution. This is why the line has slope `popsd(x)` and intercept `mean(x)`.
 
@@ -94,7 +92,7 @@ qqnorm(x)
 qqline(x)
 ```
 
-![Example of the qqnorm function. Here we apply it to numbers generated to follow a normal distribution.](images/R/exploratory_data_analysis-tmp-qqnorm_example-1.png) 
+![Example of the qqnorm function. Here we apply it to numbers generated to follow a normal distribution.](figure/exploratory_data_analysis-qqnorm_example-1.png) 
 
 We can also get a sense for how non-normally distributed data will
 look in a QQ-plot. Here we generate data from the t-distribution with
@@ -118,7 +116,7 @@ for(df in dfs){
 }
 ```
 
-![We generate t-distributed data for four degrees of freedom and make qqplots against normal theoretical quantiles.](images/R/exploratory_data_analysis-tmp-qqnorm_of_t-1.png) 
+![We generate t-distributed data for four degrees of freedom and make qqplots against normal theoretical quantiles.](figure/exploratory_data_analysis-qqnorm_of_t-1.png) 
 
 <a name="boxplots"></a>
 
@@ -140,12 +138,12 @@ qqnorm(exec.pay)
 qqline(exec.pay)
 ```
 
-![Histogram and QQ-plot of executive pay.](images/R/exploratory_data_analysis-tmp-unnamed-chunk-2-1.png) 
+![Histogram and QQ-plot of executive pay.](figure/exploratory_data_analysis-unnamed-chunk-2-1.png) 
 
 In addition to QQ-plots, a practical summary of data is to compute 3
 percentiles: 25-th, 50-th (the median) and the 75-th. A boxplot shows
 these 3 values along with a 
-range of the points within median {$$}\pm{/$$} 1.5 (75-th percentile -
+range of the points within median $$\pm$$ 1.5 (75-th percentile -
 25th-percentile). Values outside this range are shown as points and
 sometimes refereed to as _outliers_. Here we show just one boxplot,
 however one of the great benefits of boxplots is that we could easily
@@ -156,13 +154,11 @@ show many distributions in one plot, by lining them up, side by side. We will se
 boxplot(exec.pay, ylab="10,000s of dollars", ylim=c(0,400))
 ```
 
-![Simple boxplot of executive pay.](images/R/exploratory_data_analysis-tmp-unnamed-chunk-3-1.png) 
+![Simple boxplot of executive pay.](figure/exploratory_data_analysis-unnamed-chunk-3-1.png) 
 
 <a name="scatterplots"></a>
 
 ## Scatterplots And Correlation
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/exploratory_data_analysis.Rmd).
 
 The methods described above relate to _univariate_ variables. In the
 biomedical sciences, it is common to be interested in the relationship
@@ -183,7 +179,7 @@ y=father.son$sheight
 plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
 ```
 
-![Heights of father and son pairs plotted against each other.](images/R/exploratory_data_analysis-tmp-scatterplot-1.png) 
+![Heights of father and son pairs plotted against each other.](figure/exploratory_data_analysis-scatterplot-1.png) 
 
 The scatter plot shows a general trend: the taller the father, the
 taller the son. A summary of this trend is the correlation coefficient
@@ -191,8 +187,6 @@ which in this cases is 0.5. We will motivate this statistic by trying to
 predict the son's height using the father's height.
 
 ## Stratification
-
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/exploratory_data_analysis.Rmd).
 
 Suppose we are asked to guess the height of randomly select sons. The
 average height, 68.7 inches, is the value with the highest proportion
@@ -212,7 +206,7 @@ groups <- split(y,round(x))
 boxplot(groups)
 ```
 
-![Boxplot of son heights stratified by father heights.](images/R/exploratory_data_analysis-tmp-boxplot-1.png) 
+![Boxplot of son heights stratified by father heights.](figure/exploratory_data_analysis-boxplot-1.png) 
 
 ```r
 print(mean(y[ round(x) == 72]))
@@ -231,17 +225,15 @@ below.
 
 ## Bi-variate Normal Distribution
 
-The R markdown document for this section is available [here](https://github.com/genomicsclass/labs/tree/master/eda/exploratory_data_analysis.Rmd).
+A pair of random variables $$(X,Y)$$ is considered to be approximated by
+bivariate normal when the proportion of values below, for example, $$a$$
+and $$b$$ is approximated by this expression: 
 
-A pair of random variables {$$}(X,Y){/$$} is considered to be approximated by
-bivariate normal when the proportion of values below, for example, {$$}a{/$$}
-and {$$}b{/$$} is approximated by this expression: 
-
-{$$} 
+$$ 
 \mbox{Pr}(X<a,Y<b) = 
-{/$$}
+$$
 
-{$$}
+$$
 \int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}
 \exp{ \left(
 \frac{1}{2(1-\rho^2)}
@@ -251,14 +243,14 @@ and {$$}b{/$$} is approximated by this expression:
 \right]
 \right)
 }
-{/$$}
+$$
 
-This may seem like a rather complicated equation, but the concept behind it is rather intuitive. An alternative definition is the following: fix a value {$$}x{/$$}
-and look at all the pairs {$$}(X,Y){/$$} for which {$$}X=x{/$$}. Generally, in
+This may seem like a rather complicated equation, but the concept behind it is rather intuitive. An alternative definition is the following: fix a value $$x$$
+and look at all the pairs $$(X,Y)$$ for which $$X=x$$. Generally, in
 statistics we call this exercise _conditioning_. We are conditioning
-{$$}Y{/$$} on {$$}X{/$$}. If a pair of random variables is approximated by a
-bivariate normal distribution, then the distribution of {$$}Y{/$$} conditioned
-on {$$}X=x{/$$} is approximated with a normal distribution no matter waht {$$}x{/$$} we choose. Let's
+$$Y$$ on $$X$$. If a pair of random variables is approximated by a
+bivariate normal distribution, then the distribution of $$Y$$ conditioned
+on $$X=x$$ is approximated with a normal distribution no matter waht $$x$$ we choose. Let's
 see if this holds with our height data. We show 4 different strata: 
 
 
@@ -272,28 +264,28 @@ for(i in c(5,8,11,14)){
 }
 ```
 
-![qqplots of son heights for four strata defined by father heights.](images/R/exploratory_data_analysis-tmp-qqnorm_of_strata-1.png) 
+![qqplots of son heights for four strata defined by father heights.](figure/exploratory_data_analysis-qqnorm_of_strata-1.png) 
 
 
-Now we come back to defining correlation. Mathematical statistics tells us that when two variables follow a bivariate normal distribution, then for any given value of {$$}x{/$$}, the average of the {$$}Y{/$$} in pairs for which {$$}X=x{/$$} is:
+Now we come back to defining correlation. Mathematical statistics tells us that when two variables follow a bivariate normal distribution, then for any given value of $$x$$, the average of the $$Y$$ in pairs for which $$X=x$$ is:
 
-{$$} 
+$$ 
 \mu_Y +  \rho \frac{X-\mu_X}{\sigma_X}\sigma_Y
-{/$$}
+$$
 
 
-Note that this is a line with slope {$$}\rho \frac{\sigma_Y}{\sigma_X}{/$$}. This is referred to as the _regression line_. If the SDs are the same, then the slope of the regression line is the correlation {$$}\rho{/$$}. Therefore, if we standardize {$$}X{/$$} and {$$}Y{/$$}, the correlation is the slope of the regression line. 
+Note that this is a line with slope $$\rho \frac{\sigma_Y}{\sigma_X}$$. This is referred to as the _regression line_. If the SDs are the same, then the slope of the regression line is the correlation $$\rho$$. Therefore, if we standardize $$X$$ and $$Y$$, the correlation is the slope of the regression line. 
 
 
 
 
-Another way to see this is, to form a prediction {$$}\hat{Y}{/$$}, for every SD away from the mean in {$$}x{/$$}, we predict {$$}\rho{/$$} SDs away for {$$}Y{/$$}: 
+Another way to see this is, to form a prediction $$\hat{Y}$$, for every SD away from the mean in $$x$$, we predict $$\rho$$ SDs away for $$Y$$: 
 
-{$$}
+$$
 \frac{\hat{Y} - \mu_Y}{\sigma_Y} = \rho \frac{x-\mu_X}{\sigma_X}
-{/$$}
+$$
 
-So, if there is perfect correlation, we predict the same number of SDs. If there is 0 correlation, then we don't use {$$}x{/$$} at all.  For values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
+So, if there is perfect correlation, we predict the same number of SDs. If there is 0 correlation, then we don't use $$x$$ at all.  For values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
 
 To confirm that the above approximations hold in this case, let's compare the mean of each strata to the identity line and the regression line:
 
@@ -308,14 +300,14 @@ plot(fatherheights, means, ylab="average of strata of son heights", ylim=range(f
 abline(0, cor(x,y))
 ```
 
-![Average son height of each strata plotted against father heights defining the strata](images/R/exploratory_data_analysis-tmp-scatterplot2-1.png) 
+![Average son height of each strata plotted against father heights defining the strata](figure/exploratory_data_analysis-scatterplot2-1.png) 
 
 #### Variance explained
 
 The standard deviation of the _conditional_ distribution described above is:
 
-{$$}
+$$
  \sqrt{1-\rho^2} \sigma_Y
-{/$$}
+$$
 
-This is where statements like {$$}X{/$$} explains {$$}\rho^2 \times 100{/$$} % of the variation in {$$}Y{/$$}: the variance of {$$}Y{/$$} is {$$}\sigma^2{/$$} and once we condition it goes down to {$$}(1-\rho^2) \sigma^2_Y{/$$} . It is important to note that the "variance explained" statement only makes sense when the data is approximated by a bivariate normal distribution.
+This is where statements like $$X$$ explains $$\rho^2 \times 100$$ % of the variation in $$Y$$: the variance of $$Y$$ is $$\sigma^2$$ and once we condition it goes down to $$(1-\rho^2) \sigma^2_Y$$ . It is important to note that the "variance explained" statement only makes sense when the data is approximated by a bivariate normal distribution.
