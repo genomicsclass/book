@@ -7,12 +7,19 @@ title: Hierarchical Models
 
 ## Hierarchical Models
 
-In this section we use the mathematical theory which describes an approach that has become widely applied in the analysis of high-throughput data. The general idea is to build a _hierachichal model_ with two levels. One level describes variability across samples/units, and the other describes variability across features. The first level of variation is accounted for by all the models and approaches we have described here, for example the model that leads to the t-test. The second level provides power by permitting us to "borrow" information from all features to inform the inference performed on each one. 
+In this section we use the mathematical theory which describes an approach that has become widely applied in the analysis of high-throughput data. The general idea is to build a _hierachichal model_ with two levels. One level describes variability across samples/units, and the other describes variability across features. This is similar to the baseball example in which the first level described variability across players and the second described the randomness for the success of one player. The first level of variation is accounted for by all the models and approaches we have described here, for example the model that leads to the t-test. The second level provides power by permitting us to "borrow" information from all features to inform the inference performed on each one. 
 
-Here we describe one specific case that is currently the most widely used approach to inference with gene expression data. It is the model implemented by the `limma` Bioconductor package. This idea has been adapted to develop methods for other data types such as RNAseq such as [edgeR](http://www.ncbi.nlm.nih.gov/pubmed/19910308) and [DESeq](http://www.ncbi.nlm.nih.gov/pubmed/20979621).
-This package provides an alternative to the t-test that greatly improves power by modeling the variance. We motivate and demonstrate the approach with an example.
+Here we describe one specific case that is currently the most widely
+used approach to inference with gene expression data. It is the model
+implemented by the `limma` Bioconductor package. This idea has been
+adapted to develop methods for other data types such as RNAseq such as
+[edgeR](http://www.ncbi.nlm.nih.gov/pubmed/19910308) and
+[DESeq2](http://www.ncbi.nlm.nih.gov/pubmed/25516281). This package
+provides an alternative to the t-test that greatly improves power by
+modeling the variance. We motivate and demonstrate the approach with
+an example. 
 
-Here is a volcano showing effect sizes and p-value from applying a t-test to data from an experiment running six replicated samples with 16 genes artificially made to be different in two groups of three genes. These genes are the only genes for which the null hypothesis is true. In the plot they are shown in blue.
+Here is a volcano showing effect sizes and p-value from applying a t-test to data from an experiment running six replicated samples with 16 genes artificially made to be different in two groups of three samples each. These 16 genes are the only genes for which the alternative hypothesis is true. In the plot they are shown in blue.
 
 
 ```r
@@ -45,7 +52,7 @@ sum( p.adjust(tt$p.value,method = "BH")[spike] < 0.05)
 ## [1] 1
 ```
 
-This of course has to do with the low power associated with a sample size of three in each group. The second finding is that if we forget about inference and simply rank the genes based on p-value, we obtain many false positives. For example, six of the smallest 10 p-values are false positives. 
+This of course has to do with the low power associated with a sample size of three in each group. The second finding is that if we forget about inference and simply rank the genes based on t-statistic, we obtain many false positives in any rank list of size larger than 1. For example, six of the smallest 10 p-values are false positives. 
 
 
 ```r
@@ -85,7 +92,7 @@ $$
 \mbox{E}[\sigma^2_g \mid s_g] = \frac{d_0 s_0^2 + d s^2_g}{d_0 + d}
 $$
 
-As before, the posterior mean _shrinks_ the observed variance $$s_g^2$$ towards the global variance $$s_0^2$$ and the weights depend on the sample size through the degrees of freedom $$d$$ and, in this case, the shape of the prior distribution through $$d_0$$. 
+As in the baseball example, the posterior mean _shrinks_ the observed variance $$s_g^2$$ towards the global variance $$s_0^2$$ and the weights depend on the sample size through the degrees of freedom $$d$$ and, in this case, the shape of the prior distribution through $$d_0$$. 
 
 In the plot above we can see how the variance estimate _shrink_ for 40 genes:
 
