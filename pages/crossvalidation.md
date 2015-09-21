@@ -52,7 +52,7 @@ mean(y != pred)
 ## [1] 0
 ```
 
-We have no errors in prediction in the training set with $$k=5$$. What if we use $$k=1$?
+We have no errors in prediction in the training set with $$k=5$$. What if we use $$k=1$$.
 
 
 ```r
