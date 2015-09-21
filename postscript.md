@@ -48,9 +48,9 @@ old ones:
 
 ## RNA-seq data analysis
 
-- [Downloading and unzipping fastq files](https://github.com/genomicsclass/labs/blob/master/course5/fastq.md)
-- [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/course5/genome_align_STAR.md)
-- [Transcriptome alignment with RSEM](https://github.com/genomicsclass/labs/blob/master/course5/trancsript_align_RSEM.md)
+- [Downloading and unzipping fastq files](https://github.com/genomicsclass/labs/blob/master/rnaseq/fastq.md)
+- [Genomic alignment with STAR](https://github.com/genomicsclass/labs/blob/master/rnaseq/genome_align_STAR.md)
+- [Transcriptome alignment with RSEM](https://github.com/genomicsclass/labs/blob/master/rnaseq/trancsript_align_RSEM.md)
 
 
 - [RNA-seq at the gene-level: EDA, DE and SVA](pages/rnaseq_gene_level.html)
