@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Bayes Exercises
+title: Bayes Exercises
 ---
 
 {pagebreak} 
