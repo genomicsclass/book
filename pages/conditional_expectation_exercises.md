@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Conditional Expectations Exercises
+title: Conditional Expectations Exercises
 ---
 
 ## Exercises
