@@ -9,8 +9,8 @@ title: Rank tests
 
 We learned how the sample mean and SD are susceptible to outliers. The
 t-test is based on these measures and is susceptible as well. The
-Wilcox rank test (equivalent to the Mann-Whitney test) provides an
-alternative. In the code below we perform a t-test on data for which
+Wilcoxon rank test (equivalent to the Mann-Whitney test) provides an
+alternative. In the code below, we perform a t-test on data for which
 the null is true. However, we change one sum observation by mistake
 in each sample and the values incorrectly entered are different. Here
 we see that the t-test results in a small p-value, while the Wilcoxon
@@ -72,7 +72,7 @@ W <-sum(ws)
 
 `W` is the sum of the ranks for the first group relative to the second
 group. We can compute an exact p-value for $$W$$ based on
-combinatorics. But we can also use the CLT, as
+combinatorics. We can also use the CLT since
 statistical theory tells us that this `W` is approximated by the
 normal distribution. We can construct a z-score as follows: 
 
@@ -87,7 +87,7 @@ print(Z)
 ## [1] 1.523124
 ```
 
-Note that here the `Z` is not large enough to give us a p-value less
+Here the `Z` is not large enough to give us a p-value less
 than 0.05. These are part of the calculations performed by the R function
 `wilcox.test`. 
 
