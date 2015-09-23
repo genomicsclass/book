@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Introduction to high throughput data exercises
 ---
 
