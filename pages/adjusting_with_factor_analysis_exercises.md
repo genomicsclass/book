@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Adjusting with factor analysis exercises
+title: Adjusting with factor analysis exercises
 ---
 
 ## Exercises
