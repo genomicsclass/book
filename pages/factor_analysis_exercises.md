@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Factor Analysis Exercises
 ---
 
