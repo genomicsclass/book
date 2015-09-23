@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Confounding Exercises
+title: Confounding Exercises
 ---
 
 ## Exercises
