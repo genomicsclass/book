@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Distance exercises
+title: Distance exercises
 ---
 
 ## Exercises
