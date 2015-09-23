@@ -5,7 +5,7 @@ title: Brief Introduction to `dplyr`
 
 ## Brief Introduction to `dplyr`
 
-The learning curve for R syntax is slow. One of the harder aspects that requires getting used to is subsetting data tables. The `dplyr` packages brings these tasks closer to English and we are therefore going to introduce two simple functions: one is used to subset and the other to select columns.
+The learning curve for R syntax is slow. One of the more difficult aspects that requires some getting used to is subsetting data tables. The `dplyr` packages brings these tasks closer to English and we are therefore going to introduce two simple functions: one is used to subset and the other to select columns.
 
 Take a look at the dataset we read in:
 
@@ -25,7 +25,7 @@ head(dat) #In R Studio use View(dat)
 ## 6 chow      19.79
 ```
 
-Note that there are two types of diets, which are denoted in the first column. Note also that if we want just the weights, we only need the second column. So if we want the weights for mice on the `chow` diet, we subset and filter like this:
+There are two types of diets, which are denoted in the first column. If we want just the weights, we only need the second column. So if we want the weights for mice on the `chow` diet, we subset and filter like this:
 
 
 ```r
@@ -62,16 +62,16 @@ head(chowVals)
 ## 6      19.79
 ```
 
-A nice feature of the `dplyr` package is that you can perform consecutive tasks by using what is called a "pipe".  In `dplyr` we use `%>%` to denote a pipe. This symbol tells the program to first do one thing and then do something else to the result of the first. So we can perform several data manipulations in one line.  For example:
+A nice feature of the `dplyr` package is that you can perform consecutive tasks by using what is called a "pipe". In `dplyr` we use `%>%` to denote a pipe. This symbol tells the program to first do one thing and then do something else to the result of the first. Hence, we can perform several data manipulations in one line. For example:
 
 
 ```r
 chowVals <- filter(dat, Diet=="chow") %>% select(Bodyweight)
 ```
 
-Note that in the second task we no longer have to specify the object we are editing since it is whatever comes from the previous call. 
+In the second task, we no longer have to specify the object we are editing since it is whatever comes from the previous call. 
 
-Also note that if `dplyr` receives a data.frame it will return a data.frame. 
+Also, note that if `dplyr` receives a `data.frame` it will return a `data.frame`. 
 
 ```r
 class(dat)
@@ -89,7 +89,7 @@ class(chowVals)
 ## [1] "data.frame"
 ```
 
-For pedagogical reasons we will often want the final result to be a simple `numeric` vector. To obtain such a vector with `dplyr`, we can apply the `unlist` function which turns `lists`, such as `data.frames`, into `numeric` vectors:
+For pedagogical reasons, we will often want the final result to be a simple `numeric` vector. To obtain such a vector with `dplyr`, we can apply the `unlist` function which turns `lists`, such as `data.frames`, into `numeric` vectors:
 
 
 ```r
