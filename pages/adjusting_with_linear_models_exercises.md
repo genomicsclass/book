@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Adjusting with linear models exercises
 ---
 
