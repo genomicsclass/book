@@ -6,124 +6,41 @@ title: Class Prediction
 
 ## Class Prediction
 
-Here we give a brief introduction to the main machine learning topic:
+Here we give a brief introduction to the main task of machine learning:
 class prediction. In fact, many refer to class prediction as machine
-learning and we actually use the two terms interchangeably. Some of
-the examples we give here follow examples from the excellent
+learning and we sometimes use the two terms interchangeably. We give a very brief introduction to this vast topic, focusing on some specific examples.
+
+Some of the examples we give here are motivated by those in the excellent
 textbook *The Elements of Statistical Learning: Data Mining, Inference, and
 Prediction*, by Trevor Hastie, Robert Tibshirani and Jerome Friedman. A
 free PDF of this book can be found at the following URL: 
 
 <http://statweb.stanford.edu/~tibs/ElemStatLearn/>
 
-Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes $$Y$$ and covariates $$X$$. In ML we call $$X$$ the predictors. The main difference between ML and inference is that in ML we are interested in predicting $$Y$$ using $$X$$. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting $$Y$$. 
+Similar to inference in the context of regression, Machine Learning (ML) studies the relationships between outcomes $$Y$$ and covariates $$X$$. In ML, we call $$X$$ the predictors or features. The main difference between ML and inference is that, in ML, we are interested mainly in predicting $$Y$$ using $$X$$. Statistical models are used, but while in inference we estimate and interpret model parameters, in ML they are mainly a means to an end: predicting $$Y$$. 
 
-Here we introduce the main concepts needed to understand ML along with two specific algorithms: regression and k nearest neighbors (knn). Note there are dozens of popular algorithms that we do not cover here are some 
+Here we introduce the main concepts needed to understand ML, along with two specific algorithms: regression and k nearest neighbors (kNN). Keep in mind that there are dozens of popular algorithms that we do not cover here.
 
-In a previous section we covered the very simple one-predictor case. Most of ML is concerned with cases with more than one predictor. For illustration purposes we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from Hastie, Tibshirani and Friedman's book. In the plot below we show the actual values of $$f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2)$$ using colors. The following code is used to create a relatively complex conditional probability function. We create the test and train data we use later.
-
-
-```r
-library(rafalib)
-library(RColorBrewer)
-hmcol <- colorRampPalette(rev(brewer.pal(11, "Spectral")))(100)
-mycols=c(hmcol[1],hmcol[100])
-
-set.seed(1)
-##create covariates and outcomes
-##outcomes are alwasy 50 0s and 50 1s
-s2=0.15
-
-##pick means to create a non linear conditional expectation
-library(MASS)
-M0 <- mvrnorm(10,c(1,0),s2*diag(2)) ##generate 10 means
-M1 <- rbind(mvrnorm(3,c(1,1),s2*diag(2)),
-            mvrnorm(3,c(0,1),s2*diag(2)),
-            mvrnorm(4,c(0,0),s2*diag(2)))
-
-###funciton to generate random pairs
-s<- sqrt(1/5)
-N=200
-makeX <- function(M,n=N,sigma=s*diag(2)){
-  z <- sample(1:10,n,replace=TRUE) ##pick n at random from above 10
-  m <- M[z,] ##these are the n vectors (2 components)
-  return(t(apply(m,1,function(mu) mvrnorm(1,mu,sigma)))) ##the final values
-}
-
-
-###create the training set and the test set
-x0 <- makeX(M0)##the final values for y=0 (green)
-testx0 <- makeX(M0)
-x1 <- makeX(M1)
-testx1 <-makeX(M1)
-x <- rbind(x0,x1) ##one matrix with everything
-test <- rbind(testx0,testx1)
-y <- c(rep(0,N),rep(1,N)) #the outcomes
-ytest <- c(rep(0,N),rep(1,N))
-cols <- mycols[c(rep(1,N),rep(2,N))]
-colstest <- cols
-
-##Create a grid so we can predict all of X,Y
-GS <- 150 ##grid size is GS x GS
-XLIM <- c(min(c(x[,1],test[,1])),max(c(x[,1],test[,1])))
-tmpx <- seq(XLIM[1],XLIM[2],len=GS)
-YLIM <- c(min(c(x[,2],test[,2])),max(c(x[,2],test[,2])))
-tmpy <- seq(YLIM[1],YLIM[2],len=GS)
-newx <- expand.grid(tmpx,tmpy) #grid used to show color contour of predictions
-
-###Bayes rule: best possible answer
-p <- function(x){ ##probability of Y given X
-  p0 <- mean(dnorm(x[1],M0[,1],s)*dnorm(x[2],M0[,2],s))
-  p1 <- mean(dnorm(x[1],M1[,1],s)*dnorm(x[2],M1[,2],s))
-  p1/(p0+p1)
-}
-
-###Create the bayesrule prediction
-bayesrule <- apply(newx,1,p)
-colshat <- bayesrule
-
-colshat <- hmcol[floor(bayesrule*100)+1]
-
-mypar()
-plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
-points(newx,col=colshat,pch=16,cex=0.35)
-```
+In a previous section, we covered the very simple one-predictor case. However, most of ML is concerned with cases with more than one predictor. For illustration purposes, we move to a case in which $$X$$ is two dimensional and $$Y$$ is binary. We simulate a situation with a non-linear relationship using an example from the Hastie, Tibshirani and Friedman book. In the plot below, we show the actual values of $$f(x_1,x_2)=E(Y \mid X_1=x_1,X_2=x_2)$$ using colors. The following code is used to create a relatively complex conditional probability function. We create the test and train data we use later (code not shown). Here is the plot of $$f(x_1,x_2)$$ with red representing values close to 1, blue representing values close to 0, and yellow values in between.
 
 ![Probability of Y=1 as a function of X1 and X2. Red is close to 1, yellow close 0.5 nad blue close to 0.](figure/machine_learning-conditional_prob-1.png) 
 
-If we should $$E(Y \mid X=x)>0.5$$ in red and the rest in blue we see the boundary region in which we switch from predicting from 0 to 1.
+If we show points for which $$E(Y \mid X=x)>0.5$$ in red and the rest in blue, we see the boundary region that denotes the boundary in which we switch from predicting 0 to 1.
 
-![Bayes rule. The line devides part the space for which probability os larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-bayes_rule-1.png) 
+![Bayes rule. The line devides part of the space for which probability is larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-bayes_rule-1.png) 
 
-The above plots relate to the "truth" that we do not get to see. A typical first step in an ML is to use a sample to estimate $$f(x)$$ 
+The above plots relate to the "truth" that we do not get to see. Most ML methodology is concerned with estimating $$f(x)$$. A typical first step in usually to consider a sample, referred to the training set, to estimate $$f(x)$$. We will review two specific ML techniques. First, we need to review the main concept we use to evaluate the performance of these methods. 
 
-Now make a plot of training data and test data
+#### Training and test sets
 
-```r
-plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
-```
-
-![Data generated using the probability map above.](figure/machine_learning-data-1.png) 
-
-We will review two specif ML techniques. First, we need to review the main concept we use to evaluate the performance of these methods. 
-
-### Training and Test sets
-
-In the code above you will notice that we created two sets data:
+In the code (not shown) for the first plot in this chapter, we created a test and a training set. We plot them here:
 
 
 ```r
-x0 <- makeX(M0)##the final values for y=0 (green)
-testx0 <- makeX(M0)
-x1 <- makeX(M1)
-testx1 <-makeX(M1)
-x <- rbind(x0,x1) ##one matrix with everything
-test <- rbind(testx0,testx1)
-```
-
-You will notice that the test and train set have similar global properties as they were generated by the same random variables (more blue towards the bottom right) but are, by construction, different. 
-
-```r
+#x, test, cols, and coltest were created in code that was not shown
+#x is training x1 and x2, test is test x1 and x2
+#cols (0=blue, 1=red) are training observations
+#coltests are test observations
 mypar(1,2)
 plot(x,pch=21,bg=cols,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 plot(test,pch=21,bg=colstest,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
@@ -131,22 +48,23 @@ plot(test,pch=21,bg=colstest,xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 
 ![Training data (left) and test data (right)](figure/machine_learning-test_train-1.png) 
 
-The reason for this is to detect over-training  by testing on a different data than the one used to fit  model. We will see how important this is.
+You will notice that the test and train set have similar global properties since they were generated by the same random variables (more blue towards the bottom right), but are, by construction, different. The reason we create test and training sets is to detect over-training by testing on a different data than the one used to fit models or train algorithms. We will see how important this is below.
 
-
-### Predicting with regression
+#### Predicting with regression
 
 
 A first naive approach to this ML problem is to fit a two variable linear regression model:
 
 
 ```r
+##x and y were created in the code (not shown) for the first plot
+#y is outcome for the training set
 X1 <- x[,1] ##these are the covariates
 X2 <- x[,2] 
 fit1 <- lm(y~X1+X2)
 ```
 
-Once we the fitted values we can estimate $$f(x_1,x_2)$$ with $$\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2$$. When predicting 1s and 0s we simply predict 1 when $$\hat{f}(x_1,x_2)>0.5$$. We now examine the error rates in the test and training sets and also plot the boundary region:
+Once we the have fitted values, we can estimate $$f(x_1,x_2)$$ with $$\hat{f}(x_1,x_2)=\hat{\beta}_0 + \hat{\beta}_1x_1 +\hat{\beta}_2 x_2$$. To provide an actual prediction, we simply predict 1 when $$\hat{f}(x_1,x_2)>0.5$$. We now examine the error rates in the test and training sets and also plot the boundary region:
 
 
 ```r
@@ -167,7 +85,7 @@ We can quickly obtain predicted values for any set of values using the `predict`
 yhat <- predict(fit1,newdata=data.frame(X1=newx[,1],X2=newx[,2]))
 ```
 
-Now we can obtain a plot showing where we predict 1s and where we predict 0 as well as the boundary. We can also use the `predict` function to obtain predicted values for our test set. Note that nowhere do we fit the model on the test set: 
+Now we can create a plot showing where we predict 1s and where we predict 0s, as well as the boundary. We can also use the `predict` function to obtain predicted values for our test set. Note that nowhere do we fit the model on the test set: 
 
 
 ```r
@@ -192,68 +110,51 @@ plot(test,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
 abline(b,m)
 points(newx,col=colshat,pch=16,cex=0.35)
 
+##test was created in the code (not shown) for the first plot
 points(test,bg=cols,pch=21)
 ```
 
-![We estimate the probability of 1 with a linear regression model with X1 and X2 as predictors. The resulting prediction map is divided in to parts that are larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-regression_prediction-1.png) 
+![We estimate the probability of 1 with a linear regression model with X1 and X2 as predictors. The resulting prediction map is divided into parts that are larger than 0.5 (red) and lower than 0.5 (blue).](figure/machine_learning-regression_prediction-1.png) 
 
-Note that the error rates in the test and train sets are quite similar. Thus do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However note that the boundary is a line. Because we are fitting plane to the data, there is no other option here. The linear regression method is too rigid. The rigid makes it stable and avoids over training but it also keeps the model from adapting to the non-linear relationship between $$Y$$ and $$X$$. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
+The error rates in the test and train sets are quite similar. Thus, we do not seem to be over-training. This is not surprising as we are fitting a 2 parameter model to 400 data points. However, note that the boundary is a line. Because we are fitting a plane to the data, there is no other option here. The linear regression method is too rigid. The rigidity makes it stable and avoids over training, but it also keeps the model from adapting to the non-linear relationship between $$Y$$ and $$X$$. We saw this before in the smoothing section. The next ML technique we consider is similar to the smoothing techniques described before.
 
 <a name="knn"></a>
 
-### K-nearest neighbor
+#### K-nearest neighbor
 
-K-nearest neighbors (kNN) is similar to bin smoothing, but it is easier to adapt to multiple dimensions. Basically, for any point $$x$$ for which we want an estimate, we look for the k nearest points and then take an average. We can now control flexibility through  $$k$$. Here we compare $$k=1$$ and $$k=100$$.
+K-nearest neighbors (kNN) is similar to bin smoothing, but it is easier to adapt to multiple dimensions. Basically, for any point $$x$$ for which we want an estimate, we look for the k nearest points and then take an average of these points. This gives us an estimate of $$f(x_1,x_2)$$, just like the bin smoother gave us an estimate of a curve. We can now control flexibility through $$k$$. Here we compare $$k=1$$ and $$k=100$$.
 
 
 ```r
 library(class)
 mypar(2,2)
-for(k in c(1,200)){
+for(k in c(1,100)){
   ##predict on train
   yhat <- knn(x,x,y,k=k)
   cat("KNN prediction error in train:",1-mean((as.numeric(yhat)-1)==y),"\n")
-  
-##make plot
-  yhat <- knn(x,newx,y,k=k)
-  colshat <- mycols[as.numeric(yhat)]
-  
-  plot(x,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
-  points(newx,col=colshat,cex=0.35,pch=16)
-  contour(tmpx,tmpy,matrix(as.numeric(yhat),GS,GS),levels=c(1,2),add=TRUE,drawlabels=FALSE)
-  points(x,bg=cols,pch=21)
-  title(paste("Train: KNN (",k,")",sep=""))
-  
-  plot(test,type="n",xlab="X1",ylab="X2",xlim=XLIM,ylim=YLIM)
-  points(newx,col=colshat,cex=0.35,pch=16)
-  contour(tmpx,tmpy,matrix(as.numeric(yhat),GS,GS),levels=c(1,2),add=TRUE,drawlabels=FALSE)
-  points(test,bg=cols,pch=21)
-  title(paste("Test: KNN (",k,")",sep=""))
-  
+  ##make plot
   yhat <- knn(x,test,y,k=k)
-  cat("KNN prediction error in test:",1-mean((as.numeric(yhat)-1)==y),"\n")
+  cat("KNN prediction error in test:",1-mean((as.numeric(yhat)-1)==ytest),"\n")
 }
 ```
 
 ```
-## KNN prediction error in train: 0
-```
-
-```
+## KNN prediction error in train: 0 
 ## KNN prediction error in test: 0.375 
-## KNN prediction error in train: 0.2825
+## KNN prediction error in train: 0.2425 
+## KNN prediction error in test: 0.2825
 ```
 
+To visualize why we make no errors in the train set and many errors in the test set when $$k=1$$ and obtain more stable results from $$k=100$$, we show the prediction regions (code not shown):
 ![Prediction regions obtained with kNN for k=1 (top) and k=200 (bottom). We show both train (left) and test data (right).](figure/machine_learning-knn-1.png) 
 
-```
-## KNN prediction error in test: 0.295
-```
+When $$k=1$$, we make no mistakes in the training test since every point is its closest neighbor and it is equal to itself. However, we see some islands of blue in the red area that, once we move to the test set, are more error prone. In the case $$k=100$$, we do not have this problem and we also see that we improve the error rate over linear regression. We can also see that our estimate of $$f(x_1,x_2)$$ is closer to the truth.
 
-Note that when $$k=1$$ we make no mistakes in the training test since every point is its closest neighbor and it is equal to itself. However, also note that we see some islands of blue in the red area that once we move to the test set are more error prone. In the case $$k=100$$ we do not have this problem and we also see that we improve the error rate over linear regression.
+#### Bayes rule
 
-### Bayes Rule
-Here is a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mbox{E}(Y \mid X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_
+Here we include a comparison of the test and train set errors for various values of $$k$$. We also include the error rate that we would make if we actually knew $$\mbox{E}(Y \mid X_1=x1,X_2=x_2)$$ referred to as _Bayes Rule_.
+
+We start by computing the error rates...
 
 
 ```r
@@ -271,15 +172,19 @@ bayes.error=1-mean(round(yhat)==y)
 train.error <- rep(0,16)
 test.error <- rep(0,16)
 for(k in seq(along=train.error)){
-  
   ##predict on train
   yhat <- knn(x,x,y,k=2^(k/2))
   train.error[k] <- 1-mean((as.numeric(yhat)-1)==y)
-  
+  ##prediction on test    
   yhat <- knn(x,test,y,k=2^(k/2))
   test.error[k] <- 1-mean((as.numeric(yhat)-1)==y)
 }
+```
 
+... and then plot the error rates against values of $$k$$. We also show the Bayes rules error rate as a horizontal line.
+
+
+```r
 ks <- 2^(seq(along=train.error)/2)
 mypar()
 plot(ks,train.error,type="n",xlab="K",ylab="Prediction Error",log="x",ylim=range(c(test.error,train.error)))
@@ -291,6 +196,7 @@ legend("bottomright",c("Train","Test","Bayes"),col=c(4,5,6),lty=c(2,3,1),box.lwd
 
 ![Prediction error in train (pink) and test (green) versus number of neighbors. The yellow line represents what one obtains with Bayes Rule.](figure/machine_learning-bayes_rule2-1.png) 
 
+Note that these error rates are random variables and have standard errors. In the next section we describe cross-validation which helps reduce some of this variability. However, even with this variability, the plot clearly shows the problem over over-fitting when using values lower than 20 and under-fitting with values above 100.
 
 
 
