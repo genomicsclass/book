@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Introduction to high throughput data exercises
+title: Introduction to high throughput data exercises
 ---
 
 ## Exercises
