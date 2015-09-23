@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Inference for high throughput exercises
 ---
 
