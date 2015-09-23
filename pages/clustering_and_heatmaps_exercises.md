@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Clustering and Heatmaps Exercise
 ---
 
