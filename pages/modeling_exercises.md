@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Modeling Exercises
+title: Modeling Exercises
 ---
 
 {pagebreak}
