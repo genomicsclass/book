@@ -10,7 +10,7 @@ layout: page
 
 ## Standard Errors
 
-We have shown how to find the least squares estimates with matrix algebra. These estimates are random variables as they are linear combinations of the data. For these estimates to be useful, we also need to compute their standard errors. Linear algebra also provides a powerful approach for this task. We provide several examples.
+We have shown how to find the least squares estimates with matrix algebra. These estimates are random variables since they are linear combinations of the data. For these estimates to be useful, we also need to compute their standard errors. Linear algebra provides a powerful approach for this task. We provide several examples.
 
 
 #### Falling object
@@ -66,7 +66,7 @@ round(mean(betahat),1)
 ## [1] -4.9
 ```
 
-But we won't see this value when we estimate because the standard error of our estimate is approximately:
+But we will not observe this exact value when we estimate because the standard error of our estimate is approximately:
 
 
 ```r
@@ -112,8 +112,10 @@ By making qq-plots, we see that our estimates are approximately normal random va
 
 ```r
 mypar(1,2)
-qqnorm(betahat[,1]);qqline(betahat[,1])
-qqnorm(betahat[,2]);qqline(betahat[,2])
+qqnorm(betahat[,1])
+qqline(betahat[,1])
+qqnorm(betahat[,2])
+qqline(betahat[,2])
 ```
 
 ![Distribution of estimated regression coefficients obtained from Monte Carlo simulated father-son height data. The left is a histogram and on the right we have a qq-plot against normal theoretical quantiles.](figure/standard_errors-regression_estimates_normally_distributed2-1.png) 
@@ -129,9 +131,9 @@ cor(betahat[,1],betahat[,2])
 ## [1] -0.9992293
 ```
 
-When we compute linear combinations of our estimates, we will need to know this information to correctly calculate the standard error of these linear combination.
+When we compute linear combinations of our estimates, we will need to know this information to correctly calculate the standard error of these linear combinations.
 
-In the next section we will describe the variance-covariance matrix. The covariance of two random variables is defined as follows:
+In the next section, we will describe the variance-covariance matrix. The covariance of two random variables is defined as follows:
 
 
 ```r
@@ -143,9 +145,10 @@ mean( (betahat[,1]-mean(betahat[,1] ))* (betahat[,2]-mean(betahat[,2])))
 ```
 
 The covariance is the correlation multiplied by the standard deviations of each random variable:
+
 $$\mbox{Corr}(X,Y) = \frac{\mbox{Cov}(X,Y)}{\sigma_X \sigma_Y}$$
 
-Other than that, this quantity does not have a useful interpretation in practice. However, as we will see, it is a very useful quantity for mathematical derivations. In the next sections we show useful matrix algebra calculations that can be used to estimate standard errors of linear model estimates. 
+Other than that, this quantity does not have a useful interpretation in practice. However, as we will see, it is a very useful quantity for mathematical derivations. In the next sections, we show useful matrix algebra calculations that can be used to estimate standard errors of linear model estimates. 
 
 <a name="varcov"></a>
 
@@ -165,39 +168,10 @@ which implies that $$\boldsymbol{\Sigma} = \sigma^2 \mathbf{I}$$ with $$\mathbf{
 
 Later, we will see a case, specifically the estimate coefficients of a linear model, $$\hat{\boldsymbol{\beta}}$$, that has non-zero entries in the off diagonal elements of $$\boldsymbol{\Sigma}$$. Furthermore, the diagonal elements will not be equal to a single value $$\sigma^2$$.
 
-#### Technical note
-
-The standard approach to writing linear models either assumes the $$X$$ are fixed or that we are conditioning on them. Thus $$X\beta$$ has no variance as the $$X$$ is considered fixed. This is why we write $$\mbox{var}(Y_i) = \mbox{var}(\varepsilon_i)=\sigma^2$$. This can cause confusion in practice because if you, for example, compute the following: 
-
-
-```r
-x <- father.son$fheight
-beta <- c(34,0.5)
-var(beta[1]+beta[2]*x)
-```
-
-```
-## [1] 1.883576
-```
-
-it is nowhere near 0. This is an example in which we have to be careful to distinguish code from math. The function `var` is simply computing the variance of the list, while the mathematical use of var is considering only quantities that are random variables. In the R code above, $$x$$ is not fixed at all: we are letting it vary, but when we write $$\mbox{var}(Y_i) =\sigma^2$$ we are imposing, mathematically, $$x$$ to be fixed. Similarly, if we use R to compute the variance of $$Y$$ in our object dropping example, we obtain something very different than $$\sigma^2=1$$ (the known variance):
-
-
-```r
-n <- length(tt)
-y <- h0 + v0*tt  - 0.5*g*tt^2 + rnorm(n,sd=1)
-var(y)
-```
-
-```
-## [1] 322.9638
-```
-
-Again, this is because we are not fixing `tt`. 
 
 #### Variance of a linear combination 
 
-A useful result that linear algebra gives is that the variance covariance-matrix of a linear combination $$\mathbf{AY}$$ of $$\mathbf{Y}$$ can be computed as follows:
+A useful result provided by linear algebra is that the variance covariance-matrix of a linear combination $$\mathbf{AY}$$ of $$\mathbf{Y}$$ can be computed as follows:
 
 $$
 \mbox{var}(\mathbf{AY}) = \mathbf{A}\mbox{var}(\mathbf{Y}) \mathbf{A}^\top 
@@ -212,9 +186,9 @@ $$ =\begin{pmatrix}1&1\end{pmatrix} \sigma^2 \mathbf{I}\begin{pmatrix} 1\\1\\ \e
 
 as we expect. We use this result to obtain the standard errors of the LSE (least squares estimate).
 
-#### LSE standard errors
+#### LSE standard errors (Advanced)
 
-Note that $$\boldsymbol{\hat{\beta}}$$ is a linear combination of $$\mathbf{Y}$$: $$\mathbf{AY}$$ with $$\mathbf{A}=\mathbf{(X^\top X)^{-1}X}^\top$$ so we can use the equation above to derive the variance of our estimates:
+Note that $$\boldsymbol{\hat{\beta}}$$ is a linear combination of $$\mathbf{Y}$$: $$\mathbf{AY}$$ with $$\mathbf{A}=\mathbf{(X^\top X)^{-1}X}^\top$$, so we can use the equation above to derive the variance of our estimates:
 
 $$\mbox{var}(\boldsymbol{\hat{\beta}}) = \mbox{var}( \mathbf{(X^\top X)^{-1}X^\top Y} ) =  $$
 
@@ -277,7 +251,7 @@ summary(lm(y~x))$coef[,2]
 
 ```
 ## (Intercept)           x 
-##   7.4893501   0.1112043
+##   8.3899781   0.1240767
 ```
 
 ```r
@@ -286,7 +260,7 @@ ses
 
 ```
 ## (Intercept)           x 
-##   7.4893501   0.1112043
+##   8.3899781   0.1240767
 ```
 
 They are identical because they are doing the same thing. Also, note that we approximate the Monte Carlo results:
@@ -303,7 +277,7 @@ apply(betahat,2,sd)
 
 
 
-## Linear Combination of Estimates
+#### Linear combination of estimates
 
 Frequently, we want to compute the standard deviation of a linear combination of estimates such as $$\hat{\beta}_2 - \hat{\beta}_1$$. This is a linear combination of $$\hat{\boldsymbol{\beta}}$$:
 
@@ -319,13 +293,13 @@ $$\hat{\beta}_2 - \hat{\beta}_1 =
 Using the above, we know how to compute the variance covariance matrix of $$\hat{\boldsymbol{\beta}}$$.
 
 
-## CLT and t-distribution
+#### CLT and t-distribution
 
-We have shown how we can obtain standard errors for our estimates. However, as we learned in the first chapter, to perform inference we need to know the distribution of these random variables. The reason we went through the effort to compute the standard errors is because the CLT applies in linear models. If $$N$$ is large enough, then the LSE will be normally distributed with mean $$\boldsymbol{\beta}$$ and standard errors as described. For small samples, if the $$\varepsilon$$ are normally distributed, then the $$\hat{\beta}-\beta$$ follow a t-distribution. Proving this mathematically is rather advanced, but the results are extremely useful since it is how we construct p-values and confidence intervals in the context of linear models.
+We have shown how we can obtain standard errors for our estimates. However, as we learned in the first chapter, to perform inference we need to know the distribution of these random variables. The reason we went through the effort to compute the standard errors is because the CLT applies in linear models. If $$N$$ is large enough, then the LSE will be normally distributed with mean $$\boldsymbol{\beta}$$ and standard errors as described. For small samples, if the $$\varepsilon$$ are normally distributed, then the $$\hat{\beta}-\beta$$ follow a t-distribution. We do not derive this result here, but the results are extremely useful since it is how we construct p-values and confidence intervals in the context of linear models.
 
-## Code Versus Math
+#### Code versus math
 
-The standard approach to writing linear models either assume the X are fixed or that we are conditioning on them. Thus  X*beta has no variance as the $$X$$ is considered fixed. This is why we write $$\mbox{var}(Y_i) = \mbox{var}(\varepsilon_i)=\sigma^2$$. This can cause confusion in practice because if you, for example, compute the following: 
+The standard approach to writing linear models either assume the $$\mathbf{X}$$ are fixed or that we are conditioning on them. Thus  $$\mathbf{X} \boldsymbol{\beta}$$ has no variance as the $$\mathbf{X}$$ is considered fixed. This is why we write $$\mbox{var}(Y_i) = \mbox{var}(\varepsilon_i)=\sigma^2$$. This can cause confusion in practice because if you, for example, compute the following:
 
 
 ```r
@@ -338,7 +312,7 @@ var(beta[1]+beta[2]*x)
 ## [1] 1.883576
 ```
 
-it is nowhere near 0. This is an example in which we have to be careful in distinguishing code from math. The function var is simply computing the variance of the list we feed it, while the mathematical use of var is considering only quantities that are random variables. In the R code above, `x` is not fixed at all: we are letting it vary but when we write  $$\mbox{var}(Y_i) = \sigma^2$$ we are imposing, mathematically, `x` to be fixed. Similarly if we use R to compute the variance of $$Y$$ in our object dropping example we obtain something very different than $$\sigma^2=1$$ (the known variance):
+it is nowhere near 0. This is an example in which we have to be careful in distinguishing code from math. The function `var` is simply computing the variance of the list we feed it, while the mathematical definition of variance is considering only quantities that are random variables. In the R code above, `x` is not fixed at all: we are letting it vary, but when we write  $$\mbox{var}(Y_i) = \sigma^2$$ we are imposing, mathematically, `x` to be fixed. Similarly, if we use R to compute the variance of $$Y$$ in our object dropping example, we obtain something very different than $$\sigma^2=1$$ (the known variance):
 
 
 ```r
@@ -348,7 +322,7 @@ var(y)
 ```
 
 ```
-## [1] 317.9628
+## [1] 329.5136
 ```
 
 Again, this is because we are not fixing `tt`. 
