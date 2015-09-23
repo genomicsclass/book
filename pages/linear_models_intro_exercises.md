@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Linear models and randomness
 ---
 
