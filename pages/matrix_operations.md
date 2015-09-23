@@ -10,7 +10,7 @@ layout: page
 
 ## Matrix Operations
 
-In a previous section we motivated the use of matrix algebra with this system of equations:
+In a previous section, we motivated the use of matrix algebra with this system of equations:
 
 
 $$
@@ -114,7 +114,7 @@ print(a*X)
 
 #### The transpose
 
-The transpose is an operation that simply changes columns to rows. We use either a $$\top$$ to denote a transpose. The technical definition is as follows: if X is as we defined it above, here is the transpose which will be $$p\times N$$:
+The transpose is an operation that simply changes columns to rows. We use a $$\top$$ to denote a transpose. The technical definition is as follows: if X is as we defined it above, here is the transpose which will be $$p\times N$$:
 
 
 $$
@@ -171,7 +171,7 @@ a + b + c &=6\\
 \end{align*}
 $$
 
-What we are doing is multiplying the rows of the first matrix by the columns of the second. Since the second matrix only has one column, to perform this multiplication we can do the following:
+What we are doing is multiplying the rows of the first matrix by the columns of the second. Since the second matrix only has one column, we perform this multiplication by doing the following:
 
 $$
 \,
@@ -225,7 +225,7 @@ X%*%abc
 
 We can see that `c(3,2,1)` is not a solution as the answer here is not the required `c(6,2,1)`.
 
-To get the solution we will need to invert the matrix on the left, a concept we learn about below.
+To get the solution, we will need to invert the matrix on the left, a concept we learn about below.
 
 Here is the general definition of matrix multiplication of matrices $$A$$ and $$X$$:
 
@@ -256,7 +256,7 @@ After you study the example below, you may want to come back and re-read the sec
 
 #### The identity matrix
 
-The identity matrix is analogous to the number 1: if you multiply the identity matrix by another matrix, you get the same matrix. For this to happen we need it to be like this:
+The identity matrix is analogous to the number 1: if you multiply the identity matrix by another matrix, you get the same matrix. For this to happen, we need it to be like this:
 
 $$
 \mathbf{I} = \begin{pmatrix}
@@ -269,7 +269,7 @@ $$
 \end{pmatrix}
 $$
 
-By this definition the identity always has to have the same number of rows as columns or be what we call a square matrix.
+By this definition, the identity always has to have the same number of rows as columns or be what we call a square matrix.
 
 If you follow the matrix multiplication rule above, you notice this works out:
 
@@ -314,7 +314,7 @@ diag(n)
 
 #### The inverse
 
-The inverse of matrix of $$X$$, denoted with $$X^{-1}$$ has the property that, when multiplied, gives you the identity $$X^{-1}X=I$$. Keep in mind that not all matrices have inverses. For example, a $$2\times 2$$ matrix with 1s in all its entries does not have an inverse. 
+The inverse of matrix $$X$$, denoted with $$X^{-1}$$, has the property that, when multiplied, gives you the identity $$X^{-1}X=I$$. Of course, not all matrices have inverses. For example, a $$2\times 2$$ matrix with 1s in all its entries does not have an inverse. 
 
 As we will see when we get to the section on applications to linear models, being able to compute the inverse of a matrix is quite useful. A very convenient aspect of R is that it includes a predefined function `solve` to do this. Here is how we would use it to solve the linear of equations:
 
