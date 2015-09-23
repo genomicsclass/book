@@ -22,25 +22,25 @@ reported results.
 
 Graphing data is a powerful approach to detecting these problems. We
 refer to this as _exploratory data analysis_ (EDA). Many important
-methodological contributions to existing data analysis techniques in
+methodological contributions to existing techniques in
 data analysis were initiated by discoveries made via EDA.
 In addition, EDA can lead to interesting biological discoveries which
 would otherwise be missed through simply subjecting the data to a
 battery of hypothesis tests.
-Through this book we make use of exploratory plots to motivate the analyses we
+Through this book, we make use of exploratory plots to motivate the analyses we
 choose. Here we present a general introduction to EDA using height
 data.
 
 We have already introduced some EDA approaches for _univariate_ data,
-namely the histograms and QQ-plot. Here we describe the QQ-plot in more detail and
-how some EDA and summary statistics for paired data. We also give a
+namely the histograms and qq-plot. Here we describe the qq-plot in more detail and
+some EDA and summary statistics for paired data. We also give a
 demonstration of commonly used figures that we recommend against. 
 
 ## Quantile Quantile Plots
 
 To corroborate that a theoretical distribution, for example the normal distribution, is in fact a good
 approximation, we can use quantile-quantile plots
-(QQ-plots). Quantiles are best understood by considering the special
+(qq-plots). Quantiles are best understood by considering the special
 case of percentiles. The p-th percentile of a list of a distribution
 is defined as the number q that is bigger than p% of numbers (so the inverse of
 the cumulative distribution function we defined earlier). For
@@ -58,7 +58,7 @@ and for the normal distribution:
 
 
 ```r
-ps <- seq(0, 1, length=101)
+ps <- ( seq(0,99) + 0.5 )/100 
 qs <- quantile(x, ps)
 normalqs <- qnorm(ps, mean(x), popsd(x))
 plot(normalqs,qs,xlab="Normal percentiles",ylab="Height percentiles")
@@ -68,7 +68,7 @@ abline(0,1) ##identity line
 ![First example of qqplot. Here we compute the theoretical quantiles ourselves.](figure/exploratory_data_analysis-qqplot_example1-1.png) 
 
 Note how close these values are. Also, note that we can see these
-QQ-plots with less code (this plot has more points than the one we
+qq-plots with less code (this plot has more points than the one we
 constructed manually, and so tail-behavior can be seen more clearly).
 
 
@@ -81,7 +81,7 @@ qqline(x)
 
 However, the `qqnorm` function plots against a standard normal distribution. This is why the line has slope `popsd(x)` and intercept `mean(x)`.
 
-In the example above, the points match the line very well. In fact, we can run Monte Carlo simulations to see that we see plots like this for data known to be normally distributed.
+In the example above, the points match the line very well. In fact, we can run Monte Carlo simulations to see plots like this for data known to be normally distributed.
 
 
 
@@ -95,11 +95,11 @@ qqline(x)
 ![Example of the qqnorm function. Here we apply it to numbers generated to follow a normal distribution.](figure/exploratory_data_analysis-qqnorm_example-1.png) 
 
 We can also get a sense for how non-normally distributed data will
-look in a QQ-plot. Here we generate data from the t-distribution with
-different degrees of freedom. Note that the smaller the degrees of
+look in a qq-plot. Here we generate data from the t-distribution with
+different degrees of freedom. Notice that the smaller the degrees of
 freedom, the fatter the tails. We call these "fat tails" because if we
 plotted an empirical density or histogram, the density at the extremes would be
-higher than the theoretical curve. In the QQ-plot this can be seen in
+higher than the theoretical curve. In the qq-plot, this can be seen in
 that the curve is lower than the identity line on the left
 side and higher on the right side. This means that there are more
 extreme values than predicted by the theoretical density plotted on
@@ -120,10 +120,10 @@ for(df in dfs){
 
 <a name="boxplots"></a>
 
-### Boxplots
+## Boxplots
 
-Data is not always normally distributed. Income is widely cited
-example. In these cases the average and standard deviation are not
+Data is not always normally distributed. Income is a widely cited
+example. In these cases, the average and standard deviation are not
 necessarily informative since one can't infer the distribution from
 just these two numbers. The properties described above are specific to
 the normal. For example, the normal distribution does not seem to be a
@@ -138,23 +138,25 @@ qqnorm(exec.pay)
 qqline(exec.pay)
 ```
 
-![Histogram and QQ-plot of executive pay.](figure/exploratory_data_analysis-unnamed-chunk-2-1.png) 
+![Histogram and QQ-plot of executive pay.](figure/exploratory_data_analysis-execpay-1.png) 
 
-In addition to QQ-plots, a practical summary of data is to compute 3
+In addition to qq-plots, a practical summary of data is to compute 3
 percentiles: 25-th, 50-th (the median) and the 75-th. A boxplot shows
 these 3 values along with a 
 range of the points within median $$\pm$$ 1.5 (75-th percentile -
 25th-percentile). Values outside this range are shown as points and
-sometimes refereed to as _outliers_. Here we show just one boxplot,
-however one of the great benefits of boxplots is that we could easily
-show many distributions in one plot, by lining them up, side by side. We will see several examples of this throughout the book.
+sometimes refereed to as _outliers_. 
 
 
 ```r
 boxplot(exec.pay, ylab="10,000s of dollars", ylim=c(0,400))
 ```
 
-![Simple boxplot of executive pay.](figure/exploratory_data_analysis-unnamed-chunk-3-1.png) 
+![Simple boxplot of executive pay.](figure/exploratory_data_analysis-unnamed-chunk-2-1.png) 
+
+Here we show just one boxplot.
+However, one of the great benefits of boxplots is that we could easily
+show many distributions in one plot, by lining them up, side by side. We will see several examples of this throughout the book.
 
 <a name="scatterplots"></a>
 
@@ -162,11 +164,11 @@ boxplot(exec.pay, ylab="10,000s of dollars", ylim=c(0,400))
 
 The methods described above relate to _univariate_ variables. In the
 biomedical sciences, it is common to be interested in the relationship
-between two or more variables. A classic examples is the father/son
+between two or more variables. A classic example is the father/son
 height data used by
 [Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton) to
 understand heredity. If we were to summarize these data, we could use
-the two averages and two standard deviations as both distributions are
+the two averages and two standard deviations since both distributions are
 well approximated by the normal distribution. This summary, however,
 fails to describe an important characteristic of the data. 
 
@@ -182,7 +184,7 @@ plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=pas
 ![Heights of father and son pairs plotted against each other.](figure/exploratory_data_analysis-scatterplot-1.png) 
 
 The scatter plot shows a general trend: the taller the father, the
-taller the son. A summary of this trend is the correlation coefficient
+taller the son. A summary of this trend is the correlation coefficient,
 which in this cases is 0.5. We will motivate this statistic by trying to
 predict the son's height using the father's height.
 
@@ -193,10 +195,10 @@ average height, 68.7 inches, is the value with the highest proportion
 (see histogram) and would be our prediction. But what if we are told
 that the father is 72 inches tall, do we sill guess 68.7? 
 
-Note that the father is taller than average. Specifically, he is 1.75
+The father is taller than average. Specifically, he is 1.75
 standard deviations taller than the average father. So should we
 predict that the son is also 1.75 standard deviations taller? It turns
-out this would be an overestimate. To see this we look at all the sons
+out that this would be an overestimate. To see this, we look at all the sons
 with fathers who are about 72 inches. We do this by _stratifying_ the
 father heights. 
 
@@ -219,15 +221,15 @@ Stratification followed by boxplots lets us see the distribution of
 each group. The average height of sons with fathers that are 72 inches
 tall is 70.7 inches. We also see that the *medians* of the strata appear
 to follow a straight line (remember the middle line in the boxplot
-shows the median not the mean). This line is similar to the *regression
-line* with a slope that is related to the correlation, as we will learn
+shows the median, not the mean). This line is similar to the *regression
+line*, with a slope that is related to the correlation, as we will learn
 below. 
 
 ## Bi-variate Normal Distribution
 
 A pair of random variables $$(X,Y)$$ is considered to be approximated by
-bivariate normal when the proportion of values below, for example, $$a$$
-and $$b$$ is approximated by this expression: 
+bivariate normal when the proportion of values below, for example $$a$$
+and $$b$$, is approximated by this expression: 
 
 $$ 
 \mbox{Pr}(X<a,Y<b) = 
@@ -250,7 +252,7 @@ and look at all the pairs $$(X,Y)$$ for which $$X=x$$. Generally, in
 statistics we call this exercise _conditioning_. We are conditioning
 $$Y$$ on $$X$$. If a pair of random variables is approximated by a
 bivariate normal distribution, then the distribution of $$Y$$ conditioned
-on $$X=x$$ is approximated with a normal distribution no matter waht $$x$$ we choose. Let's
+on $$X=x$$ is approximated with a normal distribution, no matter what $$x$$ we choose. Let's
 see if this holds with our height data. We show 4 different strata: 
 
 
@@ -279,13 +281,13 @@ Note that this is a line with slope $$\rho \frac{\sigma_Y}{\sigma_X}$$. This is 
 
 
 
-Another way to see this is, to form a prediction $$\hat{Y}$$, for every SD away from the mean in $$x$$, we predict $$\rho$$ SDs away for $$Y$$: 
+Another way to see this is to form a prediction $$\hat{Y}$$: for every SD away from the mean in $$x$$, we predict $$\rho$$ SDs away for $$Y$$: 
 
 $$
 \frac{\hat{Y} - \mu_Y}{\sigma_Y} = \rho \frac{x-\mu_X}{\sigma_X}
 $$
 
-So, if there is perfect correlation, we predict the same number of SDs. If there is 0 correlation, then we don't use $$x$$ at all.  For values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
+If there is perfect correlation, we predict the same number of SDs. If there is 0 correlation, then we don't use $$x$$ at all.  For values between 0 and 1, the prediction is somewhere in between. For negative values, we simply predict in the opposite direction.
 
 To confirm that the above approximations hold in this case, let's compare the mean of each strata to the identity line and the regression line:
 
@@ -310,4 +312,4 @@ $$
  \sqrt{1-\rho^2} \sigma_Y
 $$
 
-This is where statements like $$X$$ explains $$\rho^2 \times 100$$ % of the variation in $$Y$$: the variance of $$Y$$ is $$\sigma^2$$ and once we condition it goes down to $$(1-\rho^2) \sigma^2_Y$$ . It is important to note that the "variance explained" statement only makes sense when the data is approximated by a bivariate normal distribution.
+This is where statements like $$X$$ explains $$\rho^2 \times 100$$ % of the variation in $$Y$$: the variance of $$Y$$ is $$\sigma^2$$ and, once we condition, it goes down to $$(1-\rho^2) \sigma^2_Y$$ . It is important to remember that the "variance explained" statement only makes sense when the data is approximated by a bivariate normal distribution.
