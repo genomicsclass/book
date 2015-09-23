@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: EDA with PCA exercises
+title: EDA with PCA exercises
 ---
 
 ## Exercises
