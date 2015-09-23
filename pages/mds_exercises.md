@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: MDS exercises
+title: MDS exercises
 ---
 
 {pagebreak} 
