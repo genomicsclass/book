@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Matrix Operation Exercises
+title: Matrix Operation Exercises
 ---
 
 
