@@ -7,7 +7,8 @@ title: Discovering Batch Effects with EDA
 
 
 ##  Discovering Batch Effects with EDA 
-Now that we understand PCA, we are going to demonstrate how we use it in practice with an emphasis on exploratory data analysis. To illustrate we will go through an actual dataset that has not be sanitized for teaching purposes. We start with the raw data as it was provided in the public repository. The only step we did for you is to preprocess these data and create an R package with a preformed Bioconductor object.
+
+Now that we understand PCA, we are going to demonstrate how we use it in practice with an emphasis on exploratory data analysis. To illustrate, we will go through an actual dataset that has not been sanitized for teaching purposes. We start with the raw data as it was provided in the public repository. The only step we did for you is to preprocess these data and create an R package with a preformed Bioconductor object.
 
 ## Gene Expression Data
 
@@ -16,7 +17,7 @@ Start by loading the data:
 ```r
 library(rafalib)
 library(Biobase)
-library(GSE5859)
+library(GSE5859) ##Available from GitHub
 data(GSE5859)
 ```
 
@@ -46,7 +47,7 @@ dates <- pData(e)$date
 eth <- pData(e)$ethnicity
 ```
 
-The original dataset did not include sex in the sample information. We did this for you in the subset dataset we provided for illustrative purposes. In the code below we show how we predict the sex of each sample. The basic idea is to look at the median gene expression levels on Y chromosome genes. Males should have much higher values. We need to upload an annotation package that provides information for the features of the platform used in this experiment:
+The original dataset did not include sex in the sample information. We did this for you in the subset dataset we provided for illustrative purposes. In the code below, we show how we predict the sex of each sample. The basic idea is to look at the median gene expression levels on Y chromosome genes. Males should have much higher values. To do this,  we need to upload an annotation package that provides information for the features of the platform used in this experiment:
 
 
 ```r
@@ -61,65 +62,36 @@ We need to download and install the `hgfocus.db` package and then extract the ch
 
 
 ```r
-library(hgfocus.db)
+library(hgfocus.db) ##install from Bioconductor
 ```
 
 ```
-## Error in library(hgfocus.db): there is no package called 'hgfocus.db'
-```
-
-```r
-annot <- select(hgfocus.db, keys=featureNames(e), keytype="PROBEID",columns=c("CHR"))
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "select"
+## Warning: package 'S4Vectors' was built under R version 3.2.2
 ```
 
 ```r
-##for genes with multiples, pick on
+annot <- select(hgfocus.db, keys=featureNames(e), keytype="PROBEID",
+                columns=c("CHR"))
+##for genes with multiples, pick one
 annot <-annot[match(featureNames(e),annot$PROBEID),]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'annot' not found
-```
-
-```r
 annot$CHR <- ifelse(is.na(annot$CHR),NA,paste0("chr",annot$CHR))
-```
-
-```
-## Error in ifelse(is.na(annot$CHR), NA, paste0("chr", annot$CHR)): object 'annot' not found
-```
-
-```r
+##compute median expression on chromosome Y
 chryexp<- colMeans(y[which(annot$CHR=="chrY"),])
 ```
 
-```
-## Error in which(annot$CHR == "chrY"): object 'annot' not found
-```
-
-You can clearly see two modes which must be females and males:
+If we create a histogram of the median gene expression values on chromosome Y, we clearly see two modes which must be females and males:
 
 ```r
 mypar()
 hist(chryexp)
 ```
 
-```
-## Error in hist(chryexp): object 'chryexp' not found
-```
+![Histogram of median expresion y-axis. We can see females and males.](figure/eda_with_pca-predict_sex-1.png) 
 
 So we can predict sex this way:
 
 ```r
 sex <- factor(ifelse(chryexp<0,"F","M"))
-```
-
-```
-## Error in ifelse(chryexp < 0, "F", "M"): object 'chryexp' not found
 ```
 
 #### Calculating the PCs
@@ -136,28 +108,11 @@ dim(s$v)
 ## [1] 207 207
 ```
 
-But we can also use `prcomp` which creates an object with just the PCs and also demeans by default. Note `svd` keeps $$U$$ which is as large as `y` while `prcomp` does not. However, they provide practically the same principal components:
+We can also use `prcomp` which creates an object with just the PCs and also demeans by default. They provide practically the same principal components so we continue the analysis with the object $$s$$.
 
+#### Variance explained
 
-
-```r
-pc <- prcomp(y)
-for(i in 1:5) print( round( cor( pc$rotation[,i],s$v[,i]),3))
-```
-
-```
-## [1] 1
-## [1] 1
-## [1] -1
-## [1] 1
-## [1] 1
-```
-
-For the rest of the code shown here we use `s`.
-
-#### Variance Explained
-
-A first step in determining how much sample correlation induced_structure_ there is in the data. 
+A first step in determining how much sample correlation induced _structure_ there is in the data. 
 
 
 ```r
@@ -168,9 +123,9 @@ image ( cor(y) ,col=cols,zlim=c(-1,1))
 
 ![Image of correlations. Cell i,j  represents correlation between samples i and j. Red is high, white is 0 and red is negative.](figure/eda_with_pca-correlations-1.png) 
 
-Here we are using the term _structure_ to refer to the deviation from what one would see if the samples were in fact independent from each other. 
+Here we are using the term _structure_ to refer to the deviation from what one would see if the samples were in fact independent from each other. The plot above clearly shows groups of samples that are more correlated between themselves than to others.
 
-One simple exploratory plot we make to determine how many principal components we need to describe this _structure_ is the variance-explained plot. This is what the variance explained for the PCs would look like:
+One simple exploratory plot we make to determine how many principal components we need to describe this _structure_ is the variance-explained plot. This is what the variance explained for the PCs would look like if data were independent :
 
 
 ```r
@@ -228,7 +183,7 @@ table(year,eth)
 ##   06   2   0  23
 ```
 
-Here is the same plot, but now with color representing year:
+So explore the possibility of date being a major source of variability by looking at the same plot, but now with color representing year:
 
 
 ```r
@@ -241,7 +196,7 @@ legend("bottomleft",levels(year),col=seq(along=levels(year)),pch=16)
 
 ![First two PCs for gene expression data with color representing processing year.](figure/eda_with_pca-mds_plot2-1.png) 
 
-Year is also very correlated with the first PC. So which variable is driving this? Given the high level of confounding, it is not easy to parse out. Nonetheless, in the assessment questions and below we provide some further exploratory approaches.
+We see that year is also very correlated with the first PC. So which variable is driving this? Given the high level of confounding, it is not easy to parse out. Nonetheless, in the assessment questions and below, we provide some further exploratory approaches.
 
 #### Boxplot of PCs
 
@@ -272,7 +227,8 @@ for(i in 1:4){
 
 ![Boxplot of first four PCs stratified by month.](figure/eda_with_pca-pc_boxplots-1.png) 
 
-Here we see that month has a very strong correlation with the first PC, as well as some of the others. In cases such as these, in which we have many samples, we can use an analysis of variance to see which PCs correlate with month:
+Here we see that month has a very strong correlation with the first PC, even when stratifying by ethnic group as well as some of the others. Remember that samples processed between 2002-2004 are 
+all from the same ethnic group. In cases such as these, in which we have many samples, we can use an analysis of variance to see which PCs correlate with month:
 
 
 ```r
@@ -304,7 +260,8 @@ abline(h=sqrt(qf(0.995,p-1,ncol(s$v)-1)))
 
 ![Square root of F-statistics from an analysis of variance to explain PCs with month.](figure/eda_with_pca-fstat_month_PC-1.png) 
 
-In the assessments we will see how we can use the PCs as estimates in factor analysis to improve model estimates.
+We have seen how PCA combined with EDA can be a powerful technique to detect and understand batches. 
+In a later section, we will see how we can use the PCs as estimates in factor analysis to improve model estimates.
 
 
 
