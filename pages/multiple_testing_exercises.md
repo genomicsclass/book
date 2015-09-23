@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Multiple Testing Exercises
+title: Multiple Testing Exercises
 ---
 
 {pagebreak} 
