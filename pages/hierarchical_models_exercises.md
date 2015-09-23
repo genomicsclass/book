@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Hierarchical Models Exercises
+title: Hierarchical Models Exercises
 ---
 
 ## Exercises
