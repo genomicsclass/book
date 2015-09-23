@@ -10,7 +10,7 @@ title: Rotations
 
 One of the most useful applications of projections relates to coordinate rotations. In data analysis, simple rotations can result in easier to visualize and interpret data. We will describe the mathematics behind rotations and give some data analysis examples.
  
-In our previous section we used the following example: 
+In our previous section, we used the following example: 
 
 $$
 Y = \begin{pmatrix} 2 \\ 
@@ -58,7 +58,7 @@ The new coordinates are:
 
 $$Z = \begin{pmatrix} 2.5 \\ -1 \end{pmatrix}$$
 
-Graphically we can see that the coordinates are the projections to the spaces defined by the new basis:
+Graphically, we can see that the coordinates are the projections to the spaces defined by the new basis:
 
 
 ```r
@@ -98,21 +98,21 @@ A= \begin{pmatrix} 1& \phantom{-}0.5\\ 1 & -0.5\end{pmatrix} \implies
 A^{-1}= \begin{pmatrix} 0.5& 0.5 \\ 1 &-1\end{pmatrix}
 $$
 
-$$Z$$ and $$Y$$ carry the same information, but in different _coordinate system_
+$$Z$$ and $$Y$$ carry the same information, but in a different _coordinate system_.
 
-### Example: Twin Heights
+#### Example: Twin heights
 
 Here are 100 two dimensional points $$Y$$
 
-<img src="figure/rotations-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+![plot of chunk twin-heights](figure/rotations-twin-heights-1.png) 
 
 Here are the rotations: $$Z = A^{-1} Y$$
 
-<img src="figure/rotations-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+![plot of chunk twin-heights-rotated](figure/rotations-twin-heights-rotated-1.png) 
 
 What we have done here is rotate the data so that the first coordinate of $$Z$$ is the average height, while the second is the difference between twin heights. 
 
-In the following sections we will be using the singular value decomposition to find principal components. It is sometimes useful to think of the SVD as a rotation, for example, $$U^\top Y$$ that gives us a new coordinate system $$DV^\top$$ in which the dimensions are ordered by how much variance they explain. 
+We have used the singular value decomposition to find principal components. It is sometimes useful to think of the SVD as a rotation, for example $$\mathbf{U}^\top \mathbf{Y}$$, that gives us a new coordinate system $$\mathbf{DV}^\top$$ in which the dimensions are ordered by how much variance they explain. 
 
 
 
