@@ -23,9 +23,9 @@ perform a t-test? Note that the data is either 0 (control) or 1
 (cases). It is pretty clear that this data is not normally distributed
 so the t-distribution approximation is certainly out of the
 question. We could use CLT if the sample size is large enough;
-otherwise we can use *association tests*. 
+otherwise, we can use *association tests*. 
 
-### Lady Tasting Tea
+#### Lady Tasting Tea
 
 One of the most famous examples of hypothesis testing was performed by
 [R.A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher).
@@ -35,7 +35,7 @@ cups of tea: one with milk poured first, the other after. The order
 was randomized. Say she picked 3 out 4 correctly, do we believe
 she has a special ability? Hypothesis testing helps answer this
 question by quantifying what happens by chance. This example is called
-the "Lady tasting tea" experiment (and as it turns out Fisher's friend
+the "Lady tasting tea" experiment (and, as it turns out, Fisher's friend
 was a scientist herself, [Muriel Bristol](https://en.wikipedia.org/wiki/Muriel_Bristol)).
 
 The basic question we ask is: if the tester is actually guessing, what
@@ -51,12 +51,12 @@ figure out each probability. The probability of picking 3 is
 $${4 \choose 3} {4 \choose 1} / {8 \choose 4} = 16/70$$. The probability of
 picking all 4 correct is
 $${4 \choose 4} {4 \choose 0}/{8 \choose 4}= 1/70$$.
-Thus the chance of observing a 3 or something more extreme,
+Thus, the chance of observing a 3 or something more extreme,
 under the null hypothesis, is $$\approx 0.24$$. This is the p-value. The
-procedure that produced this p-value is called Fisher's exact test and
+procedure that produced this p-value is called _Fisher's exact test_ and
 it uses the *hypergeometric distribution*. 
 
-### Two By Two Tables
+#### Two By Two Tables
 
 The data from the experiment above can be summarized by a 2 by 2 table:
 
@@ -95,7 +95,7 @@ fisher.test(tab,alternative="greater")
 ##   6.408309
 ```
 
-### Chi-square Test
+#### Chi-square Test
 
 Genome-wide association studies (GWAS) have become ubiquitous in
 biology. One of the main statistical summaries used in these studies
@@ -120,7 +120,7 @@ homozygous for the minor allele (aa) have the disease compared to 10%
 of the rest. Would we see this again if we picked another 250
 individuals? 
 
-Let's create an dataset with these percentages:
+Let's create a dataset with these percentages:
 
 
 ```r
@@ -196,7 +196,7 @@ The typical statistics we use to summarize these results is the odds ratio (OR).
 ## [1] 2.25
 ```
 
-To compute a p-value we don't use the OR directly. We instead assume
+To compute a p-value, we don't use the OR directly. We instead assume
 that there is no association between genotype and disease, and then
 compute what we expect to see in each *cell* of the table (note: this use of
 the word "cell" refers to elements in a matrix or table and has
@@ -248,7 +248,7 @@ chisq.test(tab)$p.value
 ## [1] 0.08857435
 ```
 
-### Large Samples, Small p-values
+#### Large Samples, Small p-values
 
 As mentioned earlier, reporting only p-values is not an appropriate
 way to report the results of your experiment. Many genetic association
@@ -276,12 +276,12 @@ chisq.test(tab)$p.value
 ## [1] 1.219624e-09
 ```
 
-### Confidence Intervals For The Odd Ratio
+#### Confidence Intervals For The Odd Ratio
 
 Computing confidence intervals for the OR is not mathematically
 straightforward. Unlike other statistics, for which we can derive
 useful approximations of their distributions, the OR is not only a
-ratio, but a ratio of ratios. Therefore there is no simple way of
+ratio, but a ratio of ratios. Therefore, there is no simple way of
 using, for example, the CLT. 
   
 One approach is to use the theory of *generalized linear models* which
