@@ -9,7 +9,7 @@ title: Principal Components Analysis
 
 We have already mentioned principal component analysis (PCA) above and noted its relation to the SVD. Here we provide further mathematical details. 
 
-### Example: Twin Heights
+#### Example: Twin heights
 
 We started the motivation for dimension reduction with a simulated example and showed a rotation that is very much related to PCA.
 
@@ -65,7 +65,7 @@ points(t(Z), col=2, pch=16, cex=0.5)
 
 ![Data projected onto space spanned by (1 0).](figure/PCA-projection_not_PC1_either-1.png) 
 
-This relates to the difference between twins which we know is small. The sum of squares confirms this.
+This relates to the difference between twins, which we know is small. The sum of squares confirms this.
 
 Finally, let's try:
 
@@ -90,9 +90,9 @@ points(t(Z),col=2,pch=16,cex=0.5)
 
 ![Data projected onto space spanned by first PC.](figure/PCA-PC1-1.png) 
 
-This is a re-scaled average height which has higher sum of squares. There is a mathematical procedure for determining which $$\mathbf{v}$$ maximizes the sum of squares and the SVD provides it for us.
+This is a re-scaled average height, which has higher sum of squares. There is a mathematical procedure for determining which $$\mathbf{v}$$ maximizes the sum of squares and the SVD provides it for us.
 
-### The Principal Components
+#### The principal components
 
 The orthogonal vector that maximizes the sum of squares:
 
@@ -112,18 +112,18 @@ $$ \mathbf{v}_2^\top \mathbf{v}_1=0$$
 
 and maximizes  $$(\mathbf{rv}_2)^\top \mathbf{rv}_2$$.
 
-When $$Y$$ is $$N \times m$$ we repeat to find 3rd, 4th, ..., m-th PCs
+When $$Y$$ is $$N \times m$$ we repeat to find 3rd, 4th, ..., m-th PCs.
 
-### `prcomp`
+#### `prcomp`
 
-We have shown how to obtain PCs using the SVD. However, R has a function specifically designed to find the principal components. In this case the data is centered by default. The following function: 
+We have shown how to obtain PCs using the SVD. However, R has a function specifically designed to find the principal components. In this case, the data is centered by default. The following function: 
 
 
 ```r
 pc <- prcomp( t(Y) )
 ```
 
-produces the same results as the SVD up to arbitrary sign flips
+produces the same results as the SVD up to arbitrary sign flips:
 
 
 ```r
@@ -171,7 +171,7 @@ component.
 
 
 
-Note that we take the transpose of `Y` because `prcomp` assumes the previously discussed ordering: units/samples in row and features in columns.
+We take the transpose of `Y` because `prcomp` assumes the previously discussed ordering: units/samples in row and features in columns.
 
 
 
