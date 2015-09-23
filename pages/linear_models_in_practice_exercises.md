@@ -1,4 +1,5 @@
 ---
+layout: page
 Title: Linear Models in Practice Exercises.
 ---
 
