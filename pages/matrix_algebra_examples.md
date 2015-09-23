@@ -84,7 +84,7 @@ print(barY)
 ## [1,] 68.68407
 ```
 
-For the variance we note that if:
+For the variance, we note that if:
 
 $$
 \mathbf{r}\equiv \begin{pmatrix}
@@ -96,7 +96,7 @@ Y_N - \bar{Y}
 \frac{1}{N}\sum_{i=1}^N (Y_i - \bar{Y})^2
 $$
 
-And in R if you only send one matrix into `crossprod`, it computes: $$r^\top r$$ so we can simply type:
+In R, if you only send one matrix into `crossprod`, it computes: $$r^\top r$$ so we can simply type:
 
 
 ```r
@@ -208,7 +208,7 @@ So now we are ready to determine which values of $$\beta$$ minimize the above, w
 
 #### Advanced: Finding the minimum using calculus
 
-There are a series of rules that permit us to compute partial derivatives equations in matrix notation. By equating the derivative to 0 and solving for the $$\beta$$, we will have our solution. The only one we need here tells us that the derivative of the above equation is:
+There are a series of rules that permit us to compute partial derivative equations in matrix notation. By equating the derivative to 0 and solving for the $$\beta$$, we will have our solution. The only one we need here tells us that the derivative of the above equation is:
 
 $$
 2 \mathbf{X}^\top (\mathbf{Y} - \mathbf{X} \boldsymbol{\hat{\beta}})=0
@@ -223,7 +223,7 @@ $$
 \boldsymbol{\hat{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}   
 $$
 
-and we have our solution. We usually put a hat on the $$\beta$$ that solves this, $$\hat{\beta}$$ as it is an estimate of the "real" $$\beta$$ that generated the data.
+and we have our solution. We usually put a hat on the $$\beta$$ that solves this, $$\hat{\beta}$$ , as it is an estimate of the "real" $$\beta$$ that generated the data.
 
 Remember that the least squares are like a square (multiply something by itself) and that this formula is similar to the derivative of $$f(x)^2$$ being $$2f(x)f\prime (x)$$. 
 
@@ -268,7 +268,7 @@ tt <- seq(0,3.4,len=n) #time in secs, t is a base function
 d <- 56.67  - 0.5*g*tt^2 + rnorm(n,sd=1)
 ```
 
-Note that we are using almost the same exact code:
+Notice that we are using almost the same exact code:
 
 
 
@@ -299,7 +299,7 @@ betahat
 ##    -5.0386455
 ```
 
-The Tower of Pisa is about 56 meters high, since we are just dropping the object there is no initial velocity, and half the constant of gravity is 9.8/2=4.9 meters per second squared.
+The Tower of Pisa is about 56 meters high. Since we are just dropping the object there is no initial velocity, and half the constant of gravity is 9.8/2=4.9 meters per second squared.
 
 #### The `lm` Function
 R has a very convenient function that fits these models. We will learn more about this function later, but here is a preview:
@@ -333,12 +333,11 @@ summary(fit)
 ## F-statistic:  4025 on 2 and 22 DF,  p-value: < 2.2e-16
 ```
 
-We obtain the same values as above.
+Note that we obtain the same values as above.
 
+#### Summary
 
-### Summary
-
-We have shown how to write linear models using linear algebra. We are going to do this for several examples, many of which are related to designed experiments. We showed how to obtain least squares estimates. Keep in mind, however, that because $$y$$ is a random variable, these estimates are random as well. In a later section, we will learn how to compute standard error for these estimates and use this to perform inference.
+We have shown how to write linear models using linear algebra. We are going to do this for several examples, many of which are related to designed experiments. We also demonstrated how to obtain least squares estimates. Nevertheless, it is important to remember that because $$y$$ is a random variable, these estimates are random as well. In a later section, we will learn how to compute standard error for these estimates and use this to perform inference.
 
 
 
