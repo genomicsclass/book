@@ -5,237 +5,84 @@ title: Adjusting for Batch Effects with Linear Models
 
 
 
+## Motivation for Statistical Approaches
 
-## Data Example
+#### Data example
 
-To illustrate how we can adjust for batch effects using statistical methods, we will create a data example in which the outcome of interest is confounded with batch, but not completely. We will also select an outcome for which we have an expectation of what genes should be diferentially expressed. Namely, we make sex the outcome of interest and expect genes on the Y chromosome to be diferentially expressed. We may also see genes from the X chromosome as differentially expressed since some escape X inactivation. The example dataset is below.
+To illustrate how we can adjust for batch effects using statistical methods, we will create a data example in which the outcome of interest is somewhat confounded with batch, but not completely. To aid with the illustration and assessment of the methods we demonstrate, we will also select an outcome for which we have an expectation of what genes should be differentially expressed. Namely, we make sex the outcome of interest and expect genes on the Y chromosome to be differentially expressed. We may also see genes from the X chromosome as differentially expressed since some escape X inactivation. The data with these properties is the one included in this dataset:
 
 
 ```r
 ##available from course github repository
 library(GSE5859Subset)
-```
-
-```
-## Error in library(GSE5859Subset): there is no package called 'GSE5859Subset'
-```
-
-```r
 data(GSE5859Subset)
 ```
 
-```
-## Warning in data(GSE5859Subset): data set 'GSE5859Subset' not found
-```
-
-To illustrate the confounding, we will pick some genes to show in a heatmap plot. We pick all Y chromosome genes, some genes that we see correlate with batch, and then some randomly selected genes.
-
+We can see the correlation between sex and month:
 
 ```r
-library(rafalib)
-library(RColorBrewer)
-library(genefilter)
-
-batch <- factor(format(sampleInfo$date,"%m"))
+month <- format(sampleInfo$date,"%m")
+table(sampleInfo$group, month)
 ```
 
 ```
-## Error in format(sampleInfo$date, "%m"): object 'sampleInfo' not found
+##    month
+##     06 10
+##   0  9  3
+##   1  3  9
 ```
 
-```r
-chr <- geneAnnotation$CHR
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'geneAnnotation' not found
-```
+To illustrate the confounding, we will pick some genes to show in a heatmap plot. We pick 1) all Y chromosome genes, 2) some genes that we see correlate with batch, and 3) some randomly selected genes. The image below (code not shown) shows high values in red, low values in blue, middle values in yellow. Each column is a sample and each row is one of the randomly selected genes:
 
-```r
-tt<-rowttests(geneExpression,batch)
-```
+![Image of gene expression data for genes selected to show difference in group as well as the batch effect, along with some randomly chosen genes.](figure/adjusting_with_linear_models-image_of_subset-1.png) 
 
-```
-## Error in rowttests(geneExpression, batch): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
-```
+In the plot above, the first 12 columns are females (1s) and the last 12 columns are males (0s). We can see some Y chromosome genes towards the top since they are blue for females and red from males. We can also see some genes that correlate with month towards the bottom of the image. Some genes are low in June (6) and high in October (10), while others do the opposite. The month effect is not as clear as the sex effect, but it is certainly present.  
 
-```r
-ind1 <- which(chr=="chrY") ##real differences
-```
-
-```
-## Error in which(chr == "chrY"): object 'chr' not found
-```
-
-```r
-ind2 <- setdiff(c(order(tt$dm)[1:25],order(-tt$dm)[1:25]),ind1)
-```
-
-```
-## Error in order(tt$dm): object 'tt' not found
-```
-
-```r
-set.seed(1)
-ind0 <- setdiff(sample(seq(along=tt$dm),50),c(ind2,ind1))
-```
-
-```
-## Error in seq(along = tt$dm): object 'tt' not found
-```
-
-```r
-geneindex<-c(ind2,ind0,ind1)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'ind2' not found
-```
-
-```r
-mat<-geneExpression[geneindex,]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'geneExpression' not found
-```
-
-```r
-mat <- mat -rowMeans(mat)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'mat' not found
-```
-
-The object `mat` contains the subset of the data we will show in the plots. By looking at an image we see the Y chromosome genes as well as those most affected by month:
+In what follows, we will imitate the typical analysis we would do in practice. We will act as if we don't know which genes are supposed to be differentially expressed between males and females, find genes that are differentially expressed, and the evaluate these methods by comparing to what we expect to be correct. Note while in the plot we only show a few genes, for the analysis we analyze 
+all 8,793.
 
 
-```r
-icolors <- colorRampPalette(rev(brewer.pal(11,"RdYlBu")))(100)
-mypar(1,1)
-image(t(mat),xaxt="n",yaxt="n",col=icolors)
-```
+#### Assessment plots and summaries
 
-```
-## Error in t(mat): object 'mat' not found
-```
+For the assessment of the methods we present, we will assume that 
+autosomal (not on chromosome X or Y) genes on the list are likely false positives. We will also assume that genes on chromosome Y are likely true positives. Chromosome X genes could go either way. This gives us the opportunity to estimate both specificity and sensitivity. Since in practice we rarely know the "truth", these evaluations are not possible. Simulations are therefore commonly used for evaluation purposes: we know the truth because we construct the data. However, simulations are at risk of not capturing all the nuances of real experimental data. In contrast, this dataset is an experimental dataset. 
 
-In what follows, we will imitate the typical analysis we would do in practice. We will act as if we don't know which genes are supposed to be differentially expressed between males and females. 
+In the next sections, we will use the histogram p-values  to evaluate the specificity (low false positive rates) of the batch adjustment procedures presented here. Because the autosomal genes are not expected to be differentially expressed, we should see a a flat p-value histogram. To evaluate sensitivity (low false negative rates), we will report the number of the reported genes on chromosome X and chromosome Y for which we reject the null hypothesis. We also include a volcano plot with a horizontal dashed line separating the genes called significant from those that are not, and colors used to highlight chromosome X and Y genes.
 
-#### Exploratory Data Analysis for Evaluation
-
-Another reason we are using the dataset described above for illustrating different approaches is because we actually have a reasonable idea of what to expect. Autosomal (not on chrX or chrY) genes on the list are likely false positives and chrY are likely true positives. ChrX genes could go either way. This gives us the opportunity to compare different procedures. Since in practice we rarely know the "truth", these evaluations are not possible. Simulations are therefore commonly used for evaluation purposes: we know the truth because we construct the data. But simulations are at risk of not capturing all the nuances of real experimental data. This dataset is an experimental dataset. 
-
-In the next sections we will use the histogram p-values to evaluate the specificity (low false positive rates) of the batch adjustment procedures presented here. Because the autosomal genes are not expected to be differentially expressed, we should see a a flat p-value histogram. To evaluate sensitivity (low false negative rates), we will report the number of the reported genes on chrX and chrY. Below are the results for when we don't adjust and report genes with q-values smaller than 0.1. We also include a volcano plot with a horizontal dashed line separating the genes called significant from those that are not, and colors used to highlight chrX and chrY genes.
+Below are the results of applying a naive t-test and report genes with q-values smaller than 0.1. 
 
 
 ```r
 library(qvalue)
-```
-
-```
-## Error in library(qvalue): there is no package called 'qvalue'
-```
-
-```r
 res <- rowttests(geneExpression,as.factor( sampleInfo$group ))
-```
-
-```
-## Error in rowttests(geneExpression, as.factor(sampleInfo$group)): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'geneExpression' not found
-```
-
-```r
 mypar(1,2)
 hist(res$p.value[which(!chr%in%c("chrX","chrY") )],main="",ylim=c(0,1300))
-```
 
-```
-## Error in hist(res$p.value[which(!chr %in% c("chrX", "chrY"))], main = "", : object 'res' not found
-```
-
-```r
 plot(res$dm,-log10(res$p.value))
-```
-
-```
-## Error in plot(res$dm, -log10(res$p.value)): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrX")],-log10(res$p.value[which(chr=="chrX")]),col=1,pch=16)
-```
-
-```
-## Error in points(res$dm[which(chr == "chrX")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrY")],-log10(res$p.value[which(chr=="chrY")]),col=2,pch=16,xlab="Effect size",ylab="-log10(p-value)")
-```
-
-```
-## Error in points(res$dm[which(chr == "chrY")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 legend("bottomright",c("chrX","chrY"),col=1:2,pch=16)
-```
-
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
-
-```r
 qvals <- qvalue(res$p.value)$qvalue
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "qvalue"
-```
-
-```r
 index <- which(qvals<0.1)
-```
-
-```
-## Error in which(qvals < 0.1): object 'qvals' not found
-```
-
-```r
 abline(h=-log10(max(res$p.value[index])))
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'res' not found
-```
+![p-value histogram and volcano plot for comparison between sexes. The Y chromosome genes (considered to be positives) are highlighted in red. The X chromosome genes (a subset is considered to be positive) are shown in green.](figure/adjusting_with_linear_models-pvalue_hist_and_volcano_plots-1.png) 
 
 ```r
-cat("Total genes with q-value < 0.1:",length(index))
+cat("Total genes with q-value < 0.1: ",length(index),"\n",
+    "Number of selected genes on chrY: ", sum(chr[index]=="chrY",na.rm=TRUE),"\n",
+    "Number of selected genes on chrX: ", sum(chr[index]=="chrX",na.rm=TRUE),sep="")
 ```
 
 ```
-## Error in cat("Total genes with q-value < 0.1:", length(index)): object 'index' not found
+## Total genes with q-value < 0.1: 59
+## Number of selected genes on chrY: 8
+## Number of selected genes on chrX: 12
 ```
 
-```r
-cat("Number of selected genes on chrY:", sum(chr[index]=="chrY",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrY:", sum(chr[index] == "chrY", : object 'chr' not found
-```
-
-```r
-cat("Number of selected genes on chrX:", sum(chr[index]=="chrX",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrX:", sum(chr[index] == "chrX", : object 'chr' not found
-```
-
-The histogram is not flat. Instead, low p-values are over-represented. More than half of the genes on the final list are autosomal.
+We immediately note that the histogram is not flat. Instead, low p-values are over-represented. Furthermore, more than half of the genes on the final list are autosomal. We now describe two statistical solutions and try to improve on this.
 
 ## Adjusting for Batch Effects with Linear Models
 
@@ -256,18 +103,7 @@ We construct a model matrix that includes batch.
 
 ```r
 sex <- sampleInfo$group
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sampleInfo' not found
-```
-
-```r
 X <- model.matrix(~sex+batch)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sex' not found
 ```
 
 Now we can fit a model for each gene. For example, note the difference between the original model and one that has been adjusted for batch:
@@ -276,58 +112,28 @@ Now we can fit a model for each gene. For example, note the difference between t
 ```r
 j <- 7635
 y <- geneExpression[j,]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'geneExpression' not found
-```
-
-```r
 X0 <- model.matrix(~sex) 
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sex' not found
-```
-
-```r
 fit <- lm(y~X0-1)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'y' not found
-```
-
-```r
 summary(fit)$coef
 ```
 
 ```
-## Error in summary(fit): object 'fit' not found
+##                 Estimate Std. Error   t value     Pr(>|t|)
+## X0(Intercept)  6.9555747  0.2166035 32.112008 5.611901e-20
+## X0sex         -0.6556865  0.3063237 -2.140502 4.365102e-02
 ```
 
 ```r
 X <- model.matrix(~sex+batch)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sex' not found
-```
-
-```r
 fit <- lm(y~X)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'y' not found
-```
-
-```r
 summary(fit)$coef
 ```
 
 ```
-## Error in summary(fit): object 'fit' not found
+##                Estimate Std. Error    t value     Pr(>|t|)
+## (Intercept)  7.26329968  0.1605560 45.2384140 2.036006e-22
+## Xsex        -0.04023663  0.2427379 -0.1657616 8.699300e-01
+## Xbatch10    -1.23089977  0.2427379 -5.0709009 5.070727e-05
 ```
 
 We then fit this new model for each gene. For instance, we can use `sapply` to recover the estimated coefficient and p-value in the following way:
@@ -339,122 +145,42 @@ res <- t( sapply(1:nrow(geneExpression),function(j){
   fit <- lm(y~X-1)
   summary(fit)$coef[2,c(1,4)]
 } ) )
-```
 
-```
-## Error in nrow(geneExpression): object 'geneExpression' not found
-```
 
-```r
 ##turn into data.frame so we can use the same code for plots as above
 res <- data.frame(res)
-```
-
-```
-## Error in data.frame(res): object 'res' not found
-```
-
-```r
 names(res) <- c("dm","p.value")
-```
 
-```
-## Error in names(res) <- c("dm", "p.value"): object 'res' not found
-```
-
-```r
 mypar(1,2)
 hist(res$p.value[which(!chr%in%c("chrX","chrY") )],main="",ylim=c(0,1300))
-```
 
-```
-## Error in hist(res$p.value[which(!chr %in% c("chrX", "chrY"))], main = "", : object 'res' not found
-```
-
-```r
 plot(res$dm,-log10(res$p.value))
-```
-
-```
-## Error in plot(res$dm, -log10(res$p.value)): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrX")],-log10(res$p.value[which(chr=="chrX")]),col=1,pch=16)
-```
-
-```
-## Error in points(res$dm[which(chr == "chrX")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrY")],-log10(res$p.value[which(chr=="chrY")]),col=2,pch=16,xlab="Effect size",ylab="-log10(p-value)")
-```
-
-```
-## Error in points(res$dm[which(chr == "chrY")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 legend("bottomright",c("chrX","chrY"),col=1:2,pch=16)
-```
-
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
-
-```r
 qvals <- qvalue(res$p.value)$qvalue
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "qvalue"
-```
-
-```r
 index <- which(qvals<0.1)
-```
-
-```
-## Error in which(qvals < 0.1): object 'qvals' not found
-```
-
-```r
 abline(h=-log10(max(res$p.value[index])))
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'res' not found
-```
+![p-value histogram and volcano plot for comparison between sexes after adjustment for month. The Y chromosome genes (considered to be positives) are highlighted in red. The X chromosome genes (a subset is considered to be positive) are shown in green.](figure/adjusting_with_linear_models-pvalue_hist_and_volcano_plots2-1.png) 
 
 ```r
-cat("Total genes with q-value < 0.1:",length(index))
+cat("Total genes with q-value < 0.1: ",length(index),"\n",
+    "Number of selected genes on chrY: ", sum(chr[index]=="chrY",na.rm=TRUE),"\n",
+    "Number of selected genes on chrX: ", sum(chr[index]=="chrX",na.rm=TRUE),sep="")
 ```
 
 ```
-## Error in cat("Total genes with q-value < 0.1:", length(index)): object 'index' not found
+## Total genes with q-value < 0.1: 17
+## Number of selected genes on chrY: 6
+## Number of selected genes on chrX: 9
 ```
 
-```r
-cat("Number of selected genes on chrY:", sum(chr[index]=="chrY",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrY:", sum(chr[index] == "chrY", : object 'chr' not found
-```
-
-```r
-cat("Number of selected genes on chrX:", sum(chr[index]=="chrX",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrX:", sum(chr[index] == "chrX", : object 'chr' not found
-```
-
-There is a great improvement in specificity (less false positives) without much loss in sensitivity (we still find many chrY genes). However, we still see some bias in the histogram. In the following sections we will see that month does not perfectly account for the batch effect and that better estimates are possible.
+There is a great improvement in specificity (less false positives) without much loss in sensitivity (we still find many chromosome Y genes). However, we still see some bias in the histogram. In a later section we will see that month does not perfectly account for the batch effect and that better estimates are possible.
 
 
-## A Note on Computing Efficiency
+#### A note on computing efficiency
 
 In the code above, the design matrix does not change within the iterations we are computing $$(X^\top X)^{-1}$$ repeatedly and applying to each gene. Instead we can perform this calculation in one matrix algebra calculation by computing it once and then obtaining all the betas by multiplying $$(X^\top X)^{-1}X^\top Y$$ with the columns of $$Y$$ representing genes in this case. The `limma` package has an implementation of this idea (using the QR decomposition). Notice how much faster this is:
 
@@ -462,18 +188,7 @@ In the code above, the design matrix does not change within the iterations we ar
 ```r
 library(limma)
 X <- model.matrix(~sex+batch)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sex' not found
-```
-
-```r
 fit <- lmFit(geneExpression,X)
-```
-
-```
-## Error in is(object, "list"): object 'geneExpression' not found
 ```
 
 The estimated regression coefficients for each gene are obtained like this:
@@ -483,7 +198,7 @@ dim( fit$coef)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'fit' not found
+## [1] 8793    3
 ```
 We have one estimate for each gene. To obtain p-values for one of these, we have to construct the ratios:
 
@@ -491,57 +206,28 @@ We have one estimate for each gene. To obtain p-values for one of these, we have
 ```r
 k <- 2 ##second coef
 ses <- fit$stdev.unscaled[,k]*fit$sigma
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'fit' not found
-```
-
-```r
 ttest <- fit$coef[,k]/ses
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'fit' not found
-```
-
-```r
 pvals <- 2*pt(-abs(ttest),fit$df)
-```
-
-```
-## Error in abs(ttest): non-numeric argument to mathematical function
 ```
 
 #### Combat
 
- Combat [NEED CITATION] is a popular method and is based on using linear models to adjust for batch effects. It fits a hierarchical model (we will learn about these in the next section) to estimate and remove row specific batch effects. Combat uses a modular approach. In a first step, what is considered to be a batch effect is removed:
+ [Combat](http://biostatistics.oxfordjournals.org/content/8/1/118.short) is a popular method and is based on using linear models to adjust for batch effects. It fits a hierarchical model to estimate and remove row specific batch effects. Combat uses a modular approach. In a first step, what is considered to be a batch effect is removed:
 
 
 ```r
 library(sva) #available from Bioconductor
-```
-
-```
-## Loading required package: mgcv
-## Loading required package: nlme
-## This is mgcv 1.8-7. For overview type 'help("mgcv-package")'.
-```
-
-```r
 mod <- model.matrix(~sex)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sex' not found
-```
-
-```r
 cleandat <- ComBat(geneExpression,batch,mod)
 ```
 
 ```
-## Error in ComBat(geneExpression, batch, mod): object 'batch' not found
+## Found 2 batches
+## Adjusting for 1 covariate(s) or covariate level(s)
+## Standardizing Data across genes
+## Fitting L/S model and finding priors
+## Finding parametric adjustments
+## Adjusting the Data
 ```
 
 Then the results can be used to fit a model with our variable of interest:
@@ -552,99 +238,33 @@ Then the results can be used to fit a model with our variable of interest:
 res<-genefilter::rowttests(cleandat,factor(sex))
 ```
 
-```
-## Error in genefilter::rowttests(cleandat, factor(sex)): error in evaluating the argument 'x' in selecting a method for function 'rowttests': Error: object 'cleandat' not found
-```
-
 In this case, the results are less specific than what we obtain by fitting the simple linear model:
 
 
 ```r
 mypar(1,2)
 hist(res$p.value[which(!chr%in%c("chrX","chrY") )],main="",ylim=c(0,1300))
-```
 
-```
-## Error in hist(res$p.value[which(!chr %in% c("chrX", "chrY"))], main = "", : object 'res' not found
-```
-
-```r
 plot(res$dm,-log10(res$p.value))
-```
-
-```
-## Error in plot(res$dm, -log10(res$p.value)): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrX")],-log10(res$p.value[which(chr=="chrX")]),col=1,pch=16)
-```
-
-```
-## Error in points(res$dm[which(chr == "chrX")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 points(res$dm[which(chr=="chrY")],-log10(res$p.value[which(chr=="chrY")]),col=2,pch=16,xlab="Effect size",ylab="-log10(p-value)")
-```
-
-```
-## Error in points(res$dm[which(chr == "chrY")], -log10(res$p.value[which(chr == : object 'res' not found
-```
-
-```r
 legend("bottomright",c("chrX","chrY"),col=1:2,pch=16)
-```
-
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
-
-```r
 qvals <- qvalue(res$p.value)$qvalue
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "qvalue"
-```
-
-```r
 index <- which(qvals<0.1)
-```
-
-```
-## Error in which(qvals < 0.1): object 'qvals' not found
-```
-
-```r
 abline(h=-log10(max(res$p.value[index])))
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'res' not found
-```
+![p-value histogram and volcano plot for comparison between sexes for Combat. The Y chromosome genes (considered to be positives) are highlighted in red. The X chromosome genes (a subset is considered to be positive) are shown in green.](figure/adjusting_with_linear_models-pvalue_hist_and_volcano_plots3-1.png) 
 
 ```r
-cat("Total genes with q-value < 0.1:",length(index))
+cat("Total genes with q-value < 0.1: ",length(index),"\n",
+    "Number of selected genes on chrY: ", sum(chr[index]=="chrY",na.rm=TRUE),"\n",
+    "Number of selected genes on chrX: ", sum(chr[index]=="chrX",na.rm=TRUE),sep="")
 ```
 
 ```
-## Error in cat("Total genes with q-value < 0.1:", length(index)): object 'index' not found
-```
-
-```r
-cat("Number of selected genes on chrY:", sum(chr[index]=="chrY",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrY:", sum(chr[index] == "chrY", : object 'chr' not found
-```
-
-```r
-cat("Number of selected genes on chrX:", sum(chr[index]=="chrX",na.rm=TRUE))
-```
-
-```
-## Error in cat("Number of selected genes on chrX:", sum(chr[index] == "chrX", : object 'chr' not found
+## Total genes with q-value < 0.1: 68
+## Number of selected genes on chrY: 8
+## Number of selected genes on chrX: 16
 ```
 
