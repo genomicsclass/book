@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Clustering and Heatmaps Exercise
+title: Clustering and Heatmaps Exercise
 ---
 
 {pagebreak}
