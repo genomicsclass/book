@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Linear Models in Practice Exercises.
+title: Linear Models in Practice Exercises.
 ---
 
 ## Exercises
