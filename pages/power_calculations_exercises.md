@@ -1,3 +1,7 @@
+---
+layout: page
+title:  Power Calculations Exercises
+---
 
 ## Exercises
 
