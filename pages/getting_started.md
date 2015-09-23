@@ -21,7 +21,7 @@ the [Comprehensive R Archive Network](https://cran.r-project.org/)
 (CRAN). It is relatively straightforward, but if you need further help
 you can try the following resources: 
 
-* [Installing R on Windows](https://github.com/genomicsclass/windows#installing-r). 
+* [Installing R on Windows](https://github.com/genomicsclass/windows#installing-r) 
 * [Installing R on Mac](http://youtu.be/Icawuhf0Yqo)
 * [Installing R on Ubuntu](http://cran.r-project.org/bin/linux/ubuntu/README)
 
@@ -41,7 +41,7 @@ The first homework assignment is to complete an R tutorial to
 familiarize yourself with the basics of programming and R syntax. 
 To follow this book you should be familiar with the difference between lists (including data frames) and numeric vectors, for-loops, how to create functions, and how to use the `sapply` and `replicate` functions. 
 
-If you are already familiar with R you can skip to the next section. Otherwise, you should go through the [swirl](http://swirlstats.com/) tutorial, which teaches you R programming and data science interactively, at your own pace, and in the R console. Once you have R installed you can install `swirl` and run it the following way: 
+If you are already familiar with R, you can skip to the next section. Otherwise, you should go through the [swirl](http://swirlstats.com/) tutorial, which teaches you R programming and data science interactively, at your own pace and in the R console. Once you have R installed, you can install `swirl` and run it the following way: 
 
 
 ```r
@@ -52,7 +52,7 @@ swirl()
 
 Alternatively you can take the [try R](http://tryr.codeschool.com/) interactive class from Code School. 
 
-Note that there are also many open and free resources and reference
+There are also many open and free resources and reference
 guides for R. Two examples are:
 
 * [Quick-R](http://www.statmethods.net/): a quick online reference for data input, basic statistics and plots
@@ -65,8 +65,8 @@ Two key things you need to know about R is that you can get help for a function 
 help("install.packages")
 ```
 
-and that the hash character represents comments and so text after this
-character is interpreted:
+and the hash character represents comments, so text following these
+characters is not interpreted:
 
 
 ```r
@@ -76,7 +76,7 @@ character is interpreted:
 ## Installing Packages
 
 The first R command we will run is `install.packages`. If you took the
-`swirl` tutorial you already did this. R only includes a basic set of
+`swirl` tutorial you should have already done this. R only includes a basic set of
 functions. It can do much more than this, but not everybody needs
 everything so we instead make some functions available via
 packages. Many of these functions are stored in CRAN. Note that these
@@ -108,7 +108,7 @@ install it first.
 
 ## Importing Data into R
 
-The first step when getting ready to analyze data is to read in the data into R. There are several ways to do this and we will discuss three of them. But you only need to learn one to follow along. 
+The first step when preparing to analyze data is to read in the data into R. There are several ways to do this and we will discuss three of them. But you only need to learn one to follow along. 
 
 In the life sciences, small datasets such as the one used as an
 example in the next sections are typically stored as Excel files. Although there
@@ -147,28 +147,27 @@ We find that the simplest way to organize yourself is to start a Project in RStu
 
 You can navigate to the `femaleMiceWeights.csv` file by visiting the
 data directory of dagdata on
-[GitHub](https://github.com/genomicsclass/dagdata/tree/master/inst/extdata). Note
-that if you navigate to the file, you need to click on *Raw* on the
+[GitHub](https://github.com/genomicsclass/dagdata/tree/master/inst/extdata). If you navigate to the file, you need to click on *Raw* on the
 upper right hand corner of the data and then use your browser's "Save
-As" function to assure that the downloaded file is in a CSV
-format. Note that some browsers add an extra suffix to your filename by
+As" function to ensure that the downloaded file is in a CSV
+format. Some browsers add an extra suffix to your filename by
 default. You do not want this. You want your file to be named
 `femaleMiceWeights.csv`. 
 
 ![GitHub page screenshot](images/handmade/screenshot1.png)
 
-Once you have this file in your working directory then you can simply read it in like this:
+Once you have this file in your working directory, then you can simply read it in like this:
 
 
 ```r
 dat <- read.csv("femaleMiceWeights.csv")
 ```
 
-Note that if you did not receive any message then you probably read in the file successfully.
+If you did not receive any message, then you probably read in the file successfully.
 
 #### Option 2: Download from within R
 
-We store many of the datasets used in this course on [GitHub](https://github.com/genomicsclass/). You can save these files directly from the internet to your computer using R. In this example we are using the `download.file` function in the `downloader` package to download the file to a specific location and then read it in. We can assign it a random name and a random directory using the function `tempfile`, but you can also save it in directory, and with the name, of your choosing.
+We store many of the datasets used here on [GitHub](https://github.com/genomicsclass/). You can save these files directly from the internet to your computer using R. In this example, we are using the `download.file` function in the `downloader` package to download the file to a specific location and then read it in. We can assign it a random name and a random directory using the function `tempfile`, but you can also save it in directory with the name of your choosing.
 
 
 ```r
@@ -184,7 +183,7 @@ We can then read it in like this:
 dat <- read.csv(filename)
 ```
 
-Many of the datasets we include in this book are available in custom-built packages available from GitHub. The reason we use GitHub rather than CRAN is that on GitHub we do not have to vet packages, which gives us much more flexibility. 
+Many of the datasets we include in this book are available in custom-built packages from GitHub. The reason we use GitHub, rather than CRAN, is that on GitHub we do not have to vet packages, which gives us much more flexibility. 
 
 To install packages from GitHub you will need to install the `devtools` package:
 
@@ -195,7 +194,7 @@ install.packages("devtools")
 
 Note to Windows users: to use devtools you will have to also install `Rtools`. In general you will need to install packages as administrator. One way to do this is to start R as administrator. If you do not have permission to do this, then it is a bit [more complicated](http://www.magesblog.com/2012/04/installing-r-packages-without-admin.html). 
 
-Now we are ready to install a package from GitHub. Note that we now use a different function:
+Now you are ready to install a package from GitHub. For this we use a different function:
 
 
 ```r
@@ -203,7 +202,7 @@ library(devtools)
 install_github("genomicsclass/dagdata")
 ```
 
-The file we are working with is actually included in this package. So once you install the package, the file is on your computer. However, finding it is requires advanced knowledge. Here are the lines of code:
+The file we are working with is actually included in this package. Once you install the package, the file is on your computer. However, finding it requires advanced knowledge. Here are the lines of code:
 
 
 ```r
@@ -221,10 +220,11 @@ list.files(file.path(dir,"extdata")) #external data is in this directory
 ```
 
 ```
-## [1] "admissions.csv"               "babies.txt"                  
-## [3] "femaleControlsPopulation.csv" "femaleMiceWeights.csv"       
-## [5] "mice_pheno.csv"               "msleep_ggplot2.csv"          
-## [7] "README"                       "spider_wolff_gorb_2013.csv"
+## [1] "admissions.csv"               "astronomicalunit.csv"        
+## [3] "babies.txt"                   "femaleControlsPopulation.csv"
+## [5] "femaleMiceWeights.csv"        "mice_pheno.csv"              
+## [7] "msleep_ggplot2.csv"           "README"                      
+## [9] "spider_wolff_gorb_2013.csv"
 ```
 
 And now we are ready to read in the file:
