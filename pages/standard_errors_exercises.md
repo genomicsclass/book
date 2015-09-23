@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Standard Errors Exercises
+title: Standard Errors Exercises
 ---
 
 
