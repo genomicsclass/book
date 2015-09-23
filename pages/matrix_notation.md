@@ -10,13 +10,13 @@ layout: page
 
 ## Matrix Notation
 
-Here we introduce the basics of matrix notation. Initially this may seem over-complicated, but once we discuss examples you will appreciate the power of using this notation to both explain and derive solutions, as well as implement them as R code. 
+Here we introduce the basics of matrix notation. Initially this may seem over-complicated, but once we discuss examples, you will appreciate the power of using this notation to both explain and derive solutions, as well as implement them as R code. 
 
 #### The language of linear models
 
 Linear algebra notation actually simplifies the mathematical descriptions and manipulations of linear models, as well as coding in R. We will discuss the basics of this notation and then show some examples in R.
 
-The main point of this entire exercise is to show how we can write the models above, using matrix notation and then explain how this is useful for solving the least squares equation. We start by simply defining notation and matrix multiplication, but bear with us since we eventually get back to the practical application.
+The main point of this entire exercise is to show how we can write the models above using matrix notation, and then explain how this is useful for solving the least squares equation. We start by simply defining notation and matrix multiplication, but bear with us since we eventually get back to the practical application.
 
 ## Solving System of Equations
 
@@ -67,11 +67,11 @@ c
 \end{pmatrix}
 $$
 
-This section explains the notation used above. It turns that we can borrow this notation for linear models in statistics as well.
+This section explains the notation used above. It turns out that we can borrow this notation for linear models in statistics as well.
 
 ## Vectors, Matrices and Scalars
 
-In the falling object, father-son heights, and mouse weight examples the random variables associated with the data were represented by $$Y_1,\dots,Y_n$$. We can think of this as a vector. In fact, in R we are already doing this:
+In the falling object, father-son heights, and mouse weight examples, the random variables associated with the data were represented by $$Y_1,\dots,Y_n$$. We can think of this as a vector. In fact, in R we are already doing this:
 
 
 ```r
@@ -83,7 +83,7 @@ head(y)
 ```
 ## [1] 65.04851 63.25094 64.95532 65.75250 61.13723 63.02254
 ```
-In math we can also use just one symbol and we usually use bold to distinguish it from the individual entries:
+In math we can also use just one symbol. We usually use bold to distinguish it from the individual entries:
 
 $$ \mathbf{Y} = \begin{pmatrix}
 Y_1\\\
@@ -113,7 +113,7 @@ x_{N,2}
 \end{pmatrix}
 $$
 
-Note that for the falling objectexample $$x_{1,1}= t_i$$ and $$x_{i,1}=t_i^2$$ with $$t_i$$ the time of the i-th observation. Also, keep in mind that vectors can be thought of as $$N\times 1$$ matrices.
+Note that for the falling object example $$x_{1,1}= t_i$$ and $$x_{i,1}=t_i^2$$ with $$t_i$$ the time of the i-th observation. Also, keep in mind that vectors can be thought of as $$N\times 1$$ matrices.
 
 For reasons that will soon become apparent, it is convenient to represent these in matrices:
 
@@ -191,7 +191,7 @@ dim(X)
 ## [1] 100   5
 ```
 
-The columns are filled by column. The `byrow=TRUE` argument lets us change that:
+By default, the matrices are filled column by column. The `byrow=TRUE` argument lets us change that to row by row:
 
 
 ```r
@@ -210,5 +210,5 @@ head(X)
 ## [6,]   26   27   28   29   30
 ```
 
-Finally, we define a scalar. A scalar is just a number. So why the special name? We call it a scalar because we want to distinguish it from vectors and matrices. We usually use lower case and don't bold. In the next section we will understand why we make this distinction.
+Finally, we define a scalar. A scalar is just a number, which we call a scalar because we want to distinguish it from vectors and matrices. We usually use lower case and don't bold. In the next section, we will understand why we make this distinction.
 
