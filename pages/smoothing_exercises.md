@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Smoothing exercises
+title: Smoothing exercises
 ---
 
 
