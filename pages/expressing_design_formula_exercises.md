@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Expressing Design Formula Exercises
+title: Expressing Design Formula Exercises
 ---
 
 ## Exercises
