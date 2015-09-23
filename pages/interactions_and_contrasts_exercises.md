@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Interactions and Contrasts
+title: Interactions and Contrasts
 ---
 
 ## Exercises
