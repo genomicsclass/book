@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Matrix Notation Exercises
+title: Matrix Notation Exercises
 ---
 
 
