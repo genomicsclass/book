@@ -1,18 +1,33 @@
+{frontmatter}
+
+# Acknowledgements
+
+The authors would like to thank Alex Nones for proofreading the manuscript during its various stages. Also, thanks to Karl Broman for contributing the "Plots to Avoid" section and to Stephanie Hicks for designing some of the exercises.  
+
+This book was conceived during the teaching of several HarvardX courses, coordinated by Heather Sternshein. We are also grateful 
+to all the students whose questions and comments helped us improve the book. The courses were
+partially funded by NIH grant R25GM114818.  We are very grateful to the National Institute of Health for its support.  
+
+A special thanks goes to all those that edited the book via GitHub pull requests: vjcitn, yeredh, ste-fan, molx, kern3020, josemrecio, hcorrada, neerajt, massie, jmgore75, molecules, lzamparo, eronisko, and obicke.
+
+
+Cover image credit: this photograph is La Mina Falls, El Yunque National Forest, Puerto Rico, taken by Ron Kroetz
+https://www.flickr.com/photos/ronkroetz/14779273923
+Attribution-NoDerivs 2.0 Generic (CC BY-ND 2.0)
+
+{mainmatter}
+
 # Introduction
 
 The unprecedented advance in digital technology during the second half
 of the 20th century has produced a measurement revolution that is
 transforming science. In the life sciences, data analysis is now part
 of practically every research project. Genomics, in particular, is
-being driven by new measurement technologies that permit us to observe certain molecular entities for the first time. These observations are leading to
-discoveries analogous to discovering the microorganism and many others
-permitted by the invention of the microscope. Choice examples of these
-technologies are microarrays and next generation sequencing
-technology.
+being driven by new measurement technologies that permit us to observe certain molecular entities for the first time. These observations are leading to discoveries analogous to identifying microorganisms and other breakthroughs permitted by the invention of the microscope. Choice examples of these technologies are microarrays and next generation sequencing.
 
 Scientific fields that have traditionally relied upon simple data
 analysis techniques have been turned on their heads by these
-technologies. For example, in the past, researchers would measure the
+technologies. In the past, for example, researchers would measure the
 transcription levels of a single gene of interest. Today, it is
 possible to measure all 20,000+ human genes at once.  Advances such as
 these have brought about a shift from hypothesis to discovery-driven
@@ -74,7 +89,7 @@ will introduce the mathematical definition of distance and use this to
 motivate the singular value decomposition (SVD) for dimension
 reduction and multi-dimensional scaling. Once we learn this, we will
 be ready to cover hierarchical and k-means clustering. We will follow
-this with basic introduction to machine learning.
+this with a basic introduction to machine learning.
 
 We end by learning about batch effects and how component and factor
 analysis are used to deal with this challenge. In particular, we will
@@ -85,10 +100,10 @@ analysis.
 ## How Is This Book Different?
 
 While statistics textbooks focus on mathematics, this book focuses on
-using a computer to perform data analysis. Instead of explaining the
-mathematics and theory and then showing examples, we start by stating
-a practical data-related challenge. We then provide computer code that
-provides a solution to the problem and also helps illustrate the
+using a computer to perform data analysis. This book follows the approach of [Stat Labs](https://www.stat.berkeley.edu/~statlabs/), by Deborah Nolan and Terry Speed.
+Instead of explaining the
+mathematics and theory, and then showing examples, we start by stating
+a practical data-related challenge. This book also includes the computer code that provides a solution to the problem and helps illustrate the
 concepts behind the solution. By running the code yourself, and seeing
 data generation and analysis happen live, you will get a better
 intuition for the concepts, the mathematics, and the theory.
@@ -98,7 +113,7 @@ life sciences and introduce mathematics as a tool that can help us
 achieve scientific goals. Furthermore, throughout the book we show the
 R code that performs this analysis and connect the lines of code to
 the statistical and mathematical concepts we explain. All sections of
-this book are reproducible as they were produced by *R markdown*
+this book are reproducible as they were made using *R markdown*
 documents that include R code used to produce the figures, tables and
 results shown in the book. In order to distinguish it, the code is
 shown in the following font:
@@ -110,7 +125,7 @@ y <- 3
 print(x+y) 
 ```
 
-and the results in different colors and preceded by two hash
+and the results in different colors, preceded by two hash
 characters (*##*):
 
 
@@ -121,7 +136,7 @@ characters (*##*):
 We will provide links that will give you access to the raw R markdown
 code so you can easily follow along with the book by programming in R.
 
-At the beginning of each chapter you will see the sentence
+At the beginning of each chapter you will see the sentence:
 
 >> The R markdown document for this section is available here.
 
