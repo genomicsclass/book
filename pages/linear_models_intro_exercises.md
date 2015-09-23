@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Linear models and randomness
+title: Linear models and randomness
 ---
 
 
