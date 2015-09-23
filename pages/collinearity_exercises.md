@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Collinearity  exercises
+title: Collinearity  exercises
 ---
 
 {pagebreak} 
