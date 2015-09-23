@@ -1,6 +1,6 @@
 ---
 layout: page
-title:  Random Variables Exercises
+title: Random Variables Exercises
 ---
 
 ## Exercises
