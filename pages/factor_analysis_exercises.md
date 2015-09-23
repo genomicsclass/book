@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Factor Analysis Exercises
+title: Factor Analysis Exercises
 ---
 
 ## Exercises
