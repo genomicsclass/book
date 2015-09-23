@@ -1,5 +1,6 @@
 ---
-Title:
+layout: page
+Title: Cross-validation Exercises
 ---
 
 ## Exercises
