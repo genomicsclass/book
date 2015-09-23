@@ -29,7 +29,7 @@ estimated effect size and the uncertainty associated with this
 estimate. Here we use the mice data to illustrate the concept behind
 confidence intervals. 
 
-### Confidence Interval For Population Mean
+#### Confidence Interval For Population Mean
 
 Before we show how to construct a confidence interval for the
 difference between the two groups, we will
@@ -59,7 +59,7 @@ print(mu_chow)
 ## [1] 23.89338
 ```
 
-We are interested in estimating this parameter. In practice we do not get to see the entire population so, as we did for p-values, we demonstrate how we can use samples to do this. Let's start with a sample of size 30:
+We are interested in estimating this parameter. In practice, we do not get to see the entire population so, as we did for p-values, we demonstrate how we can use samples to do this. Let's start with a sample of size 30:
 
 
 ```r
@@ -88,11 +88,11 @@ print(se)
 
 <a name="interval"></a>
 
-### Defining The Interval
+#### Defining The Interval
 
 A 95% confidence interval (we can use percentages other than 95%) is a
 random interval with a 95% probability of falling on the parameter we
-are estimating. Note that, saying 95% of random intervals will fall on the
+are estimating. Keep in mind that saying 95% of random intervals will fall on the
 true value (our definition above) is *not the same* as saying there is
 a 95% chance that the true value falls in our interval. 
 To construct it, we note that the CLT tells us that 
@@ -177,13 +177,13 @@ for (i in 1:B) {
 
 ![We show 250 random realizations of 95% confidence intervals. The color denotes if the interval fell on the parameter or not.](figure/confidence_intervals-confidence_interval_n30-1.png) 
 
-You can run this repeatedly to see what happens. You will see that about in about 5% of the cases, we fail to cover $$\mu_X$$.
+You can run this repeatedly to see what happens. You will see that in about 5% of the cases, we fail to cover $$\mu_X$$.
 
 <a name="smallsample"></a>
 
-### Small Sample Size And The CLT
+#### Small Sample Size And The CLT
 
-For $$N=30$$ the CLT works very well. However, if $$N=5$$, do these confidence intervals work as well? We used the CLT to create our intervals, and with $$N=5$$ it may not be as useful an approximation. We can confirm this with a simulation:
+For $$N=30$$, the CLT works very well. However, if $$N=5$$, do these confidence intervals work as well? We used the CLT to create our intervals, and with $$N=5$$ it may not be as useful an approximation. We can confirm this with a simulation:
 
 
 
@@ -209,7 +209,7 @@ for (i in 1:B) {
 Despite the intervals being larger ( we are dividing by $$\sqrt{5}$$
 instead of $$\sqrt{30}$$ ), we see many more intervals not covering
 $$\mu_X$$. This is because the CLT is incorrectly telling us that the
-distribution of the `mean(chow)` is approximately normal when in fact
+distribution of the `mean(chow)` is approximately normal when, in fact,
 it has a fatter tail (the parts of the distribution going to
 $$\pm \infty$$). This mistake affects us in the calculation of `Q`, which
 assumes a normal distribution and uses `qnorm`. The t-distribution
@@ -259,9 +259,9 @@ qnorm(1- 0.05/2)
 ## [1] 1.959964
 ```
 
-...which makes the intervals larger and hence cover $$\mu_X$$ more frequently. In fact, about 95% of the time.
+...which makes the intervals larger and hence cover $$\mu_X$$ more frequently; in fact, about 95% of the time.
 
-### Connection Between Confidence Intervals and p-values
+#### Connection Between Confidence Intervals and p-values
 
 We recommend that in practice confidence intervals be reported instead of p-values. If for some reason you are required to provide p-values, or required that your results are significant at the 0.05 of 0.01 levels, confidence intervals do provide this information. 
 
@@ -298,7 +298,7 @@ Note that the confidence interval for the difference $$d$$ is provided by the `t
 ## [1] 0.95
 ```
 
-In this case the 95% confidence interval does include 0 and we observe that the p-value is larger than 0.05 as predicted. If we change this to a 90% confidence interval, then:
+In this case, the 95% confidence interval does include 0 and we observe that the p-value is larger than 0.05 as predicted. If we change this to a 90% confidence interval, then:
 
 
 ```r
