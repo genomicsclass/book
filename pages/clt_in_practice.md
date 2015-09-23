@@ -73,7 +73,7 @@ print(mu_hf - mu_control)
 
 Compute the population standard deviations as well. We do not use the
 R function `sd` because this would compute the estimates that divide by the
-sample size - 1, and we want the population estimates.
+sample size - 1 and we want the population estimates.
 
 We can see that with R code:
 
@@ -97,7 +97,7 @@ identical(var(x)*(N-1)/N, populationvar)
 ## [1] TRUE
 ```
 
-So to be mathematically correct we do not use `sd` or  `var`. Instead we use the `popvar` and `popsd` function in `rafalib`:
+So to be mathematically correct, we do not use `sd` or  `var`. Instead, we use the `popvar` and `popsd` function in `rafalib`:
 
 
 ```r
@@ -116,7 +116,7 @@ hf <- sample(hfPopulation, 12)
 control <- sample(controlPopulation, 12)
 ```
 
-As we described, the CLT tells us that, for large $$N$$, each of these is approximately normal with average population mean and standard error population variance divided by $$N$$. We mentioned that a rule of thumb is that $$N$$ should be 30 or more. But that is just a rule of thumb, as the preciseness of the approximation depends on the population distribution. Here we can actually check the approximation and we do that for various values of $$N$$.
+As we described, the CLT tells us that for large $$N$$, each of these is approximately normal with average population mean and standard error population variance divided by $$N$$. We mentioned that a rule of thumb is that $$N$$ should be 30 or more. However, that is just a rule of thumb since the preciseness of the approximation depends on the population distribution. Here we can actually check the approximation and we do that for various values of $$N$$.
 
 Now we use `sapply` and `replicate` instead of `for` loops, which
 makes for cleaner code (we do not have to pre-allocate a vector, R
@@ -131,7 +131,7 @@ res <-  sapply(Ns,function(n) {
 })
 ```
 
-Now we can use qq-plots to see how well CLT approximations works for these. If in fact the normal distribution is a good approximation, the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation. We also show, in the title, the average and SD of the observed distribution which demonstrates how the SD decreases with $$\sqrt{N}$$ as predicted. 
+Now we can use qq-plots to see how well CLT approximations works for these. If in fact the normal distribution is a good approximation, the points should fall on a straight line when compared to normal quantiles. The more it deviates, the worse the approximation. In the title, we also show the average and SD of the observed distribution, which demonstrates how the SD decreases with $$\sqrt{N}$$ as predicted. 
 
 
 ```r
@@ -150,7 +150,7 @@ for (i in seq(along=Ns)) {
 Here we see a pretty good fit even for 3. Why is this? Because the
 population itself is relatively close to normally distributed, the
 averages are close to normal as well (the sum of normals is also a
-normal). In practice we actually calculate a ratio: we divide by the
+normal). In practice, we actually calculate a ratio: we divide by the
 estimated standard deviation. Here is where the sample size starts to
 matter more. 
 
@@ -176,14 +176,14 @@ for (i in seq(along=Ns)) {
 
 ![Quantile versus quantile plot of simulated ratios versus theoretical normal distribution for four different sample sizes.](figure/clt_in_practice-t_test_qqplot-1.png) 
 
-So we see that for $$N=3$$ the CLT does not provide a usable
-approximation. For $$N=12$$ there is a slight deviation at the higher
-values, although the approximation appears useful. For 25 and 50 the
+So we see that for $$N=3$$, the CLT does not provide a usable
+approximation. For $$N=12$$, there is a slight deviation at the higher
+values, although the approximation appears useful. For 25 and 50, the
 approximation is spot on.
 
 This simulation only proves that $$N=12$$ is large enough in this case,
 not in general. As mentioned above, we will not be able to perform
 this simulation in most situations. We only use the simulation to
 illustrate the concepts behind the CLT and its limitations. In future
-sections we will describe the approaches we actually use in practice. 
+sections, we will describe the approaches we actually use in practice. 
 
