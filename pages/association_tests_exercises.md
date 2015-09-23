@@ -1,3 +1,8 @@
+---
+layout: page
+title: Association Test Exercises
+---
+
 ## Exercises
 
 We showed how to calculate a Chi-square test from a table. Here we will show how to generate the table from data which is in the form of a dataframe, so that you can then perform an association test to see if two columns have an enrichment (or depletion) of shared occurrences.
