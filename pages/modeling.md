@@ -9,25 +9,27 @@ title: Statistical Models
 
 "All models are wrong, but some are useful" -George E. P. Box
 
-When we see a p-value in the literature, it means a probability distribution of some sort was used to quantify the null hypothesis. Many times deciding which probability distribution to use is relatively straightforward. For example, in the tea tasting challenge any p-values in the scientific literature are based on sample averages, or least squares estimates from a linear model, and make use of the CLT to approximate the null distribution of their statistic as normal.
+When we see a p-value in the literature, it means a probability distribution of some sort was used to quantify the null hypothesis. Many times deciding which probability distribution to use is relatively straightforward. For example, in the tea tasting challenge we can use simple probability calculations to determine the null distribution. Most  p-values in the scientific literature are based on sample averages or least squares estimates from a linear model and make use of the CLT to approximate the null distribution of their statistic as normal.
 
-The CLT is backed by theoretical results that guarantee that the approximation is accurate. However, we cannot always use this approximation, such as when our sample size is too small. In a previous module we described how the sample average can be approximated with t-distribution when the population data is approximately normal. However, there is no theoretical backing for this assumption. We are now *modeling*. In the case of height, we know from experience that this turns out to be a very good model. 
+The CLT is backed by theoretical results that guarantee that the approximation is accurate. However, we cannot always use this approximation, such as when our sample size is too small. Previously, we described how the sample average can be approximated as t-distributed when the population data is approximately normal. However, there is no theoretical backing for this assumption. We are now *modeling*. In the case of height, we know from experience that this turns out to be a very good model. 
 
-But this does not imply that every dataset we collect will follow a normal distribution. Some examples are: coin tosses, the number of people who win the lottery, and US incomes. The normal is not the only parametric distribution that is available from modeling. Here we describe some useful parametric distributions and their use in genomics. For many more please consult a Statistics textbook such as [this one](https://www.stat.berkeley.edu/~rice/Book3ed/index.html). 
+But this does not imply that every dataset we collect will follow a normal distribution. Some examples are: coin tosses, the number of people who win the lottery, and US incomes. The normal is not the only parametric distribution that is available from modeling. Here we describe some of the most widely used parametric distributions and some of their uses in the life sciences. We also introduce the basics of Bayesian statistics, then give a specific example of the use of hierarchical models. For much more on parametric distributions please consult a Statistics textbook such as [this one](https://www.stat.berkeley.edu/~rice/Book3ed/index.html). 
 
 ## The Binomial Distribution
 
-A distribution that one should be familiar is the binomial distribution. It describes the probability of the total number of observed heads $$S=k$$ heads when tossing $$N$$ heads as
+The first distribution we will describe is the binomial distribution. It reports the probability of observing $$S=k$$ successes in $$N$$ trails as
 
 $$
 \mbox{Pr}(S=k) = {N \choose k}p^k (1-p)^{N-k}
 $$
 
-with $$p$$ the probability of observing a head in one coin toss.  $$S/N$$ is the average of independent random variables and thus the CLT tells us that $$S$$ is approximately normal. This distribution is used by some of the variant callers and genotypers based on NGS to decide if the data is consistent 
+with $$p$$ the probability of success. The best known example is coin tosses with $$S$$ the number of heads when tossing $$N$$ coins. In this example $$p=0.5$$.  
+
+Note that $$S/N$$ is the average of independent random variables and thus the CLT tells us that $$S$$ is approximately normal when $$N$$ is large. This distribution has many applications in the life sciences. Recently, it has been used by the variant callers and genotypers applied to next generation sequencing. A special case of this distribution is approximated by the Poisson distribution which we describe next. 
 
 ## The Poisson Distribution
 
-The number of people that win the lottery follows a binomial distribution (we assume each person buys one ticket). The number of "tosses" $$N$$ is the number of people that buy tickets and very large. However, the number of people that win the lottery oscillates between 0 and 3. So why does CLT not hold? One can explain this mathematically, but the intuition is that with most of the average so close to and also constrained to be larger than 0, it is impossible for the distribution to be normal. Here is a quick simulation:
+Since it is the sum of binary outcomes, the number of people that win the lottery follows a binomial distribution (we assume each person buys one ticket). The number of trials $$N$$ is the number of people that buy tickets and is usually very large. However, the number of people that win the lottery oscillates between 0 and 3, which implies the normal approximation does not hold. So why does CLT not hold? One can explain this mathematically, but the intuition is that with the sum of successes so close to and also constrained to be larger than 0, it is impossible for the distribution to be normal. Here is a quick simulation:
 
 
 ```r
@@ -47,22 +49,18 @@ prop.table(tab)
 ```
 ## winners
 ##     0     1     2     3     4 
-## 0.590 0.314 0.080 0.013 0.003
+## 0.615 0.286 0.090 0.007 0.002
 ```
 
-For cases like this, where $$N$$ is very large, but $$p$$ is small enough to make $$N \times p$$ (call it $$\lambda$$) a number between 0 and 10, then $$S$$ can be shown to follow a Poisson distribution which has a simple parametric form:
+For cases like this, where $$N$$ is very large, but $$p$$ is small enough to make $$N \times p$$ (call it $$\lambda$$) a number between 0 and, for example, 10, then $$S$$ can be shown to follow a Poisson distribution, which has a simple parametric form:
 
 $$
 \mbox{Pr}(S=k)=\frac{\lambda^k \exp{-\lambda}}{k!}
 $$
 
-The Poisson distribution is commonly used in RNAseq analyses. Because we are sampling thousands molecules and for some genes represent are a very small proportion of the totality of molecules, the Poisson distribution seems appropriate. 
+The Poisson distribution is commonly used in RNAseq analyses. Because we are sampling thousands of molecules and most genes represent a very small proportion of the totality of molecules, the Poisson distribution seems appropriate. 
 
-Homework
-1- Do you expect a Poisson distribution with $$\lambda=100$$ to be approximately normal? Why or why not? 
-
-
-So how does this help us? One way is that it informs us of the statistical properties of important summaries. For example, say we only have one sample from each of a case and control RNAseq experiment and we want to report the genes with larges fold-changes. Under the null, there are no differences; the statistical variability of this quantity depends on the total abundance of the gene. We can show this mathematically, but here is a quick simulation to demonstrate the point:
+So how does this help us? One way is that it provides insight about the statistical properties of summaries that are widely used in practice. For example, let's say we only have one sample from each of a case and control RNAseq experiment and we want to report the genes with larges fold-changes. One insight that the Poisson model provides is that under the null that there are no differences, the statistical variability of this quantity depends on the total abundance of the gene. We can show this mathematically, but here is a quick simulation to demonstrate the point:
 
 
 ```r
@@ -78,69 +76,44 @@ splot(log2(lambdas),log2(y/x),subset=ind)
 
 ![MA plot of simulated RNAseq data. Replicated measurements follow a Poisson distribution.](figure/modeling-rna_seq_simulation-1.png) 
 
-Note that for lower values of lambda there is much more variability and if we were to report anything with a fold change of 2 or more, the number of false positives would be quite high for low.
+For lower values of `lambda` there is much more variability and, if we were to report anything with a fold change of 2 or more, the number of false positives would be quite high for low abundance genes.
 
 
-## NGS Experiments and the Poisson Distribution
+#### NGS experiments and the Poisson distribution
+
+In this section we will use the data stored in this dataset:
 
 
 ```r
-library(parathyroidSE)
+library(parathyroidSE) ##available from Bioconductor
 ```
 
 ```
-## Error in library(parathyroidSE): there is no package called 'parathyroidSE'
+## Warning: package 'GenomicRanges' was built under R version 3.2.2
+```
+
+```
+## Warning: package 'S4Vectors' was built under R version 3.2.2
 ```
 
 ```r
 data(parathyroidGenesSE)
-```
-
-```
-## Warning in data(parathyroidGenesSE): data set 'parathyroidGenesSE' not
-## found
-```
-
-This library contains `SummarizedExperiment` data, which will be discussed in a later lab. The important thing to know is that the `SummarizedExperiment` has a matrix of data, similar to the `ExpressionSet`, where each row is a genomic feature, and each column is a sample. For this dataset, the value in single cell in the matrix is count of reads which aligned to a given gene for a given sample.
-
-
-```r
 se <- parathyroidGenesSE
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'parathyroidGenesSE' not found
-```
-
-A similar plot of technical replicates reveals that the behavior predicted by the model is present in real data:
+The data is contained in a `SummarizedExperiment` object, which we do not describe here. The important thing to know is that it includes a matrix of data, where each row is a genomic feature and each column is a sample. We can extract this data using the `assay` function. For this dataset, the value of a single cell in the data matrix is the count of reads which align to a given gene for a given sample. Thus, a similar plot to the one we simulated above with technical replicates reveals that the behavior predicted by the model is present in experimental data:
 
 
 ```r
 x <- assay(se)[,23]
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "assay"
-```
-
-```r
 y <- assay(se)[,24]
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "assay"
-```
-
-```r
 ind=which(y>0 & x>0)##make sure no 0s due to ratio and log
 splot((log2(x)+log2(y))/2,log(x/y),subset=ind)
 ```
 
 ![MA plot of replicated RNAseq data.](figure/modeling-RNAseq_MAplot-1.png) 
 
-When it comes to modeling, one limitation of the Poisson model is that it lacks flexibility when it comes to scale. The Poisson only has one parameter which determines its mean $$\lambda$$, which is also its variance (standard deviation squared).
-
-If we compute the standard deviations across four individuals, it is quite a bit higher than what is predicted by a Poisson model. Assuming most genes are differentially expressed across individuals, then if the Poisson model is appropriate there should be a linear relationship in this plot:
+If we compute the standard deviations across four individuals, it is quite a bit higher than what is predicted by a Poisson model. Assuming most genes are differentially expressed across individuals, then, if the Poisson model is appropriate, there should be a linear relationship in this plot:
 
 
 ```r
@@ -148,42 +121,20 @@ library(rafalib)
 library(matrixStats)
 
 vars=rowVars(assay(se)[,c(2,8,16,21)]) ##we now these four are 4
-```
-
-```
-## Error in rowVars(assay(se)[, c(2, 8, 16, 21)]): could not find function "assay"
-```
-
-```r
 means=rowMeans(assay(se)[,c(2,8,16,21)]) ##different individulsa
-```
 
-```
-## Error in is.data.frame(x): could not find function "assay"
-```
-
-```r
 splot(means,vars,log="xy",subset=which(means>0&vars>0)) ##plot a subset of data
-```
-
-```
-## Error in which(means > 0 & vars > 0): object 'means' not found
-```
-
-```r
 abline(0,1,col=2,lwd=2)
 ```
 
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+![Variance versus mean plot. Summaries were obtained from the RNAseq data.](figure/modeling-var_vs_mean-1.png) 
 
-The variability plotted here includes biological variability, which the motivation for the Poisson does not include. In a later module we learn about the negative binomial distribution which combines the sampling variability of a Poisson and biological variability. The negative binomial has two parameters and permits more flexibility for count data. The Poisson is a special case of the negative binomial distribution.
+The reason for this is that the variability plotted here includes biological variability, which the motivation for the Poisson does not include.  The negative binomial distribution, which combines the sampling variability of a Poisson and biological variability, is a more appropriate distribution to model this type of experiment. The negative binomial has two parameters and permits more flexibility for count data. For more on the use of the negative binomial to model RNAseq data you can read [this paper](http://www.ncbi.nlm.nih.gov/pubmed/20979621). The Poisson is a special case of the negative binomial distribution.
 
 
 ## Maximum Likelihood Estimation
 
-We use palindrome locations in the HMCV genome as example. We read in the locations of the palindrome and then count the number of palindromes in each 4,000 basepair segments.
+To illustrate the concept of maximum likelihood estimates (MLE), we use a relatively simple dataset containing palindrome locations in the HMCV genome. We read in the locations of the palindrome and then count the number of palindromes in each 4,000 basepair segments.
 
 
 ```r
@@ -201,19 +152,19 @@ hist(counts)
 
 ![Palindrome count histogram.](figure/modeling-palindrome_count_histogram-1.png) 
 
-The counts do appear to follow a Poisson distribution. But what is the rate $$\lambda$$ ? The most common approach to estimating this rate is _maximum likelihood estimation_. To find the maximum likelihood estimate (MLE) we note that these data are independent and the probability of observing the values we observed is:
+The counts do appear to follow a Poisson distribution. But what is the rate $$\lambda$$ ? The most common approach to estimating this rate is _maximum likelihood estimation_. To find the maximum likelihood estimate (MLE), we note that these data are independent and the probability of observing the values we observed is:
 
 $$
 \Pr(X_1=k_1,\dots,X_n=k_n;\lambda) = \prod_{i=1}^n \lambda^{k_i} / k_i! \exp ( -\lambda)
 $$
 
-The MLE is the value of $$\lambda$$ that maximizes the likeihlood:. 
+The MLE is the value of $$\lambda$$ that maximizes the likelihood:. 
 
 $$
 \mbox{L}(\lambda; X_1=k_1,\dots,X_n=k_1)=\exp\left\{\sum_{i=1}^n \log \Pr(X_i=k_i;\lambda)\right\}
 $$
 
-In practice it is more convenient to maximize the log-likelihood
+In practice, it is more convenient to maximize the log-likelihood which is the summation that is exponentiated in the expression above. Below we write code that computes the log-likelihood for any $$\lambda$$ and use the function `optimize` to find the value that maximizes this function (the MLE). We show a plot of the log-likelihood along with vertical line showing the MLE.
 
 
 ```r
@@ -233,13 +184,14 @@ abline(v=mle$maximum)
 If you work out the math and do a bit of calculus, you realize that this is a particularly simple example for which the MLE is the average.
 
 ```r
-print(c(mle$maximum,mean(counts)))
+print( c(mle$maximum, mean(counts) ) )
 ```
 
 ```
 ## [1] 5.157894 5.157895
 ```
-The fit is quite good in this case:
+
+Note that a plot of observed counts versus counts predicted by the Poisson shows that the fit is quite good in this case:
 
 ```r
 theoretical<-qpois((seq(0,99)+0.5)/100,mean(counts))
@@ -250,151 +202,67 @@ abline(0,1)
 
 ![Observed counts versus theoretical Poisson counts.](figure/modeling-obs_versus_theoretical_Poisson_count-1.png) 
 
+We therefore can model the palindrome count data with a Poisson with $$\lambda=5.16$$. 
 
 ## Distributions for Positive Continuous Values
 
-In a previous module we learned that different genes vary differently across biological replicates. In a latter module [advanced inference/differential expression] we will demonstrate that knowing this distribution can help improve downstream analysis. 
+Different genes vary differently across biological replicates. Later, in the hierarchical models chapter, we will describe one of the [most influential statistical methods](http://www.ncbi.nlm.nih.gov/pubmed/16646809) in the analysis of genomics data. This method provides great improvements over naive approaches to detecting differentially expressed genes. This is achieved by modeling the distribution of the gene variances. Here we describe the parametric model used in this method.
 
-So can we model the distribution of these standard errors? Are they normal? Note that we are modeling the population standard errors so CLT does not apply. Here are some exploratory plots of the sample standard errors:
+We want to  model the distribution of the gene-specific standard errors. Are they normal? Keep in mind that we are modeling the population standard errors so CLT does not apply, even though we have thousands of genes. 
+
+As an example, we use an experimental data that included both technical and biological replicates for gene expression measurements on mice. We can load the data and compute the gene specific sample standard error for both the technical replicates and the biological replicates
+
 
 
 ```r
-library(Biobase)
+library(Biobase) ##available from Bioconductor
 library(maPooling) ##available from course github repo
-```
 
-```
-## Error in library(maPooling): there is no package called 'maPooling'
-```
-
-```r
 data(maPooling)
-```
-
-```
-## Warning in data(maPooling): data set 'maPooling' not found
-```
-
-```r
 pd=pData(maPooling)
-```
 
-```
-## Error in pData(maPooling): error in evaluating the argument 'object' in selecting a method for function 'pData': Error: object 'maPooling' not found
-```
-
-```r
+##determin which samples are bio reps and which are tech reps
 strain=factor(as.numeric(grepl("b",rownames(pd))))
-```
-
-```
-## Error in rownames(pd): error in evaluating the argument 'x' in selecting a method for function 'rownames': Error: object 'pd' not found
-```
-
-```r
 pooled=which(rowSums(pd)==12 & strain==1)
-```
-
-```
-## Error in is.data.frame(x): object 'pd' not found
-```
-
-```r
 techreps=exprs(maPooling[,pooled])
-```
-
-```
-## Error in exprs(maPooling[, pooled]): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'maPooling' not found
-```
-
-```r
 individuals=which(rowSums(pd)==1 & strain==1)
-```
 
-```
-## Error in is.data.frame(x): object 'pd' not found
-```
-
-```r
 ##remove replicates
 individuals=individuals[-grep("tr",names(individuals))]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'individuals' not found
-```
-
-```r
 bioreps=exprs(maPooling)[,individuals]
-```
 
-```
-## Error in exprs(maPooling): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'maPooling' not found
-```
-
-```r
 ###now compute the gene specific standard deviations
 library(matrixStats)
 techsds=rowSds(techreps)
-```
-
-```
-## Error in rowVars(x, ...): object 'techreps' not found
-```
-
-```r
 biosds=rowSds(bioreps)
 ```
 
-```
-## Error in rowVars(x, ...): object 'bioreps' not found
-```
+We can now explore the sample standard deviation:
+
 
 ```r
 ###now plot
 library(rafalib)
 mypar()
 shist(biosds,unit=0.1,col=1,xlim=c(0,1.5))
-```
-
-```
-## Error in is.data.frame(z): object 'biosds' not found
-```
-
-```r
 shist(techsds,unit=0.1,col=2,add=TRUE)
+legend("topright",c("Biological","Technical"), col=c(1,2),lty=c(1,1))
 ```
 
-```
-## Error in is.data.frame(z): object 'techsds' not found
-```
+![Histograms of biological variance and technical variance.](figure/modeling-bio_sd_versus_tech_sd-1.png) 
 
-```r
-legend("topright",c("Biological","Technical"), col=c(1,2))
-```
+An important observation here is that the biological variability is substantially higher than the technical variability. This provides strong evidence that genes do in fact have gene-specific biological variability. 
 
-```
-## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
-```
-
-First notice that the normal distribution is not appropriate here since the right tail is rather large. Also, because SDs are strictly positive, there is a limitation to how symmetric this distribution can be.
+If we want to model this variability, we first notice that the normal distribution is not appropriate here since the right tail is rather large. Also, because SDs are strictly positive, there is a limitation to how symmetric this distribution can be.
 A qqplot shows this very clearly:
+
 
 ```r
 qqnorm(biosds)
-```
-
-```
-## Error in qqnorm(biosds): object 'biosds' not found
-```
-
-```r
 qqline(biosds)
 ```
 
-```
-## Error in quantile(y, probs, names = FALSE, type = qtype, na.rm = TRUE): object 'biosds' not found
-```
+![Normal qq-plot for sample standard deviations.](figure/modeling-sd_qqplot-1.png) 
 
 There are parametric distributions that posses these properties (strictly positive and _heavy_ right tails). Two examples are the _gamma_ and _F_ distributions. The density of the gamma distribution is defined by: 
 
@@ -404,7 +272,7 @@ $$
 
 It is defined by two parameters $$\alpha$$ and $$\beta$$ that can, indirectly, control location and scale. They also control the shape of the distribution. For more on this distribution please refer to [this book](https://www.stat.berkeley.edu/~rice/Book3ed/index.html). 
 
-Two special cases of the gamma distribution are the chi-squared distribution, which we used earlier to analyze a 2x2 table and the exponential distribution, which we will use later in this section. For chi-square we $$\alpha=\nu/2$$ and $$\beta=2$$ with $$\nu$$ the degrees of freedom. For exponential we have $$\alpha=1$$ and $$\beta=\lambda$$ the rate.
+Two special cases of the gamma distribution are the chi-squared and exponential distribution. We used the chi-squared earlier to analyze a 2x2 table data. For chi-square, we have $$\alpha=\nu/2$$ and $$\beta=2$$ with $$\nu$$ the degrees of freedom. For exponential, we have $$\alpha=1$$ and $$\beta=\lambda$$ the rate.
 
 The F-distribution comes up in analysis of variance (ANOVA). It is also always positive and has large right tails. Two parameters control its shape:
 
@@ -416,15 +284,15 @@ $$
 
 with $$B$$ the _beta function_ and $$d_1$$ and $$d_2$$ are called the degrees of freedom for reasons having to do with how it arises in ANOVA. A third parameter is sometimes used with the F-distribution, which is a scale parameter.
 
-#### Modeling the Variance
+#### Modeling the variance
 
-In a later module we will learn about empirical Bayes approaches to improve estimates of variance. In these cases it is mathematically convenient (see Bayesian book) to model the distribution of the variance $$\sigma^2$$. The hierarchical model (described here [Smyth 2004]) to the mean and variance implies (see paper for details) that the sample standard deviation of genes follows scaled F-statistics:
+In a later section we will learn about a hierarchical model approach to improve estimates of variance. In these cases it is mathematically convenient to model the distribution of the variance $$\sigma^2$$. The hierarchical model used [here](http://www.ncbi.nlm.nih.gov/pubmed/16646809) implies that the sample standard deviation of genes follows scaled F-statistics:
 
 $$
 s^2 \sim s_0^2 F_{d,d_0}
 $$
 
-with $$d$$ the degrees of freedom involved in computing $$s^2$$ . For example, in a case comparing 3 versus 3, the degrees of freedom would be 4. This leaves two free parameters to adjust to the data. Here $$d$$ will control the location and $$s_0$$ will control the scale. Here are some examples plotted on top of the histogram from the real data:
+with $$d$$ the degrees of freedom involved in computing $$s^2$$ . For example, in a case comparing 3 versus 3, the degrees of freedom would be 4. This leaves two free parameters to adjust to the data. Here $$d$$ will control the location and $$s_0$$ will control the scale. Below are some examples of $$F$$ distribution plotted on top of the histogram from the sample variances:
 
 
 ```r
@@ -442,84 +310,31 @@ for(d in c(1,5,10)){
 }
 ```
 
-```
-## Error in hist(biosds, main = paste("s_0 =", s0, "d =", d), xlab = "sd", : object 'biosds' not found
-```
+![Histograms of sample standard deviations and densities of estimated distributions.](figure/modeling-modeling_variance-1.png) 
 
-Now which $$s_0$$ and $$d$$ fit our data best? This is a rather advanced topic as the MLE does not perform well for this particular distribution (we refer to Smyth (2004)). The Bioconductor limma package provides a function to estimate these parameters:
+Now which $$s_0$$ and $$d$$ fit our data best? This is a rather advanced topic as the MLE does not perform well for this particular distribution (we refer to Smyth (2004)). The Bioconductor `limma` package provides a function to estimate these parameters:
 
 
 ```r
 library(limma)
 estimates=fitFDist(biosds^2,11)
-```
 
-```
-## Error in fitFDist(biosds^2, 11): object 'biosds' not found
-```
-
-```r
 theoretical<- sqrt(qf((seq(0,999)+0.5)/1000, 11, estimates$df2)*estimates$scale)
-```
-
-```
-## Error in qf((seq(0, 999) + 0.5)/1000, 11, estimates$df2): object 'estimates' not found
-```
-
-```r
 observed <- biosds
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'biosds' not found
-```
+The fitted models do appear to provide a reasonable approximation, as demonstrated by the qq-plot and histogram:
+
 
 ```r
 mypar(1,2)
 qqplot(theoretical,observed)
-```
-
-```
-## Error in sort(y): object 'observed' not found
-```
-
-```r
 abline(0,1)
-```
-
-```
-## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
-
-```r
 tmp=hist(biosds,main=paste("s_0 =", signif(estimates[[1]],2), "d =", signif(estimates[[2]],2)), xlab="sd", ylab="density", freq=FALSE, nc=100, xlim=c(0,1), ylim=c(0,9))
-```
-
-```
-## Error in hist(biosds, main = paste("s_0 =", signif(estimates[[1]], 2), : object 'biosds' not found
-```
-
-```r
 dd=df(sds^2/estimates$scale,11,estimates$df2)
-```
-
-```
-## Error in df(sds^2/estimates$scale, 11, estimates$df2): object 'estimates' not found
-```
-
-```r
 k=sum(tmp$density)/sum(dd) ##a normalizing constant to assure same area in plot
-```
-
-```
-## Error in tmp$density: $$ operator is invalid for atomic vectors
-```
-
-```r
 lines(sds, dd*k, type="l", col=2, lwd=2)
 ```
 
-```
-## Error in xy.coords(x, y): object 'dd' not found
-```
-Apart from one outlier, this is not a bad fit at all. This approximation will come in very handy when we learn about empirical Bayes.
+![qq-plot (left) and density (right) demonstrate that model fits data well.](figure/modeling-variance_model_fit-1.png) 
+
