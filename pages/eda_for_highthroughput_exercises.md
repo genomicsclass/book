@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: EDA for Highthroughput Exercises
+title: EDA for Highthroughput Exercises
 ---
 
 {pagebreak} 
