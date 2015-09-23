@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Introduction Exercises
+title: Introduction Exercises
 ---
 
 
