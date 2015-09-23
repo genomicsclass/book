@@ -10,7 +10,7 @@ title: Monte Carlo methods
 
 ## Monte Carlo Simulation
 
-Computers can be used to generate pseudo-random numbers. For practical purposes these pseudo-random numbers can be used to imitate random variables from the real world. This permits us to examine properties of random variables using a computer instead of theoretical or analytical derivations. One very useful aspect of this concept is that we can create *simulated* data to test out ideas or competing methods without actually having to perform laboratory experiments.
+Computers can be used to generate pseudo-random numbers. For practical purposes these pseudo-random numbers can be used to imitate random variables from the real world. This permits us to examine properties of random variables using a computer instead of theoretical or analytical derivations. One very useful aspect of this concept is that we can create *simulated* data to test out ideas or competing methods, without actually having to perform laboratory experiments.
 
 Simulations can also be used to check theoretical or analytical results. Also, many of the theoretical results we use in statistics are based on asymptotics: they hold when the sample size goes to infinity. In practice, we never have an infinite number of samples so we may want to know how well the theory works with our actual sample size. Sometimes we can answer this question analytically, but not always. Simulations are extremely useful in these cases.
 
@@ -52,7 +52,7 @@ hist(ttests)
 ![Histogram of 1000 Monte Carlo simulated t-statistics.](figure/monte_carlo-ttest_hist-1.png) 
 
 So is the distribution of this t-statistic well approximated by the
-normal distribution? In the next chapter we will formally introduce
+normal distribution? In the next chapter, we will formally introduce
 quantile-quantile plots, which provide a useful visual inspection of
 how well one distribution approximates another. As we will explain
 later, if points fall on the identity line, it means the approximation
@@ -66,7 +66,7 @@ abline(0,1)
 
 ![Quantile-quantile plot comparing 1000 Monte Carlo simulated t-statistics to theoretical normal distribution.](figure/monte_carlo-ttest_qqplot-1.png) 
 
-This looks like a very good approximation. So, for this particular population, a sample size of 10 was large enough to use the CLT approximation. How about 3? 
+This looks like a very good approximation. For this particular population, a sample size of 10 was large enough to use the CLT approximation. How about 3? 
 
 
 ```r
@@ -80,15 +80,15 @@ abline(0,1)
 Now we see that the large quantiles, referred to by statisticians as
 the _tails_, are larger than expected (below the line on the left side
 of the plot and above the line on the right side of the plot).  In the
-previous module we explained that when the sample size is not large
+previous module, we explained that when the sample size is not large
 enough and the *population values* follow a normal distribution, then
 the t-distribution is a better approximation. Our simulation results
 seem to confirm this:
 
 
 ```r
-qs <- (seq(0,999)+0.5)/1000
-qqplot(qt(qs,df=2*3-2),ttests,xlim=c(-6,6),ylim=c(-6,6))
+ps <- (seq(0,999)+0.5)/1000
+qqplot(qt(ps,df=2*3-2),ttests,xlim=c(-6,6),ylim=c(-6,6))
 abline(0,1)
 ```
 
@@ -104,7 +104,7 @@ qqline(controlPopulation)
 
 ![Quantile-quantile of original data compared to theoretical quantile distribution.](figure/monte_carlo-dat_qqplot-1.png) 
 
-### Parametric Simulations for the Observations
+## Parametric Simulations for the Observations
 
 The technique we used to motivate random variables and the null
 distribution was a type of Monte Carlo simulation. We had access to
@@ -127,7 +127,7 @@ For the case of weights, we could use our knowledge that mice typically weigh 24
 controls<- rnorm(5000, mean=24, sd=3.5) 
 ```
 
-After we generate the data, we can then repeat the exercise above. We no longer have to use the `sample` function since we can re-generate random normal numbers. So the `ttestgenerator` function can be written like this: 
+After we generate the data, we can then repeat the exercise above. We no longer have to use the `sample` function since we can re-generate random normal numbers. The `ttestgenerator` function therefore can be written as follows: 
 
 
 ```r
