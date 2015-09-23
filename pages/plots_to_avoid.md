@@ -10,9 +10,9 @@ layout: page
 
 ## Plots To Avoid 
 
-This section is based on a talk by [Karl W. Broman](http://kbroman.org/) titled "How to Display Data Badly" in which he described how the default plots offered by Microsoft Excel "obscure your data and annoy your readers" ([here](http://kbroman.org/pages/talks.html) is a link to a collection of Karl Broman's talks). His lecture was inspired by the 1984 paper by H. Wainer: How to display data badly. American Statistician 38(2): 137--147. Dr. Wainer was the first to elucidate the principles of the bad display of data. However, according to Karl, "The now widespread use of Microsoft Excel has resulted in remarkable advances in the field." Here we show examples of "bad plots" and how to improve them in R.
+This section is based on a talk by [Karl W. Broman](http://kbroman.org/) titled "How to Display Data Badly", in which he described how the default plots offered by Microsoft Excel "obscure your data and annoy your readers" ([here](http://kbroman.org/pages/talks.html) is a link to a collection of Karl Broman's talks). His lecture was inspired by the 1984 paper by H. Wainer: How to display data badly. American Statistician 38(2): 137--147. Dr. Wainer was the first to elucidate the principles of the bad display of data. However, according to Karl, "The now widespread use of Microsoft Excel has resulted in remarkable advances in the field." Here we show examples of "bad plots" and how to improve them in R.
 
-### General Principles
+#### General principles
 
 The aims of good data graphics is to display data accurately and clearly. According to Karl, some rules for displaying data *badly* are:
 
@@ -24,11 +24,11 @@ The aims of good data graphics is to display data accurately and clearly. Accord
 *  Ignore significant figures.
 
 
-### Pie Charts
+#### Pie charts
 
 
 
-Say we want to report the results from a poll asking about browser preference (taken in August 2013). The standard way of displaying these is with a pie chart:
+Let's say we want to report the results from a poll asking about browser preference (taken in August 2013). The standard way of displaying these is with a pie chart:
 
 
 ```r
@@ -69,7 +69,7 @@ barplot(browsers, add=TRUE)
 
 ![Barplot of browser usage.](figure/plots_to_avoid-barplot-1.png) 
 
-Note that we can now pretty easily determine the percentages by
+Notice that we can now pretty easily determine the percentages by
 following a horizontal line to the x-axis. Do avoid a 3D version since
 it obfuscates the plot, making it more difficult to find the
 percentages by eye.
@@ -80,9 +80,9 @@ Even worse than pie charts are donut plots.
 
 ![Donut plot](http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Donut-Chart.svg/360px-Donut-Chart.svg.png)
 
-The reason is that by removing the center, we remove one of the visual cues for determining the different areas: the angles. There is no reason to ever use a donut to display data.
+The reason is that by removing the center, we remove one of the visual cues for determining the different areas: the angles. There is no reason to ever use a donut plot to display data.
 
-###  Barplots As Data Summaries
+####  Barplots as data summaries
 
 While barplots are useful for showing percentages, they are
 incorrectly used to display data from two groups being
@@ -123,9 +123,9 @@ stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
 
 ![Treatment data and control data shown with a boxplot.](figure/plots_to_avoid-unnamed-chunk-5-1.png) 
 
-Notice how much more we see here: the center, spread, range and the points themselves. In the barplot we only see the mean and the SE, and the SE has more to do with sample size than with the spread of the data.
+Notice how much more we see here: the center, spread, range and the points themselves. In the barplot, we only see the mean and the SE, and the SE has more to do with sample size, than with the spread of the data.
 
-This problem is magnified when our data has outliers or very large tails. In the plot below there appears to be very large and consistent differences between the two groups:
+This problem is magnified when our data has outliers or very large tails. In the plot below, there appears to be very large and consistent differences between the two groups:
 
 ![Bar plots with outliers](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig3c.png)
 
@@ -159,9 +159,9 @@ stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
 
 ![Data and boxplots for original data (left) and in log scale (right).](figure/plots_to_avoid-importance_of_log-1.png) 
 
-### Show The Scatter Plot
+#### Show the scatter plot
 
-The purpose of many statistical analyses is to determine relationships between two variables. Sample correlations are typically reported and sometimes plots are displayed to show this. However, showing just the regression line is one way to display your data badly as it hides the scatter. Surprisingly, plots such as the following are commonly seen.
+The purpose of many statistical analyses is to determine relationships between two variables. Sample correlations are typically reported and sometimes plots are displayed to show this. However, showing just the regression line is one way to display your data badly since it hides the scatter. Surprisingly, plots such as the following are commonly seen.
 
 Again start by loading data:
 
@@ -191,12 +191,12 @@ abline(fit$coef,lwd=2)
 
 ![The plot on the left shows a regression line that was fitted to the data shown on the right. It is much more informative to show all the data.](figure/plots_to_avoid-show-data-1.png) 
 
-When there are very many points, the scatter can be shown by binning
+When there are large amounts of points, the scatter can be shown by binning
 in two dimensions and coloring the bins by the number of points in the
 bin. An example of this is the `hexbin` function in the
 [hexbin package](https://cran.r-project.org/package=hexbin).
 
-### High Correlation Does Not Imply Replication
+#### High correlation does not imply replication
 
 When new technologies or laboratory techniques are introduced, we are often shown scatter plots and correlations from replicated samples. High correlations are used to demonstrate that the new technique is reproducible. Correlation, however, can be very misleading. Below is a scatter plot showing data from replicated samples run on a high throughput technology. This technology outputs 12,626 simultaneous measurements.
 
@@ -205,30 +205,30 @@ In the plot on the left, we see the original data which shows very high correlat
 ![Gene expression data from two replicated samples. Left is in original scale and right is in log scale.](figure/plots_to_avoid-correlation-not-replication-1.png) 
 Note that do not show the code here as it is rather complex but we explain how to make MA plots in a latter chapter. 
 
-Although the correlation is reduced in the log-scale, it is very close to 1 in both cases. Does this mean these data are reproduced? To examine how well the second vector reproduces the first, we need to study the differences. So we should instead plot that. In this plot, we plot the difference (in the log scale) versus the average:
+Although the correlation is reduced in the log-scale, it is very close to 1 in both cases. Does this mean these data are reproduced? To examine how well the second vector reproduces the first, we need to study the differences. We therefore should plot that instead. In this plot, we plot the difference (in the log scale) versus the average:
 
 ![MA plot of the same data shown above shows that data is not replicated very well despite a high correlation.](figure/plots_to_avoid-MAplot-1.png) 
 
 These are referred to as Bland-Altman plots, or _MA plots_ in the
 genomics literature, and we will talk more about them later. "MA"
-stands for "minus" and "average", because in this plot, the y-axis is
+stands for "minus" and "average" because in this plot, the y-axis is
 the difference between two samples on the log scale (the log ratio is
 the difference of the logs), and the x-axis is
 the average of the samples on the log scale.
-In this plot we see that the typical difference in the log (base 2)
+In this plot, we see that the typical difference in the log (base 2)
 scale between two replicated measures is about 1. This means that when
-measurements should be the same we will, on average, observe 2 fold
+measurements should be the same, we will, on average, observe 2 fold
 difference. We can now compare this variability to the differences we
 want to detect and decide if this technology is precise enough for our
 purposes. 
 
-### Barplots For Paired Data
+#### Barplots for paired data
 
-A common task in data analysis is the comparison of two groups. When the dataset is small and data are paired, for example the outcomes before and after a treatment, two color barplots are unfortunately often used to display the results:
+A common task in data analysis is the comparison of two groups. When the dataset is small and data are paired, such as the outcomes before and after a treatment, two color barplots are unfortunately often used to display the results:
 
 ![Barplot for two variables](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig6r_e.png)
 
-There are better ways of showing these data to illustrate that there is an increase after treatment. One is to simply make a scatterplot, which shows that most points are above the identity line. Another alternative is to plot the differences against the before values.
+There are better ways of showing these data to illustrate that there is an increase after treatment. One is to simply make a scatter plot, which shows that most points are above the identity line. Another alternative is to plot the differences against the before values.
 
 
 ```r
@@ -268,7 +268,7 @@ boxplot(before,after,names=c("Before","After"),ylab="Response")
 
 ![Another alternative is a line plot. If we don't care about pairings, then the boxplot is appropriate.](figure/plots_to_avoid-lines-plot-box-plot-1.png) 
 
-###  Gratuitous 3D
+####  Gratuitous 3D
 
 The figure below shows three curves. Pseudo 3D is used, but it is not clear why. Maybe to separate the three curves? Notice how difficult it is to determine the values of the curves at any given point:
 
@@ -295,15 +295,15 @@ legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
 
 ![This plot demonstrates that using color is more than enough to distinguish the three lines.](figure/plots_to_avoid-colors-for-different-lines-1.png) 
 
-### Ignoring Important Factors
+#### Ignoring important factors
 
 
 
-In this example we generate data with a simulation. We are studying a dose-response relationship between two groups: treatment and control. We have three groups of measurements for both control and treatment. Comparing treatment and control using the common barplot:
+In this example, we generate data with a simulation. We are studying a dose-response relationship between two groups: treatment and control. We have three groups of measurements for both control and treatment. Comparing treatment and control using the common barplot:
 
 ![Ingoring important factors](https://raw.githubusercontent.com/kbroman/Talk_Graphs/master/Figs/fig9d.png)
 
-Instead we should show each curve. We can use color to distinguish treatment and control and dashed and solid lines to distinguish the original data from the mean of the three groups.
+Instead, we should show each curve. We can use color to distinguish treatment and control, and dashed and solid lines to distinguish the original data from the mean of the three groups.
 
 
 ```r
@@ -318,9 +318,9 @@ legend("bottomleft", lwd=2, col=c(1, 2), c("Control", "Treated"))
 ![Because dose is an important factor, we show it in this plot.](figure/plots_to_avoid-show-important-factors-1.png) 
 
 
-### Too Many Significant Digits
+#### Too many significant digits
 
-By default, statistical software like R return many significant digits. This does not mean we should report them. Cutting and pasting directly from R is a bad idea as you might end up showing a table like the one below comparing the heights of basketball players:
+By default, statistical software like R return many significant digits. This does not mean we should report them. Cutting and pasting directly from R is a bad idea since you might end up showing a table, such as the one below, comparing the heights of basketball players:
 
 
 ```r
@@ -343,7 +343,7 @@ heights
 ## team 8 73.77538 75.59278 82.99395 75.57702 87.68162
 ```
 
-Note that we are reporting precision up to 0.00001 inches. Do you know of a tape measure with that much 
+We are reporting precision up to 0.00001 inches. Do you know of a tape measure with that much 
 precision? This can be easily remedied:
 
 
@@ -363,9 +363,9 @@ round(heights,1)
 ## team 8 73.8 75.6 83.0 75.6 87.7
 ```
 
-### Displaying Data Well
+#### Displaying data well
 
-In general you should follow these principles:
+In general, you should follow these principles:
 
 * Be accurate and clear.
 * Let the data speak.
@@ -383,7 +383,7 @@ Graphics Press.
 * WS Cleveland (1994) The elements of graphing data. CRC Press.
 * A Gelman, C Pasarica, R Dodhia (2002) Let's practice what we preach:
 Turning tables into graphs. The American Statistician 56:121-130
-* NB Robbins (2004) Creating more effective graphs. Wiley
+* NB Robbins (2004) Creating more effective graphs. Wiley.
 * [Nature Methods columns](http://bang.clearscience.info/?p=546) 
 
 
@@ -415,9 +415,9 @@ For simplicity, if we assume that the variance of both lists is 1, then this red
 
 $$\frac{1}{n} \sum_{i=1}^n (x_i - y_i)^2 = 2 + (\mu_x-\mu_y)^2 - 2\rho$$
 
-with $$\rho$$ the correlation. So we see the direct relationship between distance and correlation. However, an important difference is that the distance contains the term $$(\mu_x-\mu_y)^2$$ and thus it can detect cases that are not reproducible due to large average changes. 
+with $$\rho$$ the correlation. So we see the direct relationship between distance and correlation. However, an important difference is that the distance contains the term $$(\mu_x-\mu_y)^2$$ and, therefore, it can detect cases that are not reproducible due to large average changes. 
 
-Yet another reason correlation is not an optimal metric for reproducibility is the lack of units. To see this we use a formula that relates the correlation of a variable with that variable plus what is interpreted here as deviation: $$x$$ and $$y=x+d$$. The larger the variance of $$d$$, the less $$x+d$$ reproduces $$x$$. Here the distance metric would depend only on the variance of $$d$$ and would summarize reproducibility. However, correlation depends on the variance of $$x$$ as well. If $$d$$ is independent of $$x$$ then
+Yet another reason correlation is not an optimal metric for reproducibility is the lack of units. To see this, we use a formula that relates the correlation of a variable with that variable, plus what is interpreted here as deviation: $$x$$ and $$y=x+d$$. The larger the variance of $$d$$, the less $$x+d$$ reproduces $$x$$. Here the distance metric would depend only on the variance of $$d$$ and would summarize reproducibility. However, correlation depends on the variance of $$x$$ as well. If $$d$$ is independent of $$x$$, then
 
 $$
 cor(x,y) = \frac{1}{\sqrt{1+\mbox{var}(d)/\mbox{var}(x)}}
