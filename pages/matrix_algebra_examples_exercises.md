@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Matrix Algebra Examples Exercises
+title: Matrix Algebra Examples Exercises
 ---
 
 {pagebreak} 
