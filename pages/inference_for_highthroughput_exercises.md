@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: Inference for high throughput exercises
+title: Inference for high throughput exercises
 ---
 
 ## Exercises
