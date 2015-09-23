@@ -1,3 +1,8 @@
+---
+layout: page
+title: Monte Carlo Exercises
+---
+
 ## Exercises
 
 We have used Monte Carlo simulation throughout this chapter to demonstrate statistical concepts; namely, sampling from the population. We mostly applied this to demonstrate the statistical properties related to inference on differences in averages. Here, we will consider examples of how Monte Carlo simulations are used in practice. 
