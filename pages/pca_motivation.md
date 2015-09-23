@@ -7,19 +7,21 @@ title: Dimension Reduction Motivation
 
 ## Dimension Reduction Motivation
 
-Visualizing data is one of the most, if not the most, important step in the analysis of high throughput data. The right visualization method may reveal problems with the experimental data that can render the results from a standard analysis, although typically appropriate, completely useless. 
+Visualizing data is one of the most, if not the most, important step in the analysis of high-throughput data. The right visualization method may reveal problems with the experimental data that can render the results from a standard analysis, although typically appropriate, completely useless. 
 
-We have shown methods for visualizing global properties of the columns of rows, but plots that reveal relationships between columns or between rows are more complicated due to the high dimensionality of data. For example, to compare each of the 189 samples to each other we would have to create, for example, 17,766 MA-plots. Creating one single scatterplot of the data is impossible since points are very high dimensional. 
+We have shown methods for visualizing global properties of the columns of rows, but plots that reveal relationships between columns or between rows are more complicated due to the high dimensionality of data. For example, to compare each of the 189 samples to each other, we would have to create, for example, 17,766 MA-plots. Creating one single scatterplot of the data is impossible since points are very high dimensional. 
 
 We will describe powerful techniques for exploratory data analysis based on _dimension reduction_. The general idea is to reduce the dataset to have fewer dimensions, yet approximately preserve important properties, such as the distance between samples. If we are able to reduce down to, say, two dimensions, we can then easily make plots. The technique behind it all, the singular value decomposition (SVD), is also useful in other contexts. Before introducing the rather complicated mathematics behind the SVD, we will motivate the ideas behind it with a simple example.
 
-### Example: Reducing Two Dimensions to One
+#### Example: Reducing two dimensions to one
 
 We consider an example with twin heights. Here we simulate 100 two dimensional points that represent the number of standard deviations each individual is from the mean height. Each pair of points is a pair of twins:
 
 ![Simulated twin pair heights.](figure/pca_motivation-simulate twin heights-1.png) 
 
-To help with the illustration, if this where high-throughput gene expression data, the twin pairs are the $$N$$ samples and the two heights would represent gene expression from 2 genes. Note that we can compute the distance between any two samples. For example, here is the distance between the two orange points above:
+To help with the illustration, think of this as high-throughput gene expression data with the twin pairs representing the $$N$$ samples and the two heights representing gene expression from two genes. 
+
+We are interested in the distance between any two samples. We can compute this using `dist`. For example, here is the distance between the two orange points in the figure above:
 
 
 ```r
@@ -31,9 +33,9 @@ as.matrix(d)[1,2]
 ## [1] 1.140897
 ```
 
-What if we are only able to make 1 dimensional plots: 2 dimensions is too complex. Can we, for example, reduce the data to a one dimensional matrix that preserves distances between points?
+What if making two dimensional plots was too complex and we were only able to make 1 dimensional plots. Can we, for example, reduce the data to a one dimensional matrix that preserves distances between points?
 
-If we look back at the plot, and visualize a line between any pair of points, the length of this line is the distance between the two points. Note that these lines tend to go along the direction of the diagonal. We have seen before that we can "rotate" the plot so that the diagonal is in the x-axis by making a MA-plot instead:
+If we look back at the plot, and visualize a line between any pair of points, the length of this line is the distance between the two points. These lines tend to go along the direction of the diagonal. We have seen before that we can "rotate" the plot so that the diagonal is in the x-axis by making a MA-plot instead:
 
 
 
@@ -56,7 +58,7 @@ points(z[1,1:2],z[2,1:2],col=2,pch=16)
 ![Twin height scatterplot (left) and MA-plot (right).](figure/pca_motivation-rotation-1.png) 
 
 
-Later we will start using linear algebra to represent transformation of the data such as this. Here we can see that to get `z` we multiplied `y` by the matrix:
+Later, we will start using linear algebra to represent transformation of the data such as this. Here we can see that to get `z` we multiplied `y` by the matrix:
 
 $$
 A = \,
@@ -68,7 +70,7 @@ A = \,
 z = A y
 $$
 
-Also note that we can transform back by simply multiplying by $$A^{-1}$$ as follows:
+Remember that we can transform back by simply multiplying by $$A^{-1}$$ as follows:
 
 $$
 A^{-1} = \,
@@ -80,9 +82,9 @@ A^{-1} = \,
 y = A^{-1} z
 $$
 
-### Rotations 
+#### Rotations 
 
-In the plot above the distance between the two orange points remains roughly the same, relative to the other points. This is true for all pairs of points. A simple re-scaling of the transformation we performed above will actually make the distances exactly the same. What we will do is multiply by a scalar so that the standard deviations of each point is preserved. If you think of the columns of `y` as independent random variables with standard deviation $$\sigma$$, then note that the standard deviations of $$M$$ and $$A$$ are:
+In the plot above, the distance between the two orange points remains roughly the same, relative to the distance between other points. This is true for all pairs of points. A simple re-scaling of the transformation we performed above will actually make the distances exactly the same. What we will do is multiply by a scalar so that the standard deviations of each point is preserved. If you think of the columns of `y` as independent random variables with standard deviation $$\sigma$$, then note that the standard deviations of $$M$$ and $$A$$ are:
 
 $$
 \mbox{sd}[ Z_1 ] = \mbox{sd}[ (Y_1 + Y_2) / 2 ] = \frac{1}{\sqrt{2}} \sigma \mbox{ and } \mbox{sd}[ Z_2] = \mbox{sd}[ Y_1 - Y_2  ] = {\sqrt{2}} \sigma 
@@ -98,7 +100,7 @@ A = \frac{1}{\sqrt{2}}
 \end{pmatrix}
 $$
 
-then the SD of the columns of $$Y$$ are the same as the variance of the columns $$Z$$. Note that $$A^{-1}A=I$$ making $$A$$. We call matrices with this properties _orthogonal_ and it guarantees the SD-preserving properties described above. The distances are now exactly preserved:
+then the SD of the columns of $$Y$$ are the same as the variance of the columns $$Z$$. Also, notice that $$A^{-1}A=I$$. We call matrices with this properties _orthogonal_ and it guarantees the SD-preserving properties described above. The distances are now exactly preserved:
 
 
 ```r
@@ -129,7 +131,7 @@ points(z[1,1:2],z[2,1:2],col=2,pch=16)
 
 ![Twin height scatterplot (left) and after rotation (right).](figure/pca_motivation-rotation2-1.png) 
 
-The reason we applied this transformation in the first place was because we noticed that to compute the distances between points, we followed a direction along the diagonal in the original plot which after the rotation falls on the horizontal, or the the first dimension of `z`. So this rotation actually achieves what we originally wanted: we can preserve the distances between points with just one dimension. Let's remove the second dimension of `z` and recompute distances:
+The reason we applied this transformation in the first place was because we noticed that to compute the distances between points, we followed a direction along the diagonal in the original plot, which after the rotation falls on the horizontal, or the the first dimension of `z`. So this rotation actually achieves what we originally wanted: we can preserve the distances between points with just one dimension. Let's remove the second dimension of `z` and recompute distances:
 
 
 
@@ -142,12 +144,12 @@ abline(0,1)
 
 ![Distance computed with just one dimension after rotation versus actual distance.](figure/pca_motivation-approx dist-1.png) 
 
-The distance computed with just the one dimensions provides a very good approximation to the actual distance and provides a very useful dimension reduction: from 2 dimensions to 1. This first dimension of the transformed data is actually the first _principal component_. This idea motivates the use of principal component analysis (PCA) and the singular value decomposition (SVD) to achieve dimension reduction more generally. 
+The distance computed with just the one dimensions provides a very good approximation to the actual distance and a very useful dimension reduction: from 2 dimensions to 1. This first dimension of the transformed data is actually the first _principal component_. This idea motivates the use of principal component analysis (PCA) and the singular value decomposition (SVD) to achieve dimension reduction more generally. 
 
-### Important Note on a Difference to Other Explanations
+#### Important note on a difference to other explanations
 
-If you search the web for descriptions of PCA, you will notice a difference in notation to how we describe it here. This mainly stems from the fact that it is more common to have rows represent units; hence,  in the example shown here $$Y$$ would be transposed to be an $$N \times 2$$ matrix. In statistics this is also the most common way to represent the data: individuals in the rows. However, for practical reasons, in genomics it is more common to represent units in the columns; for example, genes are rows and samples are columns. For this reason, in this book we explain PCA and all the math that goes with it in a slightly different way than it is usually done. As a result, many of the explanations you find for PCA start out with the sample covariance matrix usually denoted with
-$$\mathbf{X}^\top\mathbf{X}$$ and having cells representing covariance between two units. However, for this to be the case we need the rows of $$\mathbf{X}$$ to represents units. So in our notation above you would have to compute, after scaling, $$\mathbf{Y}\mathbf{Y}^\top$$ instead.
+If you search the web for descriptions of PCA, you will notice a difference in notation to how we describe it here. This mainly stems from the fact that it is more common to have rows represent units. Hence, in the example shown here, $$Y$$ would be transposed to be an $$N \times 2$$ matrix. In statistics this is also the most common way to represent the data: individuals in the rows. However, for practical reasons, in genomics it is more common to represent units in the columns. For example, genes are rows and samples are columns. For this reason, in this book we explain PCA and all the math that goes with it in a slightly different way than it is usually done. As a result, many of the explanations you find for PCA start out with the sample covariance matrix usually denoted with
+$$\mathbf{X}^\top\mathbf{X}$$ and having cells representing covariance between two units. Yet for this to be the case, we need the rows of $$\mathbf{X}$$ to represents units. So in our notation above, you would have to compute, after scaling, $$\mathbf{Y}\mathbf{Y}^\top$$ instead.
 
 Basically, if you want our explanations to match others you have to transpose the matrices we show here.
 
