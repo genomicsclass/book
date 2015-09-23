@@ -1,3 +1,7 @@
+---
+layout: page
+title: Permutation Test Exercises
+---
 
 ## Exercises
 
