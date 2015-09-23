@@ -1,6 +1,6 @@
 ---
 layout: page
-Title: SVD exercises
+title: SVD exercises
 ---
 
 {pagebreak} 
