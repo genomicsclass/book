@@ -36,7 +36,7 @@ For the first four courses we will be using this freely available
 [book](https://leanpub.com/dataanalysisforthelifesciences) which
 includes links to the online material.
 
-We are currenlty developing a course on Data Analysis with Python
+We are currently developing a course on Data Analysis with Python
 which should be available this academic year.
 
 Announcements will be made here and on twitter: [@rafalab](https://twitter.com/rafalab)
