@@ -20,7 +20,7 @@ expertise.
 4. [High-Dimensional Data Analysis](https://www.edx.org/course/data-analysis-life-sciences-4-harvardx-ph525-4x)
 5. [Introduction to Bioconductor: Annotation and Analysis of Genomes and Genomic Assays](https://www.edx.org/course/data-analysis-life-sciences-5-harvardx-ph525-5x)
 6. [High-performance Computing for Reproducible Genomics](https://www.edx.org/course/data-analysis-life-sciences-6-high-harvardx-ph525-6x)
-7. [Case Studies in Functional Genomics](https://www.edx.org/course/data-analysis-life-sciences-7-case-harvardx-ph525-7xa)
+7. [Case Studies in Functional Genomics](https://www.edx.org/course/data-analysis-life-sciences-7-case-harvardx-ph525-7x)
 
 Featuring the stellar instructors [course #]:
 
