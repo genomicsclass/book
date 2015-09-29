@@ -18,7 +18,7 @@ expertise.
 2. [Introduction to Linear Models and Matrix Algebra](https://www.edx.org/course/data-analysis-life-sciences-2-harvardx-ph525-2x)
 3. [Statistical Inference and Modeling for High-throughput Experiments](https://www.edx.org/course/data-analysis-life-sciences-3-harvardx-ph525-3x)
 4. [High-Dimensional Data Analysis](https://www.edx.org/course/data-analysis-life-sciences-4-harvardx-ph525-4x)
-5. [Bioconductor: Annotation and Analysis of Genomes and Genomic Assays](https://www.edx.org/course/data-analysis-life-sciences-5-harvardx-ph525-5x)
+5. [Introduction to Bioconductor: Annotation and Analysis of Genomes and Genomic Assays](https://www.edx.org/course/data-analysis-life-sciences-5-harvardx-ph525-5x)
 6. [High-performance Computing for Reproducible Genomics](https://www.edx.org/course/data-analysis-life-sciences-6-high-harvardx-ph525-6x)
 7. [Case Studies in Functional Genomics](https://www.edx.org/course/data-analysis-life-sciences-7-case-harvardx-ph525-7xa)
 
