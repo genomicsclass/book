@@ -13,7 +13,9 @@ title: Online resources and books
 
 - The [Data Science Toolbox](https://www.coursera.org/course/datascitoolbox) class on Coursera, taught by the instructors above.
 
-- The [try R](http://tryr.codeschool.com/) interactive class from Code School 
+- Code School's free [try R](http://tryr.codeschool.com/) class 
+
+- DataCamp's free [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) class
 
 ### Online Bioconductor/Genomics classes
 
