@@ -130,11 +130,16 @@ title: PH525x series - Biomedical Data Science
 - [Adjusting with factor analysis](pages/adjusting_with_factor_analysis.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/batch/adjusting_with_factor_analysis.Rmd)
 - [Adjusting with factor analysis exercises](pages/adjusting_with_factor_analysis_exercises.html)
 
+---
+
+## 525.5x: Introduction to Bioconductor: Annotation and analysis
+
+- [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
+- [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html)
 
 ---
 
-
-## Introduction to Bioconductor
+## Legacy material from 2015 Introduction to Bioconductor
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)
 - [Annotating phenotypes and molecular function](pages/annoPhen.html)
