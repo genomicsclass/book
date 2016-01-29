@@ -93,11 +93,13 @@ cls
 It is easy to make an informative plot of hybridization date
 by ethnicity of sample source using standard R:
 
+
 ```r
 boxplot(date~factor(ethnicity), data=sampleInfo, ylab="chip date")
 ```
 
 ![plot of chunk lket](figure/bioc1_mgt_gsd-lket-1.png)
+
 What if we want to look at expression of the gene BRCA2 by ethnicity?
 We have to do several things:  
 
@@ -462,6 +464,37 @@ using a single variable.
 
 ```r
 library(Rsamtools)
+```
+
+```
+## Loading required package: GenomeInfoDb
+```
+
+```
+## Loading required package: GenomicRanges
+```
+
+```
+## Warning: multiple methods tables found for 'as.vector'
+```
+
+```
+## Warning: multiple methods tables found for 'unlist'
+```
+
+```
+## Loading required package: Biostrings
+```
+
+```
+## Loading required package: XVector
+```
+
+```
+## Warning: multiple methods tables found for 'unlist'
+```
+
+```r
 bfl = BamFileList(file=bfp)
 bfl
 ```
@@ -576,7 +609,7 @@ ae
 ```
 
 ```
-## <environment: 0x7f99e1878c40>
+## <environment: 0x7f8206ac0440>
 ```
 
 This is a very special type of object for R.  It can be thought
