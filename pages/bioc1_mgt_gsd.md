@@ -136,13 +136,11 @@ all.equal(colnames(geneExpression), sampleInfo$filename)
 ```
 
 ```r
-all.equal(rownames(geneExpression), sampleInfo$PROBEID)
+all.equal(rownames(geneExpression), geneAnnotation$PROBEID)
 ```
 
 ```
-## [1] "Modes: character, NULL"              
-## [2] "Lengths: 8793, 0"                    
-## [3] "target is character, current is NULL"
+## [1] TRUE
 ```
 
 ```r
@@ -588,7 +586,7 @@ ae
 ```
 
 ```
-## <environment: 0x7fdaf37c6d20>
+## <environment: 0x7ffd92ff2a00>
 ```
 
 This is a very special type of object for R.  It can be thought
