@@ -20,6 +20,16 @@ layout: page
 ## Warning: multiple methods tables found for 'unlist'
 ```
 
+```
+## Warning: multiple methods tables found for 'as.vector'
+```
+
+```
+## Warning: multiple methods tables found for 'unlist'
+
+## Warning: multiple methods tables found for 'unlist'
+```
+
 # Introduction
 
 It is very common for life scientists to use spreadsheets
@@ -464,37 +474,6 @@ using a single variable.
 
 ```r
 library(Rsamtools)
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Warning: multiple methods tables found for 'as.vector'
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```
-## Loading required package: Biostrings
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```r
 bfl = BamFileList(file=bfp)
 bfl
 ```
@@ -609,7 +588,7 @@ ae
 ```
 
 ```
-## <environment: 0x7f8206ac0440>
+## <environment: 0x7fdaf37c6d20>
 ```
 
 This is a very special type of object for R.  It can be thought
