@@ -134,8 +134,8 @@ title: PH525x series - Biomedical Data Science
 
 ## 525.5x: Introduction to Bioconductor: Annotation and analysis
 
-- [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
-- [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html)
+- [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
+- [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/biointro.Rmd)
 
 ---
 
