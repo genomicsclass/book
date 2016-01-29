@@ -5,6 +5,9 @@ layout: page
 ---
 
 
+
+
+
 ```
 ## Warning: multiple methods tables found for 'unlist'
 ```
@@ -94,7 +97,7 @@ by ethnicity of sample source using standard R:
 boxplot(date~factor(ethnicity), data=sampleInfo, ylab="chip date")
 ```
 
-![plot of chunk lket](figure/lket-1.png)
+![plot of chunk lket](figure/bioc1_mgt_gsd-lket-1.png)
 What if we want to look at expression of the gene BRCA2 by ethnicity?
 We have to do several things:  
 
@@ -135,7 +138,7 @@ ind = which(geneAnnotation$SYMBOL=="BRCA2")
 boxplot(geneExpression[ind,]~sampleInfo$ethnicity, ylab="BRCA2 by hgfocus")
 ```
 
-![plot of chunk dochks](figure/dochks-1.png)
+![plot of chunk dochks](figure/bioc1_mgt_gsd-dochks-1.png)
 
 It works, but it is complicated.  To reduce complexity, Bioconductor
 defines `ExpressionSet`.
@@ -459,37 +462,6 @@ using a single variable.
 
 ```r
 library(Rsamtools)
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Warning: multiple methods tables found for 'as.vector'
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```
-## Loading required package: Biostrings
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```r
 bfl = BamFileList(file=bfp)
 bfl
 ```
@@ -556,13 +528,6 @@ This counting method will implicitly use multicore computation.
 
 ```r
 library(GenomicAlignments)
-```
-
-```
-## Loading required package: SummarizedExperiment
-```
-
-```r
 library(BiocParallel)
 register(SerialParam())
 hnse = summarizeOverlaps(hnrnpcLoc,bfl)
@@ -611,7 +576,7 @@ ae
 ```
 
 ```
-## <environment: 0x7fa093352558>
+## <environment: 0x7f99e1878c40>
 ```
 
 This is a very special type of object for R.  It can be thought
