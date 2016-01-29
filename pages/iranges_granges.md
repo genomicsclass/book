@@ -75,7 +75,7 @@ width(ir)
 ```
 
 ```r
-# for detailed information on the class:
+# for detailed information on the IRanges class:
 # ?IRanges
 ```
 
