@@ -4,6 +4,25 @@ title: IRanges and GRanges
 ---
 
 
+```
+## Warning: multiple methods tables found for 'unlist'
+```
+
+```
+## Warning: multiple methods tables found for 'as.vector'
+```
+
+```
+## Warning: multiple methods tables found for 'unlist'
+```
+
+```
+## Warning: multiple methods tables found for 'as.vector'
+```
+
+```
+## Warning: multiple methods tables found for 'unlist'
+```
 
 The IRanges and GRanges objects are core components of the Bioconductor infrastructure for defining *integer ranges* in general (IRanges), and specifically for addressing locations in the genome and hence including chromosome and strand information (GRanges). Here we will briefly explore what these objects are and a subset of the operations which manipulate IRanges and GRanges.
 
@@ -16,36 +35,6 @@ First we load the IRanges package. This is included in the base installation of 
 library(IRanges)
 ```
 
-```
-## Loading required package: methods
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
-## Loading required package: S4Vectors
-## Loading required package: stats4
-```
-
 The `IRanges` function defines interval ranges. If you provide it with two numbers, these are the start and end of a inclusive range, e.g. $$[5,10] = \{ 5,6,7,8,9,10 \}$$, which has *width* 6. When referring to the size of a range, the term *width* is used, instead of *length*.
 
 
@@ -55,9 +44,10 @@ ir
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     5  10     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         5        10         6
 ```
 
 ```r
@@ -97,11 +87,12 @@ IRanges(start=c(3,5,17), end=c(10,8,20))
 ```
 
 ```
-## IRanges of length 3
-##     start end width
-## [1]     3  10     8
-## [2]     5   8     4
-## [3]    17  20     4
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3        10         8
+##   [2]         5         8         4
+##   [3]        17        20         4
 ```
 
 We will continue to work with the single range $$[5,10]$$ though. We can look up a number of *intra-range* methods for IRanges objects, which mean that the operations work on each range independently. For example, we can shift all the ranges two integers to the left. By left and right, we refer to the direction on the integer number line: $$\{ \dots, -2, -1, 0, 1, 2, \dots \}$$. Compare `ir` and `shift(ir, -2)`:
@@ -114,9 +105,10 @@ ir
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     5  10     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         5        10         6
 ```
 
 ```r
@@ -124,9 +116,10 @@ shift(ir, -2)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     3   8     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3         8         6
 ```
 
 Here we show the result of a number of different operations applied to `ir`, with a picture below.
@@ -137,9 +130,10 @@ ir
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     5  10     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         5        10         6
 ```
 
 ```r
@@ -147,9 +141,10 @@ narrow(ir, start=2)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     6  10     5
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         6        10         5
 ```
 
 ```r
@@ -157,9 +152,10 @@ narrow(ir, end=5)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     5   9     5
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         5         9         5
 ```
 
 ```r
@@ -167,9 +163,10 @@ flank(ir, width=3, start=TRUE, both=FALSE)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     2   4     3
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         2         4         3
 ```
 
 ```r
@@ -177,9 +174,10 @@ flank(ir, width=3, start=FALSE, both=FALSE)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]    11  13     3
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]        11        13         3
 ```
 
 ```r
@@ -187,9 +185,10 @@ flank(ir, width=3, start=TRUE, both=TRUE)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     2   7     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         2         7         6
 ```
 
 ```r
@@ -197,9 +196,10 @@ ir * 2
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     6   8     3
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         6         8         3
 ```
 
 ```r
@@ -207,9 +207,10 @@ ir * -2
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     2  13    12
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         2        13        12
 ```
 
 ```r
@@ -217,9 +218,10 @@ ir + 2
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     3  12    10
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3        12        10
 ```
 
 ```r
@@ -227,9 +229,10 @@ ir - 2
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     7   8     2
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         7         8         2
 ```
 
 ```r
@@ -237,14 +240,15 @@ resize(ir, 1)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     5   5     1
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         5         5         1
 ```
 
 Those same operations plotted in a single window. The red bar shows the shadow of the original range `ir`. The best way to get the hang of these operations is to try them out yourself in the console on ranges you define yourself.
 
-![plot of chunk unnamed-chunk-6](figure/iranges_granges-unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-6](figure/iranges_granges-unnamed-chunk-6-1.png)
 
 There are also a set of *inter-range* methods. These are operations which work on a set of ranges, and the output depends on all the ranges, thus distinguishes these methods from the *intra-range* methods, for which the other ranges in the set do not change the output. This is best explained with some examples. The `range` function gives the integer range from the start of the leftmost range to the end of the rightmost range:
 
@@ -256,11 +260,12 @@ There are also a set of *inter-range* methods. These are operations which work o
 ```
 
 ```
-## IRanges of length 3
-##     start end width
-## [1]     3  10     8
-## [2]     5   8     4
-## [3]    17  20     4
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3        10         8
+##   [2]         5         8         4
+##   [3]        17        20         4
 ```
 
 ```r
@@ -268,9 +273,10 @@ range(ir)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]     3  20    18
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3        20        18
 ```
 
 The `reduce` function collapses the ranges, so that integers are covered by only one range in the output.
@@ -281,10 +287,11 @@ reduce(ir)
 ```
 
 ```
-## IRanges of length 2
-##     start end width
-## [1]     3  10     8
-## [2]    17  20     4
+## IRanges object with 2 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3        10         8
+##   [2]        17        20         4
 ```
 
 The `gaps` function gives back the ranges of integers which are in `range(ir)` but not covered by any of the ranges in `ir`:
@@ -295,9 +302,10 @@ gaps(ir)
 ```
 
 ```
-## IRanges of length 1
-##     start end width
-## [1]    11  16     6
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]        11        16         6
 ```
 
 The `disjoin` function breaks up the ranges in `ir` into discrete ranges. This is best explained with examples, but here is the formal definition first:
@@ -313,12 +321,13 @@ disjoin(ir)
 ```
 
 ```
-## IRanges of length 4
-##     start end width
-## [1]     3   4     2
-## [2]     5   8     4
-## [3]     9  10     2
-## [4]    17  20     4
+## IRanges object with 4 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1]         3         4         2
+##   [2]         5         8         4
+##   [3]         9        10         2
+##   [4]        17        20         4
 ```
 
 Note that this is not a comprehensive list. Check the man pages we listed above, and the best way to get the hang of the functions is to try them out on some ranges you construct yourself. Note that most of the functions are defined both for IRanges and for GRanges, which will be described below.
@@ -656,14 +665,15 @@ fo
 ```
 
 ```
-## Hits of length 3
-## queryLength: 5
-## subjectLength: 2
-##   queryHits subjectHits 
-##    <integer>   <integer> 
-##  1         3           1 
-##  2         4           1 
-##  3         4           2
+## Hits object with 3 hits and 0 metadata columns:
+##       queryHits subjectHits
+##       <integer>   <integer>
+##   [1]         3           1
+##   [2]         4           1
+##   [3]         4           2
+##   -------
+##   queryLength: 5
+##   subjectLength: 2
 ```
 
 ```r
