@@ -8,27 +8,6 @@ layout: page
 
 
 
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```
-## Warning: multiple methods tables found for 'as.vector'
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-```
-
-```
-## Warning: multiple methods tables found for 'as.vector'
-```
-
-```
-## Warning: multiple methods tables found for 'unlist'
-
-## Warning: multiple methods tables found for 'unlist'
-```
 
 # Introduction
 
@@ -586,7 +565,7 @@ ae
 ```
 
 ```
-## <environment: 0x7ffd92ff2a00>
+## <environment: 0x7fbcbe02edf0>
 ```
 
 This is a very special type of object for R.  It can be thought
