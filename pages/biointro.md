@@ -9,8 +9,8 @@ title: Bioconductor for genome-scale data -- quick intro
 
 # Basic premise and overview
 
-You've seen how to manipulate and analyze data using R, and
-you've learned a considerable amount about statistical modeling.
+You know to manipulate and analyze data using R, and
+you understand a considerable amount about statistical modeling.
 The Bioconductor project demonstrates that R is an effective
 vehicle for performing many -- but not all -- tasks that
 arise in genome-scale computational biology.
@@ -46,7 +46,9 @@ fundamental to life processes of an organism are coded
 in the organism's genomic DNA.  Studies of differences
 between organisms, and certain changes within organisms (for
 example, development of tumors), often rely on computations involving 
-genomic DNA sequence.  Bioconductor provides tools for working
+genomic DNA sequence.  
+
+Bioconductor provides tools for working
 directly with genomic DNA sequence for many organisms.  
 One basic approach uses computations on a "reference sequence",
 another focuses on differences between the genomic sequence
