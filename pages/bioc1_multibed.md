@@ -8,17 +8,6 @@ layout: page
 
 
 
-```
-## Now getting the GODb Object directly
-```
-
-```
-## Now getting the OrgDb Object directly
-```
-
-```
-## Now getting the TxDb Object directly
-```
 
 # Introduction
 
