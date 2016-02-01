@@ -134,10 +134,13 @@ title: PH525x series - Biomedical Data Science
 
 ## 525.5x: Introduction to Bioconductor: Annotation and analysis
 
+### Focus on data structure and management
+
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
 - [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/biointro.Rmd)
 - [Management of genome-scale data: Object-oriented solutions](pages/bioc1_mgt_gsd.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_mgt_gsd.Rmd)
 - [Management and processing of large numbers of BED files](pages/bioc1_multibed.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_multibed.Rmd)
+- [SummarizedExperiment in depth](pages/bioc1_summex.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_summex.Rmd)
 
 ---
 
