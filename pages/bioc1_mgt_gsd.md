@@ -37,7 +37,7 @@ approach to genome-scale data.
 
 ## Illustrative exercises (worked through in video)
 
-1.0 Distinct components from an experiment.
+1.0 Distinct components from an experiment. <a name="coordinate"></a>
 
 
 
@@ -132,7 +132,7 @@ boxplot(geneExpression[ind,]~sampleInfo$ethnicity, ylab="BRCA2 by hgfocus")
 It works, but it is complicated.  To reduce complexity, Bioconductor
 defines `ExpressionSet`.
 
-1.1 _The ExpressionSet container_.  
+1.1 _The ExpressionSet container_.  <a name="expressionset"></a>
 
 There are high-level commands that simplify ExpressionSet construction.
 
@@ -201,7 +201,7 @@ e
 ## Annotation: hgfocus
 ```
 
-1.2 _Metadata management_.  It is useful to have information
+1.2 _Metadata management_.  It is useful to have information <a name="metadata"></a>
 about an experiment's intentions and methods ready-to-hand.
 Some of the arrays used for GSE5859 were produced for a 2004
 paper with Pubmed ID 15269782.  We can, if connected to the
@@ -249,7 +249,7 @@ So much for "why", to this point.  "How" takes us for an excursion
 in software design strategy: object-oriented programming in R with the
 class system known as S4.
 
-## Object-oriented programming and S4 classes
+## Object-oriented programming and S4 classes <a name="OOP"></a>
 
 Object-oriented programming (OOP) is a discipline of computer
 programming that helps to reduce program complexity and
@@ -333,7 +333,7 @@ so that programs defined for these structures
 do not have to "check" on what they are operating on.  The checks
 are built in to the class system.
 
-## DataFrame: an enhanced structure for tabular data
+## DataFrame: an enhanced structure for tabular data <a name="DataFrame"></a>
 
 We are familiar with the `data.frame` structure from base R.
 Bioconductor introduced the `DataFrame` class to provide some
@@ -393,7 +393,7 @@ getClass("DataFrame")
 ## Class "Annotated", by class "SimpleList", distance 4
 ```
 
-## Representations for mature archives from multisample NGS experiments
+## Representations for mature archives from multisample NGS experiments <a name="multibam"></a>
 
 Short read sequencing leads to data collections that are
 more voluminous than gene-oriented microarray outputs.  
@@ -536,7 +536,7 @@ replicates of a single control sample; likewise for 308 and 309.
 Consequently there are six different biological samples in use.
 Add a variable to `colData` distinguishing these six samples.
 
-## Some intricacies of the ExpressionSet design (advanced)
+## Some intricacies of the ExpressionSet design (advanced) <a name="environments"></a>
 
 Bioinformaticians work in an environment that is constantly
 changing.  Computer capacity and throughput has increased
@@ -565,7 +565,7 @@ ae
 ```
 
 ```
-## <environment: 0x7fbcbe02edf0>
+## <environment: 0x7ffe82f55b10>
 ```
 
 This is a very special type of object for R.  It can be thought
