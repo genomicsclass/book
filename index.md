@@ -145,7 +145,11 @@ title: PH525x series - Biomedical Data Science
 - [SummarizedExperiment in depth](pages/bioc1_summex.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_summex.Rmd)
 - [Management and processing of large numbers of BED files](pages/bioc1_multibed.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_multibed.Rmd)
 
-### Focus on genomic ranges and annotation (Week 3)
+### Focus on genomic ranges (Week 3a)
+
+- [General overview of IRanges and GRanges](pages/bioc1_igranges.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_igranges.Rmd)
+
+### Focus on genomic annotation (Week 3b)
 
 - [General overview of Bioconductor annotation](pages/bioc1_annoOverview.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoOverview.Rmd)
 - [Cheat sheet on Bioconductor annotation](pages/bioc1_annoCheat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoCheat.Rmd)
