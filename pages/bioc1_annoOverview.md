@@ -11,7 +11,19 @@ toc: yes
 
 
 ```
-## Error in library(BSgenome.Hsapiens.NCBI.GRCh38): there is no package called 'BSgenome.Hsapiens.NCBI.GRCh38'
+## Now getting the GODb Object directly
+```
+
+```
+## Now getting the OrgDb Object directly
+```
+
+```
+## Now getting the TxDb Object directly
+```
+
+```
+## Error in library(KEGGREST): there is no package called 'KEGGREST'
 ```
 
 # Basic annotation resources and their discovery
@@ -60,26 +72,12 @@ various model organisms now available.
 
 ```r
 library(Biostrings)
-```
-
-```
-## Loading required package: XVector
-```
-
-```r
 ag = available.genomes()
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "available.genomes"
-```
-
-```r
 length(ag)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'ag' not found
+## [1] 82
 ```
 
 ```r
@@ -87,7 +85,12 @@ head(ag)
 ```
 
 ```
-## Error in head(ag): error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'ag' not found
+## [1] "BSgenome.Alyrata.JGI.v1"                
+## [2] "BSgenome.Amellifera.BeeBase.assembly4"  
+## [3] "BSgenome.Amellifera.UCSC.apiMel2"       
+## [4] "BSgenome.Amellifera.UCSC.apiMel2.masked"
+## [5] "BSgenome.Athaliana.TAIR.04232008"       
+## [6] "BSgenome.Athaliana.TAIR.TAIR9"
 ```
 
 ## Reference build versions are important
@@ -130,25 +133,6 @@ it contains.
 
 ```r
 library(BSgenome.Hsapiens.UCSC.hg19)
-```
-
-```
-## Loading required package: BSgenome
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Loading required package: rtracklayer
-```
-
-```r
 Hsapiens
 ```
 
@@ -203,13 +187,6 @@ information on transcripts and gene models.
 
 ```r
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-```
-
-```
-## Loading required package: GenomicFeatures
-```
-
-```r
 txdb = TxDb.Hsapiens.UCSC.hg19.knownGene # abbreviate
 txdb
 ```
@@ -511,17 +488,6 @@ identifiers for other annotation resources.
 
 ```r
 library(org.Hs.eg.db)
-```
-
-```
-## Loading required package: DBI
-```
-
-```
-## 
-```
-
-```r
 keytypes(org.Hs.eg.db) # columns() gives same answer
 ```
 
@@ -575,13 +541,6 @@ with the `GO.db` package.
 
 ```r
 library(GO.db)
-```
-
-```
-## 
-```
-
-```r
 GO.db # metadata
 ```
 
@@ -821,25 +780,6 @@ can be directed at the OrganismDb object.
 
 ```r
 library(Homo.sapiens)
-```
-
-```
-## Loading required package: OrganismDbi
-```
-
-```
-## Now getting the GODb Object directly
-```
-
-```
-## Now getting the OrgDb Object directly
-```
-
-```
-## Now getting the TxDb Object directly
-```
-
-```r
 class(Homo.sapiens)
 ```
 
