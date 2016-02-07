@@ -148,6 +148,7 @@ title: PH525x series - Biomedical Data Science
 ### Focus on genomic ranges and annotation (Week 3)
 
 - [Cheat sheet on Bioconductor annotation](pages/bioc1_annoCheat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoCheat.Rmd)
+- [Translating addresses between genome builds: liftOver](pages/bioc1_liftOver.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_liftOver.Rmd)
 
 
 ---
