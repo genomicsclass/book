@@ -148,6 +148,7 @@ title: PH525x series - Biomedical Data Science
 ### Focus on genomic ranges (Week 3a)
 
 - [General overview of IRanges and GRanges](pages/bioc1_igranges.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_igranges.Rmd)
+- [Some additional GRanges operations](pages/bioc1_grangeOps.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_grangeOps.Rmd)
 
 ### Focus on genomic annotation (Week 3b)
 
