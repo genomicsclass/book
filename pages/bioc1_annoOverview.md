@@ -22,10 +22,6 @@ toc: yes
 ## Now getting the TxDb Object directly
 ```
 
-```
-## Error in library(KEGGREST): there is no package called 'KEGGREST'
-```
-
 # Basic annotation resources and their discovery
 
 In this document we will review Bioconductor's facilities for
@@ -697,26 +693,14 @@ The Entrez ID for BRCA2 is 675.  We'll perform a general query.
 
 ```r
 library(KEGGREST)
-```
-
-```
-## Error in library(KEGGREST): there is no package called 'KEGGREST'
-```
-
-```r
 brca2K = keggGet("hsa:675")
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "keggGet"
-```
-
-```r
 names(brca2K[[1]])
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'brca2K' not found
+##  [1] "ENTRY"      "NAME"       "DEFINITION" "ORTHOLOGY"  "ORGANISM"  
+##  [6] "PATHWAY"    "DISEASE"    "BRITE"      "POSITION"   "MOTIF"     
+## [11] "DBLINKS"    "STRUCTURE"  "AASEQ"      "NTSEQ"
 ```
 
 The list of genes making up a pathway model 
@@ -724,18 +708,13 @@ can be obtained with another keggGet:
 
 ```r
 brpat = keggGet("path:hsa05212")
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "keggGet"
-```
-
-```r
 names(brpat[[1]])
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'brpat' not found
+##  [1] "ENTRY"       "NAME"        "DESCRIPTION" "CLASS"       "PATHWAY_MAP"
+##  [6] "DISEASE"     "DRUG"        "ORGANISM"    "GENE"        "COMPOUND"   
+## [11] "KO_PATHWAY"  "REFERENCE"
 ```
 
 ```r
@@ -743,7 +722,15 @@ brpat[[1]]$GENE[seq(1,132,2)] # entrez gene ids
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'brpat' not found
+##  [1] "3845"  "5290"  "5293"  "5291"  "5294"  "5295"  "23533" "5296" 
+##  [9] "8503"  "9459"  "5879"  "5880"  "5881"  "4790"  "5970"  "207"  
+## [17] "208"   "10000" "1147"  "3551"  "8517"  "572"   "598"   "842"  
+## [25] "369"   "673"   "5894"  "5604"  "5594"  "5595"  "5599"  "5602" 
+## [33] "5601"  "5900"  "5898"  "5899"  "10928" "998"   "7039"  "1950" 
+## [41] "1956"  "2064"  "3716"  "6774"  "6772"  "7422"  "1029"  "1019" 
+## [49] "1021"  "595"   "5925"  "1869"  "1870"  "1871"  "7157"  "7040" 
+## [57] "7042"  "7043"  "7046"  "7048"  "4087"  "4088"  "4089"  "675"  
+## [65] "5888"  "5337"
 ```
 
 There is much to explore, and the KEGGREST package vignette provides
@@ -755,19 +742,10 @@ the (human) pancreatic cancer pathway in which BRCA2 is implicated.
 library(png)
 library(grid)
 brpng = keggGet("hsa05212", "image")
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "keggGet"
-```
-
-```r
 grid.raster(brpng)
 ```
 
-```
-## Error in rasterGrob(image, x = x, y = y, width = width, height = height, : object 'brpng' not found
-```
+![plot of chunk getp](figure/bioc1_annoOverview-getp-1.png)
 
 
 
