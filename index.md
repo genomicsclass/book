@@ -134,6 +134,8 @@ title: PH525x series - Biomedical Data Science
 
 ## 525.5x: Introduction to Bioconductor: Annotation and analysis
 
+- [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
+
 ### Setup and basics on biological background (Week 1)
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
