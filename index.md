@@ -140,6 +140,7 @@ title: PH525x series - Biomedical Data Science
 
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
 - [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/biointro.Rmd)
+- [Mapping/alignment software (optional)](pages/bioc1_align.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_align.Rmd)
 
 ### Focus on data structure and management (Week 2)
 
