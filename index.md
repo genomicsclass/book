@@ -159,9 +159,10 @@ title: PH525x series - Biomedical Data Science
 - [Cheat sheet on Bioconductor annotation](pages/bioc1_annoCheat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoCheat.Rmd)
 - [Translating addresses between genome builds: liftOver](pages/bioc1_liftOver.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_liftOver.Rmd)
 
-### Testing genome-scale hypotheses
+### Testing genome-scale hypotheses (Week 4)
 
 - [Biological vs. technical variability](pages/bioc1_btvari.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_btvari.Rmd)
+- [t tests and multiple comparisons](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
 
 ---
 
