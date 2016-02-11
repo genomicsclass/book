@@ -163,6 +163,7 @@ title: PH525x series - Biomedical Data Science
 
 - [Biological vs. technical variability](pages/bioc1_btvari.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_btvari.Rmd)
 - [t tests and multiple comparisons](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
+- [Moderated t tests vial limma](pages/bioc1_limma.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_limma.Rmd)
 
 ---
 
