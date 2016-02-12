@@ -165,6 +165,7 @@ title: PH525x series - Biomedical Data Science
 - [t tests and multiple comparisons](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
 - [Moderated t tests via limma](pages/bioc1_limma.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_limma.Rmd)
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
+- [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
 
 ---
 
