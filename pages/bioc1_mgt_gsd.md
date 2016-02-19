@@ -241,6 +241,7 @@ is designed and used.
 
 Motivations underlying the ExpressionSet design are many.  A
 few of the most important are
+
 * to reduce complexity of programming with complex assay, annotation, and sample-level information,
 * to support simple and idiomatic filtering of features and samples,
 * to control memory consumption as assay data are passed to analytical functions.
@@ -565,7 +566,7 @@ ae
 ```
 
 ```
-## <environment: 0x7ffe82f55b10>
+## <environment: 0x7ffa668df698>
 ```
 
 This is a very special type of object for R.  It can be thought
