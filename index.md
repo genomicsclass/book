@@ -173,7 +173,7 @@ title: PH525x series - Biomedical Data Science
 
 ### Visualization of genome scale data (Week 1)
 
-- [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_6x/bioc2_ggbio.Rmd)
+- [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_ggbio.Rmd)
 
 ### Scalable genomic analysis (Week 2)
 
