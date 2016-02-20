@@ -167,6 +167,20 @@ title: PH525x series - Biomedical Data Science
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
 - [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
 
+## 525.6x: High-performance computing for reproducible genomics with Bioconductor
+
+- [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
+
+### Visualization of genome scale data (Week 1)
+
+- [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_6x/bioc2_ggbio.Rmd)
+
+### Scalable genomic analysis (Week 2)
+
+### Multi-omic data integration (Week 3)
+
+### Fostering reproducible genome-scale analysis (Week 4)
+
 ---
 
 ## Legacy material from 2015 Introduction to Bioconductor
