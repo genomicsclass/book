@@ -174,7 +174,9 @@ title: PH525x series - Biomedical Data Science
 ### Visualization of genome scale data (Week 1)
 
 - [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_ggbio.Rmd)
+- [Plotting data in the context of genomic features with Gviz](pages/bioc2_gvfeat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_gvfeat.Rmd)
 - [Visualizing NGS data](pages/bioc2_vizNGS.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizNGS.Rmd)
+- [Graphical user interfaces for multivariate data with shiny](pages/bioc2_shiny.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_shiny.Rmd)
 
 ### Scalable genomic analysis (Week 2)
 
