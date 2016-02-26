@@ -13,17 +13,6 @@ First we load up relevant data and annotation packages along with
 Gviz.
 
 
-```
-## Now getting the GODb Object directly
-```
-
-```
-## Now getting the OrgDb Object directly
-```
-
-```
-## Now getting the TxDb Object directly
-```
 
 ```r
 library(ERBS)
@@ -66,7 +55,7 @@ symbols for these genes.
 ```r
 allg = genes(txdb)
 esrraAddr = genes(txdb, vals=list(gene_id=2101)) # redundant...
-esrraNeigh = subsetByOverlaps(allg, esrraAddr+500000) 
+esrraNeigh = subsetByOverlaps(allg, esrraAddr+500000)
 esrraNeigh$symbol = mapIds(Homo.sapiens, keys=esrraNeigh$gene_id, keytype="ENTREZID",
   column="SYMBOL")
 ```
@@ -90,24 +79,28 @@ B-cell and subset to events near our group of genes.
 
 ```r
 data(GM12878)
-sc = subsetByOverlaps(GM12878, esrraNeigh)
+sc = subsetByOverlaps(GM12878, range(esrraNeigh))
 sc
 ```
 
 ```
-## GRanges object with 4 ranges and 7 metadata columns:
+## GRanges object with 6 ranges and 7 metadata columns:
 ##       seqnames               ranges strand |      name     score       col
 ##          <Rle>            <IRanges>  <Rle> | <numeric> <integer> <logical>
 ##   [1]    chr11 [64071338, 64073242]      * |         3         0      <NA>
-##   [2]    chr11 [63741506, 63742754]      * |       210         0      <NA>
-##   [3]    chr11 [63992515, 63994725]      * |       408         0      <NA>
-##   [4]    chr11 [63639263, 63640021]      * |      2248         0      <NA>
+##   [2]    chr11 [63913452, 63914077]      * |        61         0      <NA>
+##   [3]    chr11 [63741506, 63742754]      * |       210         0      <NA>
+##   [4]    chr11 [63992515, 63994725]      * |       408         0      <NA>
+##   [5]    chr11 [64098744, 64100083]      * |      1778         0      <NA>
+##   [6]    chr11 [63639263, 63640021]      * |      2248         0      <NA>
 ##       signalValue    pValue    qValue      peak
 ##         <numeric> <numeric> <numeric> <integer>
 ##   [1]       69.87       310        32      1040
-##   [2]       18.24    59.652  2.022276       622
-##   [3]        9.04    41.001  1.910095       990
-##   [4]        8.65    17.481  2.031517       436
+##   [2]       52.48    123.72  1.785156       259
+##   [3]       18.24    59.652  2.022276       622
+##   [4]        9.04    41.001  1.910095       990
+##   [5]        9.03    19.758  2.075721       653
+##   [6]        8.65    17.481  2.031517       436
 ##   -------
 ##   seqinfo: 93 sequences (1 circular) from hg19 genome
 ```
