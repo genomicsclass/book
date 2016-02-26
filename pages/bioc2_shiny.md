@@ -170,6 +170,7 @@ called `fluidPage`; see also the shinydashboard package.
             ),
 ```
 #### Tabs for the primary displays
+
 ```
 #
 # main panel is a simple plot
@@ -186,6 +187,7 @@ called `fluidPage`; see also the shinydashboard package.
        )
   )  # end fluidPage
 ```
+
 ### Defining the server
    
 ```
