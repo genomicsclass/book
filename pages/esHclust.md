@@ -3,6 +3,9 @@ layout: page
 title: "A shiny app for clustering using genes in ExpressionSet"
 ---
 
+
+
+
 ## Introduction
 
 We looked at the code for `dfHclust` in some detail.  It makes
@@ -260,7 +263,7 @@ this simple F testing approach is:
 heatmap(ef1$coef[order(ef1$F,decreasing=TRUE)[1:50],-1], cexCol=.8)
 ```
 
-![plot of chunk lkheat](figure/lkheat-1.png)
+![plot of chunk lkheat](figure/esHclust-lkheat-1.png)
 
 This is a visualization of mean expression relative to a
 reference category (cerebellum).  The same genes visualized on the
@@ -272,7 +275,7 @@ sig50 = rownames(ef1$coef[order(ef1$F,decreasing=TRUE)[1:50],])
 heatmap(exprs(tgeES[sig50,]))
 ```
 
-![plot of chunk lkh2](figure/lkh2-1.png)
+![plot of chunk lkh2](figure/esHclust-lkh2-1.png)
 
 This is all very informal, using only default values for heatmap presentations.
 We'll continue in this vein.  In my inspection of the heatmap of means,
