@@ -257,26 +257,10 @@ this simple F testing approach is:
 
 
 ```r
-print(heatmap(ef1$coef[order(ef1$F,decreasing=TRUE)[1:50],-1], cexCol=.8))
+heatmap(ef1$coef[order(ef1$F,decreasing=TRUE)[1:50],-1], cexCol=.8)
 ```
 
 ![plot of chunk lkheat](figure/lkheat-1.png)
-
-```
-## $$rowInd
-##  [1] 12 42  9 24 15 40 35 11  1 41 16 33 29 44 45 38 32 30 46 36 31 39 50
-## [24] 25 48 34 28 43 47 23  3  4  8 21 37 14  6 19 10  2 27  5 49 18 22 26
-## [47]  7 17 13 20
-## 
-## $$colInd
-## [1] 5 3 6 4 2 1
-## 
-## $$Rowv
-## NULL
-## 
-## $$Colv
-## NULL
-```
 
 This is a visualization of mean expression relative to a
 reference category (cerebellum).  The same genes visualized on the
@@ -285,37 +269,10 @@ raw data:
 
 ```r
 sig50 = rownames(ef1$coef[order(ef1$F,decreasing=TRUE)[1:50],])
-print(heatmap(exprs(tgeES[sig50,])))
+heatmap(exprs(tgeES[sig50,]))
 ```
 
 ![plot of chunk lkh2](figure/lkh2-1.png)
-
-```
-## $$rowInd
-##  [1] 29 45 38 39 31 50 30 47 34 43 25 28 48 44 46 32 36 24 15  5 19 10 12
-## [24] 16 33  1  2  4  3 41 23 27 17 26 20 49 22 18  9 42  6  7  8 21 13 40
-## [47] 14 37 11 35
-## 
-## $$colInd
-##   [1] 143 144 136  46  27  31  18  30  25  22  26  17  21  19  23 147 124
-##  [18] 131 126 125 166 169 137 130 132 145 146 148  90 164 168 141 142 140
-##  [35] 138 139 172 175 173 174 165 171 167 170  28  34  29  32  36  24  20
-##  [52]  38  39  43  40  45  35  44  33  37  41  42  56 182  71  67  65  47
-##  [69]  53  55  64  61  59  49  63  62  52  68  57  48  66  58  50  54  51
-##  [86]  60  73  69  70  72 150 135 181 183  86  87 186 180 176 134 178  81
-## [103] 179 177 189 187 188  76  79  83  13   2  11  15   9  84   4   5  98
-## [120]  95 114 117  94 184 113  88   1   7 103 154 111 105 107 152 156 151
-## [137] 162 155 149 116 100 104 108 109 118  91 119  96 112 110 102  89 101
-## [154] 115  92  97  99  93 185 161 158 160 163 157 159 106 120  78 128 129
-## [171] 127  82  77 123 153 133 122 121  75  85  80  74  14  12   3   8  16
-## [188]   6  10
-## 
-## $$Rowv
-## NULL
-## 
-## $$Colv
-## NULL
-```
 
 This is all very informal, using only default values for heatmap presentations.
 We'll continue in this vein.  In my inspection of the heatmap of means,
