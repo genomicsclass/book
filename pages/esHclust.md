@@ -36,99 +36,7 @@ Let's write a function that transforms any ExpressionSet into a data.frame and t
 
 ```r
 library(Biobase)
-```
-
-```
-## Loading required package: BiocGenerics
-```
-
-```
-## Loading required package: methods
-```
-
-```
-## Loading required package: parallel
-```
-
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, cbind, colnames,
-##     do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, lengths, Map, mapply,
-##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-##     Position, rank, rbind, Reduce, rownames, sapply, setdiff,
-##     sort, table, tapply, union, unique, unsplit
-```
-
-```
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-```
-
-```r
 library(hgu133a.db)
-```
-
-```
-## Loading required package: AnnotationDbi
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## Loading required package: IRanges
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     expand.grid
-```
-
-```
-## Loading required package: org.Hs.eg.db
-```
-
-```
-## Loading required package: DBI
-```
-
-```
-## 
 ```
 
 ```
@@ -137,49 +45,7 @@ library(hgu133a.db)
 
 ```r
 library(ph525x)
-```
 
-```
-## Loading required package: png
-```
-
-```
-## Loading required package: grid
-```
-
-```
-## Loading required package: Homo.sapiens
-```
-
-```
-## Loading required package: OrganismDbi
-```
-
-```
-## Loading required package: GenomicFeatures
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Loading required package: GO.db
-```
-
-```
-## 
-```
-
-```
-## Loading required package: TxDb.Hsapiens.UCSC.hg19.knownGene
-```
-
-```r
 esHclust = function(es) {
   emat = t(exprs(es))
   rownames(emat) = sampleNames(es)
@@ -236,20 +102,6 @@ over all tissues.
 
 ```r
 library(limma)
-```
-
-```
-## 
-## Attaching package: 'limma'
-```
-
-```
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     plotMA
-```
-
-```r
 mm = model.matrix(~Tissue, data=pData(tgeES))
 f1 = lmFit(tgeES, mm)
 ef1 = eBayes(f1)
@@ -301,50 +153,7 @@ use random forests to get a measure of effectiveness of the
 
 ```r
 library(MLInterfaces)
-```
-
-```
-## Loading required package: annotate
-```
-
-```
-## Loading required package: XML
-```
-
-```
-## Loading required package: cluster
-```
-
-```r
 library(randomForest)
-```
-
-```
-## randomForest 4.6-12
-```
-
-```
-## Type rfNews() to see new features/changes/bug fixes.
-```
-
-```
-## 
-## Attaching package: 'randomForest'
-```
-
-```
-## The following object is masked from 'package:Biobase':
-## 
-##     combine
-```
-
-```
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     combine
-```
-
-```r
 set.seed(1234)
 rf1 = MLearn(Tissue~., tgeES[sig50,], randomForestI, xvalSpec("NOTEST"))
 RObject(rf1)
