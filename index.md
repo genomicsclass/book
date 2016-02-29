@@ -178,6 +178,7 @@ title: PH525x series - Biomedical Data Science
 - [Visualizing NGS data](pages/bioc2_vizNGS.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizNGS.Rmd)
 - [Graphical user interfaces for multivariate data with shiny](pages/bioc2_shiny.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_shiny.Rmd)
 - [Clustering gene expression data with shiny](pages/esHclust.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/esHclust.Rmd)
+- [Final remarks on visualization](pages/finalViz.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/finalViz.Rmd)
 
 ### Scalable genomic analysis (Week 2)
 
