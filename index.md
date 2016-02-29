@@ -182,6 +182,8 @@ title: PH525x series - Biomedical Data Science
 
 ### Scalable genomic analysis (Week 2)
 
+- [Overview of BiocParallel usage](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
+
 ### Multi-omic data integration (Week 3)
 
 ### Fostering reproducible genome-scale analysis (Week 4)
