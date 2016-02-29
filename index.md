@@ -183,6 +183,7 @@ title: PH525x series - Biomedical Data Science
 ### Scalable genomic analysis (Week 2)
 
 - [Overview of BiocParallel usage](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
+- [Introduction to Bioconductor's Amazon Machine Instance for cluster creation and use in EC2](pages/bioc2_HPCami.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_HPCami.Rmd)
 
 ### Multi-omic data integration (Week 3)
 
