@@ -1,3 +1,10 @@
+---
+layout: page
+title: "Notes on video of mapping RNA-seq reads"
+---
+
+
+
 # Short video of mapping RNA-Seq reads
 
 Note that the commands used in this lab require you have a lot of free disk space (the FASTQ files alone are 28 GB) and many cores available for running the alignment program. We do not expect students to replicate the commands in this video. We do not expect students install the alignment software on their machines. Much of the software for processing NGS data is designed for Linux systems. Note that the case studies (in particular the variant discovery and genotyping case study) will go into more depth on using Linux for processing NGS data.
