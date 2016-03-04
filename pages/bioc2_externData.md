@@ -10,6 +10,14 @@ title: "Working with data external to R"
 ## 'ggbio'
 ```
 
+```
+## Warning: replacing previous import by 'grid::arrow' when loading 'h5vc'
+```
+
+```
+## Warning: replacing previous import by 'grid::unit' when loading 'h5vc'
+```
+
 ## Packages that provide access to data external to R
 
 There are numerous R packages that include or facilitate
@@ -198,42 +206,6 @@ in the `h5vc` package.
 
 ```r
 library(h5vc)
-```
-
-```
-## Loading required package: grid
-```
-
-```
-## Loading required package: gridExtra
-```
-
-```
-## 
-## Attaching package: 'gridExtra'
-```
-
-```
-## The following object is masked from 'package:Biobase':
-## 
-##     combine
-```
-
-```
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     combine
-```
-
-```
-## Warning: replacing previous import by 'grid::arrow' when loading 'h5vc'
-```
-
-```
-## Warning: replacing previous import by 'grid::unit' when loading 'h5vc'
-```
-
-```r
 library(rhdf5)
 tallyFile <- system.file( "extdata", "example.tally.hfs5", 
     package = "h5vcData")
