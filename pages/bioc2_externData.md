@@ -5,18 +5,6 @@ title: "Working with data external to R"
 
 
 
-```
-## Warning: replacing previous import by 'BiocGenerics::Position' when loading
-## 'ggbio'
-```
-
-```
-## Warning: replacing previous import by 'grid::arrow' when loading 'h5vc'
-```
-
-```
-## Warning: replacing previous import by 'grid::unit' when loading 'h5vc'
-```
 
 ## Packages that provide access to data external to R
 
