@@ -113,7 +113,7 @@ ut1
 
 ```
 ##    user  system elapsed 
-##  24.698   0.830  27.130
+##  23.914   0.579  25.251
 ```
 
 ```r
@@ -125,7 +125,7 @@ ut2
 
 ```
 ##    user  system elapsed 
-##  11.109   1.000  13.947
+##  11.071   1.053  13.610
 ```
 
 ```r
@@ -137,7 +137,7 @@ print(sum(unlist(l2)))
 ```
 
 ```r
-all.equal(l1, l2)
+all.equal(unlist(l1), unlist(l2))
 ```
 
 ```
