@@ -185,7 +185,7 @@ title: PH525x series - Biomedical Data Science
 - [Overview of BiocParallel usage](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
 - [Introduction to Bioconductor's Amazon Machine Instance for cluster creation and use in EC2](pages/bioc2_HPCami.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_HPCami.Rmd)
 - [Interfacing to external data](pages/bioc2_externData.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_externData.Rmd)
-- [Benchmarking various out-of-memory solutions](pages/bioc2_multiOOM.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_multiOOM.Rmd)
+- [Benchmarking various out-of-memory solutions](pages/multiOOM.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/multiOOM.Rmd)
 - [Sharded GRanges for scalable integrative analysis](pages/bioc2_hybstor.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_hybstor.Rmd)
 
 ### Multi-omic data integration (Week 3)
