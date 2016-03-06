@@ -190,6 +190,9 @@ title: PH525x series - Biomedical Data Science
 
 ### Multi-omic data integration (Week 3)
 
+- [Basic examples of multi-omic integration](pages/bioc2_integExamps.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_integExamps.Rmd)
+- [Using RTCGAToolbox outputs to integrate clinical, mutation, expression and methylation assays](pages/tcga.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/tcga.Rmd)
+
 ### Fostering reproducible genome-scale analysis (Week 4)
 
 ---
