@@ -602,7 +602,7 @@ and start interrogating the database locally.
 
 ```r
 library(RSQLite)
-lcon = dbConnect(SQLite(), "GEOmetadb.sqlite")
+lcon = dbConnect(SQLite(), Sys.getenv("GEOMETADB_SQLITE_PATH"))
 dbListTables(lcon)
 ```
 
