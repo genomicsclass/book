@@ -16,6 +16,7 @@ In this document we'll review a few approaches to using genome-scale data of dif
 types to reason about certain focused questions.
  
 <a name="yeasttfs"></a>
+
 ### TF binding and expression co-regulation in yeast
 
 An example of integrative analysis can be found in a paper
@@ -166,6 +167,7 @@ significance, but have focused on how the data
 types are brought together.
 
 <a name="gwastf"></a>
+
 ### TF binding and genome-wide DNA-phenotype associations in humans
 
 Genetic epidemiology has taken advantage of high-throughput
@@ -390,6 +392,7 @@ observation consistent with the play of chance in our
 work with these data?  We will examine this in the exercises.
 
 <a name="geo"></a>
+
 ### Harvesting GEO for families of microarray archives
 
 The NCBI Gene Expression Omnibus is a basic resource for
