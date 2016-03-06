@@ -6,205 +6,8 @@ title: "Some examples of integrative analysis"
 
 
 ```
-## Loading required package: methods
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## Loading required package: BiocGenerics
-```
-
-```
-## Loading required package: parallel
-```
-
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, cbind, colnames,
-##     do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, lengths, Map, mapply,
-##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-##     Position, rank, rbind, Reduce, rownames, sapply, setdiff,
-##     sort, table, tapply, union, unique, unsplit
-```
-
-```
-## Loading required package: Biobase
-```
-
-```
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-```
-
-```
-## Loading required package: IRanges
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     expand.grid
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```
 ## Warning: replacing previous import by 'BiocGenerics::Position' when loading
 ## 'ggbio'
-```
-
-```
-## Need specific help about ggbio? try mailing 
-##  the maintainer or visit http://tengfei.github.com/ggbio/
-```
-
-```
-## 
-## Attaching package: 'ggbio'
-```
-
-```
-## The following objects are masked from 'package:ggplot2':
-## 
-##     geom_bar, geom_rect, geom_segment, ggsave, stat_bin,
-##     stat_identity, xlim
-```
-
-```
-## Loading required package: Homo.sapiens
-```
-
-```
-## Loading required package: OrganismDbi
-```
-
-```
-## Loading required package: GenomicFeatures
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Loading required package: GO.db
-```
-
-```
-## Loading required package: DBI
-```
-
-```
-## 
-```
-
-```
-## Loading required package: org.Hs.eg.db
-```
-
-```
-## 
-```
-
-```
-## Loading required package: TxDb.Hsapiens.UCSC.hg19.knownGene
-```
-
-```
-## gwascat loaded.  Use data(ebicat38) for hg38 coordinates;
-```
-
-```
-##  data(ebicat37) for hg19 coordinates.
-```
-
-```
-## Loading required package: tools
-```
-
-```
-## Loading required package: Biostrings
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## 
-## Attaching package: 'harbChIP'
-```
-
-```
-## The following object is masked from 'package:OrganismDbi':
-## 
-##     keys
-```
-
-```
-## The following object is masked from 'package:GenomicFeatures':
-## 
-##     organism
-```
-
-```
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     organism
-```
-
-```
-## The following object is masked from 'package:AnnotationDbi':
-## 
-##     keys
-```
-
-```
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     organism
 ```
 
 ## Integrative analysis examples
@@ -597,7 +400,9 @@ GEO datasets.
 The GEOmetadb database is a 240MB download that decompresses to 3.6 GB
 of SQLite.  Once you have acquired the GEOmetadb.sqlite file using
 the `getSQLiteFile` function, you can create a connection
-and start interrogating the database locally.
+and start interrogating the database locally.  Here we
+use an environment variable to establish the location of the database.
+Use your operating system environment variables to emulate this.
 
 
 ```r
@@ -607,7 +412,10 @@ dbListTables(lcon)
 ```
 
 ```
-## character(0)
+##  [1] "gds"               "gds_subset"        "geoConvert"       
+##  [4] "geodb_column_desc" "gpl"               "gse"              
+##  [7] "gse_gpl"           "gse_gsm"           "gsm"              
+## [10] "metaInfo"          "sMatrix"
 ```
 
 We will build a query that returns all the GEO GSE entries
@@ -625,18 +433,11 @@ req2 = " join gpl on gse_gpl.gpl=gpl.gpl"
 goal = " where gse.title like '%pancreatic%cancer%'"
 quer = paste0("select ", vbls, req1, req2, goal)
 lkpc = dbGetQuery(lcon, quer)
-```
-
-```
-## Error in sqliteSendQuery(con, statement, bind.data): error in statement: no such table: gse
-```
-
-```r
 dim(lkpc)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'lkpc' not found
+## [1] 149   4
 ```
 
 ```r
@@ -644,7 +445,17 @@ table(lkpc$bioc_package)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'lkpc' not found
+## 
+##                     hgu133a                    hgu133a2 
+##                           3                           3 
+##                     hgu133b                 hgu133plus2 
+##                           3                          28 
+##                   hgug4110b       HsAgilentDesign026652 
+##                           1                           1 
+## hugene10sttranscriptcluster IlluminaHumanMethylation27k 
+##                           1                           2 
+##             illuminaHumanv4                  mouse430a2 
+##                           9                           7
 ```
 
 We won't insist that you take the GEOmetadb.sqlite download/expansion,
