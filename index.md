@@ -195,6 +195,8 @@ title: PH525x series - Biomedical Data Science
 
 ### Fostering reproducible genome-scale analysis (Week 4)
 
+- [Package structure, creation, installation, management](pages/bioc2_rpacks.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rpacks.Rmd)
+
 ---
 
 ## Legacy material from 2015 Introduction to Bioconductor
