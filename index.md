@@ -195,6 +195,7 @@ title: PH525x series - Biomedical Data Science
 
 ### Fostering reproducible genome-scale analysis (Week 4)
 
+- [Overview of unit on reproducibility](pages/bioc2_repro1.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_repro1.Rmd)
 - [Package structure, creation, installation, management](pages/bioc2_rpacks.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rpacks.Rmd)
 
 ---
