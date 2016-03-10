@@ -192,6 +192,7 @@ title: PH525x series - Biomedical Data Science
 
 - [Basic examples of multi-omic integration](pages/bioc2_integExamps.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_integExamps.Rmd)
 - [Using RTCGAToolbox outputs to integrate clinical, mutation, expression and methylation assays](pages/tcga.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/tcga.Rmd)
+- [TCGA application: kataegis and rainfall plot](pages/bioc2_rainfall.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rainfall.Rmd)
 
 ### Fostering reproducible genome-scale analysis (Week 4)
 
