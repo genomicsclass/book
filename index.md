@@ -132,6 +132,8 @@ title: PH525x series - Biomedical Data Science
 
 ---
 
+<a name="5xtop"></a>
+
 ## 525.5x: Introduction to Bioconductor: Annotation and analysis
 
 - [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
@@ -166,6 +168,8 @@ title: PH525x series - Biomedical Data Science
 - [Moderated t tests via limma](pages/bioc1_limma.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_limma.Rmd)
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
 - [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
+
+<a name="6xtop"></a>
 
 ## 525.6x: High-performance computing for reproducible genomics with Bioconductor
 
