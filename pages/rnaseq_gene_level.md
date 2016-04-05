@@ -25,36 +25,81 @@ library(airway)
 ```
 
 ```
-## Loading required package: GenomicRanges
+## Loading required package: SummarizedExperiment
+```
+
+```
 ## Loading required package: methods
+```
+
+```
+## Loading required package: GenomicRanges
+```
+
+```
 ## Loading required package: BiocGenerics
+```
+
+```
 ## Loading required package: parallel
+```
+
+```
 ## 
 ## Attaching package: 'BiocGenerics'
-## 
+```
+
+```
 ## The following objects are masked from 'package:parallel':
 ## 
 ##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
 ##     clusterExport, clusterMap, parApply, parCapply, parLapply,
 ##     parLapplyLB, parRapply, parSapply, parSapplyLB
+```
+
+```
+## The following objects are masked from 'package:stats':
 ## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
+##     IQR, mad, xtabs
+```
+
+```
 ## The following objects are masked from 'package:base':
 ## 
 ##     anyDuplicated, append, as.data.frame, as.vector, cbind,
 ##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist, unsplit
-## 
+##     grep, grepl, intersect, is.unsorted, lapply, lengths, Map,
+##     mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+##     pmin.int, Position, rank, rbind, Reduce, rownames, sapply,
+##     setdiff, sort, table, tapply, union, unique, unlist, unsplit
+```
+
+```
 ## Loading required package: S4Vectors
+```
+
+```
 ## Loading required package: stats4
+```
+
+```
 ## Loading required package: IRanges
+```
+
+```
 ## Loading required package: GenomeInfoDb
+```
+
+```
+## Loading required package: Biobase
+```
+
+```
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
 ```
 
 ```r
@@ -74,6 +119,9 @@ library(Rsamtools)
 
 ```
 ## Loading required package: XVector
+```
+
+```
 ## Loading required package: Biostrings
 ```
 
@@ -84,12 +132,6 @@ library(GenomicFeatures)
 
 ```
 ## Loading required package: AnnotationDbi
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
 ```
 
 ```r
@@ -99,12 +141,27 @@ txdb <- makeTxDbFromGFF(gtf.file, format="gtf")
 ```
 
 ```
-## Warning in matchCircularity(seqlevels(gr), circ_seqs): None of the strings
-## in your circ_seqs argument match your seqnames.
+## Import genomic features from the file as a GRanges object ...
 ```
 
 ```
-## Prepare the 'metadata' data frame ... metadata: OK
+## OK
+```
+
+```
+## Prepare the 'metadata' data frame ...
+```
+
+```
+## OK
+```
+
+```
+## Make the TxDb object ...
+```
+
+```
+## OK
 ```
 
 ```r
@@ -316,7 +373,7 @@ plot(assay(se)[,1],
 abline(0,1)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/rnaseq_gene_level-unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/rnaseq_gene_level-unnamed-chunk-5-1.png)
 
 ## Visualizing sample-sample distances
 
@@ -330,9 +387,9 @@ airway
 ```
 
 ```
-## class: SummarizedExperiment 
+## class: RangedSummarizedExperiment 
 ## dim: 64102 8 
-## exptData(1): ''
+## metadata(1): ''
 ## assays(1): counts
 ## rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
 ## rowRanges metadata column names(0):
@@ -440,7 +497,7 @@ Note that, on the un-transformed scale, the high count genes have high variance.
 plot(assay(airway)[,1:2], cex=.1)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/rnaseq_gene_level-unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](figure/rnaseq_gene_level-unnamed-chunk-11-1.png)
 
 ### Creating a DESeqDataSet object
 
@@ -451,6 +508,17 @@ We specify an experimental *design* here, for later use, although for estimating
 
 ```r
 library(DESeq2)
+```
+
+```
+## Loading required package: Rcpp
+```
+
+```
+## Loading required package: RcppArmadillo
+```
+
+```r
 dds <- DESeqDataSet(airway, design= ~ cell + dex)
 ```
 We can also make a *DESeqDataSet* from a count matrix and column data.
@@ -495,7 +563,7 @@ plot(sizeFactors(dds), colSums(counts(dds)))
 abline(lm(colSums(counts(dds)) ~ sizeFactors(dds) + 0))
 ```
 
-![plot of chunk unnamed-chunk-14](figure/rnaseq_gene_level-unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-14](figure/rnaseq_gene_level-unnamed-chunk-14-1.png)
 
 Size factors are calculated by the median ratio of samples to a pseudo-sample (the geometric mean of all samples). In other words, for each sample, we take the exponent of the median of the log ratios in this histogram.
 
@@ -506,7 +574,7 @@ hist(log(counts(dds)[,1]) - loggeomeans,
      col="grey", main="", xlab="", breaks=40)
 ```
 
-![plot of chunk unnamed-chunk-15](figure/rnaseq_gene_level-unnamed-chunk-15-1.png) 
+![plot of chunk unnamed-chunk-15](figure/rnaseq_gene_level-unnamed-chunk-15-1.png)
 
 The size factor for the first sample:
 
@@ -545,7 +613,7 @@ boxplot(log2(counts(dds)[rs > 0,]+1)) # not normalized
 boxplot(log.norm.counts[rs > 0,]) # normalized
 ```
 
-![plot of chunk unnamed-chunk-18](figure/rnaseq_gene_level-unnamed-chunk-18-1.png) 
+![plot of chunk unnamed-chunk-18](figure/rnaseq_gene_level-unnamed-chunk-18-1.png)
 
 Make a scatterplot of log normalized counts against each other. Note the fanning out of the points in the lower left corner, for points less than $$2^5 = 32$$.
 
@@ -554,7 +622,7 @@ Make a scatterplot of log normalized counts against each other. Note the fanning
 plot(log.norm.counts[,1:2], cex=.1)
 ```
 
-![plot of chunk unnamed-chunk-19](figure/rnaseq_gene_level-unnamed-chunk-19-1.png) 
+![plot of chunk unnamed-chunk-19](figure/rnaseq_gene_level-unnamed-chunk-19-1.png)
 
 ### Stabilizing count variance
 
@@ -566,7 +634,7 @@ rld <- rlog(dds)
 plot(assay(rld)[,1], assay(rld)[,2], cex=.1)
 ```
 
-![plot of chunk unnamed-chunk-20](figure/rnaseq_gene_level-unnamed-chunk-20-1.png) 
+![plot of chunk unnamed-chunk-20](figure/rnaseq_gene_level-unnamed-chunk-20-1.png)
 
 We can examine the standard deviation of rows over the mean for the *log plus pseudocount* and the *rlog*. Note that the genes with high variance for the *log* come from the genes with lowest mean. If these genes were included in a distance calculation, the high variance at the low count range might overwhelm the signal at the higher count range.
 
@@ -575,10 +643,19 @@ We can examine the standard deviation of rows over the mean for the *log plus ps
 library(vsn)
 mypar(1,2)
 meanSdPlot(log.norm.counts, ranks=FALSE, ylim=c(0,3), main="log2")
+```
+
+```
+## Error: Unknown parameters: ylim, main
+```
+
+```r
 meanSdPlot(assay(rld), ranks=FALSE, ylim=c(0,3), main="rlog")
 ```
 
-![plot of chunk unnamed-chunk-21](figure/rnaseq_gene_level-unnamed-chunk-21-1.png) 
+```
+## Error: Unknown parameters: ylim, main
+```
 
 The principal components (PCA) plot is a useful diagnostic for examining relationships between samples:
 
@@ -593,7 +670,7 @@ plot(pc$x[,1], pc$x[,2],
      pch = as.integer(colData(dds)$cell))
 ```
 
-![plot of chunk unnamed-chunk-22](figure/rnaseq_gene_level-unnamed-chunk-22-1.png) 
+![plot of chunk unnamed-chunk-22](figure/rnaseq_gene_level-unnamed-chunk-22-1.png)
 
 Using the rlog:
 
@@ -602,13 +679,13 @@ Using the rlog:
 plotPCA(rld, intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-1.png) 
+![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-1.png)
 
 ```r
 plotPCA(rld, intgroup=c("dex","cell"))
 ```
 
-![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-2.png) 
+![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-2.png)
 
 We can make this plot even nicer using custom code from the *ggplot2* library:
 
@@ -645,7 +722,7 @@ ggplot(data, aes(PC1,PC2,col=dex,shape=cell)) + geom_point() +
   xlab(makeLab(percentVar[1],1)) + ylab(makeLab(percentVar[2],2))
 ```
 
-![plot of chunk unnamed-chunk-25](figure/rnaseq_gene_level-unnamed-chunk-25-1.png) 
+![plot of chunk unnamed-chunk-25](figure/rnaseq_gene_level-unnamed-chunk-25-1.png)
 
 In addition, we can plot a hierarchical clustering based on Euclidean distance matrix:
 
@@ -656,7 +733,7 @@ plot(hclust(dist(t(log.norm.counts))), labels=colData(dds)$dex)
 plot(hclust(dist(t(assay(rld)))), labels=colData(rld)$dex)
 ```
 
-![plot of chunk unnamed-chunk-26](figure/rnaseq_gene_level-unnamed-chunk-26-1.png) 
+![plot of chunk unnamed-chunk-26](figure/rnaseq_gene_level-unnamed-chunk-26-1.png)
 
 ## Differential gene expression
 
@@ -690,7 +767,7 @@ hist(rpois(n,1000)/10,main="",xlab="",breaks=brks,col="black")
 hist(rpois(n,10)*10,main="",xlab="",breaks=brks,col="black")
 ```
 
-![plot of chunk unnamed-chunk-27](figure/rnaseq_gene_level-unnamed-chunk-27-1.png) 
+![plot of chunk unnamed-chunk-27](figure/rnaseq_gene_level-unnamed-chunk-27-1.png)
 
 So, when we scale a raw count, we break the implicit link between the mean and the variance. This is not necessarily a problem, if we have 100s of samples over which to observe within-group variance, however RNA-seq samples can often have only 3 samples per group, in which case, we can get a benefit of information from using raw counts, and incorporating normalization factors on the right side of the equation above.
 
@@ -711,7 +788,7 @@ hist(rnbinom(n,mu=100,size=1/.1),
      main="NB, disp = 0.1",xlab="",breaks=brks,col="black")
 ```
 
-![plot of chunk unnamed-chunk-28](figure/rnaseq_gene_level-unnamed-chunk-28-1.png) 
+![plot of chunk unnamed-chunk-28](figure/rnaseq_gene_level-unnamed-chunk-28-1.png)
 
 The square root of the dispersion is the coefficient of variation -- SD/mean -- after subtracting the variance we expect due to Poisson sampling.
 
@@ -801,10 +878,25 @@ dds <- DESeq(dds)
 
 ```
 ## estimating size factors
+```
+
+```
 ## estimating dispersions
+```
+
+```
 ## gene-wise dispersion estimates
+```
+
+```
 ## mean-dispersion relationship
+```
+
+```
 ## final dispersion estimates
+```
+
+```
 ## fitting model and testing
 ```
 
@@ -833,11 +925,11 @@ head(res)
 ## ENSG00000000938   0.3180984    -0.11555969 0.14630532 -0.7898530
 ##                       pvalue        padj
 ##                    <numeric>   <numeric>
-## ENSG00000000003 0.0001502838 0.001217611
+## ENSG00000000003 0.0001502838 0.001251416
 ## ENSG00000000005           NA          NA
-## ENSG00000000419 0.0643763851 0.188306353
-## ENSG00000000457 0.7910940556 0.907203245
-## ENSG00000000460 0.7295576905 0.874422374
+## ENSG00000000419 0.0643763851 0.192284345
+## ENSG00000000457 0.7910940556 0.910776144
+## ENSG00000000460 0.7295576905 0.878646940
 ## ENSG00000000938 0.4296136373          NA
 ```
 
@@ -848,7 +940,7 @@ table(res$padj < 0.1)
 ```
 ## 
 ## FALSE  TRUE 
-## 12644  4897
+## 13145  4883
 ```
 
 A summary of the results can be generated:
@@ -862,11 +954,11 @@ summary(res)
 ## 
 ## out of 33469 with nonzero total read count
 ## adjusted p-value < 0.1
-## LFC > 0 (up)     : 2646, 7.9% 
-## LFC < 0 (down)   : 2251, 6.7% 
+## LFC > 0 (up)     : 2641, 7.9% 
+## LFC < 0 (down)   : 2242, 6.7% 
 ## outliers [1]     : 0, 0% 
-## low counts [2]   : 15928, 48% 
-## (mean count < 5.3)
+## low counts [2]   : 15441, 46% 
+## (mean count < 5)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ```
@@ -882,7 +974,7 @@ table(res2$padj < 0.05)
 ```
 ## 
 ## FALSE  TRUE 
-## 11864  4084
+## 12736  4057
 ```
 
 ### Visualizing results
@@ -894,7 +986,7 @@ The MA-plot provides a global view of the differential genes, with the log2 fold
 plotMA(res, ylim=c(-4,4))
 ```
 
-![plot of chunk unnamed-chunk-37](figure/rnaseq_gene_level-unnamed-chunk-37-1.png) 
+![plot of chunk unnamed-chunk-37](figure/rnaseq_gene_level-unnamed-chunk-37-1.png)
 
 We can also test against a different null hypothesis. For example, to test for genes which have fold change more than doubling or less than halving:
 
@@ -904,7 +996,7 @@ res.thr <- results(dds, lfcThreshold=1)
 plotMA(res.thr, ylim=c(-4,4))
 ```
 
-![plot of chunk unnamed-chunk-38](figure/rnaseq_gene_level-unnamed-chunk-38-1.png) 
+![plot of chunk unnamed-chunk-38](figure/rnaseq_gene_level-unnamed-chunk-38-1.png)
 
 A p-value histogram:
 
@@ -914,7 +1006,7 @@ hist(res$pvalue[res$baseMean > 1],
      col="grey", border="white", xlab="", ylab="", main="")
 ```
 
-![plot of chunk unnamed-chunk-39](figure/rnaseq_gene_level-unnamed-chunk-39-1.png) 
+![plot of chunk unnamed-chunk-39](figure/rnaseq_gene_level-unnamed-chunk-39-1.png)
 
 A sorted results table:
 
@@ -938,12 +1030,12 @@ head(resSort)
 ## ENSG00000211445 12285.6151       3.552999 0.1589971  22.34631
 ##                        pvalue          padj
 ##                     <numeric>     <numeric>
-## ENSG00000152583 2.637881e-138 4.627108e-134
-## ENSG00000165995 1.597973e-137 1.401503e-133
-## ENSG00000101347 1.195378e-128 6.441180e-125
-## ENSG00000120129 1.468829e-128 6.441180e-125
-## ENSG00000189221 2.627083e-122 9.216332e-119
-## ENSG00000211445 1.311440e-110 3.833996e-107
+## ENSG00000152583 2.637881e-138 4.755573e-134
+## ENSG00000165995 1.597973e-137 1.440413e-133
+## ENSG00000101347 1.195378e-128 6.620010e-125
+## ENSG00000120129 1.468829e-128 6.620010e-125
+## ENSG00000189221 2.627083e-122 9.472209e-119
+## ENSG00000211445 1.311440e-110 3.940441e-107
 ```
 
 Examine the counts for the top gene, sorting by p-value:
@@ -953,7 +1045,7 @@ Examine the counts for the top gene, sorting by p-value:
 plotCounts(dds, gene=which.min(res$padj), intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-41](figure/rnaseq_gene_level-unnamed-chunk-41-1.png) 
+![plot of chunk unnamed-chunk-41](figure/rnaseq_gene_level-unnamed-chunk-41-1.png)
 
 A more sophisticated plot of counts:
 
@@ -966,7 +1058,7 @@ ggplot(data, aes(x=dex, y=count, col=cell)) +
   scale_y_log10()
 ```
 
-![plot of chunk unnamed-chunk-42](figure/rnaseq_gene_level-unnamed-chunk-42-1.png) 
+![plot of chunk unnamed-chunk-42](figure/rnaseq_gene_level-unnamed-chunk-42-1.png)
 
 Connecting by lines shows the differences which are actually being tested by *results* given that our design includes `cell + dex`
 
@@ -976,7 +1068,7 @@ ggplot(data, aes(x=dex, y=count, col=cell, group=cell)) +
   geom_point() + geom_line() + scale_y_log10() 
 ```
 
-![plot of chunk unnamed-chunk-43](figure/rnaseq_gene_level-unnamed-chunk-43-1.png) 
+![plot of chunk unnamed-chunk-43](figure/rnaseq_gene_level-unnamed-chunk-43-1.png)
 
 A heatmap of the top genes:
 
@@ -990,7 +1082,7 @@ df <- as.data.frame(colData(dds)[,c("dex","cell")])
 pheatmap(mat, annotation_col=df)
 ```
 
-![plot of chunk unnamed-chunk-44](figure/rnaseq_gene_level-unnamed-chunk-44-1.png) 
+![plot of chunk unnamed-chunk-44](figure/rnaseq_gene_level-unnamed-chunk-44-1.png)
 
 ### Getting alternate annotations
 
@@ -999,23 +1091,41 @@ We can then check the annotation of these highly significant genes:
 
 ```r
 library(org.Hs.eg.db)
+```
+
+```
+## Loading required package: DBI
+```
+
+```
+## 
+```
+
+```r
 keytypes(org.Hs.eg.db)
 ```
 
 ```
-##  [1] "ENTREZID"     "PFAM"         "IPI"          "PROSITE"     
-##  [5] "ACCNUM"       "ALIAS"        "ENZYME"       "MAP"         
-##  [9] "PATH"         "PMID"         "REFSEQ"       "SYMBOL"      
-## [13] "UNIGENE"      "ENSEMBL"      "ENSEMBLPROT"  "ENSEMBLTRANS"
-## [17] "GENENAME"     "UNIPROT"      "GO"           "EVIDENCE"    
-## [21] "ONTOLOGY"     "GOALL"        "EVIDENCEALL"  "ONTOLOGYALL" 
-## [25] "OMIM"         "UCSCKG"
+##  [1] "ACCNUM"       "ALIAS"        "ENSEMBL"      "ENSEMBLPROT" 
+##  [5] "ENSEMBLTRANS" "ENTREZID"     "ENZYME"       "EVIDENCE"    
+##  [9] "EVIDENCEALL"  "GENENAME"     "GO"           "GOALL"       
+## [13] "IPI"          "MAP"          "OMIM"         "ONTOLOGY"    
+## [17] "ONTOLOGYALL"  "PATH"         "PFAM"         "PMID"        
+## [21] "PROSITE"      "REFSEQ"       "SYMBOL"       "UCSCKG"      
+## [25] "UNIGENE"      "UNIPROT"
 ```
 
 ```r
 anno <- select(org.Hs.eg.db, keys=topgenes,
                columns=c("SYMBOL","GENENAME"), 
                keytype="ENSEMBL")
+```
+
+```
+## 'select()' returned 1:1 mapping between keys and columns
+```
+
+```r
 anno[match(topgenes, anno$ENSEMBL),]
 ```
 
@@ -1035,12 +1145,12 @@ anno[match(topgenes, anno$ENSEMBL),]
 ## 12 ENSG00000162493    PDPN
 ## 13 ENSG00000162692   VCAM1
 ## 14 ENSG00000179094    PER1
-## 16 ENSG00000134243   SORT1
-## 17 ENSG00000163884   KLF15
-## 18 ENSG00000178695  KCTD12
-## 19 ENSG00000146250  PRSS35
-## 20 ENSG00000198624  CCDC69
-## 21 ENSG00000148848  ADAM12
+## 15 ENSG00000134243   SORT1
+## 16 ENSG00000163884   KLF15
+## 17 ENSG00000178695  KCTD12
+## 18 ENSG00000146250  PRSS35
+## 19 ENSG00000198624  CCDC69
+## 20 ENSG00000148848  ADAM12
 ##                                                     GENENAME
 ## 1                                       SPARC-like 1 (hevin)
 ## 2         calcium channel, voltage-dependent, beta 2 subunit
@@ -1056,12 +1166,12 @@ anno[match(topgenes, anno$ENSEMBL),]
 ## 12                                                podoplanin
 ## 13                         vascular cell adhesion molecule 1
 ## 14                                  period circadian clock 1
-## 16                                                sortilin 1
-## 17                                    Kruppel-like factor 15
-## 18    potassium channel tetramerization domain containing 12
-## 19                                      protease, serine, 35
-## 20                          coiled-coil domain containing 69
-## 21                           ADAM metallopeptidase domain 12
+## 15                                                sortilin 1
+## 16                                    Kruppel-like factor 15
+## 17    potassium channel tetramerization domain containing 12
+## 18                                      protease, serine, 35
+## 19                          coiled-coil domain containing 69
+## 20                           ADAM metallopeptidase domain 12
 ```
 
 ```r
@@ -1096,11 +1206,11 @@ results(dds, contrast=c("cell","N61311","N052611"))
 ## LRG_99                  0             NA        NA         NA        NA
 ##                      padj
 ##                 <numeric>
-## ENSG00000000003 0.4342936
+## ENSG00000000003 0.4851668
 ## ENSG00000000005        NA
-## ENSG00000000419 0.8907923
-## ENSG00000000457 0.9138413
-## ENSG00000000460 0.5752896
+## ENSG00000000419 0.9153673
+## ENSG00000000457 0.9334645
+## ENSG00000000460 0.6280187
 ## ...                   ...
 ## LRG_94                 NA
 ## LRG_96                 NA
@@ -1116,6 +1226,53 @@ If we suppose that we didn't know about the different cell-lines in the experime
 
 ```r
 library(sva)
+```
+
+```
+## Loading required package: mgcv
+```
+
+```
+## Loading required package: nlme
+```
+
+```
+## 
+## Attaching package: 'nlme'
+```
+
+```
+## The following object is masked from 'package:Biostrings':
+## 
+##     collapse
+```
+
+```
+## The following object is masked from 'package:IRanges':
+## 
+##     collapse
+```
+
+```
+## This is mgcv 1.8-12. For overview type 'help("mgcv-package")'.
+```
+
+```
+## Loading required package: genefilter
+```
+
+```
+## 
+## Attaching package: 'genefilter'
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     anyNA
+```
+
+```r
 dat <- counts(dds, normalized=TRUE)
 idx <- rowMeans(dat) > 1
 dat <- dat[idx,]
@@ -1136,7 +1293,7 @@ Do the surrogate variables capture the cell difference?
 plot(svseq$sv[,1], svseq$sv[,2], col=dds$cell, pch=16)
 ```
 
-![plot of chunk unnamed-chunk-48](figure/rnaseq_gene_level-unnamed-chunk-48-1.png) 
+![plot of chunk unnamed-chunk-48](figure/rnaseq_gene_level-unnamed-chunk-48-1.png)
 
 Using the surrogate variables in a *DESeq2* analysis:
 
@@ -1151,11 +1308,29 @@ dds.sva <- DESeq(dds.sva)
 
 ```
 ## using pre-existing size factors
+```
+
+```
 ## estimating dispersions
+```
+
+```
 ## found already estimated dispersions, replacing these
+```
+
+```
 ## gene-wise dispersion estimates
+```
+
+```
 ## mean-dispersion relationship
+```
+
+```
 ## final dispersion estimates
+```
+
+```
 ## fitting model and testing
 ```
 
@@ -1167,9 +1342,9 @@ sessionInfo()
 ```
 
 ```
-## R version 3.2.0 (2015-04-16)
+## R version 3.2.4 (2016-03-10)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: OS X 10.10.3 (Yosemite)
+## Running under: OS X 10.10.5 (Yosemite)
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1179,45 +1354,46 @@ sessionInfo()
 ## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] pheatmap_1.0.2            sva_3.14.0               
-##  [3] genefilter_1.50.0         mgcv_1.8-6               
-##  [5] nlme_3.1-120              org.Hs.eg.db_3.1.2       
-##  [7] RSQLite_1.0.0             DBI_0.3.1                
-##  [9] ggplot2_1.0.1             vsn_3.36.0               
-## [11] rafalib_0.0.9             RColorBrewer_1.1-2       
-## [13] Rsubread_1.18.0           GenomicAlignments_1.4.1  
-## [15] DEXSeq_1.14.0             DESeq2_1.8.1             
-## [17] RcppArmadillo_0.5.200.1.0 Rcpp_0.11.6              
-## [19] BiocParallel_1.2.3        pasilla_0.8.0            
-## [21] testthat_0.10.0           devtools_1.8.0           
-## [23] BiocInstaller_1.18.3      GenomicFeatures_1.20.1   
-## [25] AnnotationDbi_1.30.1      Biobase_2.28.0           
-## [27] Rsamtools_1.20.4          Biostrings_2.36.1        
-## [29] XVector_0.8.0             airway_0.102.0           
-## [31] GenomicRanges_1.20.5      GenomeInfoDb_1.4.0       
-## [33] IRanges_2.2.4             S4Vectors_0.6.0          
-## [35] BiocGenerics_0.14.0       knitr_1.10.5             
+##  [1] sva_3.18.0                 genefilter_1.52.1         
+##  [3] mgcv_1.8-12                nlme_3.1-126              
+##  [5] org.Hs.eg.db_3.2.3         RSQLite_1.0.0             
+##  [7] DBI_0.3.1                  pheatmap_1.0.8            
+##  [9] ggplot2_2.1.0              vsn_3.38.0                
+## [11] DESeq2_1.10.1              RcppArmadillo_0.6.600.4.0 
+## [13] Rcpp_0.12.4                rafalib_1.0.0             
+## [15] GenomicFeatures_1.22.13    AnnotationDbi_1.32.3      
+## [17] Rsamtools_1.22.0           Biostrings_2.38.4         
+## [19] XVector_0.10.0             airway_0.104.0            
+## [21] SummarizedExperiment_1.0.2 Biobase_2.30.0            
+## [23] GenomicRanges_1.22.4       GenomeInfoDb_1.6.3        
+## [25] IRanges_2.4.8              S4Vectors_0.8.11          
+## [27] BiocGenerics_0.16.1        knitr_1.12.3              
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] splines_3.2.0         Formula_1.2-1         statmod_1.4.21       
-##  [4] affy_1.46.1           latticeExtra_0.6-26   lattice_0.20-31      
-##  [7] limma_3.24.10         digest_0.6.8          colorspace_1.2-6     
-## [10] Matrix_1.2-1          preprocessCore_1.30.0 plyr_1.8.2           
-## [13] XML_3.98-1.2          biomaRt_2.24.0        zlibbioc_1.14.0      
-## [16] xtable_1.7-4          scales_0.2.4          affyio_1.36.0        
-## [19] git2r_0.10.1          annotate_1.46.0       nnet_7.3-9           
-## [22] proto_0.3-10          survival_2.38-1       magrittr_1.5         
-## [25] crayon_1.3.0          memoise_0.2.1         evaluate_0.7         
-## [28] MASS_7.3-40           xml2_0.1.1            hwriter_1.3.2        
-## [31] foreign_0.8-63        tools_3.2.0           formatR_1.2          
-## [34] stringr_1.0.0         munsell_0.4.2         locfit_1.5-9.1       
-## [37] cluster_2.0.1         lambda.r_1.1.7        rversions_1.0.1      
-## [40] futile.logger_1.4.1   grid_3.2.0            RCurl_1.95-4.6       
-## [43] labeling_0.3          bitops_1.0-6          codetools_0.2-11     
-## [46] gtable_0.1.2          curl_0.8              reshape2_1.4.1       
-## [49] gridExtra_0.9.1       rtracklayer_1.28.4    Hmisc_3.16-0         
-## [52] futile.options_1.0.0  KernSmooth_2.23-14    stringi_0.4-1        
-## [55] geneplotter_1.46.0    rpart_4.1-9           acepack_1.3-3.3
+##  [1] locfit_1.5-9.1          lattice_0.20-33        
+##  [3] digest_0.6.9            plyr_1.8.3             
+##  [5] futile.options_1.0.0    acepack_1.3-3.3        
+##  [7] evaluate_0.8.3          BiocInstaller_1.20.1   
+##  [9] zlibbioc_1.16.0         annotate_1.48.0        
+## [11] rpart_4.1-10            Matrix_1.2-4           
+## [13] preprocessCore_1.32.0   labeling_0.3           
+## [15] splines_3.2.4           BiocParallel_1.4.3     
+## [17] geneplotter_1.48.0      stringr_1.0.0          
+## [19] foreign_0.8-66          RCurl_1.95-4.8         
+## [21] biomaRt_2.26.1          munsell_0.4.3          
+## [23] rtracklayer_1.30.4      nnet_7.3-12            
+## [25] gridExtra_2.2.1         Hmisc_3.17-3           
+## [27] XML_3.98-1.4            GenomicAlignments_1.6.3
+## [29] bitops_1.0-6            grid_3.2.4             
+## [31] xtable_1.8-2            gtable_0.2.0           
+## [33] affy_1.48.0             magrittr_1.5           
+## [35] formatR_1.3             scales_0.4.0           
+## [37] stringi_1.0-1           affyio_1.40.0          
+## [39] limma_3.26.9            latticeExtra_0.6-28    
+## [41] futile.logger_1.4.1     Formula_1.2-1          
+## [43] lambda.r_1.1.7          RColorBrewer_1.1-2     
+## [45] tools_3.2.4             survival_2.38-3        
+## [47] colorspace_1.2-6        cluster_2.0.3
 ```
 
 ## Footnotes <a name="foot"></a>
