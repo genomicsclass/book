@@ -635,9 +635,11 @@ plot(log.norm.counts[,1:2], cex=.1)
 
 Now we will use a more sophisticated transformation, which is similar to the variance stablizing normalization method taught in Week 3 of Course 4: Introduction to Bioconductor. It uses the variance model for count data to shrink together the log-transformed counts for genes with very low counts. For genes with medium and high counts, the `rlog` is very close to `log2`. For further details, see the section in the DESeq2 [paper](#foot). 
 
+We use the argument `blind=FALSE` which means that the global dispersion trend should be estimated by considering the experimental design, but the design is not used for applying the transformation itself. See the DESeq2 vignette for more details.
+
 
 ```r
-rld <- rlog(dds)
+rld <- rlog(dds, blind=FALSE)
 plot(assay(rld)[,1:2], cex=.1)
 ```
 
@@ -647,7 +649,7 @@ Another transformation for stabilizing variance in the *DESeq2* package is `vari
 
 
 ```r
-vsd <- varianceStabilizingTransformation(dds)
+vsd <- varianceStabilizingTransformation(dds, blind=FALSE)
 plot(assay(vsd)[,1:2], cex=.1)
 ```
 
@@ -718,14 +720,14 @@ library(ggplot2)
 
 ```
 ##                   PC1        PC2           group   dex    cell       name
-## SRR1039508 -14.331359  -4.208796  untrt : N61311 untrt  N61311 SRR1039508
-## SRR1039509   6.754169  -2.245244    trt : N61311   trt  N61311 SRR1039509
-## SRR1039512  -8.130393  -3.952904 untrt : N052611 untrt N052611 SRR1039512
-## SRR1039513  14.505648  -2.941862   trt : N052611   trt N052611 SRR1039513
-## SRR1039516 -11.891410  13.735002 untrt : N080611 untrt N080611 SRR1039516
-## SRR1039517   8.373975  17.823844   trt : N080611   trt N080611 SRR1039517
-## SRR1039520  -9.965898 -10.014674 untrt : N061011 untrt N061011 SRR1039520
-## SRR1039521  14.685269  -8.195366   trt : N061011   trt N061011 SRR1039521
+## SRR1039508 -17.889006  -4.157942  untrt : N61311 untrt  N61311 SRR1039508
+## SRR1039509   8.436826  -1.650903    trt : N61311   trt  N61311 SRR1039509
+## SRR1039512 -10.278063  -5.066604 untrt : N052611 untrt N052611 SRR1039512
+## SRR1039513  17.642883  -3.910904   trt : N052611   trt N052611 SRR1039513
+## SRR1039516 -14.740835  15.990214 untrt : N080611 untrt N080611 SRR1039516
+## SRR1039517  10.956483  20.806410   trt : N080611   trt N080611 SRR1039517
+## SRR1039520 -12.120208 -11.962714 untrt : N061011 untrt N061011 SRR1039520
+## SRR1039521  17.991921 -10.047558   trt : N061011   trt N061011 SRR1039521
 ```
 
 ```r
@@ -733,7 +735,7 @@ library(ggplot2)
 ```
 
 ```
-## [1] 39 27
+## [1] 42 26
 ```
 
 
