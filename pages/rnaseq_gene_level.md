@@ -9,13 +9,13 @@ title: RNA-seq gene-level analysis
 
 RNA-seq is a valuable experiment for quantifying both the types and the amount of RNA molecules in a sample. We've covered the basic idea of the protocol in lectures, but some early references for RNA-seq include [Mortazavi (2008)](#foot) and [Marioni (2008)](#foot).
 
-In this lab, we will focus on comparing the expression levels of genes across different samples, by counting the number of reads which overlap the exons of genes defined by a known annotation. As described in the lecture, this analysis sets aside the task of estimating the different kinds of RNA molecules, and the different isoforms for genes with multiple isoforms. One advantage of looking at these matrices of raw counts is that we can use statistical distributions to model how the variance of counts will change when the counts are low vs high. We will explore the relationship of the variance of counts to the mean later in this lab.
+In this lab, we will focus on comparing the expression levels of genes across different samples, by counting the number of reads which overlap the exons of genes defined by a known annotation. As described in the lecture, this analysis sets aside the task of estimating the different kinds of RNA molecules, and the different isoforms for genes with multiple isoforms. One advantage of looking at these matrices of counts is that we can use statistical distributions to model how the variance of counts will change when the counts are low vs high. We will explore the relationship of the variance of counts to the mean later in this lab.
 
 ## Counting reads in genes
 
 In this lab we will examine 8 samples from the airway package, which are from the paper by [Himes et al](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4057123/): "RNA-seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells".
 
-This lab will focus on a summarized version of an RNA-seq experiment: a count matrix, which has genes along the rows and samples along the columns. The values in the matrix are the number of reads which could be uniquely aligned to the exons of a given gene for a given sample. We will demonstrate how to build a count matrix for a subset of reads from an experiment, and then use a pre-made count matrix, to avoid having students download the multi-gigabyte BAM files containing the aligned reads. 
+This lab will focus on a summarized version of an RNA-seq experiment: a count matrix, which has genes along the rows and samples along the columns. The values in the matrix are the number of reads which could be uniquely aligned to the exons of a given gene for a given sample. We will demonstrate how to build a count matrix for a subset of reads from an experiment, and then use a pre-made count matrix, to avoid having students download the multi-gigabyte BAM files containing the aligned reads. A new pipeline for building count matrices, which skips the alignment step, is to use fast pseudoaligners such as Sailfish, Salmon and kallisto, followed by the [tximport](http://bioconductor.org/packages/tximport) package. See the package vignette for more details. Here, we will continue with the read counting pipeline.
 
 First, make variables for the different BAM files and GTF file. Use the `sample.table` to contruct the BAM file vector, so that the count matrix will be in the same order as the `sample.table`.
 
@@ -428,7 +428,6 @@ colData(airway)
 
 
 ```r
-# rowData for Bioc 3.0
 rowRanges(airway)
 ```
 
@@ -503,7 +502,7 @@ plot(assay(airway)[,1:2], cex=.1)
 
 We will use the `DESeq2` package to normalize the sample for sequencing depth. The *DESeqDataSet* object is just an extension of the *SummarizedExperiment* object, with a few changes. The matrix in `assay` is now accessed with `counts` and the elements of this matrix are required to be non-negative integers (0,1,2,...).
 
-We specify an experimental *design* here, for later use, although for estimating size factors, we could just use `~ 1` as a default design. The variables are columns of the `colData`, and the `+` indicates that for differential expression analysis we want to compare levels of `dex` while controlling for the `cell` differences.
+We need to specify an experimental *design* here, for later use in differential analysis. The design starts with the tilde symbol `~`, which means, model the counts (log2 scale) using the following formula. Following the tilde, the variables are columns of the `colData`, and the `+` indicates that for differential expression analysis we want to compare levels of `dex` while controlling for the `cell` differences.
 
 
 ```r
@@ -521,6 +520,7 @@ library(DESeq2)
 ```r
 dds <- DESeqDataSet(airway, design= ~ cell + dex)
 ```
+
 We can also make a *DESeqDataSet* from a count matrix and column data.
 
 
@@ -603,17 +603,24 @@ Make a matrix of log normalized counts (plus a pseudocount):
 log.norm.counts <- log2(counts(dds, normalized=TRUE) + 1)
 ```
 
+Another way to make this matrix, and keep the sample and gene information is to use the function `normTransform`. The same matrix as above is stored in `assay(log.norm)`.
+
+
+```r
+log.norm <- normTransform(dds)
+```
+
 Examine the log counts and the log normalized counts (plus a pseudocount).
 
 
 ```r
 rs <- rowSums(counts(dds))
 mypar(1,2)
-boxplot(log2(counts(dds)[rs > 0,]+1)) # not normalized
+boxplot(log2(counts(dds)[rs > 0,] + 1)) # not normalized
 boxplot(log.norm.counts[rs > 0,]) # normalized
 ```
 
-![plot of chunk unnamed-chunk-18](figure/rnaseq_gene_level-unnamed-chunk-18-1.png)
+![plot of chunk unnamed-chunk-19](figure/rnaseq_gene_level-unnamed-chunk-19-1.png)
 
 Make a scatterplot of log normalized counts against each other. Note the fanning out of the points in the lower left corner, for points less than $$2^5 = 32$$.
 
@@ -622,11 +629,11 @@ Make a scatterplot of log normalized counts against each other. Note the fanning
 plot(log.norm.counts[,1:2], cex=.1)
 ```
 
-![plot of chunk unnamed-chunk-19](figure/rnaseq_gene_level-unnamed-chunk-19-1.png)
+![plot of chunk unnamed-chunk-20](figure/rnaseq_gene_level-unnamed-chunk-20-1.png)
 
 ### Stabilizing count variance
 
-Now we will use a more sophisticated transformation, which is similar to the variance stablizing normalization method taught in Week 3 of Course 4: Introduction to Bioconductor. It uses the variance model for count data to shrink together the log-transformed counts for genes with very low counts. For genes with medium and high counts, the `rlog` is very close to `log2`. For further details, see the section in the DESeq2 [paper](#foot). Another transformation for stabilizing variance in the *DESeq2* package is the appropriately named `varianceStabilizingTransformation`. These two tranformations are similar, although the *rlog* might perform better when the size factors vary widely.
+Now we will use a more sophisticated transformation, which is similar to the variance stablizing normalization method taught in Week 3 of Course 4: Introduction to Bioconductor. It uses the variance model for count data to shrink together the log-transformed counts for genes with very low counts. For genes with medium and high counts, the `rlog` is very close to `log2`. For further details, see the section in the DESeq2 [paper](#foot). 
 
 
 ```r
@@ -634,43 +641,54 @@ rld <- rlog(dds)
 plot(assay(rld)[,1], assay(rld)[,2], cex=.1)
 ```
 
-![plot of chunk unnamed-chunk-20](figure/rnaseq_gene_level-unnamed-chunk-20-1.png)
+![plot of chunk unnamed-chunk-21](figure/rnaseq_gene_level-unnamed-chunk-21-1.png)
+
+Another transformation for stabilizing variance in the *DESeq2* package is `varianceStabilizingTransformation`. These two tranformations are similar, the *rlog* might perform a bit better when the size factors vary widely, and the *varianceStabilizingTransformation* is much faster when there are many samples.
+
+
+```r
+vsd <- varianceStabilizingTransformation(dds)
+plot(assay(vsd)[,1], assay(rld)[,2], cex=.1)
+```
+
+![plot of chunk unnamed-chunk-22](figure/rnaseq_gene_level-unnamed-chunk-22-1.png)
 
 We can examine the standard deviation of rows over the mean for the *log plus pseudocount* and the *rlog*. Note that the genes with high variance for the *log* come from the genes with lowest mean. If these genes were included in a distance calculation, the high variance at the low count range might overwhelm the signal at the higher count range.
 
 
 ```r
 library(vsn)
-mypar(1,2)
-meanSdPlot(log.norm.counts, ranks=FALSE, ylim=c(0,3), main="log2")
+meanSdPlot(log.norm.counts, ranks=FALSE) 
 ```
 
-```
-## Error: Unknown parameters: ylim, main
-```
+![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-1.png)
+
+For the rlog:
+
 
 ```r
-meanSdPlot(assay(rld), ranks=FALSE, ylim=c(0,3), main="rlog")
+meanSdPlot(assay(rld), ranks=FALSE)
 ```
 
+![plot of chunk unnamed-chunk-24](figure/rnaseq_gene_level-unnamed-chunk-24-1.png)
+
+For the VST:
+
+
+```r
+meanSdPlot(assay(vsd), ranks=FALSE)
 ```
-## Error: Unknown parameters: ylim, main
-```
+
+![plot of chunk unnamed-chunk-25](figure/rnaseq_gene_level-unnamed-chunk-25-1.png)
 
 The principal components (PCA) plot is a useful diagnostic for examining relationships between samples:
 
 
 ```r
-mypar()
-rv <- apply(log.norm.counts, 1, var)
-topgenes <- head(order(rv, decreasing=TRUE),500)
-pc <- prcomp(t(log.norm.counts[topgenes,]))
-plot(pc$x[,1], pc$x[,2], 
-     col = colData(dds)$dex, 
-     pch = as.integer(colData(dds)$cell))
+plotPCA(log.norm, intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-22](figure/rnaseq_gene_level-unnamed-chunk-22-1.png)
+![plot of chunk unnamed-chunk-26](figure/rnaseq_gene_level-unnamed-chunk-26-1.png)
 
 Using the rlog:
 
@@ -679,13 +697,16 @@ Using the rlog:
 plotPCA(rld, intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-1.png)
+![plot of chunk unnamed-chunk-27](figure/rnaseq_gene_level-unnamed-chunk-27-1.png)
+
+Using the VST:
+
 
 ```r
-plotPCA(rld, intgroup=c("dex","cell"))
+plotPCA(vsd, intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-23](figure/rnaseq_gene_level-unnamed-chunk-23-2.png)
+![plot of chunk unnamed-chunk-28](figure/rnaseq_gene_level-unnamed-chunk-28-1.png)
 
 We can make this plot even nicer using custom code from the *ggplot2* library:
 
@@ -722,7 +743,7 @@ ggplot(data, aes(PC1,PC2,col=dex,shape=cell)) + geom_point() +
   xlab(makeLab(percentVar[1],1)) + ylab(makeLab(percentVar[2],2))
 ```
 
-![plot of chunk unnamed-chunk-25](figure/rnaseq_gene_level-unnamed-chunk-25-1.png)
+![plot of chunk unnamed-chunk-30](figure/rnaseq_gene_level-unnamed-chunk-30-1.png)
 
 In addition, we can plot a hierarchical clustering based on Euclidean distance matrix:
 
@@ -733,7 +754,7 @@ plot(hclust(dist(t(log.norm.counts))), labels=colData(dds)$dex)
 plot(hclust(dist(t(assay(rld)))), labels=colData(rld)$dex)
 ```
 
-![plot of chunk unnamed-chunk-26](figure/rnaseq_gene_level-unnamed-chunk-26-1.png)
+![plot of chunk unnamed-chunk-31](figure/rnaseq_gene_level-unnamed-chunk-31-1.png)
 
 ## Differential gene expression
 
@@ -767,7 +788,7 @@ hist(rpois(n,1000)/10,main="",xlab="",breaks=brks,col="black")
 hist(rpois(n,10)*10,main="",xlab="",breaks=brks,col="black")
 ```
 
-![plot of chunk unnamed-chunk-27](figure/rnaseq_gene_level-unnamed-chunk-27-1.png)
+![plot of chunk unnamed-chunk-32](figure/rnaseq_gene_level-unnamed-chunk-32-1.png)
 
 So, when we scale a raw count, we break the implicit link between the mean and the variance. This is not necessarily a problem, if we have 100s of samples over which to observe within-group variance, however RNA-seq samples can often have only 3 samples per group, in which case, we can get a benefit of information from using raw counts, and incorporating normalization factors on the right side of the equation above.
 
@@ -788,7 +809,7 @@ hist(rnbinom(n,mu=100,size=1/.1),
      main="NB, disp = 0.1",xlab="",breaks=brks,col="black")
 ```
 
-![plot of chunk unnamed-chunk-28](figure/rnaseq_gene_level-unnamed-chunk-28-1.png)
+![plot of chunk unnamed-chunk-33](figure/rnaseq_gene_level-unnamed-chunk-33-1.png)
 
 The square root of the dispersion is the coefficient of variation -- SD/mean -- after subtracting the variance we expect due to Poisson sampling.
 
@@ -986,7 +1007,7 @@ The MA-plot provides a global view of the differential genes, with the log2 fold
 plotMA(res, ylim=c(-4,4))
 ```
 
-![plot of chunk unnamed-chunk-37](figure/rnaseq_gene_level-unnamed-chunk-37-1.png)
+![plot of chunk unnamed-chunk-42](figure/rnaseq_gene_level-unnamed-chunk-42-1.png)
 
 We can also test against a different null hypothesis. For example, to test for genes which have fold change more than doubling or less than halving:
 
@@ -996,7 +1017,7 @@ res.thr <- results(dds, lfcThreshold=1)
 plotMA(res.thr, ylim=c(-4,4))
 ```
 
-![plot of chunk unnamed-chunk-38](figure/rnaseq_gene_level-unnamed-chunk-38-1.png)
+![plot of chunk unnamed-chunk-43](figure/rnaseq_gene_level-unnamed-chunk-43-1.png)
 
 A p-value histogram:
 
@@ -1006,7 +1027,7 @@ hist(res$pvalue[res$baseMean > 1],
      col="grey", border="white", xlab="", ylab="", main="")
 ```
 
-![plot of chunk unnamed-chunk-39](figure/rnaseq_gene_level-unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-44](figure/rnaseq_gene_level-unnamed-chunk-44-1.png)
 
 A sorted results table:
 
@@ -1045,7 +1066,7 @@ Examine the counts for the top gene, sorting by p-value:
 plotCounts(dds, gene=which.min(res$padj), intgroup="dex")
 ```
 
-![plot of chunk unnamed-chunk-41](figure/rnaseq_gene_level-unnamed-chunk-41-1.png)
+![plot of chunk unnamed-chunk-46](figure/rnaseq_gene_level-unnamed-chunk-46-1.png)
 
 A more sophisticated plot of counts:
 
@@ -1058,7 +1079,7 @@ ggplot(data, aes(x=dex, y=count, col=cell)) +
   scale_y_log10()
 ```
 
-![plot of chunk unnamed-chunk-42](figure/rnaseq_gene_level-unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-47](figure/rnaseq_gene_level-unnamed-chunk-47-1.png)
 
 Connecting by lines shows the differences which are actually being tested by *results* given that our design includes `cell + dex`
 
@@ -1068,7 +1089,7 @@ ggplot(data, aes(x=dex, y=count, col=cell, group=cell)) +
   geom_point() + geom_line() + scale_y_log10() 
 ```
 
-![plot of chunk unnamed-chunk-43](figure/rnaseq_gene_level-unnamed-chunk-43-1.png)
+![plot of chunk unnamed-chunk-48](figure/rnaseq_gene_level-unnamed-chunk-48-1.png)
 
 A heatmap of the top genes:
 
@@ -1082,7 +1103,7 @@ df <- as.data.frame(colData(dds)[,c("dex","cell")])
 pheatmap(mat, annotation_col=df)
 ```
 
-![plot of chunk unnamed-chunk-44](figure/rnaseq_gene_level-unnamed-chunk-44-1.png)
+![plot of chunk unnamed-chunk-49](figure/rnaseq_gene_level-unnamed-chunk-49-1.png)
 
 ### Getting alternate annotations
 
@@ -1293,7 +1314,7 @@ Do the surrogate variables capture the cell difference?
 plot(svseq$sv[,1], svseq$sv[,2], col=dds$cell, pch=16)
 ```
 
-![plot of chunk unnamed-chunk-48](figure/rnaseq_gene_level-unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-53](figure/rnaseq_gene_level-unnamed-chunk-53-1.png)
 
 Using the surrogate variables in a *DESeq2* analysis:
 
@@ -1358,16 +1379,17 @@ sessionInfo()
 ##  [3] mgcv_1.8-12                nlme_3.1-126              
 ##  [5] org.Hs.eg.db_3.2.3         RSQLite_1.0.0             
 ##  [7] DBI_0.3.1                  pheatmap_1.0.8            
-##  [9] ggplot2_2.1.0              vsn_3.38.0                
-## [11] DESeq2_1.10.1              RcppArmadillo_0.6.600.4.0 
-## [13] Rcpp_0.12.4                rafalib_1.0.0             
-## [15] GenomicFeatures_1.22.13    AnnotationDbi_1.32.3      
-## [17] Rsamtools_1.22.0           Biostrings_2.38.4         
-## [19] XVector_0.10.0             airway_0.104.0            
-## [21] SummarizedExperiment_1.0.2 Biobase_2.30.0            
-## [23] GenomicRanges_1.22.4       GenomeInfoDb_1.6.3        
-## [25] IRanges_2.4.8              S4Vectors_0.8.11          
-## [27] BiocGenerics_0.16.1        knitr_1.12.3              
+##  [9] ggplot2_2.1.0              hexbin_1.27.1             
+## [11] vsn_3.38.0                 DESeq2_1.10.1             
+## [13] RcppArmadillo_0.6.600.4.0  Rcpp_0.12.4               
+## [15] rafalib_1.0.0              GenomicFeatures_1.22.13   
+## [17] AnnotationDbi_1.32.3       Rsamtools_1.22.0          
+## [19] Biostrings_2.38.4          XVector_0.10.0            
+## [21] airway_0.104.0             SummarizedExperiment_1.0.2
+## [23] Biobase_2.30.0             GenomicRanges_1.22.4      
+## [25] GenomeInfoDb_1.6.3         IRanges_2.4.8             
+## [27] S4Vectors_0.8.11           BiocGenerics_0.16.1       
+## [29] knitr_1.12.3              
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] locfit_1.5-9.1          lattice_0.20-33        
@@ -1437,7 +1459,7 @@ Hao Wu, Chi Wang, Zhijin Wu, "A new shrinkage estimator for dispersion improves 
 
 ### Variance-mean modeling followed by linear model
 
-- **voom+limma** in the *limma* Bioconductor package. Limma also contains gene-set testing methods (see ROAST for example in the Reference Manual)
+- **limma-voom** in the *limma* Bioconductor package. Limma also contains gene-set testing methods (see ROAST for example in the Reference Manual)
 
 Charity W Law, Yunshun Chen, Wei Shi and Gordon K Smyth, "voom: precision weights unlock linear model analysis tools for RNA-seq read counts", Genome Biology. 2014.
 <http://genomebiology.com/2014/15/2/R29>
