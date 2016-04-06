@@ -638,7 +638,7 @@ Now we will use a more sophisticated transformation, which is similar to the var
 
 ```r
 rld <- rlog(dds)
-plot(assay(rld)[,1], assay(rld)[,2], cex=.1)
+plot(assay(rld)[,1:2], cex=.1)
 ```
 
 ![plot of chunk unnamed-chunk-21](figure/rnaseq_gene_level-unnamed-chunk-21-1.png)
@@ -648,7 +648,7 @@ Another transformation for stabilizing variance in the *DESeq2* package is `vari
 
 ```r
 vsd <- varianceStabilizingTransformation(dds)
-plot(assay(vsd)[,1], assay(rld)[,2], cex=.1)
+plot(assay(vsd)[,1:2], cex=.1)
 ```
 
 ![plot of chunk unnamed-chunk-22](figure/rnaseq_gene_level-unnamed-chunk-22-1.png)
