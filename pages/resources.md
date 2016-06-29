@@ -29,6 +29,8 @@ title: Online resources and books
 
 - [Quick-R](http://www.statmethods.net/): quick online reference for data input, basic statistics and plots
 
+- [R Cookbook](http://www.cookbook-r.com/) by Winston Chang
+
 - [R referecence card (PDF)](http://cran.r-project.org/doc/contrib/Short-refcard.pdf) by Tom Short (more can be found under [Short Documents and Reference Cards](http://cran.r-project.org/other-docs.html))
 
 - [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham: "for R users who want to improve their programming skills and understanding of the language"
