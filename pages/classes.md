@@ -12,8 +12,6 @@ Most of the teaching material is available as an [open online book](http://genom
 
 ### [Data Analysis for the Life Sciences XSeries](https://www.edx.org/xseries/data-analysis-life-sciences)
 
-You can enroll in this [here](https://www.edx.org/xseries/data-analysis-life-sciences). 
-
 The series is composed of four courses. You can follow the links to enroll:
 
 1. [Statistics and R for the Life Sciences](https://www.edx.org/course/data-analysis-life-sciences-1-statistics-harvardx-ph525-1x)
@@ -27,9 +25,7 @@ Four courses we will be using this freely available
 [book](https://leanpub.com/dataanalysisforthelifesciences) which
 includes links to the online material.
 
-### Genomics Data Analysis XSeries
-
-You can enroll in this series [here](https://www.edx.org/xseries/genomics-data-analysis). 
+### [Genomics Data Analysis XSeries](https://www.edx.org/xseries/genomics-data-analysis)
 
 This series focuses on Bioconductor and how it is used to analyze high-throughput data with a focus on next generation sequencing. The series is composed of three courses. You can follow the links to enroll:
 
