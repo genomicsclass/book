@@ -10,7 +10,7 @@ MOOCs for biomedical data science. The courses are divided into two series: Data
 
 Most of the teaching material is available as an [open online book](http://genomicsclass.github.io/book/) as well as on our [GitHub repo](https://github.com/genomicsclass/labs)
 
-#### Data Analysis for the Life Sciences XSeries
+### [Data Analysis for the Life Sciences XSeries](https://www.edx.org/xseries/data-analysis-life-sciences)
 
 You can enroll in this [here](https://www.edx.org/xseries/data-analysis-life-sciences). 
 
@@ -27,7 +27,7 @@ Four courses we will be using this freely available
 [book](https://leanpub.com/dataanalysisforthelifesciences) which
 includes links to the online material.
 
-#### Genomics Data Analysis XSeries
+### Genomics Data Analysis XSeries
 
 You can enroll in this series [here](https://www.edx.org/xseries/genomics-data-analysis). 
 
