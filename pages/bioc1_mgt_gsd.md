@@ -9,7 +9,7 @@ layout: page
 
 
 
-# Introduction
+# Introduction (revised July 2017)
 
 It is very common for life scientists to use spreadsheets
 to record and manage experimental data.  In these problems
@@ -378,17 +378,17 @@ getClass("DataFrame")
 ## Class "DataFrame" [package "S4Vectors"]
 ## 
 ## Slots:
-##                                                                       
-## Name:         rownames           nrows        listData     elementType
-## Class: characterORNULL         integer            list       character
-##                                       
-## Name:  elementMetadata        metadata
-## Class: DataTableORNULL            list
+##                                                             
+## Name:           rownames             nrows          listData
+## Class: character_OR_NULL           integer              list
+##                                                             
+## Name:        elementType   elementMetadata          metadata
+## Class:         character DataTable_OR_NULL              list
 ## 
 ## Extends: 
 ## Class "DataTable", directly
 ## Class "SimpleList", directly
-## Class "DataTableORNULL", by class "DataTable", distance 2
+## Class "DataTable_OR_NULL", by class "DataTable", distance 2
 ## Class "List", by class "SimpleList", distance 2
 ## Class "Vector", by class "SimpleList", distance 3
 ## Class "Annotated", by class "SimpleList", distance 4
@@ -444,7 +444,7 @@ bfp[1]
 
 ```
 ##                                                                                                                ERR127306 
-## "/Library/Frameworks/R.framework/Versions/3.3/Resources/library/RNAseqData.HNRNPC.bam.chr14/extdata/ERR127306_chr14.bam"
+## "/Library/Frameworks/R.framework/Versions/3.4/Resources/library/RNAseqData.HNRNPC.bam.chr14/extdata/ERR127306_chr14.bam"
 ```
 
 We use the *[Rsamtools](http://bioconductor.org/packages/Rsamtools)* package to manage these
@@ -566,7 +566,7 @@ ae
 ```
 
 ```
-## <environment: 0x7ffa668df698>
+## <environment: 0x7f81ace4e068>
 ```
 
 This is a very special type of object for R.  It can be thought
