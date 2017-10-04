@@ -9,7 +9,7 @@ layout: page
 
 
 
-# Introduction (revised July 2017)
+# Introduction (revised October 2017)
 
 It is very common for life scientists to use spreadsheets
 to record and manage experimental data.  In these problems
@@ -566,7 +566,7 @@ ae
 ```
 
 ```
-## <environment: 0x7fc5838a54e8>
+## <environment: 0x7f813b4dc698>
 ```
 
 This is a very special type of object for R.  It can be thought
