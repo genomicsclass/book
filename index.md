@@ -147,6 +147,8 @@ title: PH525x series - Biomedical Data Science
 ### Focus on data structure and management (Week 2)
 
 - [Management of genome-scale data: Object-oriented solutions](pages/bioc1_mgt_gsd.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_mgt_gsd.Rmd)
+- [Management of genome-scale data 2017: Object-oriented solutions](pages/dataman2017.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
+    - [Coordinating tables in ExpressionSets](pages/dataman2017.html#coord) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
 - [SummarizedExperiment in depth](pages/bioc1_summex.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_summex.Rmd)
 - [Management and processing of large numbers of BED files](pages/bioc1_multibed.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_multibed.Rmd)
 
