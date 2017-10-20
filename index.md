@@ -134,9 +134,19 @@ title: PH525x series - Biomedical Data Science
 
 <a name="5xtop"></a>
 
-## 525.5x: Introduction to Bioconductor: Annotation and analysis
+## Chapter 11 - Introduction to Bioconductor
 
 - [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
+- [Data structure and management for genome scale experiments](pages/dataman2017.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
+    - [Coordinating multiple tables: ExpressionSet](pages/dataman2017.html#coord)
+    - [Institutional archives: GEO, ArrayExpress](pages/dataman2017.html#geoquery)
+    - [SummarizedExperiment: for RNA-seq and 450k methylation](pages/dataman2017.html#summexp)
+    - [External storage for very large assays](pages/dataman2017.html#external)
+    - [GenomicFiles for families of BAM or BED](pages/dataman2017.html#genomicFiles)
+    - [DNA Variants: VCF handling with VariantAnnotation and VariantTools](pages/dataman2017.html#variants)
+    - [Handling multiomic archives like TCGA](pages/dataman2017.html#multiomic)
+    - [Cloud-oriented solutions: e.g., Google BigQuery](pages/dataman2017.html#cloud)
+
 
 ### Setup and basics on biological background (Week 1)
 
