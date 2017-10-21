@@ -50,7 +50,7 @@ _groups with shared structural or functional properties_.  Examples
 include pathways, groups of genes found together in cells, or
 identified as cooperating in biological processes.
 
-<a names="findingref"></a>
+<a name="findingref"></a>
 
 ### Discovering available reference genomes
 
