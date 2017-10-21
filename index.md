@@ -154,7 +154,13 @@ title: PH525x series - Biomedical Data Science
 ## Chapter 12 - Genomic Ranges and Genomic Annotation
 
 - [General overview of IRanges and GRanges](pages/bioc1_igranges.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_igranges.Rmd)
-- [Some additional GRanges operations](pages/bioc1_grangeOps.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_grangeOps.Rmd)
+    - [IRanges introduced](pages/bioc1_igranges.html#IRanges) 
+    - [Intra-range operations](pages/bioc1_igranges.html#intrarange) 
+    - [Inter-range operations](pages/bioc1_igranges.html#interrange) 
+    - [GRanges](pages/bioc1_igranges.html#granges) 
+    - [Calculating overlaps](pages/bioc1_igranges.html#findoverlaps) 
+    - [Run-length encoding, views](pages/bioc1_igranges.html#rleviews) 
+    - [Application to genomic landmarks](pages/bioc1_igranges.html#genomic) 
 - [General overview of Bioconductor annotation](pages/bioc1_annoOverview.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoOverview.Rmd)
 - [Cheat sheet on Bioconductor annotation](pages/bioc1_annoCheat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoCheat.Rmd)
 - [Translating addresses between genome builds: liftOver](pages/bioc1_liftOver.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_liftOver.Rmd)
