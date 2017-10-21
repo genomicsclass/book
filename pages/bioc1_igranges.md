@@ -1,9 +1,11 @@
 ---
+title: "IRanges and GRanges"
 layout: page
-title: IRanges and GRanges
 ---
 
 
+
+<a name="IRanges"></a>
 
 The IRanges and GRanges objects are core components of the Bioconductor infrastructure for defining *integer ranges* in general (IRanges), and specifically for addressing locations in the genome and hence including chromosome and strand information (GRanges). Here we will briefly explore what these objects are and a subset of the operations which manipulate IRanges and GRanges.
 
@@ -14,6 +16,68 @@ First we load the IRanges package. This is included in the base installation of 
 
 ```r
 library(IRanges)
+```
+
+```
+## Loading required package: methods
+```
+
+```
+## Loading required package: BiocGenerics
+```
+
+```
+## Loading required package: parallel
+```
+
+```
+## 
+## Attaching package: 'BiocGenerics'
+```
+
+```
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     IQR, mad, sd, var, xtabs
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, cbind, colMeans,
+##     colnames, colSums, do.call, duplicated, eval, evalq, Filter,
+##     Find, get, grep, grepl, intersect, is.unsorted, lapply,
+##     lengths, Map, mapply, match, mget, order, paste, pmax,
+##     pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce,
+##     rowMeans, rownames, rowSums, sapply, setdiff, sort, table,
+##     tapply, union, unique, unsplit, which, which.max, which.min
+```
+
+```
+## Loading required package: S4Vectors
+```
+
+```
+## Loading required package: stats4
+```
+
+```
+## 
+## Attaching package: 'S4Vectors'
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     expand.grid
 ```
 
 The `IRanges` function defines interval ranges. If you provide it with two numbers, these are the start and end of a inclusive range, e.g. $$[5,10] = \{ 5,6,7,8,9,10 \}$$, which has *width* 6. When referring to the size of a range, the term *width* is used, instead of *length*.
@@ -76,7 +140,11 @@ IRanges(start=c(3,5,17), end=c(10,8,20))
 ##   [3]        17        20         4
 ```
 
-We will continue to work with the single range $$[5,10]$$ though. We can look up a number of *intra-range* methods for IRanges objects, which mean that the operations work on each range independently. For example, we can shift all the ranges two integers to the left. By left and right, we refer to the direction on the integer number line: $$\{ \dots, -2, -1, 0, 1, 2, \dots \}$$. Compare `ir` and `shift(ir, -2)`:
+<a name="intrarange"></a>
+
+### Intra-range operations
+
+We will continue to work with the single range $$[5,10]$$. We can look up a number of *intra-range* methods for IRanges objects, which mean that the operations work on each range independently. For example, we can shift all the ranges two integers to the left. By left and right, we refer to the direction on the integer number line: $$\{ \dots, -2, -1, 0, 1, 2, \dots \}$$. Compare `ir` and `shift(ir, -2)`:
 
 
 ```r
@@ -230,6 +298,10 @@ resize(ir, 1)
 Those same operations plotted in a single window. The red bar shows the shadow of the original range `ir`. The best way to get the hang of these operations is to try them out yourself in the console on ranges you define yourself.
 
 ![plot of chunk unnamed-chunk-6](figure/bioc1_igranges-unnamed-chunk-6-1.png)
+
+<a name="interrange"></a>
+
+### Inter-range operations
 
 There are also a set of *inter-range* methods. These are operations which work on a set of ranges, and the output depends on all the ranges, thus distinguishes these methods from the *intra-range* methods, for which the other ranges in the set do not change the output. This is best explained with some examples. The `range` function gives the integer range from the start of the leftmost range to the end of the rightmost range:
 
@@ -437,6 +509,16 @@ trim(shift(gr, 80))
 ```
 
 ```
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 2 out-of-bound ranges located on sequence
+##   chrZ. Note that only ranges located on a non-circular sequence
+##   whose length is not NA can be considered out-of-bound (use
+##   seqlengths() and isCircular() to get the lengths and circularity
+##   flags of the underlying sequences). You can use trim() to trim
+##   these ranges. See ?`trim,GenomicRanges-method` for more
+##   information.
+```
+
+```
 ## GRanges object with 2 ranges and 0 metadata columns:
 ##       seqnames    ranges strand
 ##          <Rle> <IRanges>  <Rle>
@@ -488,12 +570,6 @@ grl
 ```
 
 ```
-## Warning: 'elementLengths' is deprecated.
-## Use 'elementNROWS' instead.
-## See help("Deprecated")
-```
-
-```
 ## GRangesList object of length 2:
 ## [[1]] 
 ## GRanges object with 2 ranges and 0 metadata columns:
@@ -513,7 +589,7 @@ grl
 ## seqinfo: 1 sequence from hg19 genome
 ```
 
-The length of the *GRangesList* is the number of *GRanges* object within. To get the length of each GRanges we call `elementLengths`. We can index into the list using typical list indexing of two square brackets.
+The length of the *GRangesList* is the number of *GRanges* object within. To get the length of each GRanges we call `elementNROWS`. We can index into the list using typical list indexing of two square brackets.
 
 
 ```r
@@ -525,13 +601,7 @@ length(grl)
 ```
 
 ```r
-elementLengths(grl)
-```
-
-```
-## Warning: 'elementLengths' is deprecated.
-## Use 'elementNROWS' instead.
-## See help("Deprecated")
+elementNROWS(grl)
 ```
 
 ```
@@ -582,12 +652,6 @@ grl
 ```
 
 ```
-## Warning: 'elementLengths' is deprecated.
-## Use 'elementNROWS' instead.
-## See help("Deprecated")
-```
-
-```
 ## GRangesList object of length 2:
 ## [[1]] 
 ## GRanges object with 2 ranges and 0 metadata columns:
@@ -618,6 +682,8 @@ mcols(grl)
 ## 1         5
 ## 2         7
 ```
+
+<a name="findoverlaps"></a>
 
 ### findOverlaps and %over%
 
@@ -671,8 +737,7 @@ fo
 ##   [2]         4           1
 ##   [3]         4           2
 ##   -------
-##   queryLength: 5
-##   subjectLength: 2
+##   queryLength: 5 / subjectLength: 2
 ```
 
 ```r
@@ -728,6 +793,8 @@ gr1 %over% gr2
 ```
 ## [1] FALSE
 ```
+
+<a name="rleviews"></a>
 
 ### Rle and Views
 
@@ -809,6 +876,86 @@ str(v)
 ##   ..@ metadata       : list()
 ```
 
+
+<a name="genomic"></a>
+
+## Applications with genomic elements: strand-aware operations
+
+In this document we work with a small set of ranges and
+illustrate basic intra-range operations reduce, disjoin, gaps.
+We then add strand and seqname information and show how
+resize and flank are useful for identifying TSS and promoter regions.
+
+### A simple set of ranges
+
+
+```r
+ir <- IRanges(c(3, 8, 14, 15, 19, 34, 40),
+  width = c(12, 6, 6, 15, 6, 2, 7))
+```
+
+
+
+Let's visualize `ir` and several intra-range operations.
+
+```r
+par(mfrow=c(4,1), mar=c(4,2,2,2))
+plotRanges(ir, xlim=c(0,60))
+plotRanges(reduce(ir), xlim=c(0,60))
+plotRanges(disjoin(ir), xlim=c(0,60))
+plotRanges(gaps(ir), xlim=c(0,60))
+```
+
+<img src="figure/bioc1_igranges-lkir-1.png" title="plot of chunk lkir" alt="plot of chunk lkir" height="800px" />
+
+reduce(x) produces a set of
+nonoverlapping ranges that cover all positions covered by x.
+This can be used to reduce complexity of a gene model
+with many transcripts, where we may just want the addresses
+of intervals known to be transcribed, regardless of transcript
+of residence.
+
+disjoin(x) produces a set of ranges that cover all positions
+covered by x, such that none of the ranges in the
+disjoin output overlaps any end points of intervals in x.
+This gives us the largest possible collection of contiguous
+intervals that are separated wherever the original set
+of intervals had an endpoint.
+
+gaps(x) produces a set of ranges covering the positions
+in [start(x), end(x)] that are not covered by any range in x.
+Given coding sequence addresses and exon intervals, this can
+be used to enumerate introns.
+
+### Extension to GRanges
+
+We add chromosome and strand information.
+
+
+```r
+library(GenomicRanges)
+gir = GRanges(seqnames="chr1", ir, strand=c(rep("+", 4), rep("-",3)))
+```
+
+Let's assume the intervals represent genes.
+The following plots illustrate the identification of
+transcription start sites (green), upstream promoter
+regions (purple), downstream promoter regions (brown).
+
+
+```r
+par(mfrow=c(4,1), mar=c(4,2,2,2))
+plotGRanges(gir, xlim=c(0,60))
+plotGRanges(resize(gir,1), xlim=c(0,60),col="green")
+plotGRanges(flank(gir,3), xlim=c(0,60), col="purple")
+plotGRanges(flank(gir,2,start=FALSE), xlim=c(0,60), col="brown")
+```
+
+<img src="figure/bioc1_igranges-dopr-1.png" title="plot of chunk dopr" alt="plot of chunk dopr" width="500px" height="800px" />
+
+Note that we do not need to take special steps to
+deal with the differences in strand.
+
 ## Footnotes
 
 For more information about the `GenomicRanges` package, check out the PLOS Comp Bio paper, which the authors of GenomicRanges published:
@@ -829,3 +976,5 @@ Or the help pages here:
 help(package="GenomicRanges", help_type="html")
 ```
 
+For users of bedtools, the *[HelloRanges](http://bioconductor.org/packages/HelloRanges)* package is useful for converting
+concepts between BED and GRanges conceptual frameworks.
