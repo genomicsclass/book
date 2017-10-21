@@ -148,34 +148,18 @@ title: PH525x series - Biomedical Data Science
     - [DNA Variants: VCF handling with VariantAnnotation and VariantTools](pages/dataman2017.html#variants)
     - [Handling multiomic archives like TCGA](pages/dataman2017.html#multiomic)
     - [Cloud-oriented solutions: e.g., Google BigQuery](pages/dataman2017.html#cloud)
+- [Short read mapping/alignment software (optional)](pages/bioc1_align.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_align.Rmd)
 
 
-### Setup and basics on biological background (Week 1)
-
-- [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
-- [Three data types: reference DNA sequence, DNA variants, and gene expression](pages/biointro.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/biointro.Rmd)
-- [Mapping/alignment software (optional)](pages/bioc1_align.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_align.Rmd)
-
-### Focus on data structure and management (Week 2)
-
-- [Management of genome-scale data: Object-oriented solutions](pages/bioc1_mgt_gsd.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_mgt_gsd.Rmd)
-- [Management of genome-scale data 2017: Object-oriented solutions](pages/dataman2017.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
-    - [Coordinating tables in ExpressionSets](pages/dataman2017.html#coord) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
-- [SummarizedExperiment in depth](pages/bioc1_summex.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_summex.Rmd)
-- [Management and processing of large numbers of BED files](pages/bioc1_multibed.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_multibed.Rmd)
-
-### Focus on genomic ranges (Week 3a)
+## Chapter 12 - Genomic Ranges and Genomic Annotation
 
 - [General overview of IRanges and GRanges](pages/bioc1_igranges.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_igranges.Rmd)
 - [Some additional GRanges operations](pages/bioc1_grangeOps.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_grangeOps.Rmd)
-
-### Focus on genomic annotation (Week 3b)
-
 - [General overview of Bioconductor annotation](pages/bioc1_annoOverview.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoOverview.Rmd)
 - [Cheat sheet on Bioconductor annotation](pages/bioc1_annoCheat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoCheat.Rmd)
 - [Translating addresses between genome builds: liftOver](pages/bioc1_liftOver.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_liftOver.Rmd)
 
-### Testing genome-scale hypotheses (Week 4)
+### Chapter 13 - Genome-scale hypothesis testing with Bioconductor
 
 - [Biological vs. technical variability](pages/bioc1_btvari.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_btvari.Rmd)
 - [t tests and multiple comparisons](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
