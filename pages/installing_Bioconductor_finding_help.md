@@ -28,7 +28,21 @@ http://bioconductor.org/install/
 
 ## Finding help 
 
-There are many ways to find help directly from within R. Typically, every function will have its own manual page which is accessible by typing a question mark ?, followed by the function name and hitting return.
+There are many ways to find help directly from within R. 
+A very comprehensive help page is generated with the command `help.start()` from the
+command line.  This gives links to manuals and manual pages for all documentation in the environment.
+This documentation set is dependent on the set of packages that are installed.  You may
+have seen a help page for a function in a given R session, that cannot be found in
+another R session of the same version.  Only if the package to which the function belongs
+has been installed will the help page be found.
+
+The [Bioconductor support site](https://support.bioconductor.org/) is modeled on [biostar](https://github.com/ialbert/biostar-central) and is a very active and congenial forum for detailed questions about
+Bioconductor tools and analyses.  The [guide for posting](http://www.bioconductor.org/help/support/posting-guide/)
+is worth a visit.
+
+## Help for functions
+
+Typically, every function will have its own manual page which is accessible by typing a question mark ?, followed by the function name and hitting return.
 
 
 ```r
@@ -104,54 +118,36 @@ methods(class="ExpressionSet")
 methods(class="lm")
 ```
 
-In `rafalib` we have also worked on a function (with help from Gabe Becker) which will provide a list of methods which are available for a given object:
+R has good capabilities for self-description.  Classes can be formally linked to methods
+that operate usefully on their instances.  The methods available can be
+listed using the `methods` function.
 
-
-```r
-library(rafalib)
-```
-
-```
-## Loading required package: RColorBrewer
-```
 
 ```r
 data(sample.ExpressionSet)
-whatMethods(sample.ExpressionSet)
+methods(class=class(sample.ExpressionSet))
 ```
 
 ```
-## [1] "coerce"          "esApply"         "exprs"           "exprs<-"        
-## [5] "initialize"      "makeDataPackage" "rowMedians"      "rowQ"           
-## [9] "write.exprs"
-```
-
-This is unfortunately only a partial list. If we look up `?ExpressionSet` we see that this class of object inherits from another class `eSet`. Knowing this, we can see more methods which are available:
-
-
-```r
-whatMethods("eSet")
-```
-
-```
-##  [1] "["                "[["               "[[<-"            
-##  [4] "$"                "$<-"              "abstract"        
-##  [7] "annotation"       "annotation<-"     "assayData"       
-## [10] "assayData<-"      "coerce"           "combine"         
-## [13] "description"      "description<-"    "dim"             
-## [16] "dimnames"         "dimnames<-"       "dims"            
-## [19] "experimentData"   "experimentData<-" "fData"           
-## [22] "fData<-"          "featureData"      "featureData<-"   
-## [25] "featureNames"     "featureNames<-"   "fvarLabels"      
-## [28] "fvarLabels<-"     "fvarMetadata"     "fvarMetadata<-"  
-## [31] "initialize"       "notes"            "notes<-"         
-## [34] "pData"            "pData<-"          "phenoData"       
-## [37] "phenoData<-"      "preproc"          "preproc<-"       
-## [40] "protocolData"     "protocolData<-"   "pubMedIds"       
-## [43] "pubMedIds<-"      "sampleNames"      "sampleNames<-"   
-## [46] "show"             "storageMode"      "storageMode<-"   
-## [49] "updateObject"     "updateObjectTo"   "varLabels"       
-## [52] "varLabels<-"      "varMetadata"      "varMetadata<-"
+##  [1] [                [[               [[<-             $$               
+##  [5] $$<-              abstract         annotation       annotation<-    
+##  [9] as.data.frame    assayData        assayData<-      classVersion    
+## [13] classVersion<-   coerce           combine          description     
+## [17] description<-    dim              dimnames         dimnames<-      
+## [21] dims             esApply          experimentData   experimentData<-
+## [25] exprs            exprs<-          fData            fData<-         
+## [29] featureData      featureData<-    featureNames     featureNames<-  
+## [33] fvarLabels       fvarLabels<-     fvarMetadata     fvarMetadata<-  
+## [37] initialize       isCurrent        isVersioned      KEGG2heatmap    
+## [41] KEGGmnplot       makeDataPackage  Makesense        notes           
+## [45] notes<-          pData            pData<-          phenoData       
+## [49] phenoData<-      preproc          preproc<-        protocolData    
+## [53] protocolData<-   pubMedIds        pubMedIds<-      rowMedians      
+## [57] rowQ             sampleNames      sampleNames<-    show            
+## [61] storageMode      storageMode<-    updateObject     updateObjectTo  
+## [65] varLabels        varLabels<-      varMetadata      varMetadata<-   
+## [69] write.exprs     
+## see '?methods' for accessing help and source code
 ```
 
 ## Source code
@@ -160,19 +156,20 @@ You can find the source code for many functions by typing out the name of the fu
 
 
 ```r
-mad
+read.csv
 ```
 
 ```
-## standardGeneric for "mad" defined from package "stats"
-## 
-## function (x, center = median(x), constant = 1.4826, na.rm = FALSE, 
-##     low = FALSE, high = FALSE) 
-## standardGeneric("mad")
-## <environment: 0x107373838>
-## Methods may be defined for arguments: x, center, constant, na.rm, low, high
-## Use  showMethods("mad")  for currently available ones.
+## function (file, header = TRUE, sep = ",", quote = "\\"", dec = ".", 
+##     fill = TRUE, comment.char = "", ...) 
+## read.table(file = file, header = header, sep = sep, quote = quote, 
+##     dec = dec, fill = fill, comment.char = comment.char, ...)
+## <bytecode: 0x7f8e35b19200>
+## <environment: namespace:utils>
 ```
+
+Note that this just 'wraps' a call to `read.table`, which is much more involved, but can
+be printed to the terminal by mentioning it to the interpreter.
 
 You might have to specify a particular class if you want source code for a method:
 
@@ -188,7 +185,7 @@ plotMA
 ## {
 ##     standardGeneric("plotMA")
 ## }
-## <environment: 0x102ed30e0>
+## <environment: 0x7f8e338381b8>
 ## Methods may be defined for arguments: object
 ## Use  showMethods("plotMA")  for currently available ones.
 ```
@@ -270,3 +267,23 @@ In addition, an HTML browser can be launched with links to the various vignettes
 browseVignettes(package="Biobase")
 ```
 
+## Analysis help
+
+The [workflows repository](http://www.bioconductor.org/help/workflows/) 
+contains extensive _computable documents_ describing how
+certain common analyses can be performed, typically involving published
+data from realistic studies.
+
+## Summary
+
+- All R functions from Bioconductor packages will have _manual pages_ and
+most will have _running examples_;
+- All Bioconductor software packages will have _vignettes_ that describe
+how functions work together to achieve the objectives of the package;
+- Many _workflow documents_ are available that describe how functions from
+different packages can be used together to complete analyses;
+- R has significant _built-in utilities_ for finding documents about basic infrastructure
+and statistical procedures;
+- R's [mailing list for elementary questions](https://stat.ethz.ch/mailman/listinfo/r-help)
+and Bioconductor's [support site](https://support.bioconductor.org/) are useful fora
+with extensive archives.
