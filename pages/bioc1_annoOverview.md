@@ -1,8 +1,10 @@
 ---
-title: "Genomic annotation in Bioconductor: The general situation"
+title: 'Genomic annotation in Bioconductor: The general situation'
 author: "Vince"
 date: "March 19, 2015"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 layout: page
 toc: yes
 ---
@@ -10,19 +12,8 @@ toc: yes
 
 
 
-```
-## Now getting the GODb Object directly
-```
 
-```
-## Now getting the OrgDb Object directly
-```
-
-```
-## Now getting the TxDb Object directly
-```
-
-# Basic annotation resources and their discovery
+## Basic annotation resources and their discovery
 
 In this document we will review Bioconductor's facilities for
 handling and annotating genomic sequence.  We'll look at
@@ -34,29 +25,34 @@ Bioconductor is to make it easy to incorporate
 information on genome structure and function 
 into statistical analysis procedures.
 
-## A simple hierarchy of annotation concepts
+<a name="threelev"></a>
+
+### A hierarchy of annotation concepts
 
 Bioconductor includes many different types of genomic annotation.
 We can think of these annotation resources in a hierarchical structure.
 
-- At the base is the reference genomic sequence for an organism.
+- At the base is the _reference genomic sequence_ for an organism.
 This is always arranged into chromosomes, specified by linear
 sequences of nucleotides.
 
 - Above this is the organization of chromosomal sequence into
-regions of interest.  The most prominent regions of interest are
+_regions of interest_.  The most prominent regions of interest are
 genes, but other structures like SNPs or CpG sites are
 annotated as well.  Genes have internal structure,
 with parts that are transcribed and parts that are not,
 and "gene models" define the ways in which
 these structures are labeled and laid out in genomic coordinates.
 
-- Above this is the organization of genes or gene products into
-groups with shared structural or functional properties.  Examples
+- Above this is the organization of regions (most often
+genes or gene products) into
+_groups with shared structural or functional properties_.  Examples
 include pathways, groups of genes found together in cells, or
 identified as cooperating in biological processes.
 
-## Discovering available reference genomes
+<a names="findingref"></a>
+
+### Discovering available reference genomes
 
 Bioconductor's collection of annotation packages brings
 all elements of this hierarchy into a programmable environment.
@@ -73,7 +69,7 @@ length(ag)
 ```
 
 ```
-## [1] 82
+## [1] 87
 ```
 
 ```r
@@ -89,7 +85,7 @@ head(ag)
 ## [6] "BSgenome.Athaliana.TAIR.TAIR9"
 ```
 
-## Reference build versions are important
+### Reference build versions are important
 
 The reference build for an organism is created de novo
 and then refined as algorithms and sequenced data improve.
@@ -105,7 +101,8 @@ that include build versions.  It is very important to avoid
 mixing coordinates from different reference builds.
 In the liftOver video we show how to convert genomic coordinates of
 features between different reference builds, using the UCSC
-"liftOver" utility interfaced to R in the `rtracklayer` package.
+"liftOver" utility interfaced to R in the 
+*[rtracklayer](http://bioconductor.org/packages/rtracklayer)* package.
 
 To help users avoid mixing up data collected on incompatible
 genomic coordinate systems from different reference builds, we
@@ -115,7 +112,9 @@ this shortly.  Software for sequence comparison can check
 for compatible tags on the sequences
 being compared, and thereby help to ensure meaningful results.
 
-# A reference genomic sequence for H. sapiens
+<a name="hsap"></a>
+
+## A reference genomic sequence for H. sapiens
 
 The reference sequence for *Homo sapiens* is acquired by installing
 and attaching
@@ -175,10 +174,16 @@ Hsapiens$chr17
 ## seq: AAGCTTCTCACCCTGTTCCTGCATAGATAATTGC...GGTGTGGGTGTGGTGTGTGGGTGTGGGTGTGGT
 ```
 
-# The transcripts and genes for a reference sequence
+<a name="txUCSCnENSEMBLE"></a>
+
+## The transcripts and genes for a reference sequence
+
+### UCSC annotation
 
 The `TxDb` family of packages and data objects manages
-information on transcripts and gene models.
+information on transcripts and gene models.  We consider
+those derived from annotation tables prepared for the
+UCSC genome browser.
 
 
 ```r
@@ -216,19 +221,6 @@ Entrez Gene IDs.
 
 ```r
 ghs = genes(txdb)
-```
-
-```
-## Warning: 'elementLengths' is deprecated.
-## Use 'elementNROWS' instead.
-## See help("Deprecated")
-
-## Warning: 'elementLengths' is deprecated.
-## Use 'elementNROWS' instead.
-## See help("Deprecated")
-```
-
-```r
 ghs
 ```
 
@@ -251,7 +243,150 @@ ghs
 ##   seqinfo: 93 sequences (1 circular) from hg19 genome
 ```
 
-# Your data will be someone else's annotation: import/export
+Filtering is permitted, with suitable identifiers.
+Here we select all exons identified for two
+different genes, identified by their Entrez Gene ids:
+
+
+```r
+exons(txdb, columns=c("EXONID", "TXNAME", "GENEID"),
+                  filter=list(gene_id=c(100, 101)))
+```
+
+```
+## GRanges object with 39 ranges and 3 metadata columns:
+##        seqnames                 ranges strand |    EXONID
+##           <Rle>              <IRanges>  <Rle> | <integer>
+##    [1]    chr10 [135075920, 135076737]      - |    144421
+##    [2]    chr10 [135077192, 135077269]      - |    144422
+##    [3]    chr10 [135080856, 135080921]      - |    144423
+##    [4]    chr10 [135081433, 135081570]      - |    144424
+##    [5]    chr10 [135081433, 135081622]      - |    144425
+##    ...      ...                    ...    ... .       ...
+##   [35]    chr20   [43254210, 43254325]      - |    256371
+##   [36]    chr20   [43255097, 43255240]      - |    256372
+##   [37]    chr20   [43257688, 43257810]      - |    256373
+##   [38]    chr20   [43264868, 43264929]      - |    256374
+##   [39]    chr20   [43280216, 43280376]      - |    256375
+##                                  TXNAME          GENEID
+##                         <CharacterList> <CharacterList>
+##    [1] uc009ybi.3,uc010qva.2,uc021qbe.1             101
+##    [2]            uc009ybi.3,uc021qbe.1             101
+##    [3] uc009ybi.3,uc010qva.2,uc021qbe.1             101
+##    [4]                       uc009ybi.3             101
+##    [5]            uc010qva.2,uc021qbe.1             101
+##    ...                              ...             ...
+##   [35]                       uc002xmj.3             100
+##   [36]                       uc002xmj.3             100
+##   [37]                       uc002xmj.3             100
+##   [38]                       uc002xmj.3             100
+##   [39]                       uc002xmj.3             100
+##   -------
+##   seqinfo: 93 sequences (1 circular) from hg19 genome
+```
+
+### ENSEMBL annotation
+
+From the [Ensembl home page](http://www.ensembl.org/index.html):
+"Ensembl creates, integrates and distributes reference datasets and 
+analysis tools that enable genomics".  This project is lodged
+at the [European Molecular Biology Lab](https://www.ebi.ac.uk/),
+which has been supportive of general interoperation of
+annotation resources with 
+Bioconductor.
+
+The *[ensembldb](http://bioconductor.org/packages/ensembldb)* package includes a vignette
+with the following commentary:
+
+The ensembldb package provides functions to create and use 
+transcript centric annotation databases/packages. The annotation for the 
+databases are 
+directly fetched from Ensembl 1 using their Perl 
+API. The functionality and data is similar to 
+that of the TxDb packages from the  GenomicFeatures 
+package, but, in addition to retrieve all gene/transcript models 
+and annotations from the database, the 
+ensembldb package provides also a filter framework allowing 
+to retrieve annotations for specific entries like 
+genes encoded on a chromosome region or transcript 
+models of lincRNA genes. From version 1.7 on, 
+EnsDb databases created by the ensembldb package contain 
+also protein annotation data 
+(see [Section 11](http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html#org35014ed) for 
+the database layout and an 
+overview of available attributes/columns). For more information 
+on the use of the protein annotations refer to the proteins vignette.
+
+
+```r
+library(ensembldb)
+library(EnsDb.Hsapiens.v75)
+names(listTables(EnsDb.Hsapiens.v75))
+```
+
+```
+##  [1] "gene"           "tx"             "tx2exon"        "exon"          
+##  [5] "chromosome"     "protein"        "uniprot"        "protein_domain"
+##  [9] "entrezgene"     "metadata"
+```
+
+As an illustration:
+
+```r
+edb = EnsDb.Hsapiens.v75  # abbreviate
+txs <- transcripts(edb, filter = GenenameFilter("ZBTB16"),
+                   columns = c("protein_id", "uniprot_id", "tx_biotype"))
+txs
+```
+
+```
+## GRanges object with 20 ranges and 5 metadata columns:
+##                   seqnames                 ranges strand |      protein_id
+##                      <Rle>              <IRanges>  <Rle> |     <character>
+##   ENST00000335953       11 [113930315, 114121398]      + | ENSP00000338157
+##   ENST00000335953       11 [113930315, 114121398]      + | ENSP00000338157
+##   ENST00000335953       11 [113930315, 114121398]      + | ENSP00000338157
+##   ENST00000335953       11 [113930315, 114121398]      + | ENSP00000338157
+##   ENST00000335953       11 [113930315, 114121398]      + | ENSP00000338157
+##               ...      ...                    ...    ... .             ...
+##   ENST00000392996       11 [113931229, 114121374]      + | ENSP00000376721
+##   ENST00000539918       11 [113935134, 114118066]      + | ENSP00000445047
+##   ENST00000545851       11 [114051488, 114118018]      + |            <NA>
+##   ENST00000535379       11 [114107929, 114121279]      + |            <NA>
+##   ENST00000535509       11 [114117512, 114121198]      + |            <NA>
+##                     uniprot_id              tx_biotype           tx_id
+##                    <character>             <character>     <character>
+##   ENST00000335953  ZBT16_HUMAN          protein_coding ENST00000335953
+##   ENST00000335953 Q71UL7_HUMAN          protein_coding ENST00000335953
+##   ENST00000335953 Q71UL6_HUMAN          protein_coding ENST00000335953
+##   ENST00000335953 Q71UL5_HUMAN          protein_coding ENST00000335953
+##   ENST00000335953 F5H6C3_HUMAN          protein_coding ENST00000335953
+##               ...          ...                     ...             ...
+##   ENST00000392996 F5H5Y7_HUMAN          protein_coding ENST00000392996
+##   ENST00000539918         <NA> nonsense_mediated_decay ENST00000539918
+##   ENST00000545851         <NA>    processed_transcript ENST00000545851
+##   ENST00000535379         <NA>    processed_transcript ENST00000535379
+##   ENST00000535509         <NA>         retained_intron ENST00000535509
+##                     gene_name
+##                   <character>
+##   ENST00000335953      ZBTB16
+##   ENST00000335953      ZBTB16
+##   ENST00000335953      ZBTB16
+##   ENST00000335953      ZBTB16
+##   ENST00000335953      ZBTB16
+##               ...         ...
+##   ENST00000392996      ZBTB16
+##   ENST00000539918      ZBTB16
+##   ENST00000545851      ZBTB16
+##   ENST00000535379      ZBTB16
+##   ENST00000535509      ZBTB16
+##   -------
+##   seqinfo: 1 sequence from GRCh37 genome
+```
+
+<a name="importExport"></a>
+
+## Your data will be someone else's annotation: import/export
 
 The ENCODE project is a good example of the idea that today's
 experiment is tomorrow's annotation.  You should think of your
@@ -262,25 +397,8 @@ answer it with an appropriate, properly executed protocol.
 ENCODE is noteworthy for linking the protocols to the data
 very explicitly.)
 
-What we have to watch out for is the idea that annotation is somehow
-permanently correct, isolated from the cacophony of research progress
-at the boundaries of knowledge.  We have seen that even the
-reference sequences of human chromosomes are subject to revision.
-We have treated, in our use of the ERBS package, results of experiments
-that we don't know too much about, as defining ER binding sites for
-potential biological interpretation.  The uncertainty, variable
-quality of peak identification, has not 
-been explicitly reckoned but it should be.
 
-Bioconductor has taken pains to acknowledge many facets of this situation.
-We maintain archives of prior versions of software
-and annotation so that past work can be checked
-or revised.  We update central annotation resources twice a year so that
-there is stability for ongoing work as well as access to new knowledge.
-And we have made it simple to import and to create representations
-of experimental and annotation data.
-
-As an example, return to the ER binding data.  These were published
+As an example, we consider estrogen receptor (ER) binding data, published
 by ENCODE as narrowPeak files.  This is ascii text at its base, so
 can be imported as a set of textual lines with no difficulty.
 If there is sufficient regularity to the record fields, 
@@ -305,6 +423,7 @@ readLines(f1, 4) # look at a few lines
 ## [3] "chr19\t11694101\t11695359\t1\t0\t.\t99.71\t311.66\t32.000000\t861"
 ## [4] "chr19\t4076892\t4079276\t4\t0\t.\t84.74\t310\t32.000000\t1508"
 ```
+The import command is straightforward.
 
 ```r
 library(rtracklayer)
@@ -327,7 +446,7 @@ imp
 ##   [1871]     chr1 [94311336, 94313543]      * |      4035         0
 ##   [1872]    chr19 [45690614, 45691210]      * |     10688         0
 ##   [1873]    chr19 [ 6110100,  6111252]      * |      2274         0
-##              NA..1     NA..2     NA..3     NA..4     NA..5
+##               NA.1      NA.2      NA.3      NA.4      NA.5
 ##          <logical> <numeric> <numeric> <numeric> <integer>
 ##      [1]      <NA>    157.92       310        32      1991
 ##      [2]      <NA>    147.38       310        32       387
@@ -355,15 +474,16 @@ genome(imp)  # genome identifier tag not set, but you should set it
 ##    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
 ```
 
-We have a GRanges in one stroke.  There are some additional fields
-in the metadata columns that will need to be specified, but if we
+We obtain a GRanges in one stroke.  There are some additional fields
+in the metadata columns whose names
+should be specified, but if we
 are interested only in the ranges, we are done, with the exception 
 of adding the genome metadata to protect against illegitimate
 combination with data recorded in an incompatible coordinate system.
 
 For communicating with other scientists or systems we have two
-main options.  First, we can save the GRanges as an "RData" object,
-easily transmitted to another R user for immediate use.  Second,
+main options.  We can save the GRanges as an "RData" object,
+easily transmitted to another R user for immediate use.  Or
 we can export in another standard format.  For example, if we
 are interested only in interval addresses and the binding scores,
 it is sufficient to save in "bed" format.
@@ -386,11 +506,31 @@ We have carried out a "round trip" of importing, modeling, and exporting
 experimental data that can be integrated with other data to advance
 biological understanding.
 
-To conclude this group, I mention a newly developed package
-called AnnotationHub that can be used to obtain GRanges or other
+What we have to watch out for is the idea that annotation is somehow
+permanently correct, isolated from the cacophony of research progress
+at the boundaries of knowledge.  We have seen that even the
+reference sequences of human chromosomes are subject to revision.
+We have treated, in our use of the ERBS package, results of experiments
+that we don't know too much about, as defining ER binding sites for
+potential biological interpretation.  The uncertainty, variable
+quality of peak identification, has not 
+been explicitly reckoned but it should be.
+
+Bioconductor has taken pains to acknowledge many facets of this situation.
+We maintain archives of prior versions of software
+and annotation so that past work can be checked
+or revised.  We update central annotation resources twice a year so that
+there is stability for ongoing work as well as access to new knowledge.
+And we have made it simple to import and to create representations
+of experimental and annotation data.
+
+<a name="annhub"></a>
+
+## AnnotationHub
+
+
+The *[AnnotationHub](http://bioconductor.org/packages/AnnotationHub)* package can be used to obtain GRanges or other
 suitably designed containers for institutionally curated annotation.
-Here we will show that there are a number of experimental data
-objects related to the HepG2 cell line available through AnnotationHub.
 
 
 ```r
@@ -413,7 +553,7 @@ ah = AnnotationHub()
 ```
 
 ```
-## snapshotDate(): 2016-01-25
+## snapshotDate(): 2017-10-18
 ```
 
 ```r
@@ -421,13 +561,14 @@ ah
 ```
 
 ```
-## AnnotationHub with 36200 records
-## # snapshotDate(): 2016-01-25 
-## # $$dataprovider: BroadInstitute, UCSC, Ensembl, ftp://ftp.ncbi.nlm.nih....
-## # $$species: Homo sapiens, Mus musculus, Bos taurus, Pan troglodytes, Da...
-## # $$rdataclass: GRanges, BigWigFile, FaFile, ChainFile, OrgDb, TwoBitFil...
-## # additional mcols(): taxonomyid, genome, description, tags,
-## #   sourceurl, sourcetype 
+## AnnotationHub with 42193 records
+## # snapshotDate(): 2017-10-18 
+## # $$dataprovider: BroadInstitute, Ensembl, UCSC, Haemcode, ftp://ftp.ncb...
+## # $$species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
+## # $$rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, ChainFile,...
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
 ## # retrieve records with, e.g., 'object[["AH2"]]' 
 ## 
 ##             title                                               
@@ -437,12 +578,14 @@ ah
 ##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa          
 ##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa        
 ##   ...       ...                                                 
-##   AH50415 | Tupaia_belangeri.TREESHREW.83.gtf                   
-##   AH50416 | Tursiops_truncatus.turTru1.83.gtf                   
-##   AH50417 | Vicugna_pacos.vicPac1.83.gtf                        
-##   AH50418 | Xenopus_tropicalis.JGI_4.2.83.gtf                   
-##   AH50419 | Xiphophorus_maculatus.Xipmac4.4.2.83.gtf
+##   AH57959 | common_no_known_medical_impact_20160203.vcf.gz      
+##   AH57960 | clinvar_20160203.vcf.gz                             
+##   AH57961 | clinvar_20160203_papu.vcf.gz                        
+##   AH57962 | common_and_clinical_20160203.vcf.gz                 
+##   AH57963 | common_no_known_medical_impact_20160203.vcf.gz
 ```
+There are a number of experimental data
+objects related to the HepG2 cell line available through AnnotationHub.
 
 ```r
 query(ah, "HepG2")
@@ -450,12 +593,13 @@ query(ah, "HepG2")
 
 ```
 ## AnnotationHub with 440 records
-## # snapshotDate(): 2016-01-25 
+## # snapshotDate(): 2017-10-18 
 ## # $$dataprovider: UCSC, BroadInstitute, Pazar
 ## # $$species: Homo sapiens, NA
 ## # $$rdataclass: GRanges, BigWigFile
-## # additional mcols(): taxonomyid, genome, description, tags,
-## #   sourceurl, sourcetype 
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
 ## # retrieve records with, e.g., 'object[["AH22246"]]' 
 ## 
 ##             title                                                         
@@ -472,9 +616,39 @@ query(ah, "HepG2")
 ##   AH49484 | E118_RRBS_FractionalMethylation.bigwig
 ```
 
-Advanced users will profit from getting acquainted with this package.
+The `query` method can take a vector of filtering strings.
+To limit response to annotation resources
+addressing the histone H4K5, simply add that tag:
 
-# The NCBI Entrez Gene annotation maps
+
+```r
+query(ah, c("HepG2", "H4K5"))
+```
+
+```
+## AnnotationHub with 1 record
+## # snapshotDate(): 2017-10-18 
+## # names(): AH41564
+## # $$dataprovider: BroadInstitute
+## # $$species: Homo sapiens
+## # $$rdataclass: BigWigFile
+## # $$rdatadateadded: 2015-05-08
+## # $$title: E118-H4K5ac.imputed.pval.signal.bigwig
+## # $$description: Bigwig File containing -log10(p-value) signal tracks fr...
+## # $$taxonomyid: 9606
+## # $$genome: hg19
+## # $$sourcetype: BigWig
+## # $$sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/signal/cons...
+## # $$sourcesize: 226630905
+## # $$tags: c("EpigenomeRoadMap", "signal", "consolidatedImputed",
+## #   "H4K5ac", "E118", "ENCODE2012", "LIV.HEPG2.CNCR", "HepG2
+## #   Hepatocellular Carcinoma Cell Line") 
+## # retrieve record with 'object[["AH41564"]]'
+```
+
+<a name="orgdb"></a>
+
+## The OrgDb Gene annotation maps
 
 Packages named org.*.eg.db collect information at the gene level
 with links to location, protein product identifiers, KEGG pathway and
@@ -503,6 +677,10 @@ head(select(org.Hs.eg.db, keys="ORMDL3", keytype="SYMBOL",
 ```
 
 ```
+## 'select()' returned 1:many mapping between keys and columns
+```
+
+```
 ##   SYMBOL     PMID
 ## 1 ORMDL3 11042152
 ## 2 ORMDL3 12093374
@@ -512,9 +690,11 @@ head(select(org.Hs.eg.db, keys="ORMDL3", keytype="SYMBOL",
 ## 6 ORMDL3 16169070
 ```
 
-# Resources for gene sets and pathways
+<a name="genesets"></a>
 
-## Gene Ontology
+## Resources for gene sets and pathways
+
+### Gene Ontology
 
 [Gene Ontology](http://www.geneontology.org) (GO) is
 a widely used structured vocabulary that organizes terms relevant to
@@ -544,11 +724,11 @@ GO.db # metadata
 ## GODb object:
 ## | GOSOURCENAME: Gene Ontology
 ## | GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
-## | GOSOURCEDATE: 20150919
+## | GOSOURCEDATE: 2017-Mar29
 ## | Db type: GODb
 ## | package: AnnotationDbi
 ## | DBSCHEMA: GO_DB
-## | GOEGSOURCEDATE: 2015-Sep27
+## | GOEGSOURCEDATE: 2017-Mar29
 ## | GOEGSOURCENAME: Entrez Gene
 ## | GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
 ## | DBSCHEMAVERSION: 2.1
@@ -620,11 +800,11 @@ dbGetQuery(con, "select _id, go_id, term from go_term limit 5")
 
 ```
 ##   _id      go_id                                        term
-## 1  28 GO:0000001                   mitochondrion inheritance
-## 2  30 GO:0000002            mitochondrial genome maintenance
-## 3  31 GO:0000003                                reproduction
-## 4  35 GO:0042254                         ribosome biogenesis
-## 5  36 GO:0044183 protein binding involved in protein folding
+## 1  30 GO:0000001                   mitochondrion inheritance
+## 2  32 GO:0000002            mitochondrial genome maintenance
+## 3  33 GO:0000003                                reproduction
+## 4  37 GO:0042254                         ribosome biogenesis
+## 5  38 GO:0044183 protein binding involved in protein folding
 ```
 We can trace the `mitochondrion inheritance` term to
 parent and grandparent terms:
@@ -644,8 +824,10 @@ dbGetQuery(con, "select _id, go_id, term from go_term where _id=26638")
 ```
 
 ```
-##     _id      go_id                              term
-## 1 26638 GO:0048306 calcium-dependent protein binding
+##     _id      go_id
+## 1 26638 GO:0048330
+##                                                              term
+## 1 positive regulation of axial mesodermal cell fate specification
 ```
 
 ```r
@@ -653,8 +835,10 @@ dbGetQuery(con, "select * from go_bp_parents where _id=26638")
 ```
 
 ```
-## [1] _id               _parent_id        relationship_type
-## <0 rows> (or 0-length row.names)
+##     _id _parent_id    relationship_type
+## 1 26638      26636                 is_a
+## 2 26638      26645                 is_a
+## 3 26638      26635 positively_regulates
 ```
 
 ```r
@@ -662,8 +846,8 @@ dbGetQuery(con, "select _id, go_id, term from go_term where _id=5938")
 ```
 
 ```
-##    _id      go_id                                     term
-## 1 5938 GO:0006995 cellular response to nitrogen starvation
+##    _id      go_id                    term
+## 1 5938 GO:0019237 centromeric DNA binding
 ```
 It makes sense to regard "mitochondrion inheritance" as a conceptual
 refinement of processes "mitochondrion distribution", and "organelle inheritance",
@@ -671,7 +855,7 @@ the two terms that are regarded as parents in this database scheme.
 
 The entire database schema can be viewed with `GO_dbschema()`.
 
-## KEGG: Kyoto Encyclopedia of Genes and Genomes
+### KEGG: Kyoto Encyclopedia of Genes and Genomes
 
 The KEGG annotation system has been available in Bioconductor 
 since the latter's inception, but licensing of the database
@@ -722,15 +906,15 @@ brpat[[1]]$GENE[seq(1,132,2)] # entrez gene ids
 ```
 
 ```
-##  [1] "3845"  "5290"  "5293"  "5291"  "5294"  "5295"  "23533" "5296" 
-##  [9] "8503"  "9459"  "5879"  "5880"  "5881"  "4790"  "5970"  "207"  
-## [17] "208"   "10000" "1147"  "3551"  "8517"  "572"   "598"   "842"  
-## [25] "369"   "673"   "5894"  "5604"  "5594"  "5595"  "5599"  "5602" 
-## [33] "5601"  "5900"  "5898"  "5899"  "10928" "998"   "7039"  "1950" 
-## [41] "1956"  "2064"  "3716"  "6774"  "6772"  "7422"  "1029"  "1019" 
-## [49] "1021"  "595"   "5925"  "1869"  "1870"  "1871"  "7157"  "7040" 
-## [57] "7042"  "7043"  "7046"  "7048"  "4087"  "4088"  "4089"  "675"  
-## [65] "5888"  "5337"
+##  [1] "3845"  "5290"  "5293"  "5291"  "5295"  "5296"  "8503"  "9459" 
+##  [9] "5879"  "5880"  "5881"  "4790"  "5970"  "207"   "208"   "10000"
+## [17] "1147"  "3551"  "8517"  "572"   "598"   "842"   "369"   "673"  
+## [25] "5894"  "5604"  "5594"  "5595"  "5599"  "5602"  "5601"  "5900" 
+## [33] "5898"  "5899"  "10928" "998"   "7039"  "1950"  "1956"  "2064" 
+## [41] "2475"  "6198"  "6199"  "3716"  "6774"  "6772"  "7422"  "1029" 
+## [49] "1019"  "1021"  "595"   "5925"  "1869"  "1870"  "1871"  "7157" 
+## [57] "1026"  "1647"  "4616"  "10912" "581"   "578"   "1643"  "51426"
+## [65] "7040"  "7042"
 ```
 
 There is much to explore, and the KEGGREST package vignette provides
@@ -747,9 +931,136 @@ grid.raster(brpng)
 
 ![plot of chunk getp](figure/bioc1_annoOverview-getp-1.png)
 
+### Additional ontologies
+
+The
+*[rols](http://bioconductor.org/packages/rols)* package interfaces to the EMBL-EBI
+[Ontology Lookup Service](https://www.ebi.ac.uk/ols/index).
+
+```r
+library(rols)
+oo = Ontologies()
+oo
+```
+
+```
+## Object of class 'Ontologies' with 198 entries
+##    GENEPIO, MP ... SEPIO, SIBO
+```
+
+```r
+oo[[1]]
+```
+
+```
+## Ontology: Genomic Epidemiology Ontology (genepio)  
+##   The Genomic Epidemiology Ontology (GenEpiO) covers vocabulary
+##   necessary to identify, document and research foodborne pathogens
+##   and associated outbreaks.
+##    Loaded: 2017-04-10 Updated: 2017-10-20 Version: 2017-04-09 
+##    4351 terms  137 properties  38 individuals
+```
+
+To control the amount of network traffic involved in
+query retrieval, there are stages of search.
+
+```r
+glis = OlsSearch("glioblastoma")
+glis
+```
+
+```
+## Object of class 'OlsSearch':
+##   query: glioblastoma 
+##   requested: 20 (out of 502)
+##   response(s): 0
+```
+
+```r
+res = olsSearch(glis)
+dim(res)
+```
+
+```
+## NULL
+```
+
+```r
+resdf = as(res, "data.frame") # get content
+resdf[1:4,1:4]
+```
+
+```
+##                                                     id
+## 1 ncit:class:http://purl.obolibrary.org/obo/NCIT_C3058
+## 2     omit:http://purl.obolibrary.org/obo/OMIT_0007102
+## 3    ordo:class:http://www.orpha.net/ORDO/Orphanet_360
+## 4   hp:class:http://purl.obolibrary.org/obo/HP_0100843
+##                                           iri   short_form        label
+## 1   http://purl.obolibrary.org/obo/NCIT_C3058   NCIT_C3058 Glioblastoma
+## 2 http://purl.obolibrary.org/obo/OMIT_0007102 OMIT_0007102 Glioblastoma
+## 3      http://www.orpha.net/ORDO/Orphanet_360 Orphanet_360 Glioblastoma
+## 4   http://purl.obolibrary.org/obo/HP_0100843   HP_0100843 Glioblastoma
+```
+
+```r
+resdf[1,5]  # full description for one instance
+```
+
+```
+## [[1]]
+## [1] "The most malignant astrocytic tumor (WHO grade IV).  It is composed of poorly differentiated neoplastic astrocytes and it is characterized by the presence of cellular polymorphism, nuclear atypia, brisk mitotic activity, vascular thrombosis, microvascular proliferation and necrosis. It typically affects adults and is preferentially located in the cerebral hemispheres. It may develop from diffuse astrocytoma WHO grade II or anaplastic astrocytoma (secondary glioblastoma, IDH-mutant), but more frequently, it manifests after a short clinical history de novo, without evidence of a less malignant precursor lesion (primary glioblastoma, IDH- wildtype). (Adapted from WHO)"
+```
 
 
-# A unified, self-describing approach
+The *[ontologyIndex](https://CRAN.R-project.org/package=ontologyIndex)* supports import of ontologies
+in the Open Biological Ontologies (OBO) format, and includes
+very efficient facilities for querying and visualizing
+ontological systems.  
+
+### General gene set management
+
+The *[GSEABase](http://bioconductor.org/packages/GSEABase)* package has excellent
+infrastructure for managing gene sets and collections
+thereof.  We illustrate by importing a glioblastoma-related
+gene set from [MSigDb](http://software.broadinstitute.org/gsea/msigdb/search.jsp).
+
+
+```r
+library(GSEABase)
+glioG = getGmt(system.file("gmt/glioSets.gmt", package="ph525x"))
+```
+
+```
+## Warning in readLines(con, ...): incomplete final line found on '/
+## Library/Frameworks/R.framework/Versions/3.4/Resources/library/ph525x/gmt/
+## glioSets.gmt'
+```
+
+```r
+glioG
+```
+
+```
+## GeneSetCollection
+##   names: BALDWIN_PRKCI_TARGETS_UP, BEIER_GLIOMA_STEM_CELL_DN, ..., ZHENG_GLIOBLASTOMA_PLASTICITY_UP (47 total)
+##   unique identifiers: ADA, AQP9, ..., ZFP28 (3671 total)
+##   types in collection:
+##     geneIdType: NullIdentifier (1 total)
+##     collectionType: NullCollection (1 total)
+```
+
+```r
+head(geneIds(glioG[[1]]))
+```
+
+```
+## [1] "ADA"      "AQP9"     "ATP2B4"   "ATP6V1G1" "CBX6"     "CCDC165"
+```
+
+<a name="organismdb"></a>
+
+## A unified, self-describing approach for model organisms
 
 The OrganismDb packages simplify access to annotation.
 Queries that succeed against TxDb, and org.[Nn].eg.db
@@ -828,7 +1139,7 @@ columns(Homo.sapiens)
 ## [49] "UNIGENE"      "UNIPROT"
 ```
 
-# Summary
+## Summary
 
 We have covered a lot of material, from the nucleotide to the
 pathway level.  The Annotation "view" at bioconductor.org
