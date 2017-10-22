@@ -653,6 +653,7 @@ reduce(rowRanges(airway)$ENSG00000172057)
 ##   -------
 ##   seqinfo: 722 sequences (1 circular) from an unspecified genome
 ```
+
 This shows that projecting from the set of exons to the genome leads to
 8 regions
 harboring subregions that may be transcribed.
