@@ -18,68 +18,6 @@ First we load the IRanges package. This is included in the base installation of 
 library(IRanges)
 ```
 
-```
-## Loading required package: methods
-```
-
-```
-## Loading required package: BiocGenerics
-```
-
-```
-## Loading required package: parallel
-```
-
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, sd, var, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, cbind, colMeans,
-##     colnames, colSums, do.call, duplicated, eval, evalq, Filter,
-##     Find, get, grep, grepl, intersect, is.unsorted, lapply,
-##     lengths, Map, mapply, match, mget, order, paste, pmax,
-##     pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce,
-##     rowMeans, rownames, rowSums, sapply, setdiff, sort, table,
-##     tapply, union, unique, unsplit, which, which.max, which.min
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     expand.grid
-```
-
 The `IRanges` function defines interval ranges. If you provide it with two numbers, these are the start and end of a inclusive range, e.g. $$[5,10] = \{ 5,6,7,8,9,10 \}$$, which has *width* 6. When referring to the size of a range, the term *width* is used, instead of *length*.
 
 
@@ -955,6 +893,101 @@ plotGRanges(flank(gir,2,start=FALSE), xlim=c(0,60), col="brown")
 
 Note that we do not need to take special steps to
 deal with the differences in strand.
+
+## Applications to visualization of methylation array data
+
+In our discussion of [SummarizedExperiment applications](http://genomicsclass.github.io/book/pages/dataman2017.html#methy), we
+imported data generated using an Illumina 450k methylation array.
+
+In this section we'll indicate how to use GenomicRanges
+and *[Gviz](http://bioconductor.org/packages/Gviz)* to explore methylation patterns in the
+context of gene-level annotation.  The idea is simple: just
+extract the M-values (log-scaled locus-specific estimates of
+ratio of methylated to total DNA) from all samples and plot
+them in the context of gene models for selected genes.
+
+We recall how the data were acquired and imported:
+
+```r
+library(ArrayExpress)
+if (!file.exists("E-MTAB-5797.sdrf.txt")) nano = getAE("E-MTAB-5797")
+library(minfi)
+pref = unique(substr(dir(patt="idat"),1,17)) # find the prefix strings
+raw = read.metharray(pref)
+glioMeth = preprocessQuantile(raw) # generate SummarizedExperiment
+```
+
+```
+## [preprocessQuantile] Mapping to genome.
+```
+
+```
+## [preprocessQuantile] Fixing outliers.
+```
+
+```
+## [preprocessQuantile] Quantile normalizing.
+```
+Those steps require an internet connection and take just a few
+minutes.
+
+Once we have `glioMeth` in our session, add the following
+code to your session too.  We will discuss how it works below.
+
+
+```r
+MbyGene = function(mset, symbol="TP53", rad=5000) {
+# phase 1: annotated GRanges for the gene
+ require(erma)
+ require(Gviz)
+ gmod = suppressMessages(genemodel(symbol))     # erma utility
+ gseq = as.character(seqnames(gmod)[1])
+ gmod$transcript = symbol
+# phase 2: filter down to the region of interest
+ mlim = mset[which(seqnames(mset)==gseq),] # restrict to chromosome
+ # now focus the methylation data to vicinity of gene
+ d1 = subsetByOverlaps(GRanges(rowRanges(mlim),,, getM(mlim)), 
+         range(gmod)+rad)
+# phase 3: use Gviz
+ plotTracks(list(DataTrack(d1), 
+              GeneRegionTrack(gmod, 
+               transcriptAnnotation="transcript", name=gseq), 
+              GenomeAxisTrack(name=gseq, showTitle=TRUE)))
+}
+```
+
+The comments to the code indicate the three phases: acquire
+gene region and add the `transcript` annotation for
+informative plotting of the union of all exons; reduce
+the `GenomicRatioSet` (which inherits from RangedSummarizedExperiment)
+to the interval of interest, determined by both the
+gene model and the rad argument; use Gviz to construct
+plottable objects and plot them.
+
+The details of Gviz are well-documented in the user manual
+for that package.  We will return to the topic in the 6x
+component of this series.  However, if you have entered
+the code correctly, you can generate gene-centric
+plots as follows:
+
+```r
+MbyGene(glioMeth, symbol="TERT")
+```
+
+![plot of chunk doplpl](figure/bioc1_igranges-doplpl-1.png)
+The display allows us to see
+
+- The genomic context (chromosome and region in megabase units)
+- The structure of the gene of interest in a single line,
+representing a union of expressed intervals
+- The locations of 450k probes (x coordinates of data points in blue)
+- The between-sample variation in methylation estimates
+- The variation of methylation across the genomic region selected
+
+In the 6x module we will learn how to use additional packages
+to create an interactive display of this type, allowing us
+to select genes and zoom into regions of interest _ad libitum_.
+
 
 ## Footnotes
 
