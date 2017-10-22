@@ -142,13 +142,13 @@ title: PH525x series - Biomedical Data Science
 - [Data structure and management for genome scale experiments](pages/dataman2017.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
     - [Coordinating multiple tables: ExpressionSet](pages/dataman2017.html#coord)
     - [Institutional archives: GEO, ArrayExpress](pages/dataman2017.html#geoquery)
-- [Interlude: Working with general genomic features using GenomicRanges]
+- [Interlude: Working with general genomic features using GenomicRanges](pages/bioc1_igranges.html) 
     - [IRanges introduced](pages/bioc1_igranges.html#IRanges) 
     - [Intra-range operations](pages/bioc1_igranges.html#intrarange) 
     - [Inter-range operations](pages/bioc1_igranges.html#interrange) 
     - [GRanges](pages/bioc1_igranges.html#granges) 
     - [Calculating overlaps](pages/bioc1_igranges.html#findoverlaps) 
-- [Range-oriented solutions for current experimental paradigms]
+- [Range-oriented solutions for current experimental paradigms](pages/dataman2017.html#summexp)
     - [SummarizedExperiment: for RNA-seq and 450k methylation](pages/dataman2017.html#summexp)
     - [External storage for very large assays](pages/dataman2017.html#external)
     - [GenomicFiles for families of BAM or BED](pages/dataman2017.html#genomicFiles)
