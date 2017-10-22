@@ -977,38 +977,6 @@ plots as follows:
 MbyGene(glioMeth, symbol="TERT")
 ```
 
-```
-## Loading required package: minfi
-```
-
-```
-## Loading required package: bumphunter
-```
-
-```
-## Loading required package: foreach
-```
-
-```
-## Loading required package: iterators
-```
-
-```
-## Loading required package: locfit
-```
-
-```
-## locfit 1.5-9.1 	 2013-03-22
-```
-
-```
-## Setting options('download.file.method.GEOquery'='auto')
-```
-
-```
-## Setting options('GEOquery.inmemory.gpl'=FALSE)
-```
-
 ![plot of chunk doplpl](figure/bioc1_igranges-doplpl-1.png)
 
 The display allows us to see
