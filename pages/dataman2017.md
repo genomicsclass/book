@@ -1375,7 +1375,7 @@ variant-by-individual tables
 collection of data from 14000 individuals, providing genomic
 information on 29 distinct tumor sites.  We can download
 curated public data on Glioblastoma Multiforme through
-an effort of Levi Waldron's lab at CUNY.  R objects of the
+an effort of [Levi Waldron's lab](http://waldronlab.org/) at CUNY.  R objects of the
 `MultiAssayExperiment` class have been stored in Amazon S3,
 and a [Google Sheet](http://tinyurl.com/MAEOurls) provides details and links.
 
