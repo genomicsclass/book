@@ -1016,6 +1016,7 @@ sapply(ali[[1]], length)
 ## ERR127305 
 ##       141
 ```
+
 This shows, informally, that there are more reads aligning
 to the HNRNPC region for the first four samples and thus
 tells us which of the samples are wild type, and which have
@@ -1438,6 +1439,7 @@ upsetSamples(gbm)
 ```
 
 ![plot of chunk doup](figure/dataman2017-doup-1.png)
+
 This shows that the vast majority of participants provide data on
 copy number variation and array-based expression, but much fewer provide
 RNA-seq or proteomic (RPPA, reverse-phase proteomic assay) measurements.
