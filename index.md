@@ -161,6 +161,7 @@ title: PH525x series - Biomedical Data Science
     - [Calculating overlaps](pages/bioc1_igranges.html#findoverlaps) 
     - [Run-length encoding, views](pages/bioc1_igranges.html#rleviews) 
     - [Application to genomic landmarks](pages/bioc1_igranges.html#genomic) 
+    - [Application to 450k methylation array visualization](pages/bioc1_igranges.html#methyviz) 
 - [General overview of Bioconductor annotation](pages/bioc1_annoOverview.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_annoOverview.Rmd)
     - [Levels: reference sequence, regions of interest, pathways](pages/bioc1_annoOverview.html#threelev)
     - [Discovering reference sequence](pages/bioc1_annoOverview.html#findingref)

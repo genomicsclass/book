@@ -894,6 +894,8 @@ plotGRanges(flank(gir,2,start=FALSE), xlim=c(0,60), col="brown")
 Note that we do not need to take special steps to
 deal with the differences in strand.
 
+<a name="methyviz"></a>
+
 ## Applications to visualization of methylation array data
 
 In our discussion of [SummarizedExperiment applications](http://genomicsclass.github.io/book/pages/dataman2017.html#methy), we
@@ -970,11 +972,45 @@ component of this series.  However, if you have entered
 the code correctly, you can generate gene-centric
 plots as follows:
 
+
 ```r
 MbyGene(glioMeth, symbol="TERT")
 ```
 
+```
+## Loading required package: minfi
+```
+
+```
+## Loading required package: bumphunter
+```
+
+```
+## Loading required package: foreach
+```
+
+```
+## Loading required package: iterators
+```
+
+```
+## Loading required package: locfit
+```
+
+```
+## locfit 1.5-9.1 	 2013-03-22
+```
+
+```
+## Setting options('download.file.method.GEOquery'='auto')
+```
+
+```
+## Setting options('GEOquery.inmemory.gpl'=FALSE)
+```
+
 ![plot of chunk doplpl](figure/bioc1_igranges-doplpl-1.png)
+
 The display allows us to see
 
 - The genomic context (chromosome and region in megabase units)
