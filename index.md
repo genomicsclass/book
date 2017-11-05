@@ -150,7 +150,7 @@ title: PH525x series - Biomedical Data Science
     - [Calculating overlaps](pages/bioc1_igranges.html#findoverlaps) 
 - [Range-oriented solutions for current experimental paradigms](pages/dataman2017.html#summexp)
     - [SummarizedExperiment: for RNA-seq and 450k methylation](pages/dataman2017.html#summexp)
-    - [External storage for very large assays](pages/dataman2017.html#external)
+    - [External storage for very large assays](pages/dataman2017.html#extern)
     - [GenomicFiles for families of BAM or BED](pages/dataman2017.html#genomicFiles)
     - [DNA Variants: VCF handling with VariantAnnotation and VariantTools](pages/dataman2017.html#variants)
     - [Handling multiomic archives like TCGA](pages/dataman2017.html#multiomic)
