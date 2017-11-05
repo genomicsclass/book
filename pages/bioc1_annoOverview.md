@@ -43,6 +43,12 @@ annotated as well.  Genes have internal structure,
 with parts that are transcribed and parts that are not,
 and "gene models" define the ways in which
 these structures are labeled and laid out in genomic coordinates.
+    - Within this concept of _regions of interest_ we also identify
+_platform-oriented annotation_.  This type of annotation is typically
+provided first by the manufacturer of an assay, but then refined
+as research identifies ambiguities or updates to
+initially declared roles for assay probe elements.  The
+[brainarray project](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/genomic_curated_CDF.asp) at University of Michigan illustrates this process for affymetrix array annotation.  We address this topic of platform-oriented annotation at the very end of this chapter.
 
 - Above this is the organization of regions (most often
 genes or gene products) into
@@ -553,7 +559,7 @@ ah = AnnotationHub()
 ```
 
 ```
-## snapshotDate(): 2017-10-18
+## snapshotDate(): 2017-10-27
 ```
 
 ```r
@@ -561,9 +567,9 @@ ah
 ```
 
 ```
-## AnnotationHub with 42193 records
-## # snapshotDate(): 2017-10-18 
-## # $$dataprovider: BroadInstitute, Ensembl, UCSC, Haemcode, ftp://ftp.ncb...
+## AnnotationHub with 42282 records
+## # snapshotDate(): 2017-10-27 
+## # $$dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih....
 ## # $$species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
 ## # $$rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, ChainFile,...
 ## # additional mcols(): taxonomyid, genome, description,
@@ -571,18 +577,18 @@ ah
 ## #   tags, rdatapath, sourceurl, sourcetype 
 ## # retrieve records with, e.g., 'object[["AH2"]]' 
 ## 
-##             title                                               
-##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa   
-##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa
-##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa
-##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa          
-##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa        
-##   ...       ...                                                 
-##   AH57959 | common_no_known_medical_impact_20160203.vcf.gz      
-##   AH57960 | clinvar_20160203.vcf.gz                             
-##   AH57961 | clinvar_20160203_papu.vcf.gz                        
-##   AH57962 | common_and_clinical_20160203.vcf.gz                 
-##   AH57963 | common_no_known_medical_impact_20160203.vcf.gz
+##             title                                                         
+##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa             
+##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa          
+##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa          
+##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa                    
+##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa                  
+##   ...       ...                                                           
+##   AH58988 | org.Flavobacterium_piscicida.eg.sqlite                        
+##   AH58989 | org.Bacteroides_fragilis_YCH46.eg.sqlite                      
+##   AH58990 | org.Pseudomonas_mendocina_ymp.eg.sqlite                       
+##   AH58991 | org.Salmonella_enterica_subsp._enterica_serovar_Typhimurium...
+##   AH58992 | org.Acinetobacter_baumannii.eg.sqlite
 ```
 There are a number of experimental data
 objects related to the HepG2 cell line available through AnnotationHub.
@@ -593,7 +599,7 @@ query(ah, "HepG2")
 
 ```
 ## AnnotationHub with 440 records
-## # snapshotDate(): 2017-10-18 
+## # snapshotDate(): 2017-10-27 
 ## # $$dataprovider: UCSC, BroadInstitute, Pazar
 ## # $$species: Homo sapiens, NA
 ## # $$rdataclass: GRanges, BigWigFile
@@ -627,7 +633,7 @@ query(ah, c("HepG2", "H4K5"))
 
 ```
 ## AnnotationHub with 1 record
-## # snapshotDate(): 2017-10-18 
+## # snapshotDate(): 2017-10-27 
 ## # names(): AH41564
 ## # $$dataprovider: BroadInstitute
 ## # $$species: Homo sapiens
@@ -1138,6 +1144,133 @@ columns(Homo.sapiens)
 ## [45] "TXSTART"      "TXSTRAND"     "TXTYPE"       "UCSCKG"      
 ## [49] "UNIGENE"      "UNIPROT"
 ```
+
+<a name="platform"></a>
+
+## Platform-oriented annotation
+
+By sorting information on [the GPL information page](https://www.ncbi.nlm.nih.gov/geo/browse/?view=platforms&sort=series&display=20&page=892) at
+NCBI GEO, we see that the most commonly use oligonucleotide array
+platform (with 4760 series in the archive) is the Affy Human Genome U133 plus 2.0 array (GPL 570).
+We can work with the annotation for this array with the
+*[hgu133plus2.db](http://bioconductor.org/packages/hgu133plus2.db)* package.
+
+
+```r
+library(hgu133plus2.db)
+```
+
+```
+## 
+```
+
+```r
+hgu133plus2.db
+```
+
+```
+## ChipDb object:
+## | DBSCHEMAVERSION: 2.1
+## | Db type: ChipDb
+## | Supporting package: AnnotationDbi
+## | DBSCHEMA: HUMANCHIP_DB
+## | ORGANISM: Homo sapiens
+## | SPECIES: Human
+## | MANUFACTURER: Affymetrix
+## | CHIPNAME: Human Genome U133 Plus 2.0 Array
+## | MANUFACTURERURL: http://www.affymetrix.com/support/technical/byproduct.affx?product=hg-u133-plus
+## | EGSOURCEDATE: 2015-Sep27
+## | EGSOURCENAME: Entrez Gene
+## | EGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+## | CENTRALID: ENTREZID
+## | TAXID: 9606
+## | GOSOURCENAME: Gene Ontology
+## | GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
+## | GOSOURCEDATE: 20150919
+## | GOEGSOURCEDATE: 2015-Sep27
+## | GOEGSOURCENAME: Entrez Gene
+## | GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+## | KEGGSOURCENAME: KEGG GENOME
+## | KEGGSOURCEURL: ftp://ftp.genome.jp/pub/kegg/genomes
+## | KEGGSOURCEDATE: 2011-Mar15
+## | GPSOURCENAME: UCSC Genome Bioinformatics (Homo sapiens)
+## | GPSOURCEURL: ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19
+## | GPSOURCEDATE: 2010-Mar22
+## | ENSOURCEDATE: 2015-Jul16
+## | ENSOURCENAME: Ensembl
+## | ENSOURCEURL: ftp://ftp.ensembl.org/pub/current_fasta
+## | UPSOURCENAME: Uniprot
+## | UPSOURCEURL: http://www.uniprot.org/
+## | UPSOURCEDATE: Thu Oct  1 23:31:58 2015
+```
+
+```
+## 
+## Please see: help('select') for usage information
+```
+
+The basic purpose of this resource (and of all the instances of the
+ChipDb class) is to map between _probeset_ identifiers and 
+higher-level genomic annotation.
+
+The detailed information on probes, the constituents of probe sets,
+is given in packages with names ending in 'probe'.
+
+```r
+library(hgu133plus2probe)
+head(hgu133plus2probe)
+```
+
+```
+##                    sequence    x   y Probe.Set.Name
+## 1 CACCCAGCTGGTCCTGTGGATGGGA  718 317      1007_s_at
+## 2 GCCCCACTGGACAACACTGATTCCT 1105 483      1007_s_at
+## 3 TGGACCCCACTGGCTGAGAATCTGG  584 901      1007_s_at
+## 4 AAATGTTTCCTTGTGCCTGCTCCTG  192 205      1007_s_at
+## 5 TCCTTGTGCCTGCTCCTGTACTTGT  844 979      1007_s_at
+## 6 TGCCTGCTCCTGTACTTGTCCTCAG  537 971      1007_s_at
+##   Probe.Interrogation.Position Target.Strandedness
+## 1                         3330           Antisense
+## 2                         3443           Antisense
+## 3                         3512           Antisense
+## 4                         3563           Antisense
+## 5                         3570           Antisense
+## 6                         3576           Antisense
+```
+
+```r
+dim(hgu133plus2probe)
+```
+
+```
+## [1] 604258      6
+```
+
+Mapping out a probe set identifier to gene-level information
+can reveal some interesting ambiguities:
+
+```r
+select(hgu133plus2.db, keytype="PROBEID", 
+  columns=c("SYMBOL", "GENENAME", "PATH", "MAP"), keys="1007_s_at")
+```
+
+```
+## 'select()' returned 1:many mapping between keys and columns
+```
+
+```
+##     PROBEID  SYMBOL                                    GENENAME PATH
+## 1 1007_s_at    DDR1 discoidin domain receptor tyrosine kinase 1 <NA>
+## 2 1007_s_at MIR4640                               microRNA 4640 <NA>
+##       MAP
+## 1 6p21.33
+## 2 6p21.33
+```
+Apparently this probe set includes sequence that may be
+used to quantify abundance of both an mRNA and 
+a micro RNA.  As a sanity check
+we see that the distinct symbols map to the same cytoband.
+
 
 ## Summary
 
