@@ -817,43 +817,40 @@ parent and grandparent terms:
 
 
 ```r
-dbGetQuery(con, "select * from go_bp_parents where _id=27")
+dbGetQuery(con, "select * from go_bp_parents where _id=30")
 ```
 
 ```
-## [1] _id               _parent_id        relationship_type
-## <0 rows> (or 0-length row.names)
-```
-
-```r
-dbGetQuery(con, "select _id, go_id, term from go_term where _id=26638")
-```
-
-```
-##     _id      go_id
-## 1 26638 GO:0048330
-##                                                              term
-## 1 positive regulation of axial mesodermal cell fate specification
+##   _id _parent_id relationship_type
+## 1  30      26616              is_a
+## 2  30      26619              is_a
 ```
 
 ```r
-dbGetQuery(con, "select * from go_bp_parents where _id=26638")
+dbGetQuery(con, "select _id, go_id, term from go_term where _id=26616")
 ```
 
 ```
-##     _id _parent_id    relationship_type
-## 1 26638      26636                 is_a
-## 2 26638      26645                 is_a
-## 3 26638      26635 positively_regulates
+##     _id      go_id                  term
+## 1 26616 GO:0048308 organelle inheritance
 ```
 
 ```r
-dbGetQuery(con, "select _id, go_id, term from go_term where _id=5938")
+dbGetQuery(con, "select * from go_bp_parents where _id=26616")
 ```
 
 ```
-##    _id      go_id                    term
-## 1 5938 GO:0019237 centromeric DNA binding
+##     _id _parent_id relationship_type
+## 1 26616       5932              is_a
+```
+
+```r
+dbGetQuery(con, "select _id, go_id, term from go_term where _id=5932")
+```
+
+```
+##    _id      go_id                   term
+## 1 5932 GO:0006996 organelle organization
 ```
 It makes sense to regard "mitochondrion inheritance" as a conceptual
 refinement of processes "mitochondrion distribution", and "organelle inheritance",
