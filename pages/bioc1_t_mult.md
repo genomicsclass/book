@@ -8,7 +8,29 @@ title: "Inference: t-tests, multiple comparisons"
 
 # Introduction
 
-In this section we will cover inference in the context of genomics experiments. We apply some of the concepts we have covered in previous sections including t-tests and multiple comparisons; later we will
+In the previous section, we focused on a pair of genes to
+illustrate two aspects of variation.  One of the genes appeared to
+have high between-mouse variation that was hidden in the act
+of pooling samples within strain.  When strains were compared on
+the basis of the pooled data, there was an appearance of a significant
+strain
+effect for this gene ($$p < 10^{-6}$$), but when individual-level data were used to
+perform the comparison, the strain effect was found to be very
+weak at best ($$p = 0.089$$).  The lesson is to recognize that the
+most scientifically compelling questions concern biological variation,
+which can only be directly measured with good experimental design.  Accurate
+interpretation of origin and size of biological variation requires
+appropriate statistical analysis.
+
+In this section we will cover inference in the context of genome-scale experiments.  There are several serious conceptual problems:
+
+- there are many tests, often at least one test for each one of tens of thousands of features
+- each feature (typically a gene) exhibits its own technical and biological variability
+- there may be unmeasured or unreported sources of biological variation (such as time of day)
+- many features are inherently interrelated, so the tests are not independent
+
+We will apply some of the concepts we have covered in previous 
+sections including t-tests and multiple comparisons; later we will
 compute standard deviation estimates from hierarchical models. 
 
 We start by loading the pooling experiment data 
@@ -33,36 +55,25 @@ y=exprs(maPooling)[,individuals]
 g=factor(as.numeric(grepl("b",names(individuals))))
 ```
 
+<a name="rowWiseT"></a>
 
-# T-test
+# T-tests
 
 We can now apply a t-test to each gene using the `rowttest` function in the `genefilter` package
 
 
 ```r
 library(genefilter)
-```
-
-```
-## 
-## Attaching package: 'genefilter'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
 tt=rowttests(y,g)
 ```
 
+<a name="naive"></a>
 Now which genes do we report as statistically significant? For somewhat arbitrary reasons, in science p-values of 0.01 and 0.05 are used as cutoff. In this particular example we get 
 
 
 ```r
-sum(tt$p.value<0.01)
+NsigAt01 = sum(tt$p.value<0.01)
+NsigAt01
 ```
 
 ```
@@ -70,25 +81,29 @@ sum(tt$p.value<0.01)
 ```
 
 ```r
-sum(tt$p.value<0.05)
+NsigAt05 = sum(tt$p.value<0.05)
+NsigAt05
 ```
 
 ```
 ## [1] 2908
 ```
 
+<a name="sham"></a>
 
 # Multiple testing
-We described multiple testing in detail in course 3. Here we provide a quick summary.
+We described multiple testing in detail [in course 3](http://genomicsclass.github.io/book/pages/multiple_testing.html). Here we provide a quick summary.
 
-Do we report all these genes? Let's explore what happens if we split the first group into two, forcing the null hypothesis to be true
+Do we report all the nominally significant
+genes identified above? Let's explore what happens if we split the first group into two, forcing the null hypothesis to be true
 
 
 ```r
 set.seed(0)
 shuffledIndex <- factor(sample(c(0,1),sum(g==0),replace=TRUE ))
 nulltt <- rowttests(y[,g==0],shuffledIndex)
-sum(nulltt$p.value<0.01)
+NfalselySigAt01 = sum(nulltt$p.value<0.01)
+NfalselySigAt01 
 ```
 
 ```
@@ -96,52 +111,15 @@ sum(nulltt$p.value<0.01)
 ```
 
 ```r
-sum(nulltt$p.value<0.05)
+NfalselySigAt05 = sum(nulltt$p.value<0.05)
+NfalselySigAt05
 ```
 
 ```
 ## [1] 840
 ```
 
-If we use the 0.05 cutoff we will be reporting 840 false positives. We have described several ways to adjust for this include the `qvalue` method available in the `qvalue` package. After this adjustment we include a smaller list of genes.
 
 
-```r
-library(qvalue)
-qvals = qvalue(tt$p.value)$qvalue
-sum(qvals<0.05)
-```
 
-```
-## [1] 1179
-```
-
-```r
-sum(qvals<0.01)
-```
-
-```
-## [1] 538
-```
-
-And now the null case generates fewer false positives:
-
-
-```r
-library(qvalue)
-nullqvals = qvalue(nulltt$p.value)$qvalue
-sum(nullqvals<0.05)
-```
-
-```
-## [1] 0
-```
-
-```r
-sum(nullqvals<0.01)
-```
-
-```
-## [1] 0
-```
 
