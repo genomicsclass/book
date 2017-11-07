@@ -179,8 +179,17 @@ title: PH525x series - Biomedical Data Science
 
 ## Chapter 13 - Genome-scale hypothesis testing with Bioconductor
 
-- [Biological vs. technical variability](pages/bioc1_btvari.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_btvari.Rmd)
-- [t tests and multiple comparisons](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
+- [Distinguishing biological and technical variability](pages/bioc1_btvari.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_btvari.Rmd)
+    - [An experiment with pooled and individual samples](pages/bioc1_btvari.html#pooling) 
+    - [Measuring technical variation](pages/bioc1_btvari.html#techContrast) 
+    - [Measuring biological variation](pages/bioc1_btvari.html#biovar) 
+    - [Interpretation](pages/bioc1_btvari.html#interpretation) 
+- [Multiple comparisons with genewise t-tests](pages/bioc1_t_mult.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_t_mult.Rmd)
+    - [Gene-wise testing](pages/bioc1_t_mult.html#rowWiseT)
+    - [Naive enumeration of genes](pages/bioc1_t_mult.html#naive)
+    - [Demonstrating danger of multiple testing with a set of sham comparisons](pages/bioc1_t_mult.html#sham)
+    - [Adjusting for multiplicity with qvalue](pages/bioc1_t_mult.html#adjusted)
+    - [Adjusted counts in the sham case](pages/bioc1_t_mult.html#demo)
 - [Moderated t tests via limma](pages/bioc1_limma.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_limma.Rmd)
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
 - [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
