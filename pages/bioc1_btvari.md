@@ -1,6 +1,7 @@
 ---
+title: "Biological versus technical variability"
+output: pdf_document
 layout: page
-title: Biological versus technical variability
 ---
 
 
@@ -14,6 +15,7 @@ In general, the variability we observe across biological units, such as individu
 
 It is important not to confuse biological and technical variability when performing statistical inference as the interpretation is quite different. For example, when analyzing data from technical replicates, the population is just the one sample from which these come from as opposed to more general population such as healthy humans or control mice. Here we explore this concept with a experiment that was designed to include both technical and biological replicates.
 
+<a name="pooling"></a>
 
 # Pooling experiment data
 
@@ -90,17 +92,21 @@ factor(as.numeric(grepl("b",names(pooled))))
 ## Levels: 0 1
 ```
 
+<a name="techContrast"></a>
+
 If we compare the mean expression between groups for each gene we find several showing consistent differences. Here are two examples: 
 
 
 ```r
-###look at 2 pre-selected samples for illustration
+###look at 2 pre-selected genes for illustration
 i=11425;j=11878
 pooled_y=exprs(maPooling[,pooled])
 pooled_g=factor(as.numeric(grepl("b",names(pooled))))
 mypar(1,2)
-stripchart(split(pooled_y[i,],pooled_g),vertical=TRUE,method="jitter",col=c(1,2),main="Gene 1",xlab="Group",pch=15)
-stripchart(split(pooled_y[j,],pooled_g),vertical=TRUE,method="jitter",col=c(1,2),main="Gene 2",xlab="Group",pch=15)
+stripchart(split(pooled_y[i,],pooled_g),vertical=TRUE,method="jitter",col=c(1,2),
+           main="Gene 1",xlab="Group",pch=15)
+stripchart(split(pooled_y[j,],pooled_g),vertical=TRUE,method="jitter",col=c(1,2),
+           main="Gene 2",xlab="Group",pch=15)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/bioc1_btvari-unnamed-chunk-6-1.png)
@@ -109,20 +115,6 @@ Note that if we compute a t-test from these values we obtain highly significant 
 
 ```r
 library(genefilter)
-```
-
-```
-## 
-## Attaching package: 'genefilter'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     anyNA
-```
-
-```r
 pooled_tt=rowttests(pooled_y,pooled_g)
 pooled_tt$p.value[i]
 ```
@@ -138,7 +130,14 @@ pooled_tt$p.value[j]
 ```
 ## [1] 3.400476e-07
 ```
-But would these results hold up if we selected another 24 mice? Note that the equation for the t-test we presented in the previous section include the population standard deviations. Are these quantities measured here? Note that what is being replicated here is the experimental protocol. We have created four _technical replicates_ for each pooled sample. Gene 1 may be a highly variable gene within strain of mice while  Gene 2 a stable one, but we have no way of seeing this. 
+
+But would these results hold up if we selected another 24 mice? Note that the definition for the t-test includes the standard deviations of
+the populations being compared.  Are these quantities measured here? 
+
+Observe that what is being replicated here is the experimental protocol. We have created four _technical replicates_ for each pooled sample. Gene 1 may be a highly variable gene within strain of mice while  Gene 2 a stable one, but we have no way of seeing this, because mouse-to-mouse variability
+is submerged in the act of pooling.
+
+<a name="biovar"></a>
 
 We also have microarray data for each individual mouse. For each strain we have 12 _biological replicates_. We can find them by looking for rows with just one 1.
 
@@ -168,7 +167,8 @@ boxplot(technicalsd,biologicalsd,names=c("technical","biological"),ylab="standar
 
 ![plot of chunk unnamed-chunk-10](figure/bioc1_btvari-unnamed-chunk-10-1.png)
 
-Note the biological variance is much larger than the technical variance. And also that the variability of variances is also for biological variance. Here are the two genes we showed above but now for each individual mouse 
+Note the biological variance is much larger than the technical variance. And also that the variability of variances is also larger for biological variance. Here are the two genes we showed above but now we show
+expression values measured on each individual mouse 
 
 
 ```r
@@ -201,6 +201,8 @@ tt$p.value[j]
 ## [1] 1.979172e-07
 ```
 
-Which of these two genes do we feel more confident reporting as being differentially expressed? If another investigator takes another random sample of mice and tries the same experiment, which gene do you think will be identified? Measuring biological variability is essential if we want our conclusions to be about the strain of mice in general as opposed to the specific mice we have. 
+Which of these two genes do we feel more confident reporting as being differentially expressed between strains? If another investigator takes another random sample of mice and tries the same experiment, which gene do you think will be identified? Measuring biological variability is essential if we want our conclusions to be about the strain of mice in general as opposed to the specific mice we have. 
 
-An analysis with biological replicates has as a population these two strains of mice. An analysis with technical replicates has as a population the twelve mice we selected and the variability is related to the measurement technology. In science we typically are concerned with populations. As a very practical example, note that if another lab performs this experiment they will have another set of twelve mice and thus inferences about populations are more likely to be reproducible.
+<a name="interpretation"></a>
+
+An analysis with biological replicates has as a population these two strains of mice. An analysis with technical replicates has as a population the twelve mice we selected and the variability is related to the measurement technology. In science we typically are concerned with populations. As a very practical example, note that if another lab performs this experiment they will have another set of twelve mice and thus inferences about _populations_ are more likely to be reproducible.
