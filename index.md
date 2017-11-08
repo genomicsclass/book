@@ -197,6 +197,16 @@ title: PH525x series - Biomedical Data Science
     - [Exposing the spiked-in genes](pages/bioc1_limma.html#expose)
     - [A view of the shrinkage of variance estimates](pages/bioc1_limma.html#shrinkage)
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
+    - Data wrangling
+        - [A dataset for comparing expression by gender](pages/bioc1_geneset_1.html#dataprep)
+        - [Finding surrogate variables/batch effect correction](pages/bioc1_geneset_1.html#batch)
+    - [The Broad Institute MsigDb](pages/bioc1_geneset_1.html#MSIGDB)
+        - [Identifier remapping](pages/bioc1_geneset_1.html#identifierMapping)
+        - [Categorical testing](pages/bioc1_geneset_1.html#chisq)
+        - [Statistical summaries for sets: Wilcoxon](pages/bioc1_geneset_1.html#wilcox)
+        - [Statistical summaries for sets: t statistics](pages/bioc1_geneset_1.html#ttest)
+    - [Adjusting for within-set correlation](pages/bioc1_geneset_1.html#correl)
+    - [A permutation procedure](pages/bioc1_geneset_1.html#permutations)
 - [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
 
 <a name="6xtop"></a>
