@@ -7,16 +7,20 @@ title: Gene set analysis
 
 <a name="genesetanalysis"></a>
 
-# Gene Set Analysis
+# Introduction
 
 In these units we learn the statistics behind gene set analysis. Throughout the unit you should keep three important steps in mind that are all important yet can be kept separated from each other. These are
-1) The gene sets considered
-2) The statistic used to summarize each gene set. 
-3) The approach to assessing uncertainty
+
+- The gene sets considered
+- The statistic used to summarize each gene set
+- The approach to assessing uncertainty
 
 We will cover each of these three topics in separate units. 
 
+<a name="dataprep"></a>
+
 ## Preparing data and gene set database
+
 For this unit you will need the following library
 
 
@@ -33,14 +37,15 @@ library(rafalib)
 library(GSEABase)
 ```
 
-In previous sections we have used a dataset comparing males and females. 
-We will need the following package which is available from the class github repo:
+Our example is based on the following package which is available from the class github repo:
 
 
 ```r
 library(devtools)
 install_github("genomicsclass/GSE5859Subset")
 ```
+
+<a name="batch"></a>
 
 We constructed this data to include batch effect so we 
 correct for them using SVA:
@@ -69,23 +74,26 @@ pval<-2*(1-pt(abs(tt),lmfit$df.residual[1]))
 qval <- p.adjust(pval,"BH")
 ```
 
-Note that all we really need for this unit is score for each gene and a candidate list of differentially expressed genes. The details of how we obtain them are not relevant to the of the unit. To illustrate we will pretend we don't know a-priori the relationship between the outcome and gene expression. 
+Note that all we really need for this unit is score for each gene and a candidate list of differentially expressed genes. The details of how we obtain them are not relevant to the of the unit. To illustrate we will pretend we don't know a-priori the relationship between group membership and gene expression. 
+
+<a name="selectByFDR"></a>
 
 Let's begin by constructing a list of candidate genes with an FDR of 25%. This gives us a list of 23 genes. What biology can we learn? Given that we know that genes work together, it makes sense to study groups of genes instead of individual ones. In general, this is the idea behind _gene set analysis_. 
+
+<a name="MSIGDB"></a>
 
 There are various resources on the web that provide gene sets. Most of these have been curated and are composed of genes with something in common. A typical way of grouping them is by pathways (e.g. [KEGG](http://www.genome.jp/kegg/))
 or biological function (e.g. [Gene Ontology](http://www.geneontology.org/)). A great resource with many curated gene sets can be found here: 
 
 <http://www.broadinstitute.org/gsea/msigdb/index.jsp>
  
-In this example we will use a gene set grouping genes by sections of the chromosome. The first step is to download the database. You can download the file from here (you have to register)
-
-<http://www.broadinstitute.org/gsea/msigdb/download_file.jsp?filePath=/resources/msigdb/4.0/c1.all.v4.0.entrez.gmt>
+In this example we will use a gene set grouping genes by sections of the chromosome. The first step is to download the database. You can download the file from [here](http://software.broadinstitute.org/gsea/msigdb/download_file.jsp?filePath=/resources/msigdb/6.1/c1.all.v6.1.entrez.gmt)
+(you will have to register)
 
 Once you download the file, you can read it in with the following command
 
 ```r
-gsets <- getGmt("c1.all.v4.0.entrez.gmt") ##must provide correct path to file
+gsets <- getGmt("c1.all.v6.1.entrez.gmt") ##must provide correct path to file
 ```
 
 This object has 326 gene sets. Each gene set contains the ENTREZ IDs for the genes in each gene set
@@ -127,6 +135,8 @@ head(geneIds(gsets[["chryq11"]]))
 ## [1] "728512" "392597" "9086"   "359796" "83864"  "425057"
 ```
 
+<a name="identifierMapping"></a>
+
 Now to apply this to our data we have to map these IDS to Affymetrix IDs. We will write a simple function that takes a Expression Set and 
 
 
@@ -157,28 +167,10 @@ gsids <- mapGMT2Affy(e,gsets)
 ```
 
 ```
-## Loading required package: hgfocus.db
-```
-
-```
-## Loading required package: org.Hs.eg.db
-```
-
-```
-## Loading required package: DBI
-```
-
-```
-## 
-```
-
-```
-## 
-```
-
-```
 ## 'select()' returned 1:many mapping between keys and columns
 ```
+
+<a name="chisq"></a>
 
 ## Approaches based on association tests
 
@@ -187,6 +179,17 @@ Now we can now ask if differentially expressed genes are enriched in a given gen
 
 ```r
 tab <- table(ingenset=1:nrow(e) %in% gsids[["chryq11"]],signif=qval<0.05)
+tab
+```
+
+```
+##         signif
+## ingenset FALSE TRUE
+##    FALSE  8769    9
+##    TRUE     11    4
+```
+
+```r
 chisq.test(tab)$p.val
 ```
 
@@ -229,11 +232,15 @@ mypar(1,1)
 plot(density(tt[-ind]),xlim=c(-7,7),main="",xlab="t-stat",sub="",lwd=4)
 lines(density(tt[ind],bw=.7),col=2,lty=2,lwd=4)
 rug(tt[ind],col=2)
+legend(-6.5, .3, legend=c("present on xp11", "not on xp11"),
+     col=c(2,1), lty=c(2,1), lwd=4)
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/bioc1_geneset_1-unnamed-chunk-11-1.png)
 
-Note that the gene set distribution shifts a bit to the left providing evidence that the distribution of the t-statistics in this gene set is different from the distribution for all genes. So how do we quantify this observation? How do we assess uncertainty.
+Note that the distribution of the t-statistics in this gene set seems different from the distribution for all genes. So how do we quantify this observation? How do we assess uncertainty?
+
+<a name="wilcox"></a>
 
 The first published approach to performing gene set analysis [Virtaneva 2001](#foot) used the Wilcoxon Mann-Whitney tests discussed in a previous unit. The basic idea was to test if the difference between cases and controls was generally bigger in a given gene set compared to the rest of the genes. The Wilcoxon compares the ranks in the gene sets are generally above the median. 
 
@@ -261,21 +268,23 @@ legend("topleft",c("Autosome","chrX","chrY"),pch=16,col=1:3,box.lwd=0)
 
 ![plot of chunk unnamed-chunk-12](figure/bioc1_geneset_1-unnamed-chunk-12-1.png)
 
-Note that the top ten does not show the X and Y chromosomes as highly expressed as we expected. The logic for using a rank based (robust) test was that we do not want one or two very highly expressed genes to dominate the gene set analysis.  However, although low rank based tests are very useful at protecting us from false positive they come at the cost of low low sensitive (power). Below we consider less robust, yet generally more powerful approaches.
+Note that the top ten does not show the X and Y chromosomes as highly expressed as we expected. The logic for using a rank based (robust) test was that we do not want one or two very highly expressed genes to dominate the gene set analysis.  However, although low rank based tests are very useful at protecting us from false positive they come at the cost of low sensitivity (power). Below we consider less robust, yet generally more powerful approaches.
 
-If we are interested in gene sets with distributions that shift to the left (generally more under expressed genes) or the right (generally more over expressed genes) then the simplest test we can construct simply compares the average between the two groups. A very simple summary we can construct to test for mean shits is to average the t-statistic in gene set <http://www.ncbi.nlm.nih.gov/pubmed/?term=20048385>. Basically for let G be the index of genes in the gene sets and define:
+<a name="ttest"></a>
+
+If we are interested in gene sets with distributions that shift to the left (generally more under expressed genes) or the right (generally more over expressed genes) then the simplest test we can construct simply compares the average between the two groups. A very simple summary we can construct to test for mean shifts is to average the t-statistic in gene set <http://www.ncbi.nlm.nih.gov/pubmed/?term=20048385>.  Let G be the index of genes in the gene sets and define:
 
 $$
 \bar{t}=\frac{1}{N} \sum_{i \in G} t_i
 $$
 
-Note that under the null hypothesis that the genes in the gene set are not differentially expressed, then these $$t$$ have mean 0. If they t-statistics are independent of each other (later we will learn approaches that avoid this assumption) then $$\sqrt{N} \bar{t}$$ has standard deviation 1 and are approximately normal:
+Note that under the null hypothesis that the genes in the gene set are not differentially expressed, these $$t$$ have mean 0. If the t-statistics are independent of each other (later we will learn approaches that avoid this assumption) then $$\sqrt{N} \bar{t}$$ has standard deviation 1 and are approximately normal:
 
 $$
 \sqrt{N} \bar{t} \sim N(0,1)
 $$
 
-Here is a qq-plot of these summary 
+Here is a qq-plot of these summaries 
 
 ```r
 avgt <- sapply(gsids,function(i) sqrt(length(i))*mean(tt[i]))
@@ -301,7 +310,7 @@ Several methods are based on summaries designed to test shifts in means: for exa
 
 Note that we can construct other scores to test other alternative hypothesis. For example, we can test for [changes in variances](http://www.ncbi.nlm.nih.gov/pubmed/?term=20048385) and general changes in distribution [[1](http://www.ncbi.nlm.nih.gov/pubmed/12808457)], [[2](http://www.ncbi.nlm.nih.gov/pubmed/16199517)].
 
-<a name="testing"></a>
+<a name="correl"></a>
 
 ## Hypothesis testing for gene sets
 
