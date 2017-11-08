@@ -68,6 +68,7 @@ tt=rowttests(y,g)
 ```
 
 <a name="naive"></a>
+
 Now which genes do we report as statistically significant? For somewhat arbitrary reasons, in science p-values of 0.01 and 0.05 are used as cutoff. In this particular example we get 
 
 
