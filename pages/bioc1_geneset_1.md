@@ -35,6 +35,10 @@ We will need these packages:
 ```r
 library(rafalib)
 library(GSEABase)
+library(GSE5859Subset)
+library(sva)
+library(limma)
+library(matrixStats)
 ```
 
 Our example is based on the following package which is available from the class github repo:
@@ -56,6 +60,8 @@ library(GSE5859Subset)
 data(GSE5859Subset)
 library(sva)
 library(limma)
+library(matrixStats)
+library(rafalib)
 X = sampleInfo$group
 mod<-model.matrix(~X)
 svafit <- sva(geneExpression,mod)
