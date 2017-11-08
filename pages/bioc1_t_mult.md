@@ -120,7 +120,52 @@ NfalselySigAt05
 ## [1] 840
 ```
 
+<a name="adjusted"></a>
+
+If we use the 0.05 cutoff we will be reporting 840 false positives. We have described several ways to adjust for this including the `qvalue` method available in the *[qvalue](http://bioconductor.org/packages/qvalue)* package. After this adjustment we acquire 
+a smaller list of genes.
 
 
+```r
+library(qvalue)
+qvals = qvalue(tt$p.value)$qvalue
+sum(qvals<0.05)
+```
+
+```
+## [1] 1179
+```
+
+```r
+sum(qvals<0.01)
+```
+
+```
+## [1] 538
+```
+
+<a name="demo"></a>
+And now the null case generates no false positives:
 
 
+```r
+library(qvalue)
+nullqvals = qvalue(nulltt$p.value)$qvalue
+sum(nullqvals<0.05)
+```
+
+```
+## [1] 0
+```
+
+```r
+sum(nullqvals<0.01)
+```
+
+```
+## [1] 0
+```
+
+This addresses in a fairly general way the problem of inflating
+significance claims when performing many hypothesis tests at
+a fixed nominal level of significance.
