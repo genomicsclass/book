@@ -191,6 +191,11 @@ title: PH525x series - Biomedical Data Science
     - [Adjusting for multiplicity with qvalue](pages/bioc1_t_mult.html#adjusted)
     - [Adjusted counts in the sham case](pages/bioc1_t_mult.html#demo)
 - [Moderated t tests via limma](pages/bioc1_limma.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_limma.Rmd)
+    - [A spike-in dataset](pages/bioc1_limma.html#spikein)
+    - [Naive t-tests](pages/bioc1_limma.html#simpleT)
+    - [Three steps with limma: lmFit, eBayes, topTable](pages/bioc1_limma.html#limmaSteps)
+    - [Exposing the spiked-in genes](pages/bioc1_limma.html#expose)
+    - [A view of the shrinkage of variance estimates](pages/bioc1_limma.html#shrinkage)
 - [Introducing gene sets and gene set analysis](pages/bioc1_geneset_1.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_geneset_1.Rmd)
 - [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
 
