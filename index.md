@@ -207,9 +207,6 @@ title: PH525x series - Biomedical Data Science
         - [Statistical summaries for sets: t statistics](pages/bioc1_geneset_1.html#ttest)
     - [Adjusting for within-set correlation](pages/bioc1_geneset_1.html#correl)
     - [A permutation procedure](pages/bioc1_geneset_1.html#permutations)
-<!--
-- [Gene set analysis using the roast algorithm](pages/bioc1_roast.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/bioc1_roast.Rmd)
--->
 
 <a name="6xtop"></a>
 
