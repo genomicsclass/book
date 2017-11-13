@@ -700,6 +700,8 @@ head(select(org.Hs.eg.db, keys="ORMDL3", keytype="SYMBOL",
 
 ## Resources for gene sets and pathways
 
+<a name="geneont"></a>
+
 ### Gene Ontology
 
 [Gene Ontology](http://www.geneontology.org) (GO) is
@@ -730,11 +732,11 @@ GO.db # metadata
 ## GODb object:
 ## | GOSOURCENAME: Gene Ontology
 ## | GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
-## | GOSOURCEDATE: 2017-Mar29
+## | GOSOURCEDATE: 2017-Nov01
 ## | Db type: GODb
 ## | package: AnnotationDbi
 ## | DBSCHEMA: GO_DB
-## | GOEGSOURCEDATE: 2017-Mar29
+## | GOEGSOURCEDATE: 2017-Nov6
 ## | GOEGSOURCENAME: Entrez Gene
 ## | GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
 ## | DBSCHEMAVERSION: 2.1
@@ -767,12 +769,12 @@ select(GO.db, keys=k5, columns=cgo[1:3])
 ## 3 GO:0000003
 ## 4 GO:0000006
 ## 5 GO:0000007
-##                                                                                                                                                                                                                                                                                                    DEFINITION
-## 1                                                                                                                     The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton.
-## 2                                                                                                                                                           The maintenance of the structure and integrity of the mitochondrial genome; includes replication and segregation of the mitochondrial chromosome.
-## 3                                                                                                                                                                                The production of new individuals that contain some portion of genetic material inherited from one or more parent organisms.
-## 4 Enables the transfer of a solute or solutes from one side of a membrane to the other according to the reaction: Zn2+(out) = Zn2+(in), probably powered by proton motive force. In high-affinity transport the transporter is able to bind the solute even if it is only present at very low concentrations.
-## 5          Catalysis of the transfer of a solute or solutes from one side of a membrane to the other according to the reaction: Zn2+ = Zn2+, probably powered by proton motive force. In low-affinity transport the transporter is able to bind the solute only if it is present at very high concentrations.
+##                                                                                                                                                                                                                                                                                      DEFINITION
+## 1                                                                                                       The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton.
+## 2                                                                                                                                             The maintenance of the structure and integrity of the mitochondrial genome; includes replication and segregation of the mitochondrial chromosome.
+## 3                                                                                                                                                                  The production of new individuals that contain some portion of genetic material inherited from one or more parent organisms.
+## 4                                      Enables the transfer of zinc ions (Zn2+) from one side of a membrane to the other, probably powered by proton motive force. In high-affinity transport the transporter is able to bind the solute even if it is only present at very low concentrations.
+## 5 Enables the transfer of a solute or solutes from one side of a membrane to the other according to the reaction: Zn2+ = Zn2+, probably powered by proton motive force. In low-affinity transport the transporter is able to bind the solute only if it is present at very high concentrations.
 ##   ONTOLOGY
 ## 1       BP
 ## 2       BP
@@ -822,8 +824,8 @@ dbGetQuery(con, "select * from go_bp_parents where _id=30")
 
 ```
 ##   _id _parent_id relationship_type
-## 1  30      26616              is_a
-## 2  30      26619              is_a
+## 1  30      26537              is_a
+## 2  30      26540              is_a
 ```
 
 ```r
@@ -831,8 +833,10 @@ dbGetQuery(con, "select _id, go_id, term from go_term where _id=26616")
 ```
 
 ```
-##     _id      go_id                  term
-## 1 26616 GO:0048308 organelle inheritance
+##     _id      go_id
+## 1 26616 GO:0048387
+##                                                              term
+## 1 negative regulation of retinoic acid receptor signaling pathway
 ```
 
 ```r
@@ -840,8 +844,10 @@ dbGetQuery(con, "select * from go_bp_parents where _id=26616")
 ```
 
 ```
-##     _id _parent_id relationship_type
-## 1 26616       5932              is_a
+##     _id _parent_id    relationship_type
+## 1 26616       8389                 is_a
+## 2 26616      26614                 is_a
+## 3 26616      26613 negatively_regulates
 ```
 
 ```r
@@ -849,14 +855,16 @@ dbGetQuery(con, "select _id, go_id, term from go_term where _id=5932")
 ```
 
 ```
-##    _id      go_id                   term
-## 1 5932 GO:0006996 organelle organization
+##    _id      go_id                    term
+## 1 5932 GO:0019237 centromeric DNA binding
 ```
 It makes sense to regard "mitochondrion inheritance" as a conceptual
 refinement of processes "mitochondrion distribution", and "organelle inheritance",
 the two terms that are regarded as parents in this database scheme.
 
 The entire database schema can be viewed with `GO_dbschema()`.
+
+<a name="kegg"></a>
 
 ### KEGG: Kyoto Encyclopedia of Genes and Genomes
 
@@ -933,6 +941,8 @@ grid.raster(brpng)
 ```
 
 ![plot of chunk getp](figure/bioc1_annoOverview-getp-1.png)
+
+<a name="rols"></a>
 
 ### Additional ontologies
 
@@ -1020,6 +1030,8 @@ The *[ontologyIndex](https://CRAN.R-project.org/package=ontologyIndex)* supports
 in the Open Biological Ontologies (OBO) format, and includes
 very efficient facilities for querying and visualizing
 ontological systems.  
+
+<a name="gseabase"></a>
 
 ### General gene set management
 
