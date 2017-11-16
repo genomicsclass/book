@@ -3,6 +3,9 @@ layout: page
 title: HarvardX Biomedical Data Science
 ---
 
+The content of this page has moved: it is now [here](http://rafalab.github.io/pages/harvardx.html)
+
+<!--
 ## Open Online Training Curriculum 
 
 In 2014 we received funding from the NIH BD2K initiative to develop
@@ -47,3 +50,4 @@ which should be available this academic year.
 Announcements will be made here and on twitter: [@rafalab](https://twitter.com/rafalab)
 
 These classes were supported in part by NIH grant R25GM114818.
+-->
