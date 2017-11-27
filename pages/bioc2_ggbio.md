@@ -18,13 +18,15 @@ the handling of extra-chromosomal sequence levels.
 
 
 
+Here is the layout for the liver cell line:
+
 ```r
 library(ERBS)
 data(HepG2)
 library(GenomeInfoDb)  # trim all but autosomal chroms
-seqlevels(HepG2, force=TRUE) = paste0("chr", 1:22)
+HepG2 = keepStandardChromosomes(HepG2)
 data(GM12878)
-seqlevels(GM12878, force=TRUE) = paste0("chr", 1:22)
+GM12878 = keepStandardChromosomes(GM12878)
 library(ggbio)
 autoplot(HepG2, layout="karyogram", main="ESRRA binding on HepG2")
 ```
@@ -38,7 +40,7 @@ autoplot(HepG2, layout="karyogram", main="ESRRA binding on HepG2")
 
 ![plot of chunk lkd](figure/bioc2_ggbio-lkd-1.png)
 
-Notice that the title is not printed, currently a bug.
+And for the B-cell line:
 
 
 ```r
