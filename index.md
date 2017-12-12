@@ -215,7 +215,6 @@ title: PH525x series - Biomedical Data Science
 - [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
 
 ## Chapter 14 - Visualization of genome scale data
-### Visualization of genome scale data (Week 1)
 
 - [A basic overview of visualization tasks and strategies](pages/bioc2_vizOv.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizOv.Rmd)
     - [Gene models](pages/bioc2_vizOv.html#genemods)
@@ -230,7 +229,7 @@ title: PH525x series - Biomedical Data Science
 - [Clustering gene expression data with shiny](pages/esHclust.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/esHclust.Rmd)
 - [Final remarks on visualization](pages/finalViz.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/finalViz.Rmd)
 
-### Scalable genomic analysis (Week 2)
+## Chapter 15: Pursuing scalability in genomic analysis: parallelism and out-of-memory data
 
 - [Overview of BiocParallel usage](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
 - [Introduction to Bioconductor's Amazon Machine Instance for cluster creation and use in EC2](pages/bioc2_HPCami.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_HPCami.Rmd)

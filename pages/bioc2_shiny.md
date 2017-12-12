@@ -86,7 +86,8 @@ using the height-to-cut setting to partition the data using the tree.
 
 * note that the average silhouette width at the defaults for mtcars is 0.56
 * if, leaving all other selections alone, you change the "Select height for cut" value to 70, the silhouette plot changes to show an average silhouette of 0.59 -- an improvement, but now we have only two clusters, and one observation with a negative silhouette value
-* for an amusing observation, set the distance to "euclidean" and the clustering method to `single` -- now the closest neighbor to the Mercedes 450 SLC is the AMC Javelin.  I guess the Javelin wasn't such a bad car after all....
+* for an amusing observation, return to the tree
+tab, set the distance to "euclidean" and the clustering method to `single` -- now the closest neighbor to the Mercedes 450 SLC is the AMC Javelin.  I guess the Javelin wasn't such a bad car after all....
 
 ## A view of the code
 
