@@ -4,6 +4,10 @@ title: "Some final comments on genome-scale visualization"
 ---
 
 
+```
+## Warning: replacing previous import 'BiocGenerics::var' by 'stats::var' when
+## loading 'MLInterfaces'
+```
 
 
 ## RCircos
@@ -42,86 +46,5 @@ westraTransSel[1:3]
 sglToCircos(westraTransSel[1:5])
 ```
 
-```
-## Loading required package: SNPlocs.Hsapiens.dbSNP144.GRCh37
-```
-
-```
-## Loading required package: BSgenome
-```
-
-```
-## Loading required package: Biostrings
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## Loading required package: rtracklayer
-```
-
-```
-## 'select()' returned 1:1 mapping between keys and columns
-## 'select()' returned 1:1 mapping between keys and columns
-## 'select()' returned 1:1 mapping between keys and columns
-```
-
-```
-## 'select()' returned 1:many mapping between keys and columns
-## 'select()' returned 1:many mapping between keys and columns
-## 'select()' returned 1:many mapping between keys and columns
-```
-
-```
-## Some chromosomes are in genomic data only and have been removed.
-```
-
-```
-## 
-```
-
-```
-## 'select()' returned 1:1 mapping between keys and columns
-```
-
-```
-## 'select()' returned 1:many mapping between keys and columns
-```
-
-```
-## 
-```
-
-```
-## Maximum lables for  chr20 is 2 .
-```
-
-```
-## Extra ones are ignored.
-```
-
-```
-## 
-```
-
 ![plot of chunk lksn](figure/finalViz-lksn-1.png)
 
-## ComplexHeatmap
-
-ComplexHeatmap has a very nice vignette addressing many
-issues in combining heatmaps and repurposing the heatmap 
-concept.  The oncoprint example in the vignette is particularly
-compelling.
-
-## WebGL and interaction with data
-
-In the short concluding video we use the MLInterfaces plspinHcube
-function to illustrate several aspects of interactivity: GUI for
-tuning, mouse-controlled rotation, and mouseover for point interrogation.
-
-## EpiViz
-
-The epivizr package is capable of substantial feats of data integration and
-higher-level data interactivity.
