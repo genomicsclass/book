@@ -300,19 +300,10 @@ library(plotly)
 ggplotly(spl)
 ```
 
-```
-## Warning in normalizePath(f2): path[1]="./webshot8ed020646980.png": No such
-## file or directory
-```
-
-```
-## Warning in file(con, "rb"): cannot open file './webshot8ed020646980.png':
-## No such file or directory
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+At present we don't have a way of easily embedding the interactive
+visualization into book pages.  However you can get a feel for
+the type of display achievable in this way by visiting
+[this plotly site](https://plot.ly/~stvjc/14/).
 
 As of December 2017, it is not possible to have plotly interoperating
 with ggbio visualizations.  But there will undoubtedly be progress
