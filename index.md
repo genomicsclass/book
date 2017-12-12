@@ -214,8 +214,15 @@ title: PH525x series - Biomedical Data Science
 
 - [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
 
+## Chapter 14 - Visualization of genome scale data
 ### Visualization of genome scale data (Week 1)
 
+- [A basic overview of visualization tasks and strategies](pages/bioc2_vizOv.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizOv.Rmd)
+    - [Gene models](pages/bioc2_vizOv.html#genemods)
+    - [Gene models plus data](pages/bioc2_vizOv.html#genemodsData)
+    - [Driving visualizations with functions](pages/bioc2_vizOv.html#vizFunc)
+    - [Using the browser to drive visualization functions via shiny](pages/bioc2_vizOv.html#vizShiny)
+    - [Queriable dynamic displays with plotly](pages/bioc2_vizOv.html#vizPlotly)
 - [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_ggbio.Rmd)
 - [Plotting data in the context of genomic features with Gviz](pages/bioc2_gvfeat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_gvfeat.Rmd)
 - [Visualizing NGS data](pages/bioc2_vizNGS.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizNGS.Rmd)
