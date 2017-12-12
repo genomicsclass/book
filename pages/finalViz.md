@@ -67,5 +67,6 @@ tuning, mouse-controlled rotation, and mouseover for point interrogation.
 
 ## EpiViz
 
-The epivizr package is capable of substantial feats of data integration and
+The *[epivizr](http://bioconductor.org/packages/epivizr)* package interacts with the
+[epiviz](https://epiviz.github.io/) system and is capable of substantial feats of data integration and
 higher-level data interactivity.
