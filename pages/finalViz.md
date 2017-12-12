@@ -4,10 +4,6 @@ title: "Some final comments on genome-scale visualization"
 ---
 
 
-```
-## Warning: replacing previous import 'BiocGenerics::var' by 'stats::var' when
-## loading 'MLInterfaces'
-```
 
 
 ## RCircos
