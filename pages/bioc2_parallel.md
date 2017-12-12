@@ -47,7 +47,7 @@ system.time( lapply(1:8, function(x)Sys.sleep(1) ) )
 
 ```
 ##    user  system elapsed 
-##   0.001   0.000   8.027
+##   0.004   0.001   8.020
 ```
 
 ```r
@@ -66,7 +66,7 @@ system.time( mclapply(1:8, function(x)Sys.sleep(1) ) )
 
 ```
 ##    user  system elapsed 
-##   0.010   0.024   2.029
+##   0.007   0.022   2.031
 ```
 
 For this meaningless computation, we achieved linear speedup:
@@ -138,7 +138,7 @@ Here we establish the exon bins into which we will count reads.
 ```r
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
-seqlevels(txdb, force=TRUE) = "chr14"
+seqlevels(txdb) = "chr14"
 ebg = exonsBy(txdb, by="gene")
 ```
 
@@ -156,7 +156,7 @@ s1
 
 ```
 ##    user  system elapsed 
-##   3.545   0.194   3.977
+##   2.975   0.178   3.178
 ```
 
 ```r
@@ -166,7 +166,7 @@ BiocParallel::bpparam()
 
 ```
 ## class: MulticoreParam
-##   bpisup: FALSE; bpworkers: 2; bptasks: 0; bpjobname: BPJOB
+##   bpisup: FALSE; bpnworkers: 4; bptasks: 0; bpjobname: BPJOB
 ##   bplog: FALSE; bpthreshold: INFO; bpstopOnError: TRUE
 ##   bptimeout: 2592000; bpprogressbar: FALSE
 ##   bpRNGseed: 
@@ -182,22 +182,25 @@ s2
 
 ```
 ##    user  system elapsed 
-##   0.056   0.043  12.477
+##   0.271   0.162  10.480
 ```
 This is not a thorough way of measuring speedup but it
-shows reasonable enhancement.  
+shows reasonable enhancement.
 In the second computation, we did approximately 8 times as
 much computation, but the clock time elapsed increased only
-by a factor of (3.14).  
-We did nothing by way of configuration
-or request, and the default behavior of BiocParallel on
-the Macbook Air used to compile this document is to use 2 cores.
+by a factor of (3.3).
+The default behavior of BiocParallel on the MacBook
+Air used to produce this document is to pick up the
+value of the option `mc.cores` and use this as the number
+of workers in a `MulticoreParam` configuration; if `options()$mc.cores`
+is NULL, 2 workers are specified.
 
-What happened?  The `summarizeOverlaps` function will iterate
+When BiocParallel is attached,
+the `summarizeOverlaps` function will iterate
 over the files using `bplapply` from the BiocParallel package.
 That function will check the R session 
-for specific parallelization configuration information,
-and if it finds none, will check for multiple cores
+for specific parallelization configuration information.
+If it finds none, it will check for multiple cores
 and make arrangements to use them if present.
 The "check" occurs via the function `bpparam`.
 
@@ -209,13 +212,15 @@ for four concurrent threads)
 as follows.
 
 ```r
+options(mc.cores=NULL)
 library(BiocParallel)
+register(MulticoreParam())
 bpparam()
 ```
 
 ```
 ## class: MulticoreParam
-##   bpisup: FALSE; bpworkers: 2; bptasks: 0; bpjobname: BPJOB
+##   bpisup: FALSE; bpnworkers: 2; bptasks: 0; bpjobname: BPJOB
 ##   bplog: FALSE; bpthreshold: INFO; bpstopOnError: TRUE
 ##   bptimeout: 2592000; bpprogressbar: FALSE
 ##   bpRNGseed: 
@@ -248,13 +253,43 @@ Here we'll check for any advantage of using all logical cores.
 
 ```r
 library(BiocParallel)
+register(MulticoreParam(workers=1))
+system.time(i3 <- summarizeOverlaps( ebg, fns ))
+```
+
+```
+##    user  system elapsed 
+##  15.653   1.286  17.070
+```
+
+```r
+register(MulticoreParam(workers=2))
+system.time(i3 <- summarizeOverlaps( ebg, fns ))
+```
+
+```
+##    user  system elapsed 
+##   0.103   0.029   8.818
+```
+
+```r
 register(MulticoreParam(workers=3))
 system.time(i3 <- summarizeOverlaps( ebg, fns ))
 ```
 
 ```
 ##    user  system elapsed 
-##   0.057   0.044  14.063
+##   0.051   0.023   9.543
+```
+
+```r
+register(MulticoreParam(workers=4))
+system.time(i3 <- summarizeOverlaps( ebg, fns ))
+```
+
+```
+##    user  system elapsed 
+##   0.056   0.026   8.774
 ```
 
 ```r
@@ -266,11 +301,13 @@ all.equal(i3,i2)  # check that the results do not change
 ```
 Note that 
 in this environment, despite increasing the number of CPUs 
-by a factor of 1.5, we
-do not appreciably reduce run time.  This due mainly to communication
-costs that typically increase with the number of CPUs.
+linearly
+do not appreciably reduce run time after
+moving to two cores.  This due mainly to communication
+costs that typically increase with the number of CPUs,
+and this phenomenon will be environment-specific.
 
-In summary, it is very easy to perform embarrassignly parallel
+In summary, it is very easy to perform embarrassingly parallel
 tasks with R, and this carries over to genomic data analysis
 thanks to BiocParallel.  There are some strategic considerations
 concerning control of memory consumption and communication costs,
