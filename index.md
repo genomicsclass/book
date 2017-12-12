@@ -208,11 +208,6 @@ title: PH525x series - Biomedical Data Science
     - [Adjusting for within-set correlation](pages/bioc1_geneset_1.html#correl)
     - [A permutation procedure](pages/bioc1_geneset_1.html#permutations)
 
-<a name="6xtop"></a>
-
-## 525.6x: High-performance computing for reproducible genomics with Bioconductor
-
-- [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
 
 ## Chapter 14 - Visualization of genome scale data
 
@@ -222,11 +217,13 @@ title: PH525x series - Biomedical Data Science
     - [Driving visualizations with functions](pages/bioc2_vizOv.html#vizFunc)
     - [Using the browser to drive visualization functions via shiny](pages/bioc2_vizOv.html#vizShiny)
     - [Queriable dynamic displays with plotly](pages/bioc2_vizOv.html#vizPlotly)
-- [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_ggbio.Rmd)
-- [Plotting data in the context of genomic features with Gviz](pages/bioc2_gvfeat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_gvfeat.Rmd)
+- Annotation-oriented visualizations
+    - [Sketching the binding landscape over chromosomes with ggbio's karyogram layout](pages/bioc2_ggbio.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_ggbio.Rmd)
+    - [Plotting data in the context of genomic features with Gviz](pages/bioc2_gvfeat.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_gvfeat.Rmd)
 - [Visualizing NGS data](pages/bioc2_vizNGS.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_vizNGS.Rmd)
-- [Graphical user interfaces for multivariate data with shiny](pages/bioc2_shiny.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_shiny.Rmd)
-- [Clustering gene expression data with shiny](pages/esHclust.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/esHclust.Rmd)
+- Interactive visualization
+    - [Graphical user interfaces for multivariate data with shiny](pages/bioc2_shiny.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_shiny.Rmd)
+    - [Clustering gene expression data with shiny](pages/esHclust.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/esHclust.Rmd)
 - [Final remarks on visualization](pages/finalViz.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/finalViz.Rmd)
 
 ## Chapter 15: Pursuing scalability in genomic analysis: parallelism and out-of-memory data
