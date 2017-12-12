@@ -48,3 +48,24 @@ sglToCircos(westraTransSel[1:5])
 
 ![plot of chunk lksn](figure/finalViz-lksn-1.png)
 
+## ComplexHeatmap
+
+*[ComplexHeatmap](http://bioconductor.org/packages/ComplexHeatmap)* has a very nice vignette addressing many
+issues in combining heatmaps and repurposing the heatmap 
+concept.  The oncoprint example in the vignette is particularly
+comrelling.  To use this interactively with TCGA, contact
+[the ISB](http://isb-cancer-genomics-cloud.readthedocs.io/en/latest/sections/FAQ.html) and obtain a cloud platform account.
+Then obtain the *[cgcR](http://bioconductor.org/packages/cgcR)*
+package, load it, and run `isbApp()`.  You will have to authenticate
+with google to get access to the BigQuery representation of TCGA.
+
+## WebGL and interaction with data
+
+In the short concluding video we use the MLInterfaces plspinHcube
+function to illustrate several aspects of interactivity: GUI for
+tuning, mouse-controlled rotation, and mouseover for point interrogation.
+
+## EpiViz
+
+The epivizr package is capable of substantial feats of data integration and
+higher-level data interactivity.
