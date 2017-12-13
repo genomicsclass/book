@@ -187,10 +187,128 @@ cd[1:4,1:6]
 ## 4   DNase-seq    UBERON:0000970
 ```
 
+### S4: Extending the RaggedExperiment class
+
+(From the RaggedExperiment vignette:)
+The *[RaggedExperiment](http://bioconductor.org/packages/RaggedExperiment)* package provides a flexible data
+representation for copy number, mutation and other ragged array schema for 
+genomic location data. It aims to provide a framework for a set of samples
+that have differing numbers of genomic ranges.
+
+In TxRegInfra, we extend the RaggedExperiment class to deal
+with external data managed by mongodb.  We've created
+a database 'txregnet' and we connect this to 
+the extended RaggedExperiment
+'rme1', an instance of `RaggedMongoExpt`.
 
 
+```r
+okdf = DataFrame(hsFiles)
+rownames(okdf) = hsFiles[,1]
+loccon = localMongolite(db="txregnet")
+rme1 = RaggedMongoExpt(loccon, colData=okdf)
+rme1
+```
+
+```
+## class: RaggedMongoExpt 
+## dim: 10 10 
+## assays(0):
+## rownames(10): ENCFF001UUW ENCFF936ICC ... ENCFF971VCD ENCFF350ZQV
+## colnames(10): ENCFF001UUW ENCFF936ICC ... ENCFF971VCD ENCFF350ZQV
+## colData names(10): File.accession File.format ...
+##   Biosample.life.stage Biosample.sex
+```
+
+## The upshot: peak densities by tissue type
+
+In the following, we produce a table of number of
+peaks by tissue type, in a small region of chromosome 1.
 
 
+```r
+brp = which(colData(rme1)$File.format == "bed broadPeak")
+allst = subsetByOverlaps(rme1[,brp], 
+               GRanges("chr1", IRanges(1,8e5))) 
+data.frame(tiss=colData(rme1)[brp, "Biosample.term.name"], 
+             num.peaks=sapply(allst,nrow))
+```
+
+```
+##                                    tiss num.peaks
+## ENCFF936ICC      CD14-positive monocyte         9
+## ENCFF879FWO                         eye        19
+## ENCFF970PRR   renal cortex interstitium         7
+## ENCFF001WQH stromal cell of bone marrow        18
+## ENCFF942PVS                     GM12864         5
+```
+
+## Some additional details
+
+Ultimately we would like to make use of the RaggedExperiment
+infrastructure directly.  To do this we need to bind
+a GRangesList to the assay data; once this is done,
+we can use the sparseAssay, compactAssay, and qreduceAssay
+methods.  Longer term utility of this approach will be
+demonstrated in the TxRegQuery package, under development.
 
 
+```r
+badn = c("seqnames", "ranges", "strand", "seqlevels", 
+   "seqlengths", "isCircular", "start", "end", "width", "element")
+cleanCols = function(x) setdiff(colnames(x), badn)
+grl = GRangesList(lapply(allst, function(x) {
+     ans = GRanges(x$chrom, IRanges(x$chromStart, x$chromEnd)); mcols(ans) = x[,cleanCols(x)]; ans
+     }))
+re = RaggedExperiment(grl, colData=colData(rme1[,brp])) 
+dim(sparseAssay(re))
+```
 
+```
+## [1] 58  5
+```
+
+```r
+dim(compactAssay(re))
+```
+
+```
+## [1] 51  5
+```
+
+To conclude, we peek at the details of the mongodb connection
+established by *[mongolite](https://CRAN.R-project.org/package=mongolite)*.  It includes a
+variety of hints concerning the R interface.
+
+
+```r
+rme1@con
+```
+
+```
+## mongolite connection for db txregnet, coll. test
+## URL:  mongodb://127.0.0.1
+```
+
+```r
+rme1@con@con
+```
+
+```
+## <Mongo collection> 'test' 
+##  $$aggregate(pipeline = "{}", options = "{\"allowDiskUse\":true}", handler = NULL, pagesize = 1000) 
+##  $$count(query = "{}") 
+##  $$distinct(key, query = "{}") 
+##  $$drop() 
+##  $$export(con = stdout(), bson = FALSE) 
+##  $$find(query = "{}", fields = "{\"_id\":0}", sort = "{}", skip = 0, limit = 0, handler = NULL, pagesize = 1000) 
+##  $$import(con, bson = FALSE) 
+##  $$index(add = NULL, remove = NULL) 
+##  $$info() 
+##  $$insert(data, pagesize = 1000, ...) 
+##  $$iterate(query = "{}", fields = "{\"_id\":0}", sort = "{}", skip = 0, limit = 0) 
+##  $$mapreduce(map, reduce, query = "{}", sort = "{}", limit = 0, out = NULL, scope = NULL) 
+##  $$remove(query, just_one = FALSE) 
+##  $$rename(name, db = NULL) 
+##  $$update(query, update = "{\"$set\":{}}", upsert = FALSE, multiple = FALSE)
+```
