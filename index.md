@@ -228,12 +228,18 @@ title: PH525x series - Biomedical Data Science
 
 ## Chapter 15: Pursuing scalability in genomic analysis: parallelism and out-of-memory data
 
-- [Overview of BiocParallel usage](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
-- [Interfacing to external data: SQLite, tabix, HDF5](pages/bioc2_externData.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_externData.Rmd)
-- [Interfacing to NoSQL: the example of mongodb](pages/bioc2_nosql.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_nosql.Rmd)
+- [Parallel computing with R and Bioconductor](pages/bioc2_parallel.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_parallel.Rmd)
+    - [Demonstrating simple speedup in multicore environments](pages/bioc2_parallel.html#speedup)
+    - [Implicit parallelism with BiocParallel and GenomicAlignments](pages/bioc2_parallel.html#implicit)
+- [External data: data interfaces that spare RAM](pages/bioc2_externData.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_externData.Rmd)
+    - [SQLite for annotation](pages/bioc2_externData.html#sqlite)
+    - [Tabix-indexed BAM](pages/bioc2_externData.html#tabix)
+    - [HDF5](pages/bioc2_externData.html#hdf5)
+    - [An illustration of NoSQL with S4: mongodb and RaggedMongoExpt](pages/bioc2_nosql.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_nosql.Rmd)
 - [Benchmarking various out-of-memory solutions](pages/multiOOM.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/multiOOM.Rmd)
 - [Introduction to Bioconductor's Amazon Machine Instance for cluster creation and use in EC2](pages/bioc2_HPCami.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_HPCami.Rmd)
 - [Sharded GRanges for scalable integrative analysis](pages/bioc2_hybstor.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_hybstor.Rmd)
+
 
 ### Multi-omic data integration (Week 3)
 
