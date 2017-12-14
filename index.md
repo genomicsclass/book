@@ -247,7 +247,16 @@ title: PH525x series - Biomedical Data Science
     - [Transcription factor (TF) binding and gene coexpression in yeast](pages/bioc2_integExamps.html#yeasttfs)
     - [TF binding and GWAS hits in humans](pages/bioc2_integExamps.html#gwastf)
 - [Using RTCGAToolbox outputs to integrate clinical, mutation, expression and methylation assays](pages/tcga.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/tcga.Rmd)
-- [TCGA application: kataegis and rainfall plot](pages/bioc2_rainfall.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rainfall.Rmd)
+    - [Basic data acquisition](pages/tcga.html#firehose)
+    - [Working with clinical data](pages/tcga.html#clinical)
+        - [Defining a severity marker](pages/tcga.html#severity)
+        - [Extracting survival times](pages/tcga.html#survival)
+    - [Working with mutations](pages/tcga.html#mutation)
+    - [Curation tasks for discrepant identifier formats](pages/tcga.html#curation)
+    - [Working with expression data](pages/tcga.html#expression)
+        - [Associating tumor stage with expression patterns](pages/tcga.html#tstageToExpr)
+        - [Linking DNA methylation with expression patterns](pages/tcga.html#methy)
+- [Application to visualization: kataegis and rainfall plot](pages/bioc2_rainfall.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rainfall.Rmd)
 
 ### Fostering reproducible genome-scale analysis (Week 4)
 
