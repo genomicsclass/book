@@ -27,6 +27,8 @@ library(ph525x)
 firehose()
 ```
 
+<a name="firehose"></a>
+
 ## The integrative object
 
 We used the commands
@@ -71,6 +73,8 @@ can be found via
 [1] 485577    109
 ```
 
+<a name="clinical"></a>
+
 ## A view of the clinical data
 
 A complete understanding of the dataset would require attention to the
@@ -79,6 +83,8 @@ establishment of a common time origin for disease progression or death event tim
 along with details on tumor
 sampling and assay procedures.  For the purposes of this course, we'll
 assume that we can meaningfully combine all the data that we've retrieved.
+
+<a name="severity"></a>
 
 ### Selecting a severity measure
 
@@ -147,6 +153,8 @@ table(clin$t_stage)
 ##   9  32 115  14
 ```
 
+<a name="survival"></a>
+
 ### Defining survival times
 
 We'll guess that the vital status variable corresponds to status
@@ -172,6 +180,8 @@ legend(100, .4, lty=1:4, lwd=2, legend=paste(levels(clin$t_stage), ns))
 ```
 
 ![plot of chunk getsur](figure/tcga-getsur-1.png)
+
+<a name="mutation"></a>
 
 ### Introducing mutation data
 
@@ -243,6 +253,8 @@ gt[omn[1:20], c(12:13,17,18)]
 
 The fact that KRAS and TP53 are in this list gives another
 crude sanity check.  
+
+<a name="curation"></a>
 
 ## Multiomics 101: Can we combine the mutation and clinical data?
 
@@ -331,6 +343,8 @@ with(clinwmut, boxplot(split(nmut, t_stage), log="y"))
 ```
 
 ![plot of chunk combo](figure/tcga-combo-1.png)
+
+<a name="expression"></a>
 
 ## The expression data
 
@@ -444,6 +458,8 @@ we will simply eliminate that individual.
 readES = readES[,-97]
 ```
 
+<a name="tstageToExpr"></a>
+
 ## Relating tumor stage to gene expression variation
 
 We'll use a very crude categorical approach and an
@@ -512,6 +528,8 @@ boxplot(split(exprs(readES)["LOC100128977",], readES$t_stage))
 ```
 
 ![plot of chunk lkgns](figure/tcga-lkgns-1.png)
+
+<a name="methy"></a>
 
 ## Introducing the 450k methylation data
 
