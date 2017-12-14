@@ -5,6 +5,7 @@ title: "Reproducible research: basic considerations"
 
 
 
+<a name="defs"></a>
 ## Overview
 
 A key reason for contributing to open software and data for genome-scale
@@ -20,10 +21,14 @@ The National Academy of Sciences has issued a [report](http://www.nap.edu/21915)
 
 ![plot of chunk lknas](figure/bioc2_repro1-lknas-1.png)
 
+<a name="infrastr"></a>
+
 A number of interesting infrastructure responses
 to reproducibility problems are noted by Victoria Stodden:
 
 ![plot of chunk lkv1](figure/bioc2_repro1-lkv1-1.png)
+
+<a name="statistical"></a>
 
 She also gives a treatment of _statistical reproducibility_:
 
@@ -80,6 +85,7 @@ meaningful subproblems of increasing difficulty
 * **Computable documents** (rmarkdown, jupyter, ...) are important for pursuit of cost-effectiveness of reproducible research discipline
 
 
+<a name="RP"></a>
 
 ## Boos: Replication probabilities are low for conventional thresholds
 
@@ -117,6 +123,7 @@ uncertainty is not reckoned in conventional usage.  Boos and Stefanski
 suggest that the order of magnitude of $$-\log p$$ is fairly reliable
 but finer-grained distinctions are not.
 
+<a name="costs"></a>
 
 ## Some material from the NAS workshop: Valen Johnson ([PNAS paper](http://www.pnas.org/content/110/48/19313.full.pdf))
 
