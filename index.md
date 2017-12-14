@@ -258,9 +258,14 @@ title: PH525x series - Biomedical Data Science
         - [Linking DNA methylation with expression patterns](pages/tcga.html#methy)
 - [Application to visualization: kataegis and rainfall plot](pages/bioc2_rainfall.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rainfall.Rmd)
 
-### Fostering reproducible genome-scale analysis (Week 4)
+### Chapter 17: Fostering reproducible genome-scale analysis 
 
 - [Overview of unit on reproducibility](pages/bioc2_repro1.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_repro1.Rmd)
+    - [Basic definitions](pages/bioc2_repro1.html#defs)
+    - [Infrastructure requirements](pages/bioc2_repro1.html#infrastr)
+    - [Statistical aspects of reproducibility](pages/bioc2_repro1.html#infrastr)
+    - [Analysis of reproducibility probability](Boos and Stefanski 2011)](pages/bioc2_repro1.html#RP)
+    - [Costs of highly reproducible designs](pages/bioc2_repro1.html#costs)
 - [Package structure, creation, installation, management](pages/bioc2_rpacks.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rpacks.Rmd)
 
 ---
