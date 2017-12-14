@@ -5,10 +5,8 @@ title: "Understanding and building R packages"
 
 
 
-```
-## Warning: replacing previous import by 'BiocGenerics::Position' when loading
-## 'ggbio'
-```
+
+<a name="defpack"></a>
 
 ## What is an R package?
 
@@ -41,14 +39,12 @@ juxta = function (chrname="chr22", ...)
     data(GM12878)
     require(ggbio)
     require(GenomicRanges)  # "subset" is overused, need import detail
-    ap1 = autoplot(GenomicRanges::subset(HepG2, seqnames==chrname))
-    ap2 = autoplot(GenomicRanges::subset(GM12878, seqnames==chrname))
+    ap1 = autoplot(HepG2[which(seqnames(HepG2)==chrname)])
+    ap2 = autoplot(GM12878[which(seqnames(GM12878)==chrname)])
     tracks(HepG2 = ap1, Bcell = ap2, ...)
 # alternative code for Gviz below
 #    require(Gviz)
-#    ap1 = AnnotationTrack(GenomicRanges::subset(HepG2, seqnames==chrname))
 #    names(ap1) = "HepG2"
-#    ap2 = AnnotationTrack(GenomicRanges::subset(GM12878, seqnames==chrname))
 #    names(ap2) = "B-cell"
 #    ax = GenomeAxisTrack()
 #    plotTracks(list(ax, ap1, ap2))
@@ -114,10 +110,6 @@ library(Sac.cer3)
 ## 
 ```
 
-```
-## Loading required package: TxDb.Scerevisiae.UCSC.sacCer3.sgdGene
-```
-
 ```r
 Sac.cer3
 ```
@@ -177,3 +169,195 @@ genes(Sac.cer3)
 ##   seqinfo: 17 sequences (1 circular) from sacCer3 genome
 ```
 
+<a name="devtools"></a>
+
+## Using devtools
+
+Let's use *[devtools](https://CRAN.R-project.org/package=devtools)* to create a package centered
+around the `juxta` function.  We will learn about
+roxygen too.
+
+In the following code chunk, we use `devtools::create`
+to generate a package folder structure in a temporary
+directory.
+
+<a name="create"></a>
+
+
+```r
+curd = getwd()
+kk = dir.create(tmpd <- tempfile()) # always new
+setwd(tmpd)
+library(devtools)
+create("juxtaPack", list(Depends=c("ERBS", "ggbio"), 
+    Description="Juxtapose ESRRA binding and gene models",
+    Title="demonstration package"))
+```
+
+```
+## Package: juxtaPack
+## Title: demonstration package
+## Version: 0.0.0.9000
+## Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+## Description: Juxtapose ESRRA binding and gene models
+## Depends: ERBS, ggbio
+## License: What license is it under?
+## Encoding: UTF-8
+## LazyData: true
+```
+
+```r
+setwd("juxtaPack")
+```
+
+<a name="source"></a>
+
+We are now in the top folder of the package hierarchy.
+We will create a text file with documentation (prefixed
+by hashtag single quote) in the *[roxygen2](https://CRAN.R-project.org/package=roxygen2)* format.
+The text vector `jlines` defines the content.  (Usually
+you will create your documentation and function code
+in a text editor.)
+
+```r
+setwd(tmpd)
+setwd("juxtaPack")
+jlines = 
+"#' render a chromosome and locations of ESRRA binding sites
+#' @param chrname character(1) giving UCSC chromosome name
+#' @examples
+#' juxta()
+#' @export
+juxta = function (chrname='chr22', ...) 
+{
+    require(ERBS)
+    data(HepG2)
+    data(GM12878)
+    require(ggbio)
+    require(GenomicRanges)
+    ac = as.character
+    ap1 = autoplot(HepG2[which(ac(seqnames(HepG2))==chrname)])
+    ap2 = autoplot(GM12878[which(ac(seqnames(GM12878))==chrname)])
+    tracks(HepG2 = ap1, Bcell = ap2, ...)
+}
+"
+```
+We descend to the `R` folder and write our text file.
+
+```r
+setwd(tmpd)
+setwd("juxtaPack")
+setwd("R")
+writeLines(jlines, "jux.R")
+```
+
+<a name="docinst"></a>
+
+We ascend to the package root and run `document` and `install`
+to get access to the new package.
+
+```r
+setwd(tmpd)
+setwd("juxtaPack")
+document()
+```
+
+```
+## Updating juxtaPack documentation
+```
+
+```
+## Loading juxtaPack
+```
+
+```
+## Updating roxygen version in /private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/RtmpjwHTYT/file8dbb27f6ce0a/juxtaPack/DESCRIPTION
+```
+
+```
+## Writing NAMESPACE
+## Writing juxta.Rd
+```
+
+```r
+install()
+```
+
+```
+## Installing juxtaPack
+```
+
+```
+## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+##   '/private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/RtmpjwHTYT/file8dbb27f6ce0a/juxtaPack'  \
+##   --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'  \
+##   --install-tests
+```
+
+```
+## 
+```
+
+```
+## Reloading installed juxtaPack
+```
+
+```
+## 
+## Attaching package: 'juxtaPack'
+```
+
+```
+## The following object is masked _by_ '.GlobalEnv':
+## 
+##     juxta
+```
+
+```r
+setwd(curd) # go back to where you started
+library(juxtaPack)
+juxta
+```
+
+```
+## function (chrname="chr22", ...) 
+## {
+##     require(ERBS)
+##     data(HepG2)
+##     data(GM12878)
+##     require(ggbio)
+##     require(GenomicRanges)  # "subset" is overused, need import detail
+##     ap1 = autoplot(HepG2[which(seqnames(HepG2)==chrname)])
+##     ap2 = autoplot(GM12878[which(seqnames(GM12878)==chrname)])
+##     tracks(HepG2 = ap1, Bcell = ap2, ...)
+## # alternative code for Gviz below
+## #    require(Gviz)
+## #    names(ap1) = "HepG2"
+## #    names(ap2) = "B-cell"
+## #    ax = GenomeAxisTrack()
+## #    plotTracks(list(ax, ap1, ap2))
+## }
+```
+
+In summary:
+
+- We have used `writeLines` to generate a combination of
+roxygen documentation and R code in the file `jux.R`, in
+folder `R`, which was
+created as a subfolder of folder `juxtaPack`.  
+- We then changed to the `juxtaPack` folder and ran `document()` that
+will translate the roxygen lines to statements in `NAMESPACE`
+and to a .Rd file in `man`.
+- We then ran `install()` to install the package in R, returned
+to our initial folder, and used `library(juxtaPack)` to attach
+our new package.
+
+Full development would include production of a vignette
+and a suite of unit tests, giving
+a meaningful basis for using `check()` in devtools.  
+In a more extensive course,
+these would be addressed, but you can learn about them yourself
+by looking at any Bioconductor package.  A good example is 
+*[IRanges](http://bioconductor.org/packages/IRanges)*, which has extensive unit testing.
+There are many other good examples.
