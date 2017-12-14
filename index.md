@@ -264,7 +264,7 @@ title: PH525x series - Biomedical Data Science
     - [Basic definitions](pages/bioc2_repro1.html#defs)
     - [Infrastructure requirements](pages/bioc2_repro1.html#infrastr)
     - [Statistical aspects of reproducibility](pages/bioc2_repro1.html#infrastr)
-    - [Analysis of reproducibility probability](Boos and Stefanski 2011)](pages/bioc2_repro1.html#RP)
+    - [Analysis of reproducibility probability (Boos and Stefanski 2011)](pages/bioc2_repro1.html#RP)
     - [Costs of highly reproducible designs](pages/bioc2_repro1.html#costs)
 - [Package structure, creation, installation, management](pages/bioc2_rpacks.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rpacks.Rmd)
 
