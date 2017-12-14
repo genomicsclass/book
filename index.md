@@ -267,6 +267,13 @@ title: PH525x series - Biomedical Data Science
     - [Analysis of reproducibility probability (Boos and Stefanski 2011)](pages/bioc2_repro1.html#RP)
     - [Costs of highly reproducible designs](pages/bioc2_repro1.html#costs)
 - [Package structure, creation, installation, management](pages/bioc2_rpacks.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rpacks.Rmd)
+    - [What is a package?](pages/bioc2_rpacks.html#defpack)
+    - [Using `package.skeleton`](pages/bioc2_rpacks.html#skel)
+    - [Using `makeOrganismPackage`](pages/bioc2_rpacks.html#skel)
+    - [Using `devtools`](pages/bioc2_rpacks.html#devtools)
+        - [`create()` to set up folders and DESCRIPTION](pages/bioc2_rpacks.html#create)
+        - [Composing documentation plus code](pages/bioc2_rpacks.html#source)
+        - [`document()`, `install()`](pages/bioc2_rpacks.html#docinst)
 
 ---
 
