@@ -27,6 +27,8 @@ library(ph525x)
 firehose()
 ```
 
+![plot of chunk lkdl](figure/tcga-lkdl-1.png)
+
 <a name="firehose"></a>
 
 ## The integrative object
@@ -606,12 +608,20 @@ corv("ZNF300")  # learned about it from firebrowse.org
 ## Conclusions
 
 TCGA is an obvious candidate for infrastructure development to support
-multiomic analysis.  We have seen some of the challenges that arise
+multiomic analysis.  
+The *[MultiAssayExperiment](http://bioconductor.org/packages/MultiAssayExperiment)* and
+*[curatedTCGAData](http://bioconductor.org/packages/curatedTCGAData)* packages are recent
+contributions that address this task.
+We have seen some of the challenges that arise
 when even a nicely developed tool like RTCGAToolbox is used to acquire the data:
 we must be alert to mismatched sample identifier labels, missing data,
 inadequate documentation of sample provenance and assay conduct, and so on.
 Human effort is invariably required; standards for data quality must go beyond
 numerical accuracy and address transparency and usability.
+The curatedTCGAData package does employ manually curated
+representations, so that the harmonization tasks demonstrated
+in this section are not necessary.  But in general we need to
+know how to harmonize, so these tasks are retained in this course.
 
 By suitably varying code snippets in this document, you can get access
 to multiomic data of additional modalities (including microRNA, copy number
