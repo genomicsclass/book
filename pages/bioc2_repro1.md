@@ -95,9 +95,8 @@ level is 5 percent.  The figure shows that if the initial
 experiment produces a $$p$$-value of 0.025,
 the probability that an identically designed experiment will achieve
 a $$p$$-value no greater than 0.05 is about 70 percent.  To achieve high
-probability of replication (say, greater than 90\%), the initial experiment should have
+probability of replication (say, greater than 90%), the initial experiment should have
 a $$p$$-value less than 0.01.
-
 
 ![plot of chunk foo11](figure/bioc2_repro1-foo11-1.png)
 
@@ -120,6 +119,12 @@ but finer-grained distinctions are not.
 
 
 ## Some material from the NAS workshop: Valen Johnson ([PNAS paper](http://www.pnas.org/content/110/48/19313.full.pdf))
+
+In the following, UMPBT denotes 'uniformly most powerful Bayesian test'.
+This is a relatively recent notion that has been described in an
+[open publication by Valen Johnson](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3960084/)
+Regardless of the reference to Bayesian concepts, the effects of pursuing
+more stringent criteria of significance must be addressed.
 
 ![plot of chunk foo12](figure/bioc2_repro1-foo12-1.png)
 
