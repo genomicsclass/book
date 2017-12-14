@@ -241,9 +241,11 @@ title: PH525x series - Biomedical Data Science
 - [Sharded GRanges for scalable integrative analysis](pages/bioc2_hybstor.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_hybstor.Rmd)
 
 
-### Multi-omic data integration (Week 3)
+### Chapter 16: Multi-omic data integration 
 
 - [Basic examples of multi-omic integration](pages/bioc2_integExamps.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_integExamps.Rmd)
+    - [Transcription factor (TF) binding and gene coexpression in yeast](pages/bioc2_integExamps.html#yeasttfs)
+    - [TF binding and GWAS hits in humans](pages/bioc2_integExamps.html#gwastf)
 - [Using RTCGAToolbox outputs to integrate clinical, mutation, expression and methylation assays](pages/tcga.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/tcga.Rmd)
 - [TCGA application: kataegis and rainfall plot](pages/bioc2_rainfall.html)[[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocadv_6x/bioc2_rainfall.Rmd)
 

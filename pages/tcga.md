@@ -35,7 +35,7 @@ We used the commands
 ```r
 library(RTCGAToolbox)
 readData = getFirehoseData (dataset="READ", runDate="20150402",forceDownload = TRUE,
-    Clinic=TRUE, Mutation=TRUE, Methylation=TRUE, RNAseq2_Gene_Norm=TRUE)
+    Clinic=TRUE, Mutation=TRUE, Methylation=TRUE, RNASeq2GeneNorm=TRUE)
 ```
 
 
@@ -48,31 +48,15 @@ readData
 ```
 
 ```
-## READ FirehoseData object
-```
-
-```
-## Available data types:
-```
-
-```
-## Clinical: A data frame, dim: 171	22
-```
-
-```
-## RNASeq2GeneNorm: A matrix withraw read counts or normalized data, dim: 20501	105
-```
-
-```
-## Methylation: A list contains FirehoseMethylationArray object(s), length: 2
-```
-
-```
-## Mutations: A data.frame, dim: 22075	39
-```
-
-```
-## To export data, you may use getData() function.
+## READ FirehoseData objectStandard run date: 20150402 
+## Analysis running date: 20160128 
+## Available data types: 
+##   clinical: A data frame of phenotype data, dim:  171 x 22 
+##   RNASeq2GeneNorm: A matrix of count or normalized data, dim:  20501 x 105 
+##   Methylation: A list of FirehoseMethylationArray object(s), length:  2 
+##   GISTIC: A FirehoseGISTIC for copy number data 
+##   Mutation: A data.frame, dim:  22075 x 39 
+## To export data, use the 'getData' function.
 ```
 
 and hides the dimensionalities of the two methylation assays.  These
@@ -99,38 +83,7 @@ assume that we can meaningfully combine all the data that we've retrieved.
 ### Selecting a severity measure
 
 ```r
-clin = getData(readData, "Clinical")
-```
-
-```
-## READ FirehoseData object
-```
-
-```
-## Available data types:
-```
-
-```
-## Clinical: A data frame, dim: 171	22
-```
-
-```
-## RNASeq2GeneNorm: A matrix withraw read counts or normalized data, dim: 20501	105
-```
-
-```
-## Methylation: A list contains FirehoseMethylationArray object(s), length: 2
-```
-
-```
-## Mutations: A data.frame, dim: 22075	39
-```
-
-```
-## To export data, you may use getData() function.
-```
-
-```r
+clin = getData(readData, "clinical")
 names(clin)
 ```
 
@@ -224,38 +177,7 @@ legend(100, .4, lty=1:4, lwd=2, legend=paste(levels(clin$t_stage), ns))
 
 
 ```r
-mut = getData(readData, "Mutations")
-```
-
-```
-## READ FirehoseData object
-```
-
-```
-## Available data types:
-```
-
-```
-## Clinical: A data frame, dim: 171	22
-```
-
-```
-## RNASeq2GeneNorm: A matrix withraw read counts or normalized data, dim: 20501	105
-```
-
-```
-## Methylation: A list contains FirehoseMethylationArray object(s), length: 2
-```
-
-```
-## Mutations: A data.frame, dim: 22075	39
-```
-
-```
-## To export data, you may use getData() function.
-```
-
-```r
+mut = getData(readData, "Mutation")
 dim(mut)
 ```
 
@@ -421,37 +343,6 @@ investigated.
 
 ```r
 rnaseq = getData(readData, "RNASeq2GeneNorm")
-```
-
-```
-## READ FirehoseData object
-```
-
-```
-## Available data types:
-```
-
-```
-## Clinical: A data frame, dim: 171	22
-```
-
-```
-## RNASeq2GeneNorm: A matrix withraw read counts or normalized data, dim: 20501	105
-```
-
-```
-## Methylation: A list contains FirehoseMethylationArray object(s), length: 2
-```
-
-```
-## Mutations: A data.frame, dim: 22075	39
-```
-
-```
-## To export data, you may use getData() function.
-```
-
-```r
 rnaseq[1:4,1:4]
 ```
 
@@ -583,7 +474,7 @@ ef1 = eBayes(f1)
 ```
 
 ```
-## Warning: Zero sample variances detected, have been offset
+## Warning: Zero sample variances detected, have been offset away from zero
 ```
 
 ```r
@@ -631,37 +522,6 @@ in need of transformation, duplicates, and only partial match to clinical data.
 
 ```r
 me450k = getData(readData, "Methylation", 2)
-```
-
-```
-## READ FirehoseData object
-```
-
-```
-## Available data types:
-```
-
-```
-## Clinical: A data frame, dim: 171	22
-```
-
-```
-## RNASeq2GeneNorm: A matrix withraw read counts or normalized data, dim: 20501	105
-```
-
-```
-## Methylation: A list contains FirehoseMethylationArray object(s), length: 2
-```
-
-```
-## Mutations: A data.frame, dim: 22075	39
-```
-
-```
-## To export data, you may use getData() function.
-```
-
-```r
 fanno = me450k[,1:3]
 me450k = data.matrix(me450k[,-c(1:3)])
 med = tolower(substr(colnames(me450k),1,12))
