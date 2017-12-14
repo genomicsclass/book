@@ -274,6 +274,8 @@ title: PH525x series - Biomedical Data Science
         - [`create()` to set up folders and DESCRIPTION](pages/bioc2_rpacks.html#create)
         - [Composing documentation plus code](pages/bioc2_rpacks.html#source)
         - [`document()`, `install()`](pages/bioc2_rpacks.html#docinst)
+    - [Conclusions, including a link to a recent Nature Toolbox article on Bioconductor](pages/bioc2_rpacks.html#wrapup)
+
 
 ---
 

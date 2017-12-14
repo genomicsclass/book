@@ -271,7 +271,7 @@ document()
 ```
 
 ```
-## Updating roxygen version in /private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/RtmpjwHTYT/file8dbb27f6ce0a/juxtaPack/DESCRIPTION
+## Updating roxygen version in /private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/Rtmprv6lu6/file99ae46a8f0f5/juxtaPack/DESCRIPTION
 ```
 
 ```
@@ -290,7 +290,7 @@ install()
 ```
 ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-##   '/private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/RtmpjwHTYT/file8dbb27f6ce0a/juxtaPack'  \
+##   '/private/var/folders/5_/14ld0y7s0vbg_z0g2c9l8v300000gr/T/Rtmprv6lu6/file99ae46a8f0f5/juxtaPack'  \
 ##   --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'  \
 ##   --install-tests
 ```
@@ -361,3 +361,20 @@ these would be addressed, but you can learn about them yourself
 by looking at any Bioconductor package.  A good example is 
 *[IRanges](http://bioconductor.org/packages/IRanges)*, which has extensive unit testing.
 There are many other good examples.
+
+<a name="wrapup"></a>
+
+## Wrapping up
+
+You are now in a good position to revisit the [motivations
+and core values](http://genomicsclass.github.io/book/pages/biomotiv.html) section of the course pages.
+
+In that section we described the concepts of
+functional object-oriented programming and continuous integration
+as they pertain to the development of highly reliable and
+relevant software tools, used in a variety of subdomains of genome
+science.  The software engineering and reproducible research
+underpinnings of the Bioconductor project are at the heart
+of its scientific impact.  For a nice set of remarks on
+usability in upcoming cloud contexts, see this recent
+[Nature Toolbox commentary](https://www.nature.com/articles/d41586-017-07833-1?utm_source=TWT_NatureNews&sf175334725=1).
