@@ -160,8 +160,8 @@ Since we are now describing what we do in practice, we no longer have the advant
 $$
 \begin{align*}
 \mbox{Pr}(\mbox{at least one rejection}) &= 1 -\mbox{Pr}(\mbox{no rejections}) \\
-&= 1 - \prod_{i=1}^{1000} \mbox{Pr}(p_i>0.01) \\
-&= 1-0.95^{1000} \approx 1
+&= 1 - \prod_{i=1}^{10000} \mbox{Pr}(p_i>0.01) \\
+&= 1-0.99^{10000} \approx 1
 \end{align*}
 $$
 
