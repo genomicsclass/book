@@ -105,6 +105,8 @@ title: PH525x series - Biomedical Data Science
 - [MDS](pages/mds.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/highdim/mds.Rmd)
 - [MDS exercises](pages/mds_exercises.html)
 - [PCA](pages/PCA.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/highdim/PCA.Rmd)
+- [PCA and SVD in R](pages/PCA_SVD.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/advinference/storage/pca_svd.Rmd)
+
 
 ## Chapter 9 - Practical Machine Learning
 - [Clustering and heatmaps](pages/clustering_and_heatmaps.html)  [[Rmd]](https://github.com/genomicsclass/labs/blob/master/ml/clustering_and_heatmaps.Rmd)
