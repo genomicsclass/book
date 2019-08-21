@@ -141,7 +141,7 @@ title: PH525x series - Biomedical Data Science
 - [Mike Love's general reference card](https://github.com/mikelove/bioc-refcard)
 - [Motivations and core values (optional)](pages/biomotiv.html)
 - [Installing Bioconductor and finding help](pages/installing_Bioconductor_finding_help.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/bioc/installing_Bioconductor_finding_help.Rmd)
-- [Data structure and management for genome scale experiments](pages/dataman2017.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2017.Rmd)
+- [Data structure and management for genome scale experiments](pages/dataman2019.html) [[Rmd]](https://github.com/genomicsclass/labs/blob/master/biocintro_5x/dataman2019.Rmd)
     - [Coordinating multiple tables: ExpressionSet](pages/dataman2017.html#coord)
     - [Institutional archives: GEO, ArrayExpress](pages/dataman2017.html#geoquery)
 - [Interlude: Working with general genomic features using GenomicRanges](pages/bioc1_igranges.html) 
