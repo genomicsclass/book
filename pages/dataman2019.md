@@ -1599,16 +1599,6 @@ sort(table(assay(mut, "Hugo_Symbol")[assay(mut, "Variant_Classification")==
 ##       3
 ```
 
-What are the genes most commonly affected by such deletions?
-
-```r
-sort(table(names(rfs)),decreasing=TRUE)[1:8]
-```
-
-```
-## Error in eval(quote(list(...)), env): object 'rfs' not found
-```
-
 In summary 
 
 - MultiAssayExperiment unifies diverse assays collected on a cohort of individuals
